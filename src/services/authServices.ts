@@ -1,6 +1,6 @@
 import axiosInstance from "../axiosConfig";
 
-export const adminLogin = async (username: string, password: string) => {
+export const login = async (username: string, password: string) => {
   try {
     const response = await axiosInstance.post("/auth/login", {
       username,
@@ -13,8 +13,8 @@ export const adminLogin = async (username: string, password: string) => {
     localStorage.setItem("username", user.username);
     localStorage.setItem("role", user.role);
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error logging in:", error);
-    throw error;
+    throw error.response.data.error;
   }
 };

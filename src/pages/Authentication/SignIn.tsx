@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { adminLogin } from '../../services/authServices';
+import { login } from '../../services/authServices';
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSignIn = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     if (username != '' && password != '') {
-      const success = await adminLogin(username, password);
-      if (success) {
+      await login(username, password).then(() => {
         navigate('/');
       }
+      ).catch((error) => { 
+        setError(error);
+      });
     }
   }
 
@@ -22,7 +25,7 @@ const SignIn: React.FC = () => {
     if (token) {
       navigate('/');
     }
-  } ,[]);
+  }, []);
   return (
     <div>
       <main>
@@ -250,7 +253,19 @@ const SignIn: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="mb-5">
+                    {/* Alert */}
+                    {error && (
+                      <div className="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-4 py-4 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-4">
+                        <div className="w-full">
+                          <h5 className="font-semibold text-[#B45454]">
+                            {error}
+                          </h5>
+                        </div>
+                      </div>
+                    )}
+                    {/* Alert */}
+
+                    <div className="my-5">
                       <button
                         className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                         onClick={handleSignIn}
@@ -260,7 +275,7 @@ const SignIn: React.FC = () => {
 
                     <div className="mt-6 text-center">
                       <p>
-                        Don’t have any account?{' '}
+                        Don't have any account?{' '}
                         <Link to="/auth/signup" className="text-primary">
                           Sign Up
                         </Link>
