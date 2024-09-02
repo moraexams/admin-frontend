@@ -1,7 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { signup } from '../../services/authServices';
 
 const SignUp: React.FC = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token')
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordR, setPasswordR] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSignUp = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    if (name != '' && username != '' && password != '') {
+      if (password == passwordR) {
+        await signup(name, username, password).then(() => {
+          alert('User created successfully');
+          navigate('auth/signin');
+        }
+        ).catch((error) => {
+          setError(error);
+        });
+      }
+      else {
+        setError('Passwords do not match');
+      }
+    } else {
+      setError('Please fill all the fields');
+    }
+  }
+
+  useEffect(() => {
+    if (token) {
+      navigate('/');
+    }
+  }, []);
   return (
     <div>
       <main>
@@ -17,8 +51,7 @@ const SignUp: React.FC = () => {
                     <img className="dark:hidden" src={LogoDark} alt="Logo" /> */}
                   </Link>
                   <p className="2xl:px-20">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    suspendisse.
+                    Dashboard for managing students, marks and exam.
                   </p>
 
                   <span className="mt-15 inline-block">
@@ -160,6 +193,8 @@ const SignUp: React.FC = () => {
                       <div className="relative">
                         <input
                           type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                           placeholder="Enter your full name"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
@@ -195,6 +230,8 @@ const SignUp: React.FC = () => {
                       <div className="relative">
                         <input
                           type="text"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
                           placeholder="Enter your username"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
@@ -226,6 +263,8 @@ const SignUp: React.FC = () => {
                       <div className="relative">
                         <input
                           type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                           placeholder="Enter your password"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
@@ -261,6 +300,8 @@ const SignUp: React.FC = () => {
                       <div className="relative">
                         <input
                           type="password"
+                          value={passwordR}
+                          onChange={(e) => setPasswordR(e.target.value)}
                           placeholder="Re-enter your password"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
@@ -289,11 +330,24 @@ const SignUp: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="mb-5">
+                    {/* Alert */}
+                    {error && (
+                      <div className="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-4 py-4 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-4">
+                        <div className="w-full">
+                          <h5 className="font-semibold text-[#B45454]">
+                            {error}
+                          </h5>
+                        </div>
+                      </div>
+                    )}
+                    {/* Alert */}
+
+                    <div className="my-5">
                       <input
                         type="submit"
                         value="Create account"
                         className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                        onClick={handleSignUp}
                       />
                     </div>
 

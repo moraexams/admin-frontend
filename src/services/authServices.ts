@@ -18,3 +18,18 @@ export const login = async (username: string, password: string) => {
     throw error.response.data.error;
   }
 };
+
+export const signup = async (name: string, username: string, password: string) => {
+  try {
+    const response = await axiosInstance.post("/auth/signup", {
+      name,
+      username,
+      password,
+    });
+    const message = response.data.message;
+    return message;
+  } catch (error: any) {
+    console.error("Error logging in:", error);
+    throw error.response.data.error;
+  }
+};
