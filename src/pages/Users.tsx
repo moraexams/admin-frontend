@@ -31,7 +31,7 @@ const Users = () => {
     <DefaultLayout>
       <Breadcrumb pageName="Users" />
       <div className="flex flex-col gap-10">
-        {loading ? <div>Loading...</div> : <UsersTable userData={users} />}
+        {loading ? <div>Loading...</div> : <UsersTable userData={users} itemsPerPage={3} />}
       </div>
     </DefaultLayout>
   );
