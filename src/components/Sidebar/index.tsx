@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import Logo from '../../images/logo/logo.png';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -49,7 +50,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/">
-          <h1 className='font-mono font-black antialiased text-3xl text-white text-center'>MoraExams</h1>
+          <img className="hidden dark:block h-28" src={Logo} alt="Logo" />
+          <img className="dark:hidden h-28" src={Logo} alt="Logo" />
         </NavLink>
 
         <button
