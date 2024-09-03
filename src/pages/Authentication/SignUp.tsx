@@ -18,7 +18,7 @@ const SignUp: React.FC = () => {
       if (password == passwordR) {
         await signup(name, username, password).then(() => {
           alert('User created successfully');
-          navigate('auth/signin');
+          navigate('/auth/signin');
         }
         ).catch((error) => {
           setError(error);

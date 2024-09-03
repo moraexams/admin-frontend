@@ -33,3 +33,19 @@ export interface User {
   created_at: string;
   approved: boolean;
 }
+
+export interface District {
+  id?: number;
+  name: string;
+  coordinators?: User[];
+  exam_centres?: ExamCentre[];
+  created_at: string;
+}
+
+export interface ExamCentre {
+  id?: number;
+  name: string;
+  district_id: number;
+  place: string;
+  gender: string;
+}
