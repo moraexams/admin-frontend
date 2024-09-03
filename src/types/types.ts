@@ -37,7 +37,7 @@ export interface User {
 export interface District {
   id?: number;
   name: string;
-  coordinators?: User[];
+  coordinators?: Coordinator[];
   exam_centres?: ExamCentre[];
   created_at: string;
 }
@@ -48,4 +48,11 @@ export interface ExamCentre {
   district_id: number;
   place: string;
   gender: string;
+}
+
+export interface Coordinator {
+  id?: number;
+  name: string;
+  district_id: number;
+  telephone_no: string;
 }

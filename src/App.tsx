@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Districts from './pages/Districts';
 import ExamCentres from './pages/ExamCentres';
+import Coordinators from './pages/Coordinators';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -78,6 +79,15 @@ function App() {
             <>
               <PageTitle title="Exam Centres | MoraExams" />
               <ExamCentres />
+            </>
+          }
+        />
+        <Route
+          path="/district/coordinators"
+          element={
+            <>
+              <PageTitle title="Coordinators | MoraExams" />
+              <Coordinators />
             </>
           }
         />

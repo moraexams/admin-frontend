@@ -29,3 +29,18 @@ export const getDistrictsWithCentres = async () => {
     return error;
   }
 };
+
+export const getDistrictsWithCoordinators = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/district/coordinators", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching districts:", error);
+    return error;
+  }
+};

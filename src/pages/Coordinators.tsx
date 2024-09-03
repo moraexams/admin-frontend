@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import { District } from '../types/types';
-import { getDistrictsWithCentres } from '../services/districtService';
-import ExamCentresTable from '../components/Tables/ExamCentresTable';
+import { getDistrictsWithCoordinators } from '../services/districtService';
+import CoordinatorsTable from '../components/Tables/CoordinatorsTable';
 
-const Districts = () => {
+const Coordinators = () => {
   const [districts, setDistricts] = useState<District[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,7 @@ const Districts = () => {
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        const districts = await getDistrictsWithCentres();
+        const districts = await getDistrictsWithCoordinators();
         setDistricts(districts);
       } catch (error) {
         setError('Failed to fetch districts');
@@ -30,7 +30,7 @@ const Districts = () => {
   }
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Exam Centres" />
+      <Breadcrumb pageName="Coordinators" />
 
       <div className="mb-5.5">
         <select
@@ -47,10 +47,10 @@ const Districts = () => {
         </select>
       </div>
       <div className="flex flex-col gap-10">
-        {loading ? <div>Loading...</div> : <ExamCentresTable districtData={districts} itemsPerPage={itemsPerPage} />}
+        {loading ? <div>Loading...</div> : <CoordinatorsTable districtData={districts} itemsPerPage={itemsPerPage} />}
       </div>
     </DefaultLayout>
   );
 };
 
-export default Districts;
+export default Coordinators;
