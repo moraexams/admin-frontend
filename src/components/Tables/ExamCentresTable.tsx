@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
+import { addExamCentre } from '../../services/examCentreService';
 
 const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District[], itemsPerPage: number }) => {
 
@@ -19,6 +20,29 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
     setItemOffset(newOffset);
   };
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [districtID, setDistrictID] = useState<number>(1);
+  const [centreName, setCentreName] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const [gender, setGender] = useState<string>('Male');
+
+  const handleAddCentre = () => {
+    if (centreName !== '' && location !== '') {
+      addExamCentre(centreName, location, gender, districtID)
+        .then(() => {
+          window.location.reload();
+        }).catch((error) => {
+          alert(error);
+        })
+    } else {
+      alert("fill all fields");
+    };
+  }
+  const handleModalOpen = (id: number | undefined) => {
+    setDistrictID(id || 1);
+    setModalOpen(true);
+  };
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -42,6 +66,9 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Actions
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
+                District Actions
               </th>
             </tr>
           </thead>
@@ -96,7 +123,7 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <div className="flex items-center space-x-3.5">
+                              <div className="flex items-center justify-center space-x-3.5">
 
                                 <button className="hover:text-primary">
                                   <svg
@@ -127,6 +154,18 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                                 </button>
                               </div>
                             </td>
+                            {key === 0 && (<td rowSpan={rowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                              <div className="flex items-center justify-center space-x-3.5">
+
+                                <button onClick={() => handleModalOpen(id)} className="hover:text-primary">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                  </svg>
+
+                                </button>
+                              </div>
+                            </td>)}
+
                           </tr>
                         ))
                       ) :
@@ -158,7 +197,7 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <div className="flex items-center space-x-3.5">
+                              <div className="flex items-center justify-center space-x-3.5">
 
                                 <button className="hover:text-primary">
                                   <svg
@@ -186,6 +225,17 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                                       fill=""
                                     />
                                   </svg>
+                                </button>
+                              </div>
+                            </td>
+                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                              <div className="flex items-center justify-center space-x-3.5">
+
+                                <button onClick={() => handleModalOpen(id)} className="hover:text-primary">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                  </svg>
+
                                 </button>
                               </div>
                             </td>
@@ -223,7 +273,101 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
           />
         </div>
       </div>
-    </div>
+
+      <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
+        <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15">
+          <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
+            Add Exam Centre to {districtData.find(x => x.id === districtID)?.name}
+          </h3>
+          <span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
+          <div className="mb-4.5">
+            <label className="mb-2.5 block text-black dark:text-white">
+              Centre Name <span className="text-meta-1">*</span>
+            </label>
+            <input
+              type="text"
+              value={centreName}
+              onChange={(e) =>
+                setCentreName(e.target.value)
+              }
+              placeholder="Enter Centre Name"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            />
+          </div>
+
+          <div className="mb-4.5">
+            <label className="mb-2.5 block text-black dark:text-white">
+              Location
+            </label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) =>
+                setLocation(e.target.value)
+              }
+              placeholder="Enter Location Link"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            />
+          </div>
+          <div className="mb-4.5">
+            <label className="mb-2.5 block text-black dark:text-white">
+              Gender
+            </label>
+
+            <div className="relative z-20 bg-transparent dark:bg-form-input">
+              <select
+                value={gender}
+                onChange={(e) =>
+                  setGender(e.target.value)
+                }
+                className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary text-black dark:text-white"             >
+                <option value="Male" className="text-body dark:text-bodydark">
+                  Male
+                </option>
+                <option value="Female" className="text-body dark:text-bodydark">
+                  Female
+                </option>
+                <option value="Mixed" className="text-body dark:text-bodydark">
+                  Mixed
+                </option>
+              </select>
+
+              <span className="absolute top-1/2 right-4 z-30 -translate-y-1/2">
+                <svg
+                  className="fill-current"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g opacity="0.8">
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                      fill=""
+                    ></path>
+                  </g>
+                </svg>
+              </span>
+            </div>
+          </div>
+          <div className="-mx-3 flex flex-wrap gap-y-4">
+            <div className="w-full px-3 2xsm:w-1/2">
+              <button onClick={() => setModalOpen(false)} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                Cancel
+              </button>
+            </div>
+            <div className="w-full px-3 2xsm:w-1/2">
+              <button onClick={handleAddCentre} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+                Add Centre
+              </button>
+            </div>
+          </div>
+        </div>
+      </div >
+    </div >
   );
 };
 
