@@ -27,9 +27,6 @@ const UsersTable = ({ userData, itemsPerPage }: { userData: User[], itemsPerPage
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number; }) => {
     const newOffset = (event.selected * itemsPerPage) % itemsLength;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
 
@@ -134,25 +131,26 @@ const UsersTable = ({ userData, itemsPerPage }: { userData: User[], itemsPerPage
         </table>
       </div>
 
-      <div className="flex justify-between my-4">
-        <div className="flex items-center">
-          Showing {itemOffset+1} to {endOffset} out of {itemsLength}
+      <div className="flex flex-wrap justify-between my-2">
+        <div className="flex items-center my-2">
+          Showing {itemOffset + 1} to {endOffset < itemsLength ? endOffset : itemsLength} out of {itemsLength}
         </div>
-        <div>
+        <div className="overflow-x-auto my-2">
           <ReactPaginate
             breakLabel="..."
             nextLabel=">"
             onPageChange={handlePageClick}
-            pageRangeDisplayed={2}
+            pageRangeDisplayed={1}
             pageCount={pageCount}
             previousLabel="<"
             renderOnZeroPageCount={null}
             containerClassName={"isolate inline-flex -space-x-px rounded-md shadow-sm"}
-            pageLinkClassName={"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"}
-            activeLinkClassName={"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"}
-            previousLinkClassName={"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"}
-            nextLinkClassName={"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-400"}
-            disabledClassName={"text-gray-300"}
+            pageLinkClassName={"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"}
+            breakLinkClassName={"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"}
+            activeLinkClassName={"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"}
+            previousLinkClassName={"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"}
+            nextLinkClassName={"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-400"}
+            disabledLinkClassName={"text-black-100"}
           />
         </div>
       </div>
