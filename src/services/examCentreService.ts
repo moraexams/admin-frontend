@@ -25,3 +25,28 @@ export const addExamCentre = async (
     throw error.response.data.error;
   }
 };
+
+export const updateExamCentre = async (
+  id: number,
+  name: string,
+  place: string,
+  gender: string,
+) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.put("/centre/" + id, {
+      name,
+      place,
+      gender,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("response", response);
+    return true;
+  } catch (error: any) {
+    console.error("Error Adding Centre:", error);
+    throw error.response.data.error;
+  }
+};

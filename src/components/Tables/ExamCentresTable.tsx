@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
-import { addExamCentre } from '../../services/examCentreService';
+import { addExamCentre, updateExamCentre } from '../../services/examCentreService';
+import { act } from 'react-dom/test-utils';
 
 const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District[], itemsPerPage: number }) => {
 
@@ -23,10 +24,26 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
   const [modalOpen, setModalOpen] = useState(false);
 
   const [districtID, setDistrictID] = useState<number>(1);
+  const [centreID, setCentreID] = useState<number>(1);
   const [centreName, setCentreName] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [gender, setGender] = useState<string>('Male');
 
+  const [action, setAction] = useState<string>('Add');
+
+
+  const handleModalSubmit = () => {
+    switch (action) {
+      case 'Add':
+        handleAddCentre();
+        break;
+      case 'Update':
+        handleUpdateCentre();
+        break;
+      default:
+        break;
+    }
+  }
   const handleAddCentre = () => {
     if (centreName !== '' && location !== '') {
       addExamCentre(centreName, location, gender, districtID)
@@ -39,10 +56,44 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
       alert("fill all fields");
     };
   }
-  const handleModalOpen = (id: number | undefined) => {
+  const handleUpdateCentre = () => {
+    if (centreName !== '' && location !== '') {
+      updateExamCentre(centreID, centreName, location, gender)
+        .then(() => {
+          window.location.reload();
+        }).catch((error) => {
+          alert(error);
+        })
+    } else {
+      alert("fill all fields");
+    };
+  }
+
+  const handleAddModalOpen = (id: number | undefined) => {
+    setAction('Add');
     setDistrictID(id || 1);
+    setCentreName('');
+    setLocation('');
+    setGender('Male');
     setModalOpen(true);
   };
+
+  const handleEditModalOpen = (district_id: number | undefined, centre_id: number | undefined) => {
+    setAction('Update')
+    setDistrictID(district_id || 1);
+    const examCentres = districtData.find(x => x.id === districtID)?.exam_centres;
+    if (examCentres) {
+      const centre = examCentres.find(x => x.id === centre_id)
+      if (centre && centre.id) {
+        setCentreID(centre.id);
+        setCentreName(centre.name);
+        setLocation(centre.place);
+        setGender(centre.gender);
+        setModalOpen(true);
+      }
+    }
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -124,7 +175,11 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <div className="flex items-center justify-center space-x-3.5">
-
+                                <button onClick={() => handleEditModalOpen(id, exam_centre.id)} className="hover:text-primary">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                  </svg>
+                                </button>
                                 <button className="hover:text-primary">
                                   <svg
                                     className="fill-current"
@@ -157,7 +212,7 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                             {key === 0 && (<td rowSpan={rowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <div className="flex items-center justify-center space-x-3.5">
 
-                                <button onClick={() => handleModalOpen(id)} className="hover:text-primary">
+                                <button onClick={() => handleAddModalOpen(id)} className="hover:text-primary">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                   </svg>
@@ -198,7 +253,6 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <div className="flex items-center justify-center space-x-3.5">
-
                                 <button className="hover:text-primary">
                                   <svg
                                     className="fill-current"
@@ -231,7 +285,7 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <div className="flex items-center justify-center space-x-3.5">
 
-                                <button onClick={() => handleModalOpen(id)} className="hover:text-primary">
+                                <button onClick={() => handleAddModalOpen(id)} className="hover:text-primary">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                   </svg>
@@ -360,8 +414,8 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
               </button>
             </div>
             <div className="w-full px-3 2xsm:w-1/2">
-              <button onClick={handleAddCentre} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
-                Add Centre
+              <button onClick={handleModalSubmit} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+                {action} Centre
               </button>
             </div>
           </div>
