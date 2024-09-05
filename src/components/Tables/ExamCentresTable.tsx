@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addExamCentre, updateExamCentre } from '../../services/examCentreService';
-import { act } from 'react-dom/test-utils';
 
 const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District[], itemsPerPage: number }) => {
 

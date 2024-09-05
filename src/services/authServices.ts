@@ -33,3 +33,17 @@ export const signup = async (name: string, username: string, password: string) =
     throw error.response.data.error;
   }
 };
+
+export const validateToken = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/auth/validate", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.success;
+  } catch (error) {
+    throw error;
+  }
+};
