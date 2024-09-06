@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addExamCentre, deleteExamCentre, updateExamCentre } from '../../services/examCentreService';
+import { filterIt } from '../../services/filter';
 
-const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District[], itemsPerPage: number }) => {
+const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtData: District[], searchKey: string, itemsPerPage: number }) => {
 
-  const items = districtData;
+  const items: District[] = searchKey != "" ? filterIt(districtData, searchKey): districtData;
+  // console.log(filterIt(districtData, searchKey));
+  // const items = districtData;
   const itemsLength = items.length
   const [itemOffset, setItemOffset] = useState(0);
 
