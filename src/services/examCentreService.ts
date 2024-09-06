@@ -50,3 +50,19 @@ export const updateExamCentre = async (
     throw error.response.data.error;
   }
 };
+
+export const deleteExamCentre = async (id: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.delete("/centre/" + id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("response", response);
+    return true;
+  } catch (error: any) {
+    console.error("Error Deleting Centre:", error);
+    throw error.response.data.error;
+  }
+};
