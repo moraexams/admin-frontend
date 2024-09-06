@@ -80,7 +80,7 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
   const handleEditModalOpen = (district_id: number | undefined, centre_id: number | undefined) => {
     setAction('Update')
     setDistrictID(district_id || 1);
-    const examCentres = districtData.find(x => x.id === districtID)?.exam_centres;
+    const examCentres = districtData.find(x => x.id === district_id)?.exam_centres;
     if (examCentres) {
       const centre = examCentres.find(x => x.id === centre_id)
       if (centre && centre.id) {
@@ -89,7 +89,10 @@ const DistrictsTable = ({ districtData, itemsPerPage }: { districtData: District
         setLocation(centre.place);
         setGender(centre.gender);
         setModalOpen(true);
-      }
+      } else {
+        alert("Centre not found");
+    }} else {
+      alert("District not found");
     }
   };
 

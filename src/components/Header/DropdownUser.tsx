@@ -37,6 +37,8 @@ const DropdownUser = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('username');
     window.location.href = '/auth/signin';
   }
   
