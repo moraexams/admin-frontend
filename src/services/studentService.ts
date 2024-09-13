@@ -1,7 +1,6 @@
 import axiosInstance from "../axiosConfig";
 
 export const addStudent = async (
-    index_no:number,
     name:string,
     stream_id:number,
     medium:string,
@@ -12,16 +11,15 @@ export const addStudent = async (
     gender:string,
     email:string,
     phone:string,
-    reg_by:string,
+    /* reg_by:string,
     reg_date:string,
     checked_by:number,
     checked_at:string,
-    created_at: string,
+    created_at: string, */ //can get this data in backend??
 ) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axiosInstance.post("/student/add", {
-        index_no,
         name,
         stream_id,
         medium,
@@ -32,11 +30,11 @@ export const addStudent = async (
         gender,
         email,
         phone,
-        reg_by,
+       /*  reg_by,
         reg_date,
         checked_by,
         checked_at,
-        created_at,
+        created_at, */
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,11 +60,11 @@ export const updateStudent = async (
     gender:string,
     email:string,
     phone:string,
-    reg_by:string,
+   /*  reg_by:string,
     reg_date:string,
     checked_by:number,
     checked_at:string,
-    created_at: string,
+    created_at: string, */
 ) => {
     try {
         const token = localStorage.getItem("token");
@@ -81,11 +79,11 @@ export const updateStudent = async (
             gender,
             email,
             phone,
-            reg_by,
+           /*  reg_by,
             reg_date,
             checked_by,
             checked_at,
-            created_at,
+            created_at, */
         }, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -114,3 +112,18 @@ export const deleteStudent = async (index_no: number) => {
       throw error.response.data.error;
     }
   };
+
+  export const getStudents = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axiosInstance.get("/students",{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching Students: ");
+      return error;
+    }
+  }
