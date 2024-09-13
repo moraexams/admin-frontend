@@ -392,7 +392,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
               type="text"
               value={medium}
               onChange={(e) =>
-                setName(e.target.value)
+                setMedium(e.target.value)
               }
               placeholder="Enter Student  Medium"
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
