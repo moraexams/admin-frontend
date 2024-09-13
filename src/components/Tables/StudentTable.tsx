@@ -5,7 +5,10 @@ import { addStudent, deleteStudent, updateStudent } from '../../services/student
 import { filterIt } from '../../services/filter';
 
 const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey */}:{studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number}) => {
-    const items: Student[] = nameSearchKey != ""? filterIt(studentData,nameSearchKey) : studentData;
+  const items: Student[] = Array.isArray(studentData)
+  ? (nameSearchKey !== "" ? filterIt(studentData, nameSearchKey) : studentData)
+  : [];
+
    // const items: Student[] = streamSearchKey !=""? filterIt(temp,streamSearchKey) : temp;
 
     const itemsLength = items.length;
@@ -146,7 +149,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="flex items-center justify-center space-x-3.5">
-              <button onClick={() => handleAddModalOpen()} className="hover:text-primary">
+              <button onClick={() => handleAddModalOpen()}  className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white px-4 py-2 rounded-md transition-colors duration-200 ease-in-out">
                 {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg> */}
