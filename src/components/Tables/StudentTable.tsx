@@ -15,7 +15,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
 
-    const currentItems = items.slice(itemOffset,endOffset);
+    const currentItems = Array.isArray(items) ? items.slice(itemOffset, endOffset) : [];
     const pageCount = Math.ceil(itemsLength/itemsPerPage);
 
     const handlePageClick = (event:{selected:number}) => {
