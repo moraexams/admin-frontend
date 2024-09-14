@@ -85,6 +85,12 @@ export interface Student {
   checked_by:number,
   checked_at:string,
   created_at: string,
+}
 
-
+export interface Stream {
+  id: number;
+  name: string;
+  subject1_id:number,
+  subject2_id:number,
+  subject3_id:number,
 }

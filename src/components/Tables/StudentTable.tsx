@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Student, District,ExamCentre } from '../../types/types';
+import { Student, District,ExamCentre,Stream } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addStudent, deleteStudent, updateStudent } from '../../services/studentService';
-import { getDistricts,getDistrictsWithCentres } from '../../services/districtService';
+import { getDistrictsWithCentres } from '../../services/districtService';
+import { getStreams } from '../../services/streamServices';
 import { filterIt } from '../../services/filter';
 
 const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey */}:{studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number}) => {
@@ -11,29 +12,78 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
   : [];
 
    // const items: Student[] = streamSearchKey !=""? filterIt(temp,streamSearchKey) : temp;
-
+    const streams2:Stream[] = [{
+      id:1,
+      name:"Physical Science Stream",
+      subject1_id:1,
+      subject2_id:2,
+      subject3_id:10,
+    },
+    {
+      id:2,
+      name:"Bilogical Science Stream",
+      subject1_id:1,
+      subject2_id:2,
+      subject3_id:9,
+    },
+    {
+      id:3,
+      name:"Maths,ICT,Physics",
+      subject1_id:1,
+      subject2_id:20,
+      subject3_id:10,
+    },
+    {
+      id:4,
+      name:"Bio,ICT,Physics",
+      subject1_id:1,
+      subject2_id:20,
+      subject3_id:9,
+    },
+    {
+      id:5,
+      name:"Bio,ICT,Chemistry",
+      subject1_id:20,
+      subject2_id:2,
+      subject3_id:9,
+    }]; //harcoded streams to check
     const itemsLength = items.length;
 
     const [itemOffset, setItemOffset] = useState(0);
-    const [districts, setDistricts] = useState<District[]>([]);
-    const [centers, setCenters] = useState<District[]>([]);
+    //const [districts, setDistricts] = useState<District[]>([]);
+    const [centersDistricts, setCentersDistricts] = useState<District[]>([]);
     const [currDistCenters, setCurrDistCenters] = useState<ExamCentre[]>([]);
+    const [streams, setStreams] = useState<Stream[]>([]);
 
-
+    
 
     useEffect(()=> {
       const fetchDistricts = async () => {
         try {
-          const districts = await getDistricts();
+          //const districts = await getDistricts();
           const  centers = await getDistrictsWithCentres();
-          setDistricts(districts);
-          setCenters(centers);
+          //setDistricts(districts);
+          setCentersDistricts(centers);
         } catch (error) {
           console.log('Failed to fetch districts',error);
         }
       };
   
       fetchDistricts();
+    }, []);
+    useEffect(()=> {
+      const fetchStreams = async () => {
+        try {
+          //const districts = await getDistricts();
+          const  streams = await getStreams();
+          //setDistricts(districts);
+          setStreams(streams);
+        } catch (error) {
+          console.log('Failed to fetch streams',error);
+        }
+      };
+  
+      fetchStreams();
     }, []);
 
     const endOffset = itemOffset + itemsPerPage;
@@ -47,7 +97,17 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         setItemOffset(newOffset);
     };
 
-    const  [modalOpen,setModalOpen] = useState(false);
+    const [modalOpen,setModalOpen] = useState(false);
+    const [section,setSection] = useState(1);
+    const handleNext = () => {
+      setSection(2);
+      console.log("Next");
+    };
+  
+    // Handler for prev button
+    const handlePrev = () => {
+      setSection(1);
+    };
 
     const [index_no,SetIndexNo] = useState<number>(1);
     const [name, setName] = useState<string>('');
@@ -63,7 +123,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     
 
     useEffect(()=>{
-      const currentDistrict = centers.find(district => district.id === examDistrictId)!;
+      const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
       //console.log(currentDistrict?.exam_centres);
       
       setCurrDistCenters(currentDistrict?.exam_centres ?? []);
@@ -181,7 +241,12 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
             onClick={() => handleAddModalOpen()} 
             className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white px-4 py-2 rounded-md mb-5 transition-colors duration-200 ease-in-out"
           >
-            Add Student
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline size-6 pr-[2px]"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+            </svg>
+
+           &nbsp;  Add Student
           </button>
 
 
@@ -197,19 +262,19 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                                 Name
                             </th>
                             <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                                Stream Id
+                                Stream
                             </th>
                             <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                                 Medium
                             </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Rank District Id
+                                Rank District
                             </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Exam District Id
+                                Exam District
                             </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Center Id
+                                Center
                             </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
                                 NIC
@@ -257,7 +322,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
 
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <p className="text-black dark:text-white">
-                                {student.stream_id}
+                                {streams.find(stream=> stream.id === student.stream_id)?.name}
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -267,17 +332,17 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <p className="text-black dark:text-white">
-                                {student.rank_district_id}
+                                {centersDistricts.find(district => district.id === student.rank_district_id)?.name}
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <p className="text-black dark:text-white">
-                                {student.exam_district_id}
+                                {centersDistricts.find(district => district.id === student.exam_district_id)?.name}
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <p className="text-black dark:text-white">
-                                {student.centre_id}
+                                {centersDistricts.find(district => district.id === student.exam_district_id)?.exam_centres?.find(center => center.id === student.centre_id)?.name}
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -385,167 +450,10 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
           </h3>
           <span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
 
-          {action == "Delete" ? <div className="mb-4.5">Confirm to delete Student: {name} with id: {index_no}</div> : 
+          {action == "Delete" ? 
           <>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Student Name <span className="text-meta-1">*</span>
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
-              placeholder="Enter Student Name"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Stream Id  <span className="text-meta-1">*</span>
-            </label>
-            <input
-              type="number"
-              value={streamId}
-              onChange={(e) =>
-                setStreamId(Number(e.target.value))
-              }
-              placeholder="Enter Corresponding Stream Id"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Medium <span className="text-meta-1">*</span>
-            </label>
-            <input
-              type="text"
-              value={medium}
-              onChange={(e) =>
-                setMedium(e.target.value)
-              }
-              placeholder="Enter Student  Medium"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Rank District <span className="text-meta-1">*</span>
-            </label>
-            <select
-              value={rankDistrictId}
-              onChange={(e) => setRankDistrictId(Number(e.target.value))}
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="" disabled>Select Rank District</option>
-              {districts.map(district => (
-                <option key={district.id} value={district.id}>
-                  {district.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Exam District <span className="text-meta-1">*</span>
-            </label>
-            <select
-              value={examDistrictId}
-              onChange={(e) => setExamDistrictId(Number(e.target.value))}
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="" disabled>Select Exam District</option>
-              {districts.map(district => (
-                <option key={district.id} value={district.id}>
-                  {district.name}
-                </option>
-              ))}
-            </select>
-
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Center <span className="text-meta-1">*</span>
-            </label>
-            <select
-              value={centreId}
-              onChange={(e) => setCentreId(Number(e.target.value))}
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="" disabled>Select Exam Center</option>
-              {
-                currDistCenters.map(center => (
-                  <option key = {center.id} value={center.id} >
-                    {center.name}
-                  </option>
-                ))
-              }
-            </select>
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              NIC <span className="text-meta-1">*</span>
-            </label>
-            <input
-              type="text"
-              value={nic}
-              onChange={(e) =>
-                setNic(e.target.value)
-              }
-              placeholder="Enter NIC"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Gender <span className="text-meta-1">*</span>
-            </label>
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="" disabled>
-                Select Gender
-              </option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Email <span className="text-meta-1">*</span>
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
-              placeholder="Enter Email Address"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
-          </div>
-          <div className="mb-4.5">
-            <label className="mb-2.5 block text-black dark:text-white">
-              Phone <span className="text-meta-1">*</span>
-            </label>
-            <input
-              type="text"
-              value={phone}
-              onChange={(e) =>
-                setPhone(e.target.value)
-              }
-              placeholder="Enter Contact Number"
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
-          </div>
-            
-          </>}
-
-          <div className="-mx-3 flex flex-wrap gap-y-4">
+            <div className="mb-4.5">Confirm to delete Student: {name} with id: {index_no}</div> 
+            <div className="-mx-3 flex flex-wrap gap-y-4">
             <div className="w-full px-3 2xsm:w-1/2">
               <button onClick={() => setModalOpen(false)} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
                 Cancel
@@ -557,6 +465,207 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
               </button>
             </div>
           </div>
+          </>: 
+          <>
+          {section === 1 && 
+          (
+            <>
+              <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Student Name <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
+                placeholder="Enter Student Name"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                NIC <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                value={nic}
+                onChange={(e) =>
+                  setNic(e.target.value)
+                }
+                placeholder="Enter NIC"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Gender <span className="text-meta-1">*</span>
+              </label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Email <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                placeholder="Enter Email Address"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Phone <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) =>
+                  setPhone(e.target.value)
+                }
+                placeholder="Enter Contact Number"
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
+            </div>
+              <div className="w-full flex justify-center mt-4 mb-4 ">
+                <button onClick={handleNext} className="w-2/5 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500">
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+          {section === 2 && 
+          (
+            <>
+              <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Stream <span className="text-meta-1">*</span>
+              </label>
+              <select 
+                value={streamId}
+                onChange={(e)=>setStreamId(Number(e.target.value))}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" disabled>Select stream</option>
+                {streams2.map(stream=>(
+                  <option key={stream.id} value={stream.id}>{stream.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Medium <span className="text-meta-1">*</span>
+              </label>
+              <select 
+                value={medium}
+                onChange={(e)=>setMedium(e.target.value)}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" disabled>Select Medium</option>
+                <option key="tamil" value="tamil">Tamil</option>
+                <option key="english" value="english">English</option>
+              </select>
+            </div>
+              <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Rank District <span className="text-meta-1">*</span>
+              </label>
+              <select
+                value={rankDistrictId}
+                onChange={(e) => setRankDistrictId(Number(e.target.value))}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" disabled>Select Rank District</option>
+                {centersDistricts.map(district => (
+                  <option key={district.id} value={district.id}>
+                    {district.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Exam District <span className="text-meta-1">*</span>
+              </label>
+              <select
+                value={examDistrictId}
+                onChange={(e) => setExamDistrictId(Number(e.target.value))}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" disabled>Select Exam District</option>
+                {centersDistricts.map(district => (
+                  <option key={district.id} value={district.id}>
+                    {district.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4.5">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Center <span className="text-meta-1">*</span>
+              </label>
+              <select
+                value={centreId}
+                onChange={(e) => setCentreId(Number(e.target.value))}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" disabled>Select Exam Center</option>
+                {
+                  currDistCenters.map(center => (
+                    <option key = {center.id} value={center.id} >
+                      {center.name}
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+            <div className="w-full flex justify-center mt-4 mb-4">
+              <button
+                onClick={handlePrev}
+                className="w-1/2 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500"
+              >
+                Previous
+              </button>
+            </div>
+
+            <div className="w-full mb-4 flex justify-center items-center px-3" >
+              <button
+                onClick={handleModalSubmit}
+                className="block w-3/5 rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+              >
+                {action} Student
+              </button>
+            </div>
+
+            </>
+          )}
+          <div className="-mx-3 flex justify-center flex-wrap gap-y-4">
+            <div className="w-full px-3 2xsm:w-1/2">
+              <button onClick={() => {
+                setModalOpen(false);
+                setSection(1);
+                }} 
+                className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                Cancel
+              </button>
+            </div>
+          </div>
+          </>}
         </div>
       </div >
     </div>
