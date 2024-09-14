@@ -149,12 +149,14 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="flex items-center justify-center space-x-3.5">
-              <button onClick={() => handleAddModalOpen()}  className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white px-4 py-2 rounded-md transition-colors duration-200 ease-in-out">
-                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg> */}
-                Add Student
-              </button>
+          <button 
+            onClick={() => handleAddModalOpen()} 
+            className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white px-4 py-2 rounded-md mb-5 transition-colors duration-200 ease-in-out"
+          >
+            Add Student
+          </button>
+
+
             </div>
             <div className="max-w-full overflow-x-auto">
                 <table className="w-full table-auto">
@@ -343,8 +345,9 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         </div>
       </div>
 
-      <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
-        <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15">
+      <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-y-auto ${!modalOpen && 'hidden'}`}
+      >
+        <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
           <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
             {{
               'Add': `Add Student`,
@@ -510,7 +513,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
             </div>
             <div className="w-full px-3 2xsm:w-1/2">
               <button onClick={handleModalSubmit} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
-                {action} Coordinator
+                {action} Student
               </button>
             </div>
           </div>
