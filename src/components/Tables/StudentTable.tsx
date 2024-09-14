@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Student } from '../../types/types';
+import { useEffect, useState } from 'react';
+import { Student, District,ExamCentre } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addStudent, deleteStudent, updateStudent } from '../../services/studentService';
+import { getDistricts,getDistrictsWithCentres } from '../../services/districtService';
 import { filterIt } from '../../services/filter';
 
 const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey */}:{studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number}) => {
@@ -14,6 +15,26 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const itemsLength = items.length;
 
     const [itemOffset, setItemOffset] = useState(0);
+    const [districts, setDistricts] = useState<District[]>([]);
+    const [centers, setCenters] = useState<District[]>([]);
+    const [currDistCenters, setCurrDistCenters] = useState<ExamCentre[]>([]);
+
+
+
+    useEffect(()=> {
+      const fetchDistricts = async () => {
+        try {
+          const districts = await getDistricts();
+          const  centers = await getDistrictsWithCentres();
+          setDistricts(districts);
+          setCenters(centers);
+        } catch (error) {
+          console.log('Failed to fetch districts',error);
+        }
+      };
+  
+      fetchDistricts();
+    }, []);
 
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
@@ -41,7 +62,14 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const [gender, setGender] = useState<string>('');
     
 
-
+    useEffect(()=>{
+      const currentDistrict = centers.find(district => district.id === examDistrictId)!;
+      //console.log(currentDistrict?.exam_centres);
+      
+      setCurrDistCenters(currentDistrict?.exam_centres ?? []);
+      //console.log(examDistrictId,currDistCenters);
+      
+    },[examDistrictId])
     const [action, setAction] = useState<string>('Add');
 
     const handleModalSubmit = () => {
@@ -403,45 +431,57 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
           </div>
           <div className="mb-4.5">
             <label className="mb-2.5 block text-black dark:text-white">
-              Rank District Id <span className="text-meta-1">*</span>
+              Rank District <span className="text-meta-1">*</span>
             </label>
-            <input
-              type="number"
+            <select
               value={rankDistrictId}
-              onChange={(e) =>
-                setRankDistrictId(Number(e.target.value))
-              }
-              placeholder="Enter corresponding Rank District Id "
+              onChange={(e) => setExamDistrictId(Number(e.target.value))}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
+            >
+              <option value="" disabled>Select Rank District</option>
+              {districts.map(district => (
+                <option key={district.id} value={district.id}>
+                  {district.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4.5">
             <label className="mb-2.5 block text-black dark:text-white">
-              Exam District Id <span className="text-meta-1">*</span>
+              Exam District <span className="text-meta-1">*</span>
             </label>
-            <input
-              type="number"
+            <select
               value={examDistrictId}
-              onChange={(e) =>
-                setExamDistrictId(Number(e.target.value))
-              }
-              placeholder="Enter Exam District Id"
+              onChange={(e) => setExamDistrictId(Number(e.target.value))}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
+            >
+              <option value="" disabled>Select Exam District</option>
+              {districts.map(district => (
+                <option key={district.id} value={district.id}>
+                  {district.name}
+                </option>
+              ))}
+            </select>
+
           </div>
           <div className="mb-4.5">
             <label className="mb-2.5 block text-black dark:text-white">
               Center Id <span className="text-meta-1">*</span>
             </label>
-            <input
-              type="number"
+            <select
               value={centreId}
-              onChange={(e) =>
-                setCentreId(Number(e.target.value))
-              }
-              placeholder="Enter Exam Center Id"
+              onChange={(e) => setCentreId(Number(e.target.value))}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
+            >
+              <option value="" disabled>Select Exam Center</option>
+              {
+                currDistCenters.map(center => (
+                  <option key = {center.id} value={center.id} >
+                    {center.name}
+                  </option>
+                ))
+              }
+            </select>
           </div>
           <div className="mb-4.5">
             <label className="mb-2.5 block text-black dark:text-white">
