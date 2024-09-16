@@ -116,7 +116,7 @@ export const deleteStudent = async (index_no: number) => {
   export const getStudents = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstance.get("/students",{
+      const response = await axiosInstance.get("/student",{
         headers: {
           Authorization: `Bearer ${token}`
         },

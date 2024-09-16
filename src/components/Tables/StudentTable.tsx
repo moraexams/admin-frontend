@@ -314,7 +314,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                                 </td>
                                 <td rowSpan={1} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                   <p className="text-black dark:text-white">
-                                    {name}
+                                    {student.name}
                                   </p>
                                 </td>
                               </>
