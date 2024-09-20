@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import { addStudent, deleteStudent, updateStudent } from '../../services/studentService';
 import { getDistrictsWithCentres } from '../../services/districtService';
 import { getStreams } from '../../services/streamServices';
+import { getCenters } from '../../services/examCentreService';
 import { filterIt } from '../../services/filter';
 
 const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey */}:{studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number}) => {
@@ -11,42 +12,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
   ? (nameSearchKey !== "" ? filterIt(studentData, nameSearchKey) : studentData)
   : [];
 
-   // const items: Student[] = streamSearchKey !=""? filterIt(temp,streamSearchKey) : temp;
-    const streams2:Stream[] = [{
-      id:1,
-      name:"Physical Science Stream",
-      subject1_id:1,
-      subject2_id:2,
-      subject3_id:10,
-    },
-    {
-      id:2,
-      name:"Bilogical Science Stream",
-      subject1_id:1,
-      subject2_id:2,
-      subject3_id:9,
-    },
-    {
-      id:3,
-      name:"Maths,ICT,Physics",
-      subject1_id:1,
-      subject2_id:20,
-      subject3_id:10,
-    },
-    {
-      id:4,
-      name:"Bio,ICT,Physics",
-      subject1_id:1,
-      subject2_id:20,
-      subject3_id:9,
-    },
-    {
-      id:5,
-      name:"Bio,ICT,Chemistry",
-      subject1_id:20,
-      subject2_id:2,
-      subject3_id:9,
-    }]; //harcoded streams to check
+  
     const itemsLength = items.length;
 
     const [itemOffset, setItemOffset] = useState(0);
@@ -54,16 +20,17 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const [centersDistricts, setCentersDistricts] = useState<District[]>([]);
     const [currDistCenters, setCurrDistCenters] = useState<ExamCentre[]>([]);
     const [streams, setStreams] = useState<Stream[]>([]);
-
-    
+    const [centers, setCenters] = useState<ExamCentre[]>([]);
 
     useEffect(()=> {
       const fetchDistricts = async () => {
         try {
           //const districts = await getDistricts();
-          const  centers = await getDistrictsWithCentres();
+          const  Distcenters = await getDistrictsWithCentres();
+          const centers = await getCenters();
           //setDistricts(districts);
-          setCentersDistricts(centers);
+          setCentersDistricts(Distcenters);
+          setCenters(centers);
         } catch (error) {
           console.log('Failed to fetch districts',error);
         }
@@ -99,9 +66,9 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
 
     const [modalOpen,setModalOpen] = useState(false);
     const [section,setSection] = useState(1);
+    const [viewSection, setViewSection] = useState<string>("personal");
     const handleNext = () => {
       setSection(2);
-      console.log("Next");
     };
   
     // Handler for prev button
@@ -120,8 +87,13 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const [centreId, setCentreId] = useState<number>(1);
     const [nic, setNic] = useState<string>('');
     const [gender, setGender] = useState<string>('');
+    const [indexNo, setIndexNo] = useState<number>(0);
+    const [school, setSchool] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+    const [addedBy, setAddedBy] = useState<number>(0);
+    const [checkedBy, setCheckedBy] = useState<number>(0);
     
-
+    const currCenters = centers.filter(center => center.district_id === examDistrictId);
     useEffect(()=>{
       const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
       //console.log(currentDistrict?.exam_centres);
@@ -133,6 +105,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const [action, setAction] = useState<string>('Add');
 
     const handleModalSubmit = () => {
+      console.log(action, "Student");
         switch (action) {
           case 'Add':
             handleAddStudent();
@@ -149,7 +122,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
       }
       const handleAddStudent = () => {
         if (name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
-          addStudent(name,streamId,medium,rankDistrictId,examDistrictId,centreId,nic,gender,email,phone)
+          addStudent(indexNo,name,streamId,medium,rankDistrictId,examDistrictId,centreId,nic,gender,email,phone,school,address)
             .then(() => {
               window.location.reload();
             }).catch((error) => {
@@ -162,7 +135,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
 
       const handleUpdateStudent = () => {
         if (name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== ''){
-          updateStudent(index_no,name,streamId,medium,rankDistrictId,examDistrictId,centreId,nic,gender,email,phone)
+          updateStudent(index_no,name,streamId,medium,rankDistrictId,examDistrictId,centreId,nic,gender,email,phone,school,address,checkedBy)
             .then(() => {
               window.location.reload();
             }).catch((error) => {
@@ -188,6 +161,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
 
       const handleAddModalOpen = () => {
         setAction('Add');
+        setIndexNo(0);
         setName('');
         setStreamId(1);
         setMedium("");
@@ -198,24 +172,30 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         setGender("");
         setEmail("");
         setPhone("");
+        setAddress("");
+        setSchool("");
         setModalOpen(true);
       };
 
       const handleEditModalOpen = (index_no: number | undefined) => {
-        setAction('update');
+        setAction('Update');
         const student = studentData.find(x=> x.index_no === index_no);
 
         if(student && student.index_no) {
+          setIndexNo(student.index_no);
             setName(student.name);
             setStreamId(student.stream_id);
             setMedium(student.medium);
             setRankDistrictId(student.rank_district_id);
             setExamDistrictId(student.exam_district_id);
-            setCentreId(student.centre_id);
+            setCentreId(student.exam_centre_id);
             setNic(student.nic);
             setGender(student.gender);
             setEmail(student.email);
-            setPhone(student.phone);
+            setPhone(student.telephone_no);
+            setAddress(student.address);
+            setSchool(student.school);
+            setCheckedBy(student.checked_by_id);
             setModalOpen(true);
         } else {
             alert("Student not found");
@@ -231,6 +211,33 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         } else {
             alert("No student Selected");
         }
+      }
+
+      const handleViewModalOpen = (index_no:number) => {
+          const student = studentData.find(x=> x.index_no === index_no);
+          setAction('View');
+          console.log("View");
+          if (student && student.index_no) {
+            setIndexNo(index_no);
+            setName(student.name);
+            setStreamId(student.stream_id);
+            setMedium(student.medium);
+            setRankDistrictId(student.rank_district_id);
+            setExamDistrictId(student.exam_district_id);
+            setCentreId(student.exam_centre_id);
+            setNic(student.nic);
+            setGender(student.gender);
+            setEmail(student.email);
+            setPhone(student.telephone_no);
+            setAddress(student.address);
+            setSchool(student.school);
+            setCheckedBy(student.checked_by_id);
+            setModalOpen(true);
+          }
+          else {
+            alert("Student not found");
+          }
+          
       }
 
       return(
@@ -264,29 +271,11 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                             <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                                 Stream
                             </th>
-                            <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                                Medium
-                            </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
                                 Rank District
                             </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Exam District
-                            </th>
-                            <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Center
-                            </th>
-                            <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                NIC
-                            </th>
-                            <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Gender
-                            </th>
-                            <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Email
-                            </th>
-                            <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-                                Phone
+                                Status
                             </th>
                             <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
                                 Actions
@@ -305,68 +294,52 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                       {
                         
                           <tr key={key}>
-                            {key === 0 && (
-                              <>
-                                <td rowSpan={1} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                                  <h5 className="font-medium text-black dark:text-white">
-                                    {student.index_no}
-                                  </h5>
-                                </td>
-                                <td rowSpan={1} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                  <p className="text-black dark:text-white">
-                                    {student.name}
-                                  </p>
-                                </td>
-                              </>
-                            )}
-
+                            
+                            <td rowSpan={1} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                              <h5 className="font-medium text-black dark:text-white">
+                                {student.index_no}
+                              </h5>
+                            </td>
+                            <td rowSpan={1} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                              <p className="text-black dark:text-white">
+                                {student.name}
+                              </p>
+                            </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <p className="text-black dark:text-white">
                                 {streams.find(stream=> stream.id === student.stream_id)?.name}
                               </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {student.medium}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
+                              <p className="text-center text-black dark:text-white">
                                 {centersDistricts.find(district => district.id === student.rank_district_id)?.name}
                               </p>
                             </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {centersDistricts.find(district => district.id === student.exam_district_id)?.name}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {centersDistricts.find(district => district.id === student.exam_district_id)?.exam_centres?.find(center => center.id === student.centre_id)?.name}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {student.nic}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {student.gender}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {student.email}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {student.phone}
-                              </p>
+                            <td>
+                            <p className="text-center text-black dark:text-white">
+                              <center>
+                              {
+                              student.checked_by_id  ? 
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg> 
+                              :
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>                            
+                              }
+                              </center>
+                              
+                            </p>
                             </td>
                             <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <div className="flex items-center justify-center space-x-3.5">
+                                <button onClick={() => handleViewModalOpen(student.index_no!)} className="hover:text-primary">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                  </svg>
+                                </button>
                                 <button onClick={() => handleEditModalOpen(student.index_no)} className="hover:text-primary">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -445,13 +418,80 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
             {{
               'Add': `Add Student`,
               'Update': `Update Student`,
-              'Delete': 'Delete Student'
+              'Delete': 'Delete Student',
+              'View' : 'View Student'
             }[action]}
           </h3>
           <span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
+          {action == "View" && (
+            <>
+            <div className="flex justify-around pb-8">
+              <button onClick={()=>setViewSection("personal")} className="hover:text-primary border border-white rounded-xl p-3 transition hover:border-primary"> 
+              <center>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 pr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+              Personal 
+              </center>
+              </button>
+              <button onClick={()=>setViewSection("exam")} className="hover:text-primary border border-white rounded-xl p-3 transition hover:border-primary">
+                <center>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                </svg>
+                Exam
+                </center>
+              </button>
+              <button onClick={()=>setViewSection("contact")} className="hover:text-primary border border-white rounded-xl p-3 transition hover:border-primary">
+              <center>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+              </svg>
+              Contact
+              </center>
+              </button>
+            </div>
+            {viewSection === "personal" && (
+              <div className="space-y-2">
+               <div>Name : {name}</div> 
+               <div>NIC : {nic}</div>
+               <div>School : {school}</div>
+               <div>Gender : {gender}</div>
+              </div>
+            )}
+            {viewSection === "exam" && (
+              <div className="space-y-2">
+                <div>Index No : {indexNo}</div>
+                <div>Stream: {streams.find(stream=> stream.id === streamId)?.name}</div>
+                <div>Medium: {medium}</div>
+                <div>Rank District: {centersDistricts.find(district => district.id === rankDistrictId)?.name}</div>
+                <div>Exam District: {centersDistricts.find(district => district.id === examDistrictId)?.name}</div>
+                <div>Exam Center: {centers.find(center => center.id === centreId)?.name}</div>
+              </div>
+            )}
 
-          {action == "Delete" ? 
-          <>
+            {viewSection === "contact" && (
+              <div className="space-y-2">
+                <div>Phone : {phone}</div>
+                <div>Email: {email}</div>
+                <div>Address: {address}</div>
+                <div>Entered by: {addedBy || "Cannot find"}</div>
+                <div>Checked by: {checkedBy || "Not checked"}</div>
+              </div>
+            )}
+            <div className="w-full pt-6 px-3 2xsm:w-1/2">
+              <button onClick={() => setModalOpen(false)} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                Close
+              </button>
+              <button onClick={() => {
+                handleEditModalOpen(indexNo)}} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                Edit
+              </button>
+            </div>
+          </>
+          )}
+          {action == "Delete" && (
+            <>  
             <div className="mb-4.5">Confirm to delete Student: {name} with id: {index_no}</div> 
             <div className="-mx-3 flex flex-wrap gap-y-4">
             <div className="w-full px-3 2xsm:w-1/2">
@@ -465,207 +505,271 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
               </button>
             </div>
           </div>
-          </>: 
-          <>
-          {section === 1 && 
-          (
+          </>
+          )}
+
+          {(action == "Update" || action == "Add") && (
             <>
+            {section === 1 && 
+            (
+              <>
+                <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Index No <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={indexNo}
+                  onChange={(e) =>
+                    setIndexNo(Number(e.target.value))
+                  }
+                  placeholder="Enter Index No"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+                <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Student Name <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) =>
+                    setName(e.target.value)
+                  }
+                  placeholder="Enter Student Name"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+                <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  School <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={school}
+                  onChange={(e) =>
+                    setSchool(e.target.value)
+                  }
+                  placeholder="Enter Student's School"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
               <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Student Name <span className="text-meta-1">*</span>
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
-                placeholder="Enter Student Name"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                NIC <span className="text-meta-1">*</span>
-              </label>
-              <input
-                type="text"
-                value={nic}
-                onChange={(e) =>
-                  setNic(e.target.value)
-                }
-                placeholder="Enter NIC"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Gender <span className="text-meta-1">*</span>
-              </label>
-              <select
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="" disabled>
-                  Select Gender
-                </option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Email <span className="text-meta-1">*</span>
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) =>
-                  setEmail(e.target.value)
-                }
-                placeholder="Enter Email Address"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Phone <span className="text-meta-1">*</span>
-              </label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) =>
-                  setPhone(e.target.value)
-                }
-                placeholder="Enter Contact Number"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-              <div className="w-full flex justify-center mt-4 mb-4 ">
-                <button onClick={handleNext} className="w-2/5 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500">
-                  Next
+                <label className="mb-2.5 block text-black dark:text-white">
+                  NIC <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={nic}
+                  onChange={(e) =>
+                    setNic(e.target.value)
+                  }
+                  placeholder="Enter NIC"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Gender <span className="text-meta-1">*</span>
+                </label>
+                <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Email <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
+                  placeholder="Enter Email Address"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Phone <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) =>
+                    setPhone(e.target.value)
+                  }
+                  placeholder="Enter Contact Number"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Address <span className="text-meta-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) =>
+                    setAddress(e.target.value)
+                  }
+                  placeholder="Enter Address"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+                <div className="w-full flex justify-center mt-4 mb-4 ">
+                  <button onClick={handleNext} className="w-2/5 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500">
+                    Next
+                  </button>
+                </div>
+              </>
+            )}
+            {section === 2 && 
+            (
+              <>
+                <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Stream <span className="text-meta-1">*</span>
+                </label>
+                <select 
+                  value={streamId}
+                  onChange={(e)=>setStreamId(Number(e.target.value))}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" disabled>Select stream</option>
+                  {streams.map(stream=>(
+                    <option key={stream.id} value={stream.id}>{stream.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Medium <span className="text-meta-1">*</span>
+                </label>
+                <select 
+                  value={medium}
+                  onChange={(e)=>setMedium(e.target.value)}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" disabled>Select Medium</option>
+                  <option key="tamil" value="tamil">Tamil</option>
+                  <option key="english" value="english">English</option>
+                </select>
+              </div>
+                <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Rank District <span className="text-meta-1">*</span>
+                </label>
+                <select
+                  value={rankDistrictId}
+                  onChange={(e) => setRankDistrictId(Number(e.target.value))}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" disabled>Select Rank District</option>
+                  {centersDistricts.map(district => (
+                    <option key={district.id} value={district.id}>
+                      {district.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Exam District <span className="text-meta-1">*</span>
+                </label>
+                <select
+                  value={examDistrictId}
+                  onChange={(e) => setExamDistrictId(Number(e.target.value))}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" disabled>Select Exam District</option>
+                  {centersDistricts.map(district => (
+                    <option key={district.id} value={district.id}>
+                      {district.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Center <span className="text-meta-1">*</span>
+                </label>
+                <select
+                  value={centreId}
+                  onChange={(e) => {setCentreId(Number(e.target.value));console.log("ID: ",e.target.value);
+                  }}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" disabled>Select Exam Center</option>
+                  {
+                    currCenters.map(center => (
+                      <option key = {center.id} value={center.id} >
+                        {center.name}
+                      </option>
+                    ))
+                  }
+                </select>
+              </div>
+              {action === "Update" && (
+                <div className="mb-4.5">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Checked By <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      value={checkedBy}
+                      onChange={(e) =>
+                        setCheckedBy(Number(e.target.value))
+                      }
+                      placeholder="Enter ID of checking person"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                </div>
+              )}
+              <div className="w-full flex justify-center mt-4 mb-4">
+                <button
+                  onClick={handlePrev}
+                  className="w-1/2 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500"
+                >
+                  Previous
                 </button>
               </div>
+  
+              <div className="w-full mb-4 flex justify-center items-center px-3" >
+                <button
+                  onClick={handleModalSubmit}
+                  className="block w-3/5 rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+                >
+                  {action} Student
+                </button>
+              </div>
+  
+              </>
+            )}
+            <div className="-mx-3 flex justify-center flex-wrap gap-y-4">
+              <div className="w-full px-3 2xsm:w-1/2">
+                <button onClick={() => {
+                  setModalOpen(false);
+                  setSection(1);
+                  }} 
+                  className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                  Cancel
+                </button>
+              </div>
+            </div>
             </>
           )}
-          {section === 2 && 
-          (
-            <>
-              <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Stream <span className="text-meta-1">*</span>
-              </label>
-              <select 
-                value={streamId}
-                onChange={(e)=>setStreamId(Number(e.target.value))}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="" disabled>Select stream</option>
-                {streams2.map(stream=>(
-                  <option key={stream.id} value={stream.id}>{stream.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Medium <span className="text-meta-1">*</span>
-              </label>
-              <select 
-                value={medium}
-                onChange={(e)=>setMedium(e.target.value)}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="" disabled>Select Medium</option>
-                <option key="tamil" value="tamil">Tamil</option>
-                <option key="english" value="english">English</option>
-              </select>
-            </div>
-              <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Rank District <span className="text-meta-1">*</span>
-              </label>
-              <select
-                value={rankDistrictId}
-                onChange={(e) => setRankDistrictId(Number(e.target.value))}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="" disabled>Select Rank District</option>
-                {centersDistricts.map(district => (
-                  <option key={district.id} value={district.id}>
-                    {district.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Exam District <span className="text-meta-1">*</span>
-              </label>
-              <select
-                value={examDistrictId}
-                onChange={(e) => setExamDistrictId(Number(e.target.value))}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="" disabled>Select Exam District</option>
-                {centersDistricts.map(district => (
-                  <option key={district.id} value={district.id}>
-                    {district.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Center <span className="text-meta-1">*</span>
-              </label>
-              <select
-                value={centreId}
-                onChange={(e) => setCentreId(Number(e.target.value))}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="" disabled>Select Exam Center</option>
-                {
-                  currDistCenters.map(center => (
-                    <option key = {center.id} value={center.id} >
-                      {center.name}
-                    </option>
-                  ))
-                }
-              </select>
-            </div>
-            <div className="w-full flex justify-center mt-4 mb-4">
-              <button
-                onClick={handlePrev}
-                className="w-1/2 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500"
-              >
-                Previous
-              </button>
-            </div>
-
-            <div className="w-full mb-4 flex justify-center items-center px-3" >
-              <button
-                onClick={handleModalSubmit}
-                className="block w-3/5 rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
-              >
-                {action} Student
-              </button>
-            </div>
-
-            </>
-          )}
-          <div className="-mx-3 flex justify-center flex-wrap gap-y-4">
-            <div className="w-full px-3 2xsm:w-1/2">
-              <button onClick={() => {
-                setModalOpen(false);
-                setSection(1);
-                }} 
-                className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
-                Cancel
-              </button>
-            </div>
-          </div>
-          </>}
+          
         </div>
       </div >
     </div>

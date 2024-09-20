@@ -74,15 +74,17 @@ export interface Student {
   medium:string,
   rank_district_id:number,
   exam_district_id:number,
-  centre_id: number,
+  exam_centre_id: number,
   nic:string;
   gender:string,
   email:string,
-  phone:string,
+  telephone_no:string,
+  school:string,
+  address:string,
   //not sure about these attributes
-  reg_by:string,
+  registered_by_id:number,
   reg_date:string,
-  checked_by:number,
+  checked_by_id:number,
   checked_at:string,
   created_at: string,
 }
@@ -90,7 +92,7 @@ export interface Student {
 export interface Stream {
   id: number;
   name: string;
-  subject1_id:number,
-  subject2_id:number,
-  subject3_id:number,
+  subject1_code:string,
+  subject2_code:string,
+  subject3_code:string,
 }

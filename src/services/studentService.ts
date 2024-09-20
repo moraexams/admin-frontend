@@ -1,16 +1,19 @@
 import axiosInstance from "../axiosConfig";
 
 export const addStudent = async (
+    index_no:number,
     name:string,
     stream_id:number,
     medium:string,
     rank_district_id:number,
     exam_district_id:number,
-    centre_id: number,
+    exam_centre_id: number,
     nic:string,
     gender:string,
     email:string,
-    phone:string,
+    telephone_number:string,
+    school:string,
+    address:string,
     /* reg_by:string,
     reg_date:string,
     checked_by:number,
@@ -20,16 +23,19 @@ export const addStudent = async (
   try {
     const token = localStorage.getItem("token");
     const response = await axiosInstance.post("/student/add", {
+        index_no,
         name,
         stream_id,
         medium,
         rank_district_id,
         exam_district_id,
-        centre_id,
+        exam_centre_id,
         nic,
         gender,
         email,
-        phone,
+        telephone_number,
+        school,
+        address
        /*  reg_by,
         reg_date,
         checked_by,
@@ -60,15 +66,18 @@ export const updateStudent = async (
     gender:string,
     email:string,
     phone:string,
+    school:string,
+    address:string,
+    checked_by_id:number,
    /*  reg_by:string,
     reg_date:string,
-    checked_by:number,
+    
     checked_at:string,
     created_at: string, */
 ) => {
     try {
         const token = localStorage.getItem("token");
-        const response = await axiosInstance.put("/student"+index_no,{
+        const response = await axiosInstance.put("/student/"+index_no,{
             name,
             stream_id,
             medium,
@@ -79,6 +88,9 @@ export const updateStudent = async (
             gender,
             email,
             phone,
+            school,
+            address,
+            checked_by_id,
            /*  reg_by,
             reg_date,
             checked_by,
