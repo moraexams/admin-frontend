@@ -10,6 +10,7 @@ import Users from './pages/Users';
 import Districts from './pages/Districts';
 import ExamCentres from './pages/ExamCentres';
 import Coordinators from './pages/Coordinators';
+import ExamPaperDistribution from './pages/ExamPaperDistribution';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -88,6 +89,15 @@ function App() {
             <>
               <PageTitle title="Coordinators | MoraExams" />
               <Coordinators />
+            </>
+          }
+        />
+        <Route
+          path="/district/exampaperdistribution"
+          element={
+            <>
+              <PageTitle title="Exam Paper Distribution | MoraExams" />
+              <ExamPaperDistribution />
             </>
           }
         />

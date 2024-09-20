@@ -48,6 +48,17 @@ export interface ExamCentre {
   district_id: number;
   place: string;
   gender: string;
+  //
+  paper_counts : PaperCount[];
+  bus_route: string;
+}
+
+export interface PaperCount {
+  id?: number;
+  subject: string;
+  part: number;
+  medium: string;
+  count: number;
 }
 
 export interface Coordinator {
