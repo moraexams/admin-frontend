@@ -28,11 +28,11 @@ export const testdistricts: District[] = [
         paper_counts: [
           {
             id: 1, subject: "Maths", medium: "E", count: 150,
-            part: 2
+      
           },
           {
             id: 2, subject: "Bio", medium: "E", count: 120,
-            part: 1
+      
           }
         ],
         bus_route: "Route A"
@@ -46,11 +46,11 @@ export const testdistricts: District[] = [
         paper_counts: [
           {
             id: 3, subject: "Physics", medium: "E", count: 100,
-            part: 1
+      
           },
           {
             id: 4, subject: "Chemistry", medium: "E", count: 80,
-            part: 1
+      
           }
         ],
         bus_route: "Route B"
@@ -79,11 +79,11 @@ export const testdistricts: District[] = [
         paper_counts: [
           {
             id: 5, subject: "ICT", medium: "E", count: 200,
-            part: 1
+      
           },
           {
             id: 6, subject: "Bio", medium: "E", count: 180,
-            part: 1
+      
           }
         ],
         bus_route: "Route C"
@@ -112,11 +112,11 @@ export const testdistricts: District[] = [
         paper_counts: [
           {
             id: 7, subject: "Physics", medium: "E", count: 90,
-            part: 1
+      
           },
           {
             id: 8, subject: "Chemistry", medium: "E", count: 110,
-            part: 1
+      
           }
         ],
         bus_route: "Route D"
@@ -128,26 +128,93 @@ export const testdistricts: District[] = [
     id: 4,
     name: "West District",
     coordinators: [
+      
     ],
     exam_centres: [
       {
         id: 4,
         name: "West Technical Institute",
-        district_id: 3,
+        district_id: 4,
         place: "Industrial Area",
         gender: "Mixed",
         paper_counts: [
           {
             id: 7, subject: "Physics", medium: "E", count: 90,
-            part: 1
+      
           },
           {
             id: 8, subject: "Chemistry", medium: "E", count: 110,
-            part: 1
+      
           }
         ],
         bus_route: "Route D"
       }
+    ],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 5,
+    name: "North - West District",
+    coordinators: [
+      {
+        id: 4,
+        name: "Diana Prince",
+        district_id: 3,
+        telephone_no: "555-123-4567"
+      }
+    ],
+    exam_centres: [
+      // {
+      //   id: 4,
+      //   name: "North - West Technical Institute",
+      //   district_id: 3,
+      //   place: "Industrial Area",
+      //   gender: "Mixed",
+      //   paper_counts: [
+      //     {
+      //       id: 7, subject: "Physics", medium: "E", count: 90,
+      //    
+      //     },
+      //     {
+      //       id: 8, subject: "Chemistry", medium: "E", count: 110,
+      //    
+      //     }
+      //   ],
+      //   bus_route: "Route D"
+      // }
+    ],
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 6,
+    name: "South - West District",
+    coordinators: [
+      {
+        id: 4,
+        name: "Diana Prince",
+        district_id: 3,
+        telephone_no: "555-123-4567"
+      }
+    ],
+    exam_centres: [
+      // {
+      //   id: 4,
+      //   name: "North - West Technical Institute",
+      //   district_id: 3,
+      //   place: "Industrial Area",
+      //   gender: "Mixed",
+      //   paper_counts: [
+      //     {
+      //       id: 7, subject: "Physics", medium: "E", count: 90,
+      //    
+      //     },
+      //     {
+      //       id: 8, subject: "Chemistry", medium: "E", count: 110,
+      //    
+      //     }
+      //   ],
+      //   bus_route: "Route D"
+      // }
     ],
     created_at: new Date().toISOString()
   }
