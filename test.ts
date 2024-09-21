@@ -197,24 +197,24 @@ export const testdistricts: District[] = [
       }
     ],
     exam_centres: [
-      // {
-      //   id: 4,
-      //   name: "North - West Technical Institute",
-      //   district_id: 3,
-      //   place: "Industrial Area",
-      //   gender: "Mixed",
-      //   paper_counts: [
-      //     {
-      //       id: 7, subject: "Physics", medium: "E", count: 90,
-      //    
-      //     },
-      //     {
-      //       id: 8, subject: "Chemistry", medium: "E", count: 110,
-      //    
-      //     }
-      //   ],
-      //   bus_route: "Route D"
-      // }
+      {
+        id: 4,
+        name: "North - West Technical Institute",
+        district_id: 3,
+        place: "Industrial Area",
+        gender: "Mixed",
+        paper_counts: [
+          // {
+          //   id: 7, subject: "Physics", medium: "E", count: 90,
+         
+          // },
+          // {
+          //   id: 8, subject: "Chemistry", medium: "E", count: 110,
+         
+          // }
+        ],
+        bus_route: "Route D"
+      }
     ],
     created_at: new Date().toISOString()
   }
