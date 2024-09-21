@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Student, District,ExamCentre,Stream } from '../../types/types';
+import { Student, District,ExamCentre,Stream,User } from '../../types/types';
 import ReactPaginate from 'react-paginate';
-import { addStudent, deleteStudent, updateStudent } from '../../services/studentService';
+import { addStudent, deleteStudent, updateStudent, verifyStudent } from '../../services/studentService';
 import { getDistrictsWithCentres } from '../../services/districtService';
 import { getStreams } from '../../services/streamServices';
 import { getCenters } from '../../services/examCentreService';
+import { getUsers } from '../../services/userService';
 import { filterIt } from '../../services/filter';
 
 const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey */}:{studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number}) => {
@@ -21,36 +22,25 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     const [currDistCenters, setCurrDistCenters] = useState<ExamCentre[]>([]);
     const [streams, setStreams] = useState<Stream[]>([]);
     const [centers, setCenters] = useState<ExamCentre[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(()=> {
-      const fetchDistricts = async () => {
+      const fetchData = async () => {
         try {
-          //const districts = await getDistricts();
           const  Distcenters = await getDistrictsWithCentres();
           const centers = await getCenters();
-          //setDistricts(districts);
+          const users = await getUsers();
+          const  streams = await getStreams();
           setCentersDistricts(Distcenters);
           setCenters(centers);
-        } catch (error) {
-          console.log('Failed to fetch districts',error);
-        }
-      };
-  
-      fetchDistricts();
-    }, []);
-    useEffect(()=> {
-      const fetchStreams = async () => {
-        try {
-          //const districts = await getDistricts();
-          const  streams = await getStreams();
-          //setDistricts(districts);
+          setUsers(users);
           setStreams(streams);
         } catch (error) {
-          console.log('Failed to fetch streams',error);
+          console.log('Failed to fetch data',error);
         }
       };
   
-      fetchStreams();
+      fetchData();
     }, []);
 
     const endOffset = itemOffset + itemsPerPage;
@@ -65,18 +55,9 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
     };
 
     const [modalOpen,setModalOpen] = useState(false);
-    const [section,setSection] = useState(1);
     const [viewSection, setViewSection] = useState<string>("personal");
-    const handleNext = () => {
-      setSection(2);
-    };
-  
-    // Handler for prev button
-    const handlePrev = () => {
-      setSection(1);
-    };
 
-    const [index_no,SetIndexNo] = useState<number>(1);
+    //const [index_no,SetIndexNo] = useState<number>(1);
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string> ('');
@@ -103,6 +84,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
       
     },[examDistrictId])
     const [action, setAction] = useState<string>('Add');
+
 
     const handleModalSubmit = () => {
       console.log(action, "Student");
@@ -135,7 +117,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
 
       const handleUpdateStudent = () => {
         if (name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== ''){
-          updateStudent(index_no,name,streamId,medium,rankDistrictId,examDistrictId,centreId,nic,gender,email,phone,school,address,checkedBy)
+          updateStudent(indexNo,name,streamId,medium,rankDistrictId,examDistrictId,centreId,nic,gender,email,phone,school,address,checkedBy)
             .then(() => {
               window.location.reload();
             }).catch((error) => {
@@ -146,9 +128,9 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         };
       }
       const handleDeleteStudent = () => {
-        if (index_no) {
-          console.log(index_no);
-          deleteStudent(index_no)
+        if (indexNo) {
+          console.log(indexNo);
+          deleteStudent(indexNo)
             .then(() => {
               window.location.reload();
             }).catch((error) => {
@@ -157,6 +139,9 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         } else {
           alert("No coordinator selected");
         };
+      }
+      const handleVerifyStudent = () => {
+        verifyStudent(indexNo);
       }
 
       const handleAddModalOpen = () => {
@@ -182,6 +167,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
         const student = studentData.find(x=> x.index_no === index_no);
 
         if(student && student.index_no) {
+          //alert(`Editing student: ${student.name}`)
           setIndexNo(student.index_no);
             setName(student.name);
             setStreamId(student.stream_id);
@@ -205,7 +191,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
       const handleDeleteModalOpen = (index_no:number | undefined, name: string) => {
         if (index_no) {
             setAction('Delete');
-            SetIndexNo(index_no);
+            setIndexNo(index_no);
             setName(name);
             setModalOpen(true);
         } else {
@@ -232,6 +218,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
             setAddress(student.address);
             setSchool(student.school);
             setCheckedBy(student.checked_by_id);
+            setAddedBy(student.registered_by_id);
             setModalOpen(true);
           }
           else {
@@ -475,16 +462,20 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                 <div>Phone : {phone}</div>
                 <div>Email: {email}</div>
                 <div>Address: {address}</div>
-                <div>Entered by: {addedBy || "Cannot find"}</div>
-                <div>Checked by: {checkedBy || "Not checked"}</div>
+                <div>Entered by: {users.find(user => user.id === addedBy)?.username || "Cannot find"}</div>
+                <div>Checked by: {users.find(user => user.id === checkedBy)?.username  || (<>
+                  <button onClick={()=>handleVerifyStudent()} className='bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2'>
+                  Verify
+                  </button>
+                </>)}</div>
               </div>
             )}
-            <div className="w-full pt-6 px-3 2xsm:w-1/2">
-              <button onClick={() => setModalOpen(false)} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+            <div className="w-full pt-6 px-3 2xsm:w-1/2 flex justify-center items-center gap-x-4">
+              <button onClick={() => {setViewSection("personal");setModalOpen(false)}} className="block mb-8 w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
                 Close
               </button>
               <button onClick={() => {
-                handleEditModalOpen(indexNo)}} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                handleEditModalOpen(indexNo)}} className="block mb-8 w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500">
                 Edit
               </button>
             </div>
@@ -492,7 +483,7 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
           )}
           {action == "Delete" && (
             <>  
-            <div className="mb-4.5">Confirm to delete Student: {name} with id: {index_no}</div> 
+            <div className="mb-4.5">Confirm to delete Student: {name} with id: {indexNo}</div> 
             <div className="-mx-3 flex flex-wrap gap-y-4">
             <div className="w-full px-3 2xsm:w-1/2">
               <button onClick={() => setModalOpen(false)} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
@@ -510,9 +501,8 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
 
           {(action == "Update" || action == "Add") && (
             <>
-            {section === 1 && 
-            (
-              <>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div>
                 <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Index No <span className="text-meta-1">*</span>
@@ -627,16 +617,8 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-                <div className="w-full flex justify-center mt-4 mb-4 ">
-                  <button onClick={handleNext} className="w-2/5 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500">
-                    Next
-                  </button>
-                </div>
-              </>
-            )}
-            {section === 2 && 
-            (
-              <>
+              </div>
+              <div>
                 <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Stream <span className="text-meta-1">*</span>
@@ -720,32 +702,11 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                   }
                 </select>
               </div>
-              {action === "Update" && (
-                <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Checked By <span className="text-meta-1">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={checkedBy}
-                      onChange={(e) =>
-                        setCheckedBy(Number(e.target.value))
-                      }
-                      placeholder="Enter ID of checking person"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                </div>
-              )}
-              <div className="w-full flex justify-center mt-4 mb-4">
-                <button
-                  onClick={handlePrev}
-                  className="w-1/2 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-purple-500 hover:bg-purple-500 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-purple-500 dark:hover:bg-purple-500"
-                >
-                  Previous
-                </button>
+
               </div>
-  
-              <div className="w-full mb-4 flex justify-center items-center px-3" >
+            </div>
+            <div className="-mx-3 flex justify-center flex-wrap gap-y-4">
+            <div className="w-full mb-4 flex justify-center items-center px-3" >
                 <button
                   onClick={handleModalSubmit}
                   className="block w-3/5 rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
@@ -753,14 +714,10 @@ const StudentTable = ({studentData,itemsPerPage,nameSearchKey,/* streamSearchKey
                   {action} Student
                 </button>
               </div>
-  
-              </>
-            )}
-            <div className="-mx-3 flex justify-center flex-wrap gap-y-4">
               <div className="w-full px-3 2xsm:w-1/2">
                 <button onClick={() => {
                   setModalOpen(false);
-                  setSection(1);
+                  
                   }} 
                   className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
                   Cancel

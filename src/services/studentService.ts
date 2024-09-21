@@ -65,7 +65,7 @@ export const updateStudent = async (
     nic:string,
     gender:string,
     email:string,
-    phone:string,
+    telephone_no:string,
     school:string,
     address:string,
     checked_by_id:number,
@@ -87,7 +87,7 @@ export const updateStudent = async (
             nic,
             gender,
             email,
-            phone,
+            telephone_no,
             school,
             address,
             checked_by_id,
@@ -125,17 +125,33 @@ export const deleteStudent = async (index_no: number) => {
     }
   };
 
-  export const getStudents = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axiosInstance.get("/student",{
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.log("Error fetching Students: ");
-      return error;
-    }
+export const getStudents = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/student",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching Students: ");
+    return error;
   }
+}
+
+export const verifyStudent = async (index_no: number) => {
+  try {
+    console.log(index_no);
+    const token = localStorage.getItem("token");
+      const response = await axiosInstance.post("/student/verify/" + index_no, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }); console.log("response", response);
+      return true;
+    } catch (error: any) {
+      console.error("Error Deleting Student:", error);
+      throw error.response.data.error;
+    }
+}
