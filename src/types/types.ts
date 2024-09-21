@@ -56,7 +56,6 @@ export interface ExamCentre {
 export interface PaperCount {
   id?: number;
   subject: string;
-  part: number;
   medium: string;
   count: number;
 }
