@@ -7,7 +7,7 @@ import ExamPaperDistributionTable from '../components/Tables/ExamPaperDistributi
 import { testdistricts } from './../../test';
 
 
-const ExamPaperDistribution = () => {
+const ExamPaperDistributionTableView = () => {
   const [districts, setDistricts] = useState<District[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ const ExamPaperDistribution = () => {
   }
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Exam Paper Distribution" />
+      <Breadcrumb pageName="Exam Paper Distribution Table View" />
 
       <div className="flex gap-4">
         <div className="mb-5.5">
@@ -70,4 +70,4 @@ const ExamPaperDistribution = () => {
   );
 };
 
-export default ExamPaperDistribution;
+export default ExamPaperDistributionTableView;

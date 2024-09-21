@@ -264,111 +264,180 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               {/* <!-- Menu Item Users --> */}
 
-              
+
               <ul className="mb-6 flex flex-col gap-1.5">
-                  {/* <!-- Menu Item Auth Pages --> */}
-                  <SidebarLinkGroup
-                    activeCondition={
-                      pathname === '/district' || pathname.includes('district')
-                    }
-                  >
-                    {(handleClick, open) => {
-                      return (
-                        <React.Fragment>
-                          <NavLink
-                            to="/districts"
-                            className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/district' || pathname.includes('district')) &&
-                              'bg-graydark dark:bg-meta-4'
-                              }`}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleClick()
-                              setSidebarExpanded(!sidebarExpanded);
-                            }}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-                            </svg>
+                {/* <!-- Menu Item Auth Pages --> */}
+                <SidebarLinkGroup
+                  activeCondition={
+                    pathname === '/district' || pathname.includes('district')
+                  }
+                >
+                  {(handleClick, open) => {
+                    return (
+                      <React.Fragment>
+                        <NavLink
+                          to="/districts"
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/district' || pathname.includes('district')) &&
+                            'bg-graydark dark:bg-meta-4'
+                            }`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleClick()
+                            setSidebarExpanded(!sidebarExpanded);
+                          }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                          </svg>
 
 
-                            District
-                            <svg
-                              className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                                }`}
-                              width="20"
-                              height="20"
-                              viewBox="0 0 20 20"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                fill=""
-                              />
-                            </svg>
-                          </NavLink>
-                          {/* <!-- Dropdown Menu Start --> */}
-                          <div
-                            className={`translate transform overflow-hidden ${!open && 'hidden'
+                          District
+                          <svg
+                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
                               }`}
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
                           >
-                            <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                              <li>
-                                <NavLink
-                                  to="/districts"
-                                  className={({ isActive }) =>
-                                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                    (isActive && '!text-white')
-                                  }
-                                >
-                                  Districts
-                                </NavLink>
-                              </li>
-                              <li>
-                                <NavLink
-                                  to="/district/centres"
-                                  className={({ isActive }) =>
-                                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                    (isActive && '!text-white')
-                                  }
-                                >
-                                  Exam Centres
-                                </NavLink>
-                              </li>
-                              <li>
-                                <NavLink
-                                  to="/district/coordinators"
-                                  className={({ isActive }) =>
-                                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                    (isActive && '!text-white')
-                                  }
-                                >
-                                  Coordinators
-                                </NavLink>
-                              </li>
-                              <li>
-                                <NavLink
-                                  to="/district/exampaperdistribution"
-                                  className={({ isActive }) =>
-                                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                    (isActive && '!text-white')
-                                  }
-                                >
-                                  Exam Paper Distribution
-                                </NavLink>
-                              </li>
-                            </ul>
-                          </div>
-                          {/* <!-- Dropdown Menu End --> */}
-                        </React.Fragment>
-                      );
-                    }}
-                  </SidebarLinkGroup>
-                  {/* <!-- Menu Item Auth Pages --> */}
-                </ul>
-              
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                              fill=""
+                            />
+                          </svg>
+                        </NavLink>
+                        {/* <!-- Dropdown Menu Start --> */}
+                        <div
+                          className={`translate transform overflow-hidden ${!open && 'hidden'
+                            }`}
+                        >
+                          <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                            <li>
+                              <NavLink
+                                to="/districts"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Districts
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/district/centres"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Exam Centres
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/district/coordinators"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Coordinators
+                              </NavLink>
+                            </li>
+                          </ul>
+                        </div>
+                        {/* <!-- Dropdown Menu End --> */}
+                      </React.Fragment>
+                    );
+                  }}
+                </SidebarLinkGroup>
+                {/* <!-- Menu Item Auth Pages --> */}
+              </ul>
+
+              <ul className="mb-6 flex flex-col gap-1.5">
+                {/* <!-- Menu Item Auth Pages --> */}
+                <SidebarLinkGroup
+                  activeCondition={
+                    pathname === '/paperdistribution' || pathname.includes('paperdistribution')
+                  }
+                >
+                  {(handleClick, open) => {
+                    return (
+                      <React.Fragment>
+                        <NavLink
+                          to="/paperdistribution"
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/district' || pathname.includes('district')) &&
+                            'bg-graydark dark:bg-meta-4'
+                            }`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleClick()
+                            setSidebarExpanded(!sidebarExpanded);
+                          }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zM6 6h12M6 10h12M6 14h12M6 18h12" />
+                          </svg>
+                          Paper Distribution
+                          <svg
+                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                              }`}
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                              fill=""
+                            />
+                          </svg>
+                        </NavLink>
+                        {/* <!-- Dropdown Menu Start --> */}
+                        <div
+                          className={`translate transform overflow-hidden ${!open && 'hidden'
+                            }`}
+                        >
+                          <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                            <li>
+                              <NavLink
+                                to="/exampaperdistribution/tableview"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Paper Distribution Table
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/exampaperdistribution/cardview"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Paper Distribution Details
+                              </NavLink>
+                            </li>
+                          </ul>
+                        </div>
+                        {/* <!-- Dropdown Menu End --> */}
+                      </React.Fragment>
+                    );
+                  }}
+                </SidebarLinkGroup>
+                {/* <!-- Menu Item Auth Pages --> */}
+              </ul>
+
             </ul>
           </div>
         </nav>
