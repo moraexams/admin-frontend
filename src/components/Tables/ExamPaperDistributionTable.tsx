@@ -69,63 +69,116 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                           const centrerowSpan = paper_counts ? paper_counts.length : 1;
                           return (
                             <>
-                              {paper_counts.map((paper_count, pkey) => {
-                                const { id: p_id, subject, medium, count } = paper_count;
-                                return (
-                                  <tr key={pkey}>
-                                    {pkey === 0 && ckey === 0 && (
-                                      <>
-                                        <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                              {paper_counts && paper_counts.length > 0 ? (
+                                paper_counts.map((paper_count, pkey) => {
+                                  const { id: p_id, subject, medium, count } = paper_count;
+                                  return (
+                                    <tr key={pkey}>
+                                      {pkey === 0 && ckey === 0 && (
+                                        <>
+                                          <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                            <h5 className="font-medium text-black dark:text-white">
+                                              {d_id}
+                                            </h5>
+                                          </td>
+                                          <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            <p className="text-black dark:text-white">
+                                              {name}
+                                            </p>
+                                          </td>
+                                        </>
+                                      )}
+
+                                      {pkey === 0 && (
+                                        <>
+                                          <td rowSpan={centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            <p className="text-black dark:text-white">
+                                              {centrename}
+                                            </p>
+                                          </td>
+                                        </>
+                                      )}
+
+                                      <React.Fragment key={paper_count.id}>
+                                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                          <p className="text-black dark:text-white">
+                                            {subject}
+                                          </p>
+                                        </td>
+                                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                          <p className="text-black dark:text-white">
+                                            {medium}
+                                          </p>
+                                        </td>
+                                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                          <p className="text-black dark:text-white">
+                                            {count}
+                                          </p>
+                                        </td>
+                                      </React.Fragment>
+                                      {pkey === 0 && (
+                                        <>
+                                          <td rowSpan={centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            <p className="text-black dark:text-white">
+                                              {bus_route}
+                                            </p>
+                                          </td>
+                                        </>
+                                      )}
+                                      {ckey === 0 && pkey === 0 && (<td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
+                                        {ckey === 0 && pkey === 0 && coordinators?.map((coordinator) => (
                                           <h5 className="font-medium text-black dark:text-white">
-                                            {d_id}
+                                            <div className='m-1'>
+                                              {coordinator.name}
+                                            </div>
+                                            <div>
+                                              ({coordinator.telephone_no})
+                                            </div>
                                           </h5>
-                                        </td>
-                                        <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                          <p className="text-black dark:text-white">
-                                            {name}
-                                          </p>
-                                        </td>
-                                      </>
-                                    )}
-
-                                    {pkey === 0 && (
-                                      <>
-                                        <td rowSpan={centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                          <p className="text-black dark:text-white">
-                                            {centrename}
-                                          </p>
-                                        </td>
-                                      </>
-                                    )}
-
-                                    <React.Fragment key={paper_count.id}>
-                                      <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                        <p className="text-black dark:text-white">
-                                          {subject}
-                                        </p>
-                                      </td>
-                                      <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                        <p className="text-black dark:text-white">
-                                          {medium}
-                                        </p>
-                                      </td>
-                                      <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                        <p className="text-black dark:text-white">
-                                          {count}
-                                        </p>
-                                      </td>
-                                    </React.Fragment>
-                                    {pkey === 0 && (
-                                      <>
-                                        <td rowSpan={centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                          <p className="text-black dark:text-white">
-                                            {bus_route}
-                                          </p>
-                                        </td>
-                                      </>
-                                    )}
-                                    {ckey === 0 && pkey === 0 && (<td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
-                                      {ckey === 0 && pkey === 0 && coordinators?.map((coordinator) => (
+                                        ))}
+                                      </td>)}
+                                    </tr>
+                                  )
+                                })) : (
+                                <tr key={key}>
+                                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                    <h5 className="font-medium text-black dark:text-white">
+                                      {d_id}
+                                    </h5>
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <p className="text-black dark:text-white">
+                                      {name}
+                                    </p>
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <p className="text-black dark:text-white">
+                                      -
+                                    </p>
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <p className="text-black dark:text-white">
+                                      -
+                                    </p>
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <p className="text-black dark:text-white">
+                                      -
+                                    </p>
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <div className="flex items-center justify-center space-x-3.5">
+                                      -
+                                    </div>
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <div className="flex items-center justify-center space-x-3.5">
+                                      -
+                                    </div>
+                                  </td>
+                                  <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
+                                    {coordinators && coordinators?.length > 0 ? (
+                                      coordinators?.map((coordinator) => (
                                         <h5 className="font-medium text-black dark:text-white">
                                           <div className='m-1'>
                                             {coordinator.name}
@@ -134,59 +187,61 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                                             ({coordinator.telephone_no})
                                           </div>
                                         </h5>
-                                      ))}
-                                    </td>)}
-                                  </tr>
-                                )
-                              })}
-
-                            </>)
+                                      ))) : (
+                                      <> - </>
+                                    )
+                                    }
+                                  </td>
+                                </tr>
+                              )
+                              }
+                            </>
+                          )
                         })
-                      ) :
-                        (
-                          <tr key={key}>
-                            <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                              <h5 className="font-medium text-black dark:text-white">
-                                {d_id}
-                              </h5>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                {name}
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                -
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                -
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <p className="text-black dark:text-white">
-                                -
-                              </p>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <div className="flex items-center justify-center space-x-3.5">
-                                -
-                              </div>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <div className="flex items-center justify-center space-x-3.5">
-                                -
-                              </div>
-                            </td>
-                            <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                              <div className="flex items-center justify-center space-x-3.5">
-                                -
-                              </div>
-                            </td>
-                          </tr>
-                        )}
+                      ) : (
+                        <tr key={key}>
+                          <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                            <h5 className="font-medium text-black dark:text-white">
+                              {d_id}
+                            </h5>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <p className="text-black dark:text-white">
+                              {name}
+                            </p>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <p className="text-black dark:text-white">
+                              -
+                            </p>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <p className="text-black dark:text-white">
+                              -
+                            </p>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <p className="text-black dark:text-white">
+                              -
+                            </p>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <div className="flex items-center justify-center space-x-3.5">
+                              -
+                            </div>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <div className="flex items-center justify-center space-x-3.5">
+                              -
+                            </div>
+                          </td>
+                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                            <div className="flex items-center justify-center space-x-3.5">
+                              -
+                            </div>
+                          </td>
+                        </tr>
+                      )}
                     </>
                   )
                 })}
