@@ -49,13 +49,13 @@ export interface ExamCentre {
   place: string;
   gender: string;
   //
-  paper_counts : PaperCount[];
+  counts : Count[];
   bus_route: string;
 }
 
-export interface PaperCount {
-  id?: number;
+export interface Count {
   subject: string;
+  code: string;
   medium: string;
   count: number;
 }

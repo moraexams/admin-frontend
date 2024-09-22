@@ -10,8 +10,8 @@ import Users from './pages/Users';
 import Districts from './pages/Districts';
 import ExamCentres from './pages/ExamCentres';
 import Coordinators from './pages/Coordinators';
-import ExamPaperDistributionTableView from './pages/ExamPaperDistributionTableView';
-import ExamPaperDistributionCardView from './pages/ExamPaperDistributionCardView';
+import ExamPaperDistributionTableView from './pages/DistributionTableView';
+import ExamPaperDistributionCardView from './pages/DistributionCardView';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -94,7 +94,7 @@ function App() {
           }
         />
         <Route
-          path="/exampaperdistribution/tableview"
+          path="/distribution/table"
           element={
             <>
               <PageTitle title="Exam Paper Distribution Table| MoraExams" />
@@ -103,7 +103,7 @@ function App() {
           }
         />
       <Route
-        path="/exampaperdistribution/cardview"
+        path="/distribution/card"
         element={
           <>
             <PageTitle title="Exam Paper Distribution Card | MoraExams" />

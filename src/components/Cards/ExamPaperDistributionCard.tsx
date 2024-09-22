@@ -2,10 +2,10 @@ import { Coordinator, District, ExamCentre } from '../../types/types';
 
 const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
     return (
-        <div className="rounded-sm border border-stroke bg-white dark:bg-boxdark p-4 shadow-default transition duration-300 ease-in-out">
-            <h3 className="text-lg font-semibold text-black dark:text-white">{coordinator.name}</h3>
+        <div className="min-w-40 rounded-sm border border-stroke bg-white dark:bg-boxdark p-4 shadow-default transition duration-300 ease-in-out">
+            <h3 className="text-lg font-bold text-black dark:text-white">{coordinator.name}</h3>
             <p className="text-gray-700 dark:text-white">
-                <strong>Telephone No:</strong> {coordinator.telephone_no}
+                <strong>{coordinator.telephone_no}</strong>
             </p>
         </div>
     );
@@ -14,22 +14,21 @@ const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
 const CentreCard = ({ centre }: { centre: ExamCentre }) => {
     return (
         <div className="border rounded-lg shadow-md p-4 m-2 bg-white dark:bg-slate-800 dark:text-white">
-            <h3 className="text-lg font-semibold">{centre.name}</h3>
+            <h3 className="text-xl font-semibold text-black dark:text-white">{centre.name}</h3>
             <p><strong>Bus Route:</strong> {centre.bus_route}</p>
-            <div className="mt-4 ">
-                <h4 className="font-semibold">Paper Counts:</h4>
-                {centre.paper_counts && centre.paper_counts.length > 0 ? (
+            <div className="mt-2">
+                {centre.counts && centre.counts.length > 0 ? (
                     <table className="min-w-full divide-y divide-gray-200 mt-2 dark:bg-slate-800">
-                        <thead className="bg-gray-100">
+                        <thead className="bg-gray">
                             <tr>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Subject</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Medium</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Count</th>
+                                <th className="px-4 py-2 text-left text-md font-medium text-black">Subject</th>
+                                <th className="px-4 py-2 text-left text-md font-medium text-black">Medium</th>
+                                <th className="px-4 py-2 text-left text-md font-medium text-black">Count</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {centre.paper_counts.map((paper) => (
-                                <tr key={paper.id} className='dark:bg-slate-700'>
+                            {centre.counts.map((paper, i) => (
+                                <tr key={i} className='dark:bg-slate-700'>
                                     <td className="px-4 py-2 ">{paper.subject}</td>
                                     <td className="px-4 py-2 ">{paper.medium}</td>
                                     <td className="px-4 py-2 font-semibold ">{paper.count}</td>
@@ -57,8 +56,8 @@ const ExamPaperDistributionCard = ({ districtData, district, centre }: { distric
         <div className="flex-wrap justify-center">
             {/* Display coordinators */}
             {coordinators.length > 0 ? (
-                <div className="w-full mt-6">
-                    <h2 className="text-xl font-semibold text-center">Coordinators</h2>
+                <div className="w-full mt-2">
+                    <h2 className="text-2xl font-bold text-black text-center mb-2 dark:text-white">Coordinators</h2>
                     <div className="flex flex-wrap justify-center">
                         {coordinators.map(coordinator => (
                             <CoordinatorCard key={coordinator.id} coordinator={coordinator} />
@@ -73,7 +72,7 @@ const ExamPaperDistributionCard = ({ districtData, district, centre }: { distric
 
             {/* Heading for Exam Centres */}
             <div>
-                <h2 className="text-xl font-semibold text-center mt-6">Exam Centres</h2>
+                <h2 className="text-2xl font-bold text-black text-center mt-6 mb-2 dark:text-white">Exam Centres</h2>
             </div>
             <div>
                 {/* Display exam centres */}

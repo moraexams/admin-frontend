@@ -1,10 +1,9 @@
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import { District } from '../types/types';
-import { getDistricts, getDistrictsWithCentres, getDistrictsWithCoordinators } from '../services/districtService';
 import ExamPaperDistributionCard from '../components/Cards/ExamPaperDistributionCard';
-import { testdistricts } from './../../test';
+import { getDistributions } from '../services/distributionService';
 
 
 const ExamPaperDistributionCardView = () => {
@@ -21,11 +20,8 @@ const ExamPaperDistributionCardView = () => {
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        // const districts = await getDistricts();
-        // const districts = await getDistrictsWithCentres();
-        // const districts = await getDistrictsWithCoordinators();
-        // setDistricts(districts);
-        setDistricts(testdistricts);
+        const districts = await getDistributions();
+        setDistricts(districts);
       } catch (error) {
         setError('Failed to fetch districts');
       } finally {

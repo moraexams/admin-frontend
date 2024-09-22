@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
-import { addPaperCount, updatePaperCount, deletePaperCount } from '../../services/examPaperDistributionService';
 import { filterIt } from '../../services/filter';
 import React from 'react';
 
@@ -65,13 +64,13 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                     <>
                       {exam_centres && exam_centres.length > 0 ? (
                         exam_centres.map((exam_centre, ckey) => {
-                          const { id: c_id, name: centrename, paper_counts, bus_route } = exam_centre;
-                          const centrerowSpan = paper_counts ? paper_counts.length : 1;
+                          const { name: centrename, counts, bus_route } = exam_centre;
+                          const centrerowSpan = counts ? counts.length : 1;
                           return (
                             <>
-                              {paper_counts && paper_counts.length > 0 ? (
-                                paper_counts.map((paper_count, pkey) => {
-                                  const { id: p_id, subject, medium, count } = paper_count;
+                              {counts && counts.length > 0 ? (
+                                counts.map((paper_count, pkey) => {
+                                  const { subject, code, medium, count } = paper_count;
                                   return (
                                     <tr key={pkey}>
                                       {pkey === 0 && ckey === 0 && (
@@ -99,7 +98,7 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                                         </>
                                       )}
 
-                                      <React.Fragment key={paper_count.id}>
+                                      <React.Fragment key={code}>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                           <p className="text-black dark:text-white">
                                             {subject}

@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import { District } from '../types/types';
-import { getDistrictsWithCentres } from '../services/districtService';
 import ExamPaperDistributionTable from '../components/Tables/ExamPaperDistributionTable';
-import { testdistricts } from './../../test';
+import { getDistributions } from '../services/distributionService';
 
 
 const ExamPaperDistributionTableView = () => {
@@ -17,8 +16,8 @@ const ExamPaperDistributionTableView = () => {
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        // const districts = await getDistrictsWithCentres();
-        setDistricts(testdistricts);
+        const districts = await getDistributions();
+        setDistricts(districts);
       } catch (error) {
         setError('Failed to fetch districts');
       } finally {
