@@ -299,7 +299,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                         </p>
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                        <p className="text-center text-black dark:text-white">
+                        <p className="text-black dark:text-white">
                           {centersDistricts.find(district => district.id === student.rank_district_id)?.name}
                         </p>
                       </td>
