@@ -1,20 +1,20 @@
 import axiosInstance from "../axiosConfig";
 
 export const addStudent = async (
-    index_no:number,
-    name:string,
-    stream_id:number,
-    medium:string,
-    rank_district_id:number,
-    exam_district_id:number,
-    exam_centre_id: number,
-    nic:string,
-    gender:string,
-    email:string,
-    telephone_number:string,
-    school:string,
-    address:string,
-    /* reg_by:string,
+  index_no: number,
+  name: string,
+  stream_id: number,
+  medium: string,
+  rank_district_id: number,
+  exam_district_id: number,
+  exam_centre_id: number,
+  nic: string,
+  gender: string,
+  email: string,
+  telephone_no: string,
+  school: string,
+  address: string
+  /* reg_by:string,
     reg_date:string,
     checked_by:number,
     checked_at:string,
@@ -22,7 +22,9 @@ export const addStudent = async (
 ) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axiosInstance.post("/student/add", {
+    const response = await axiosInstance.post(
+      "/student/add",
+      {
         index_no,
         name,
         stream_id,
@@ -33,19 +35,21 @@ export const addStudent = async (
         nic,
         gender,
         email,
-        telephone_number,
+        telephone_no,
         school,
-        address
-       /*  reg_by,
+        address,
+        /*  reg_by,
         reg_date,
         checked_by,
         checked_at,
         created_at, */
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log("response", response);
     return true;
   } catch (error: any) {
@@ -55,82 +59,86 @@ export const addStudent = async (
 };
 
 export const updateStudent = async (
-    index_no:number,
-    name:string,
-    stream_id:number,
-    medium:string,
-    rank_district_id:number,
-    exam_district_id:number,
-    centre_id: number,
-    nic:string,
-    gender:string,
-    email:string,
-    telephone_no:string,
-    school:string,
-    address:string,
-    checked_by_id:number,
-   /*  reg_by:string,
+  index_no: number,
+  name: string,
+  stream_id: number,
+  medium: string,
+  rank_district_id: number,
+  exam_district_id: number,
+  centre_id: number,
+  nic: string,
+  gender: string,
+  email: string,
+  telephone_no: string,
+  school: string,
+  address: string,
+  checked_by_id: number
+  /*  reg_by:string,
     reg_date:string,
     
     checked_at:string,
     created_at: string, */
 ) => {
-    try {
-        const token = localStorage.getItem("token");
-        const response = await axiosInstance.put("/student/"+index_no,{
-            name,
-            stream_id,
-            medium,
-            rank_district_id,
-            exam_district_id,
-            centre_id,
-            nic,
-            gender,
-            email,
-            telephone_no,
-            school,
-            address,
-            checked_by_id,
-           /*  reg_by,
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.put(
+      "/student/" + index_no,
+      {
+        name,
+        stream_id,
+        medium,
+        rank_district_id,
+        exam_district_id,
+        centre_id,
+        nic,
+        gender,
+        email,
+        telephone_no,
+        school,
+        address,
+        checked_by_id,
+        /*  reg_by,
             reg_date,
             checked_by,
             checked_at,
             created_at, */
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        console.log("response", response);
-    } catch(err: any) {
-        console.error("Error Updating Student:", err);
-        throw err.response.data.error;
-    }
-};
-//need to give permission only to admin
-export const deleteStudent = async (index_no: number) => {
-    try {
-      console.log(index_no);
-      const token = localStorage.getItem("token");
-      const response = await axiosInstance.delete("/student/" + index_no, {
+      },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      console.log("response", response);
-      return true;
-    } catch (error: any) {
-      console.error("Error Deleting Student:", error);
-      throw error.response.data.error;
-    }
-  };
+      }
+    );
+    console.log("response", response);
+  } catch (err: any) {
+    console.error("Error Updating Student:", err);
+    throw err.response.data.error;
+  }
+};
+//need to give permission only to admin
+export const deleteStudent = async (index_no: number) => {
+  try {
+    console.log(index_no);
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.delete("/student/" + index_no, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("response", response);
+    return true;
+  } catch (error: any) {
+    console.error("Error Deleting Student:", error);
+    throw error.response.data.error;
+  }
+};
 
 export const getStudents = async () => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axiosInstance.get("/student",{
+    const response = await axiosInstance.get("/student", {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -138,20 +146,25 @@ export const getStudents = async () => {
     console.log("Error fetching Students: ");
     return error;
   }
-}
+};
 
 export const verifyStudent = async (index_no: number) => {
   try {
-    console.log(index_no);
     const token = localStorage.getItem("token");
-      const response = await axiosInstance.post("/student/verify/" + index_no, {
+    const response = await axiosInstance.put(
+      "/student/verify/" + index_no,
+      {
+        index_no,
+      },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }); console.log("response", response);
-      return true;
-    } catch (error: any) {
-      console.error("Error Deleting Student:", error);
-      throw error.response.data.error;
-    }
-}
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error Verifying Student:", error);
+    throw error.response.data.error;
+  }
+};
