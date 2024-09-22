@@ -66,3 +66,33 @@ export interface Coordinator {
   district_id: number;
   telephone_no: string;
 }
+
+export interface Student {
+  index_no?:number,
+  name:string,
+  stream_id:number,
+  medium:string,
+  rank_district_id:number,
+  exam_district_id:number,
+  exam_centre_id: number,
+  nic:string;
+  gender:string,
+  email:string,
+  telephone_no:string,
+  school:string,
+  address:string,
+  //not sure about these attributes
+  registered_by_id:number,
+  reg_date:string,
+  checked_by_id:number,
+  checked_at:string,
+  created_at: string,
+}
+
+export interface Stream {
+  id: number;
+  name: string;
+  subject1_code:string,
+  subject2_code:string,
+  subject3_code:string,
+}

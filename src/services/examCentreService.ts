@@ -66,3 +66,18 @@ export const deleteExamCentre = async (id: number) => {
     throw error.response.data.error;
   }
 };
+
+export const getCenters = async() => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/centre",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch(error: any) {
+    console.error("Error Getting Centres:", error);
+   return error;
+  }
+}

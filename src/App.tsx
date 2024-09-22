@@ -12,6 +12,7 @@ import ExamCentres from './pages/ExamCentres';
 import Coordinators from './pages/Coordinators';
 import ExamPaperDistributionTableView from './pages/DistributionTableView';
 import ExamPaperDistributionCardView from './pages/DistributionCardView';
+import Students from './pages/Students';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -111,7 +112,16 @@ function App() {
           </>
         }
       />
-    </Routes >
+        <Route
+          path="/students"
+          element={
+            <>
+              <PageTitle title="Students | MoraExams" />
+              <Students />
+            </>
+          }
+        />
+      </Routes>
     </>
   );
 }
