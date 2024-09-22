@@ -75,14 +75,14 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
   const [checkedBy, setCheckedBy] = useState<number>(0);
 
   const currCenters = centers.filter(center => center.district_id === examDistrictId);
-  useEffect(() => {
-    const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
-    //console.log(currentDistrict?.exam_centres);
+  // useEffect(() => {
+  //   const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
+  //   //console.log(currentDistrict?.exam_centres);
 
-    setCurrDistCenters(currentDistrict?.exam_centres ?? []);
-    //console.log(examDistrictId,currDistCenters);
+  //   setCurrDistCenters(currentDistrict?.exam_centres ?? []);
+  //   //console.log(examDistrictId,currDistCenters);
 
-  }, [examDistrictId])
+  // }, [examDistrictId])
   const [action, setAction] = useState<string>('Add');
 
 
@@ -435,38 +435,38 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                 </div>
               </div>
               <div className="mb-6">
-              {viewSection === "personal" && (
-                <div className="space-y-2">
-                  <div>Name : {name}</div>
-                  <div>NIC : {nic}</div>
-                  <div>School : {school}</div>
-                  <div>Gender : {gender}</div>
-                </div>
-              )}
-              {viewSection === "exam" && (
-                <div className="space-y-2">
-                  <div>Index No : {indexNo}</div>
-                  <div>Stream: {streams.find(stream => stream.id === streamId)?.name}</div>
-                  <div>Medium: {medium}</div>
-                  <div>Rank District: {centersDistricts.find(district => district.id === rankDistrictId)?.name}</div>
-                  <div>Exam District: {centersDistricts.find(district => district.id === examDistrictId)?.name}</div>
-                  <div>Exam Center: {centers.find(center => center.id === centreId)?.name}</div>
-                </div>
-              )}
+                {viewSection === "personal" && (
+                  <div className="space-y-2">
+                    <div>Name : {name}</div>
+                    <div>NIC : {nic}</div>
+                    <div>School : {school}</div>
+                    <div>Gender : {gender}</div>
+                  </div>
+                )}
+                {viewSection === "exam" && (
+                  <div className="space-y-2">
+                    <div>Index No : {indexNo}</div>
+                    <div>Stream: {streams.find(stream => stream.id === streamId)?.name}</div>
+                    <div>Medium: {medium}</div>
+                    <div>Rank District: {centersDistricts.find(district => district.id === rankDistrictId)?.name}</div>
+                    <div>Exam District: {centersDistricts.find(district => district.id === examDistrictId)?.name}</div>
+                    <div>Exam Center: {centers.find(center => center.id === centreId)?.name}</div>
+                  </div>
+                )}
 
-              {viewSection === "contact" && (
-                <div className="space-y-2">
-                  <div>Phone : {phone}</div>
-                  <div>Email: {email}</div>
-                  <div>Address: {address}</div>
-                  <div>Entered by: {users.find(user => user.id === addedBy)?.username || "Cannot find"}</div>
-                  <div>Checked by: {users.find(user => user.id === checkedBy)?.username || (<>
-                    <button onClick={() => handleVerifyStudent()} className='bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2'>
-                      Verify
-                    </button>
-                  </>)}</div>
-                </div>
-              )}
+                {viewSection === "contact" && (
+                  <div className="space-y-2">
+                    <div>Phone : {phone}</div>
+                    <div>Email: {email}</div>
+                    <div>Address: {address}</div>
+                    <div>Entered by: {users.find(user => user.id === addedBy)?.username || "Cannot find"}</div>
+                    <div>Checked by: {users.find(user => user.id === checkedBy)?.username || (<>
+                      <button onClick={() => handleVerifyStudent()} className='bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2'>
+                        Verify
+                      </button>
+                    </>)}</div>
+                  </div>
+                )}
               </div>
 
               <div className="-mx-3 flex flex-wrap gap-y-4">
@@ -477,8 +477,8 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                 </div>
                 <div className="w-full px-3 2xsm:w-1/2">
                   <button onClick={() => {
-                  handleEditModalOpen(indexNo)
-                }} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+                    handleEditModalOpen(indexNo)
+                  }} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
                     Edit
                   </button>
                 </div>
@@ -595,20 +595,6 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Phone <span className="text-meta-1">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={phone}
-                      onChange={(e) =>
-                        setPhone(e.target.value)
-                      }
-                      placeholder="Enter Contact Number"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
                       Address <span className="text-meta-1">*</span>
                     </label>
                     <input
@@ -708,24 +694,31 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                     </select>
                   </div>
 
+                  <div className="mb-4.5">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Phone <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={phone}
+                      onChange={(e) =>
+                        setPhone(e.target.value)
+                      }
+                      placeholder="Enter Contact Number"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="-mx-3 flex justify-center flex-wrap gap-y-4">
-                <div className="w-full mb-4 flex justify-center items-center px-3" >
-                  <button
-                    onClick={handleModalSubmit}
-                    className="block w-3/5 rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
-                  >
-                    {action} Student
+              <div className="-mx-3 flex flex-wrap gap-y-4">
+                <div className="w-full px-3 2xsm:w-1/2">
+                  <button onClick={() => setModalOpen(false)} className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                    Cancel
                   </button>
                 </div>
                 <div className="w-full px-3 2xsm:w-1/2">
-                  <button onClick={() => {
-                    setModalOpen(false);
-
-                  }}
-                    className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
-                    Cancel
+                  <button onClick={handleModalSubmit} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+                    {action} Student
                   </button>
                 </div>
               </div>
