@@ -48,6 +48,16 @@ export interface ExamCentre {
   district_id: number;
   place: string;
   gender: string;
+  //
+  counts : Count[];
+  bus_route: string;
+}
+
+export interface Count {
+  subject: string;
+  code: string;
+  medium: string;
+  count: number;
 }
 
 export interface Coordinator {
