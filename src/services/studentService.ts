@@ -166,5 +166,24 @@ export const verifyStudent = async (index_no: number) => {
   } catch (error: any) {
     console.error("Error Verifying Student:", error);
     throw error.response.data.error;
-  }
+  } 
 };
+
+export const getStudentbyIndex = async (index_no: number) => {
+  if (index_no>=10000) {
+    try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/student/"+index_no, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching Students: ");
+    return {name: "Student Does not exist!"};
+  }
+} else {
+  return {name: "Invalid Index No!"};
+}
+}
