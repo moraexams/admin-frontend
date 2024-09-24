@@ -1,19 +1,43 @@
-import { useState } from 'react';
-import { District } from '../../types/types';
+import { useEffect, useState } from 'react';
+import { Count, District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { filterIt } from '../../services/filter';
 import React from 'react';
 
 const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: { districtData: District[], searchKey: string, itemsPerPage: number }) => {
-  let items: District[] = searchKey != "" ? filterIt(districtData, searchKey) : districtData;
-  // console.log(filterIt(districtData, searchKey));
-  // const items = districtData;
+  const [item, setItem] = useState<District[]>();
+  useEffect(() => {
+    const defaultCount: Count = {
+      subject: "-",
+      code: "-",
+      medium: "-",
+      count: 0,
+    };
+
+    const updatedDistricts = districtData.map((district) => ({
+      ...district,
+      exam_centres: district.exam_centres?.map((centre) => ({
+        ...centre,
+        counts: centre.counts
+          ? centre.counts.map((count) => ({
+            ...count,
+            count: count.count ?? 0, // If count is missing, set to 0
+          }))
+          : [defaultCount], // If counts is null, create a default count
+      })),
+    }));
+
+    setItem(updatedDistricts);
+  }, []);
+
+  let items: District[] = searchKey != "" ? filterIt(item, searchKey) : districtData;
   const itemsLength = items.length
   const [itemOffset, setItemOffset] = useState(0);
 
+
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = items.slice(itemOffset, endOffset);
+  const currentItems = item?.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(itemsLength / itemsPerPage);
 
   // Invoke when district click to request another page.
@@ -22,6 +46,8 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
     setItemOffset(newOffset);
   };
 
+  console.log("items ", items)
+  console.log("item ", item)
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -59,7 +85,13 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
               {currentItems &&
                 currentItems.map((district, key) => {
                   const { id: d_id, name, exam_centres, coordinators } = district;
-                  const districtrowSpan = exam_centres ? exam_centres.length : 1;
+                  // const count = exam_centres?.map(exam_centres =>  ...exam_centres.counts);
+                  // console.log("count " , name , count)
+                  let districtrowSpan = 0;
+                  exam_centres?.forEach(center => {
+                    districtrowSpan += center?.counts?.length
+                  })
+                  // console.log("districtrowSpan", districtrowSpan)
                   return (
                     <>
                       {exam_centres && exam_centres.length > 0 ? (
@@ -68,19 +100,19 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                           const centrerowSpan = counts ? counts.length : 1;
                           return (
                             <>
-                              {counts && counts.length > 0 ? (
+                              {
                                 counts.map((paper_count, pkey) => {
                                   const { subject, code, medium, count } = paper_count;
                                   return (
-                                    <tr key={pkey}>
+                                    <tr key={pkey} className='text-center'>
                                       {pkey === 0 && ckey === 0 && (
                                         <>
-                                          <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                          <td rowSpan={districtrowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                             <h5 className="font-medium text-black dark:text-white">
                                               {d_id}
                                             </h5>
                                           </td>
-                                          <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                          <td rowSpan={districtrowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <p className="text-black dark:text-white">
                                               {name}
                                             </p>
@@ -111,7 +143,7 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                           <p className="text-black dark:text-white">
-                                            {count}
+                                            {count == 0 ? '-' : count}
                                           </p>
                                         </td>
                                       </React.Fragment>
@@ -119,13 +151,13 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                                         <>
                                           <td rowSpan={centrerowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <p className="text-black dark:text-white">
-                                              {bus_route}
+                                              {bus_route ? bus_route : '-'}
                                             </p>
                                           </td>
                                         </>
                                       )}
-                                      {ckey === 0 && pkey === 0 && (<td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
-                                        {ckey === 0 && pkey === 0 && coordinators?.map((coordinator) => (
+                                      {ckey === 0 && pkey === 0 && (<td rowSpan={districtrowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
+                                        {coordinators && coordinators.length > 0 ? (coordinators?.map((coordinator) => (
                                           <h5 className="font-medium text-black dark:text-white">
                                             <div className='m-1'>
                                               {coordinator.name}
@@ -134,71 +166,22 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                                               ({coordinator.telephone_no})
                                             </div>
                                           </h5>
-                                        ))}
+                                        ))) : (
+                                          <p className="text-black dark:text-white">
+                                            -
+                                          </p>
+                                        )
+                                        }
                                       </td>)}
                                     </tr>
                                   )
-                                })) : (
-                                <tr key={key}>
-                                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                                    <h5 className="font-medium text-black dark:text-white">
-                                      {d_id}
-                                    </h5>
-                                  </td>
-                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <p className="text-black dark:text-white">
-                                      {name}
-                                    </p>
-                                  </td>
-                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <p className="text-black dark:text-white">
-                                      -
-                                    </p>
-                                  </td>
-                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <p className="text-black dark:text-white">
-                                      -
-                                    </p>
-                                  </td>
-                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <p className="text-black dark:text-white">
-                                      -
-                                    </p>
-                                  </td>
-                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <div className="flex items-center justify-center space-x-3.5">
-                                      -
-                                    </div>
-                                  </td>
-                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <div className="flex items-center justify-center space-x-3.5">
-                                      -
-                                    </div>
-                                  </td>
-                                  <td rowSpan={districtrowSpan * centrerowSpan} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
-                                    {coordinators && coordinators?.length > 0 ? (
-                                      coordinators?.map((coordinator) => (
-                                        <h5 className="font-medium text-black dark:text-white">
-                                          <div className='m-1'>
-                                            {coordinator.name}
-                                          </div>
-                                          <div>
-                                            ({coordinator.telephone_no})
-                                          </div>
-                                        </h5>
-                                      ))) : (
-                                      <> - </>
-                                    )
-                                    }
-                                  </td>
-                                </tr>
-                              )
+                                })
                               }
                             </>
                           )
                         })
                       ) : (
-                        <tr key={key}>
+                        <tr key={key} className='text-center'>
                           <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                             <h5 className="font-medium text-black dark:text-white">
                               {d_id}
@@ -225,19 +208,32 @@ const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: {
                             </p>
                           </td>
                           <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                            <div className="flex items-center justify-center space-x-3.5">
+                            <p className="text-black dark:text-white">
                               -
-                            </div>
+                            </p>
                           </td>
                           <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                            <div className="flex items-center justify-center space-x-3.5">
+                            <p className="text-black dark:text-white">
                               -
-                            </div>
+                            </p>
                           </td>
-                          <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                            <div className="flex items-center justify-center space-x-3.5">
-                              -
-                            </div>
+                          <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11" style={{ minWidth: '200px' }}>
+                            {coordinators && coordinators?.length > 0 ? (
+                              coordinators?.map((coordinator) => (
+                                <h5 className="font-medium text-black dark:text-white">
+                                  <div className='m-1'>
+                                    {coordinator.name}
+                                  </div>
+                                  <div>
+                                    ({coordinator.telephone_no})
+                                  </div>
+                                </h5>
+                              ))) : (
+                              <p className="text-black dark:text-white">
+                                -
+                              </p>
+                            )
+                            }
                           </td>
                         </tr>
                       )}
