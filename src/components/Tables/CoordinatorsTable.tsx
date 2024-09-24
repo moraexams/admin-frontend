@@ -3,10 +3,11 @@ import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addCoordinator, deleteCoordinator, updateCoordinator } from '../../services/coordinatorsService';
 import { filterIt } from '../../services/filter';
+import Snackbar from '../Snackbar';
 
-const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtData: District[], searchKey: string, itemsPerPage: number }) => {
+const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}: { districtData: District[], searchKey: string, itemsPerPage: number , setRefreshKey:any}) => {
 
-  const items: District[] = searchKey != "" ? filterIt(districtData, searchKey): districtData;
+  const items: District[] = searchKey != "" ? filterIt(districtData, searchKey) : districtData;
   const itemsLength = items.length
   const [itemOffset, setItemOffset] = useState(0);
 
@@ -20,7 +21,7 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
     const newOffset = (event.selected * itemsPerPage) % itemsLength;
     setItemOffset(newOffset);
   };
-  
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [coordinatorID, setCoordinatirID] = useState<number>(1);
@@ -30,8 +31,13 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
 
   const [action, setAction] = useState<string>('Add');
 
+  const [snackBarMessage, setSnackBarMessage] = useState<string>('');
+  const [snackBarVisiblity, setSnackBarVisiblity] = useState<boolean>(false);
+  const [snackBarType, setSnackBarType] = useState<boolean>(false); // true if success
 
   const handleModalSubmit = () => {
+    setSnackBarVisiblity(false);
+
     switch (action) {
       case 'Add':
         handleAddCoordinator();
@@ -50,12 +56,25 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
     if (name !== '' && telephone_no !== '' && districtID) {
       addCoordinator(name, districtID, telephone_no)
         .then(() => {
-          window.location.reload();
+          setRefreshKey((prev:number) => prev + 1);
+          setSnackBarVisiblity(true);
+          setSnackBarMessage("Successfully Added");
+          setSnackBarType(true);
+          setTimeout(() => {
+            setSnackBarVisiblity(false);
+          }, 1000);
+          setModalOpen(false);
+          // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      alert("fill all fields");
+      setSnackBarVisiblity(true);
+      setSnackBarMessage("Fill All Fields");
+      setSnackBarType(false);
+      setTimeout(() => {
+        setSnackBarVisiblity(false);
+      }, 1000);
     };
   }
 
@@ -63,12 +82,25 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
     if (name !== '' && telephone_no !== '' && coordinatorID) {
       updateCoordinator(coordinatorID, name, telephone_no)
         .then(() => {
-          window.location.reload();
+          setRefreshKey((prev:number) => prev + 1);
+          setSnackBarVisiblity(true);
+          setSnackBarMessage("Successfully Updated");
+          setSnackBarType(true);
+          setTimeout(() => {
+            setSnackBarVisiblity(false);
+          }, 1000);
+          setModalOpen(false);
+          // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      alert("fill all fields");
+      setSnackBarVisiblity(true);
+      setSnackBarMessage("Fill All Fields");
+      setSnackBarType(false);
+      setTimeout(() => {
+        setSnackBarVisiblity(false);
+      }, 1000);
     };
   }
 
@@ -77,12 +109,26 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
       console.log(coordinatorID);
       deleteCoordinator(coordinatorID)
         .then(() => {
-          window.location.reload();
+          setRefreshKey((prev:number) => prev + 1);
+          setSnackBarVisiblity(true);
+          setSnackBarMessage("Successfully Deleted");
+          setSnackBarType(true);
+          setTimeout(() => {
+            setSnackBarVisiblity(false);
+          }, 1000);
+          setModalOpen(false);
+          // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      alert("No coordinator selected");
+      // alert("No coordinator selected");
+      setSnackBarVisiblity(true);
+      setSnackBarMessage("No Coordinator Selected");
+      setSnackBarType(false);
+      setTimeout(() => {
+        setSnackBarVisiblity(false);
+      }, 1000);
     };
   }
 
@@ -92,6 +138,7 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
     setDistrictID(id || 1);
     setTelephone_No('');
     setModalOpen(true);
+
   };
 
   const handleEditModalOpen = (district_id: number | undefined, coordinatorID: number | undefined) => {
@@ -225,7 +272,7 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
                             </td>
                             {ckey === 0 && (<td rowSpan={rowSpan} className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                               <div className="flex items-center justify-center space-x-3.5">
-                              
+
                                 <button onClick={() => handleAddModalOpen(id)} className="hover:text-primary">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -236,7 +283,7 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
                             </td>)}
                           </tr>
                         ))
-                      ) : 
+                      ) :
                         (
                           <tr key={key}>
                             <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
@@ -309,15 +356,15 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtDat
           />
         </div>
       </div>
-
-      <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
+      <Snackbar message={snackBarMessage} type={snackBarType} show={snackBarVisiblity} />
+      <div className={`fixed left-0 top-0 z-99999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
         <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15">
           <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
             {{
               'Add': `Add Coordinator to ${districtData.find(x => x.id === districtID)?.name}`,
               'Update': `Update Coordinator`,
               'Delete': 'Delete Coordinator'
-            }[action]} hello
+            }[action]}
           </h3>
           <span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
 
