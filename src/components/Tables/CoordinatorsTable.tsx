@@ -22,6 +22,27 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
     setItemOffset(newOffset);
   };
 
+  const snackBarOnFail = (message : string) => {
+    setSnackBarVisiblity(true);
+    setSnackBarMessage(message);
+    setSnackBarType(false);
+    setTimeout(() => {
+      setSnackBarVisiblity(false);
+    }, 1000);
+  };
+  const snackBarOnSuccess = (message : string) => {
+    setRefreshKey((prev:number) => prev + 1);
+    setSnackBarVisiblity(true);
+    setSnackBarMessage(message);
+    setSnackBarType(true);
+    setTimeout(() => {
+      setSnackBarVisiblity(false);
+    }, 1000);
+    setModalOpen(false);
+  };
+
+
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [coordinatorID, setCoordinatirID] = useState<number>(1);
@@ -56,25 +77,13 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
     if (name !== '' && telephone_no !== '' && districtID) {
       addCoordinator(name, districtID, telephone_no)
         .then(() => {
-          setRefreshKey((prev:number) => prev + 1);
-          setSnackBarVisiblity(true);
-          setSnackBarMessage("Successfully Added");
-          setSnackBarType(true);
-          setTimeout(() => {
-            setSnackBarVisiblity(false);
-          }, 1000);
-          setModalOpen(false);
+          snackBarOnSuccess("Successfully Added")
           // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      setSnackBarVisiblity(true);
-      setSnackBarMessage("Fill All Fields");
-      setSnackBarType(false);
-      setTimeout(() => {
-        setSnackBarVisiblity(false);
-      }, 1000);
+      snackBarOnFail("Fill All Fields");
     };
   }
 
@@ -82,25 +91,13 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
     if (name !== '' && telephone_no !== '' && coordinatorID) {
       updateCoordinator(coordinatorID, name, telephone_no)
         .then(() => {
-          setRefreshKey((prev:number) => prev + 1);
-          setSnackBarVisiblity(true);
-          setSnackBarMessage("Successfully Updated");
-          setSnackBarType(true);
-          setTimeout(() => {
-            setSnackBarVisiblity(false);
-          }, 1000);
-          setModalOpen(false);
+          snackBarOnSuccess("Successfully Updated");
           // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      setSnackBarVisiblity(true);
-      setSnackBarMessage("Fill All Fields");
-      setSnackBarType(false);
-      setTimeout(() => {
-        setSnackBarVisiblity(false);
-      }, 1000);
+      snackBarOnFail("Fill All Fields");
     };
   }
 
@@ -109,26 +106,14 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
       console.log(coordinatorID);
       deleteCoordinator(coordinatorID)
         .then(() => {
-          setRefreshKey((prev:number) => prev + 1);
-          setSnackBarVisiblity(true);
-          setSnackBarMessage("Successfully Deleted");
-          setSnackBarType(true);
-          setTimeout(() => {
-            setSnackBarVisiblity(false);
-          }, 1000);
-          setModalOpen(false);
+          snackBarOnSuccess("Successfully Deleted");
           // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
       // alert("No coordinator selected");
-      setSnackBarVisiblity(true);
-      setSnackBarMessage("No Coordinator Selected");
-      setSnackBarType(false);
-      setTimeout(() => {
-        setSnackBarVisiblity(false);
-      }, 1000);
+      snackBarOnFail("No Coordinator Selected");
     };
   }
 
