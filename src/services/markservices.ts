@@ -106,3 +106,19 @@ export const addMarkS3P2 = async (index_no: number, s3_p2: number) => {
         throw error.response.data.error;
     }
 }
+
+export const verifyMark = async (index_no: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.put("/mark/verify/"+index_no, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Response:", response);
+      
+} catch (error: any) {
+    console.error("Error verifying Mark:", error);
+    throw error.response.data.error;
+}
+}

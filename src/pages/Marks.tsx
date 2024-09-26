@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
-import { getMarkbyIndexNo, addMarkS1P1, addMarkS1P2,addMarkS2P1,addMarkS2P2,addMarkS3P1,addMarkS3P2 } from "../services/markservices";
+import { getMarkbyIndexNo, addMarkS1P1, addMarkS1P2,addMarkS2P1,addMarkS2P2,addMarkS3P1,addMarkS3P2, verifyMark } from "../services/markservices";
 import { Mark,Student,Stream } from "../types/types";
 import { getStudentbyIndex } from "../services/studentService";
 import { getStreams } from "../services/streamServices";
@@ -151,6 +151,14 @@ const Marks = () => {
     setName("");
     setMark(0);
     setModalOpen(true);
+  }
+
+  const handleVerifyMark = () => {
+    verifyMark(indexNo).then(() => {
+        window.location.reload();
+      }).catch((error: any) => {
+        alert(error);
+      });
   }
   
 
@@ -371,7 +379,7 @@ const Marks = () => {
             </tbody>
         </table>
         <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-y-auto ${!modalOpen && 'hidden'}`}>
-            <div className=" rounded-lg shadow-lg p-6 md:p-8 max-w-2xl w-full mx-auto">
+            <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
                 {action === "add" && (
                 <>
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -481,11 +489,16 @@ const Marks = () => {
                                 Marks for {`Subject ${subject} - Part ${part}`} : {mark}
                             </div>
                         </div> 
-                        <div className="flex justify-center mt-6">
+                        <div className="flex justify-center mt-6 gap-4">
                             <button onClick={() => {
                                 setIndexNo(student?.index_no || 0);
-                                handleViewtoEdit()}} className="w-full md:w-auto px-6 py-3 rounded border border-stroke bg-gray text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                                handleVerifyMark()}} className="w-full md:w-auto px-6 py-3 rounded border border-stroke bg-gray text-center font-medium text-black transition hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-primary dark:hover:bg-primary">
                                 Edit
+                            </button> 
+                            <button onClick={() => {
+                                setIndexNo(student?.index_no || 0);
+                                handleViewtoEdit()}} className="w-full md:w-auto px-6 py-3 rounded border border-stroke bg-gray text-center font-medium text-black transition hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-primary dark:hover:bg-primary">
+                                Verify
                             </button> 
                         </div>
                                                                                     
