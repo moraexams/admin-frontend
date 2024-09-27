@@ -12,6 +12,8 @@ const Coordinators = () => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [searchKey, setSearchKey] = useState<string>('');
 
+  const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
+
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
@@ -25,7 +27,7 @@ const Coordinators = () => {
     };
 
     fetchDistricts();
-  }, []);
+  }, [refreshKey]);
   if (error) {
     return <div>{error}</div>;
   }
@@ -61,7 +63,7 @@ const Coordinators = () => {
         </div>
       </div>
       <div className="flex flex-col gap-10">
-        {loading ? <div>Loading...</div> : <CoordinatorsTable districtData={districts} searchKey={searchKey} itemsPerPage={itemsPerPage} />}
+        {loading ? <div>Loading...</div> : <CoordinatorsTable districtData={districts} searchKey={searchKey} itemsPerPage={itemsPerPage} setRefreshKey={setRefreshKey}/>}
       </div>
     </DefaultLayout>
   );
