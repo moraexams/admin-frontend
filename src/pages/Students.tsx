@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { getStudents, getStudentsByCentre } from '../services/studentService';
+import { getStudentsByCentre } from '../services/studentService';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import { District, Student } from '../types/types';
 
 import StudentTable from '../components/Tables/StudentTable';
-import { getDistricts, getDistrictsWithCentres } from '../services/districtService';
+import { getDistrictsWithCentres } from '../services/districtService';
 
 const Students = () => {
     const [students, setStudents] = useState<Student[]>([]);
