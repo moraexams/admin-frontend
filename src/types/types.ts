@@ -96,3 +96,13 @@ export interface Stream {
   subject2_code:string,
   subject3_code:string,
 }
+
+export interface Mark {
+  index_no: number,
+  s1_p1: number,
+  s1_p2: number,
+  s2_p1: number,
+  s2_p2: number,
+  s3_p1: number,
+  s3_p2: number,
+}
