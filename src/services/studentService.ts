@@ -148,6 +148,21 @@ export const getStudents = async () => {
   }
 };
 
+export const getStudentsByCentre = async (centre_id: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/student/filter?exam_centre_id=" + centre_id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching Students: ");
+    return error;
+  }
+};
+
 export const verifyStudent = async (index_no: number) => {
   try {
     const token = localStorage.getItem("token");
