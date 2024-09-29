@@ -4,8 +4,9 @@ import ReactPaginate from 'react-paginate';
 import { addCoordinator, deleteCoordinator, updateCoordinator } from '../../services/coordinatorsService';
 import { filterIt } from '../../services/filter';
 import Snackbar from '../Snackbar';
+import { SnackBarConfig } from '../../types/snackbar';
 
-const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}: { districtData: District[], searchKey: string, itemsPerPage: number , setRefreshKey:any}) => {
+const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtData: District[], searchKey: string, itemsPerPage: number, setRefreshKey: any }) => {
 
   const items: District[] = searchKey != "" ? filterIt(districtData, searchKey) : districtData;
   const itemsLength = items.length
@@ -22,25 +23,18 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
     setItemOffset(newOffset);
   };
 
-  const snackBarOnFail = (message : string) => {
-    setSnackBarVisiblity(true);
-    setSnackBarMessage(message);
-    setSnackBarType(false);
-    setTimeout(() => {
-      setSnackBarVisiblity(false);
-    }, 1000);
-  };
-  const snackBarOnSuccess = (message : string) => {
-    setRefreshKey((prev:number) => prev + 1);
-    setSnackBarVisiblity(true);
-    setSnackBarMessage(message);
-    setSnackBarType(true);
-    setTimeout(() => {
-      setSnackBarVisiblity(false);
-    }, 1000);
-    setModalOpen(false);
-  };
+  const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+    message: '',
+    type: false,
+    show: false
+  });
 
+  const showSnackBar = (type: boolean, message: string) => {
+    setSnackBarConfig({ message: message, type: type, show: true });
+    setTimeout(() => {
+      setSnackBarConfig(prev => ({ ...prev, show: false }));
+    }, 1000);
+  };
 
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -52,13 +46,8 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
 
   const [action, setAction] = useState<string>('Add');
 
-  const [snackBarMessage, setSnackBarMessage] = useState<string>('');
-  const [snackBarVisiblity, setSnackBarVisiblity] = useState<boolean>(false);
-  const [snackBarType, setSnackBarType] = useState<boolean>(false); // true if success
 
   const handleModalSubmit = () => {
-    setSnackBarVisiblity(false);
-
     switch (action) {
       case 'Add':
         handleAddCoordinator();
@@ -77,13 +66,13 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
     if (name !== '' && telephone_no !== '' && districtID) {
       addCoordinator(name, districtID, telephone_no)
         .then(() => {
-          snackBarOnSuccess("Successfully Added")
+          showSnackBar(true, "Successfully Added")
           // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      snackBarOnFail("Fill All Fields");
+      showSnackBar(false, "Fill All Fields");
     };
   }
 
@@ -91,13 +80,13 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
     if (name !== '' && telephone_no !== '' && coordinatorID) {
       updateCoordinator(coordinatorID, name, telephone_no)
         .then(() => {
-          snackBarOnSuccess("Successfully Updated");
+          showSnackBar(true, "Successfully Updated");
           // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      snackBarOnFail("Fill All Fields");
+      showSnackBar(false, "Fill All Fields");
     };
   }
 
@@ -106,14 +95,13 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
       console.log(coordinatorID);
       deleteCoordinator(coordinatorID)
         .then(() => {
-          snackBarOnSuccess("Successfully Deleted");
+          showSnackBar(true, "Successfully Deleted");
           // window.location.reload();
         }).catch((error) => {
           alert(error);
         })
     } else {
-      // alert("No coordinator selected");
-      snackBarOnFail("No Coordinator Selected");
+      showSnackBar(false, "No Coordinator Selected");
     };
   }
 
@@ -341,7 +329,6 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
           />
         </div>
       </div>
-      <Snackbar message={snackBarMessage} type={snackBarType} show={snackBarVisiblity} />
       <div className={`fixed left-0 top-0 z-99999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
         <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15">
           <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
@@ -398,6 +385,7 @@ const DistrictsTable = ({ districtData, searchKey, itemsPerPage, setRefreshKey}:
           </div>
         </div>
       </div >
+      <Snackbar config={snackBarConfig} />
     </div>
   );
 };

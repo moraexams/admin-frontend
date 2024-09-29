@@ -7,6 +7,8 @@ import { getStreams } from '../../services/streamServices';
 import { getCenters } from '../../services/examCentreService';
 import { getUsers } from '../../services/userService';
 import { filterIt } from '../../services/filter';
+import { SnackBarConfig } from '../../types/snackbar';
+import Snackbar from '../Snackbar';
 
 const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearchKey */ }: { studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number }) => {
   const items: Student[] = Array.isArray(studentData)
@@ -52,6 +54,19 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % itemsLength;
     setItemOffset(newOffset);
+  };
+
+  const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+    message: '',
+    type: false,
+    show: false
+  });
+
+  const showSnackBar = (type: boolean, message: string) => {
+    setSnackBarConfig({ message: message, type: type, show: true });
+    setTimeout(() => {
+      setSnackBarConfig(prev => ({ ...prev, show: false }));
+    }, 1000);
   };
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -106,13 +121,13 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
     if (name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
       addStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address)
         .then(() => {
-          alert("Student Added");
+          showSnackBar(true, "Student Added");
           setModalOpen(false);
         }).catch((error) => {
-          alert(error);
+          showSnackBar(false, error);
         })
     } else {
-      alert("fill all fields");
+      showSnackBar(false, "fill all fields");
     };
   }
 
@@ -120,10 +135,10 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
     if (name !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
       updateStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address, checkedBy)
         .then(() => {
-          alert("Student Updated");
+          showSnackBar(true, "Student Updated");
           // update in the students variable
           const studentIndex = studentData.findIndex(x => x.index_no === indexNo);
-          if (studentIndex  !== -1) {
+          if (studentIndex !== -1) {
             studentData[studentIndex].name = name;
             studentData[studentIndex].stream_id = streamId;
             studentData[studentIndex].medium = medium;
@@ -139,10 +154,10 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
 
           setModalOpen(false);
         }).catch((error) => {
-          alert(error);
+          showSnackBar(false,error);
         })
     } else {
-      alert("fill all fields");
+     showSnackBar(false,"fill all fields");
     };
   }
   const handleDeleteStudent = () => {
@@ -150,20 +165,20 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
       console.log(indexNo);
       deleteStudent(indexNo)
         .then(() => {
-          alert("Student Deleted");
+          showSnackBar(true, "Student Deleted");
           setModalOpen(false);
         }).catch((error) => {
-          alert(error);
+          showSnackBar(false,error);
         })
     } else {
-      alert("No student selected");
+      showSnackBar(false,"No student selected");
     };
   }
   const handleVerifyStudent = () => {
     verifyStudent(indexNo).then(() => {
-      window.location.reload();
+      showSnackBar(true, "Verified");
     }).catch((error) => {
-      alert(error);
+      showSnackBar(false,error);
     });
   }
 
@@ -207,7 +222,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
       setCheckedBy(student.checked_by_id);
       setModalOpen(true);
     } else {
-      alert("Student not found");
+      showSnackBar(false,"Student not found");
     }
   };
 
@@ -218,7 +233,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
       setName(name);
       setModalOpen(true);
     } else {
-      alert("No student Selected");
+      showSnackBar(false,"No student Selected");
     }
   }
 
@@ -245,7 +260,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
       setModalOpen(true);
     }
     else {
-      alert("Student not found");
+      showSnackBar(false,"Student not found");
     }
 
   }
@@ -332,16 +347,16 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                       </td>
                       <td>
                         <div className="flex items-center justify-center">
-                            {
-                              student.checked_by_id ?
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green" className="size-6">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                                :
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-6">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            }
+                          {
+                            student.checked_by_id ?
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                              :
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                          }
 
                         </div>
                       </td>
@@ -718,7 +733,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
 
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Phone 
+                      Phone
                     </label>
                     <input
                       type="text"
@@ -749,6 +764,8 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
 
         </div>
       </div >
+
+      <Snackbar config={snackBarConfig} />
     </div>
 
   );
