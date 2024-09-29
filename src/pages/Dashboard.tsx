@@ -7,7 +7,10 @@ import DefaultLayout from '../layout/DefaultLayout';
 const Dashboard: React.FC = () => {
   return (
     <DefaultLayout>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div>
+        <h1 className="text-3xl font-semibold text-primary">Dashboard on progress...</h1>
+      </div>
+      {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="Total Appointments" total="3.456K" rate="0.43%" levelUp>
 
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -37,7 +40,7 @@ const Dashboard: React.FC = () => {
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne />
         <ChartTwo />
-      </div>
+      </div> */}
     </DefaultLayout>
   );
 };
