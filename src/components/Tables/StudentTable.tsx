@@ -106,7 +106,8 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
     if (name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
       addStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address)
         .then(() => {
-          window.location.reload();
+          alert("Student Added");
+          setModalOpen(false);
         }).catch((error) => {
           alert(error);
         })
@@ -116,10 +117,27 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
   }
 
   const handleUpdateStudent = () => {
-    if (name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
+    if (name !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
       updateStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address, checkedBy)
         .then(() => {
-          window.location.reload();
+          alert("Student Updated");
+          // update in the students variable
+          const studentIndex = studentData.findIndex(x => x.index_no === indexNo);
+          if (studentIndex  !== -1) {
+            studentData[studentIndex].name = name;
+            studentData[studentIndex].stream_id = streamId;
+            studentData[studentIndex].medium = medium;
+            studentData[studentIndex].rank_district_id = rankDistrictId;
+            studentData[studentIndex].exam_district_id = examDistrictId;
+            studentData[studentIndex].exam_centre_id = centreId;
+            studentData[studentIndex].nic = nic;
+            studentData[studentIndex].address = address;
+            studentData[studentIndex].school = school;
+            studentData[studentIndex].email = email;
+            studentData[studentIndex].telephone_no = phone;
+          }
+
+          setModalOpen(false);
         }).catch((error) => {
           alert(error);
         })
@@ -132,7 +150,8 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
       console.log(indexNo);
       deleteStudent(indexNo)
         .then(() => {
-          window.location.reload();
+          alert("Student Deleted");
+          setModalOpen(false);
         }).catch((error) => {
           alert(error);
         })
@@ -403,7 +422,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
 
       <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-y-auto ${!modalOpen && 'hidden'}`}
       >
-        <div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
+        <div className="w-full max-w-142.5 md:max-w-[40vw] rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
           <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
             {{
               'Add': `Add Student`,
@@ -540,7 +559,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      School <span className="text-meta-1">*</span>
+                      School
                     </label>
                     <input
                       type="text"
@@ -584,7 +603,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Email <span className="text-meta-1">*</span>
+                      Email
                     </label>
                     <input
                       type="email"
@@ -598,7 +617,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Address <span className="text-meta-1">*</span>
+                      Address
                     </label>
                     <input
                       type="text"
@@ -699,7 +718,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
 
                   <div className="mb-4.5">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Phone <span className="text-meta-1">*</span>
+                      Phone 
                     </label>
                     <input
                       type="text"
