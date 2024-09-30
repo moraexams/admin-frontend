@@ -72,7 +72,6 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
   const [modalOpen, setModalOpen] = useState(false);
   const [viewSection, setViewSection] = useState<string>("personal");
 
-  //const [index_no,SetIndexNo] = useState<number>(1);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
