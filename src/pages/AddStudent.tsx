@@ -35,6 +35,7 @@ const AddStudent = () => {
             addStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address)
                 .then(() => {
                     showSnackBar(true, "Student Added");
+                    setIndexNo(0);
                     setName('');
                     setEmail('');
                     setPhone('');
