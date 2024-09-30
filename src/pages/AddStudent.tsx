@@ -59,8 +59,9 @@ const AddStudent = () => {
                 setCentersDistricts(Distcenters);
                 setCenters(centers);
                 setStreams(streams);
-                setCurrCenters(centers.filter((center: { district_id: number; }) => center.district_id === examDistrictId));
-                setCentreId(centers[0].id);
+                const currentCenters = centers.filter((center: { district_id: number; }) => center.district_id === examDistrictId);
+                setCurrCenters(currentCenters);
+                setCentreId(currentCenters[0].id);
             } catch (error) {
                 console.log('Failed to fetch data', error);
             }
@@ -71,8 +72,9 @@ const AddStudent = () => {
     useEffect(() => {
         const setCenters = async () => {
             try {
-                setCurrCenters(centers.filter(center => center.district_id === examDistrictId));
-                setCentreId(centers[0]?.id ? centers[0].id : 77); //make it return error
+                const currentCenters = centers.filter(center => center.district_id === examDistrictId);
+                setCurrCenters(currentCenters);
+                setCentreId(currentCenters[0]?.id ? currentCenters[0].id : 77); //make it return error
             } catch (error) {
                 console.log('Failed to fetch data', error);
             }
