@@ -22,6 +22,9 @@ export const addStudent = async (
 ) => {
   try {
     const token = localStorage.getItem("token");
+    name = name.trim().toUpperCase();
+    school = school.trim().toUpperCase();
+    address = address.trim().toUpperCase();
     const response = await axiosInstance.post(
       "/student/add",
       {
@@ -81,6 +84,9 @@ export const updateStudent = async (
 ) => {
   try {
     const token = localStorage.getItem("token");
+    name = name.trim().toUpperCase();
+    school = school.trim().toUpperCase();
+    address = address.trim().toUpperCase();
     const response = await axiosInstance.put(
       "/student/" + index_no,
       {
