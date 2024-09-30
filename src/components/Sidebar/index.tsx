@@ -476,13 +476,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </li>
                             <li>
                               <NavLink
-                                to="/students/all"
+                                to="/students/unverified"
                                 className={({ isActive }) =>
                                   'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                   (isActive && '!text-white')
                                 }
                               >
-                                All Students
+                                Unverified Students
                               </NavLink>
                             </li>
                             <li>
@@ -494,6 +494,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 }
                               >
                                 Centre Wise
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/students/all"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                All Students
                               </NavLink>
                             </li>
                           </ul>

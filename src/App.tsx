@@ -16,6 +16,7 @@ import Students from './pages/Students';
 import Marks from './pages/Marks';
 import StudentsCentreWise from './pages/StudentsCentreWise';
 import AddStudent from './pages/AddStudent';
+import UnVerifiedStudents from './pages/UnVerifiedStudents';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -106,42 +107,51 @@ function App() {
             </>
           }
         />
-      <Route
-        path="/distribution/card"
-        element={
-          <>
-            <PageTitle title="Exam Paper Distribution Card | MoraExams" />
-            <ExamPaperDistributionCardView />
-          </>
-        }
-      />
-      <Route
-        path="/students/all"
-        element={
-          <>
-            <PageTitle title="Students | MoraExams" />
-            <Students />
-          </>
-        }
-      />
-      <Route
-        path="/students/add"
-        element={
-          <>
-            <PageTitle title="Add Student | MoraExams" />
-            <AddStudent />
-          </>
-        }
-      />
-      <Route
-        path="/students/centre"
-        element={
-          <>
-            <PageTitle title="Students | MoraExams" />
-            <StudentsCentreWise />
-          </>
-        }
-      />
+        <Route
+          path="/distribution/card"
+          element={
+            <>
+              <PageTitle title="Exam Paper Distribution Card | MoraExams" />
+              <ExamPaperDistributionCardView />
+            </>
+          }
+        />
+        <Route
+          path="/students/all"
+          element={
+            <>
+              <PageTitle title="Students | MoraExams" />
+              <Students />
+            </>
+          }
+        />
+        <Route
+          path="/students/add"
+          element={
+            <>
+              <PageTitle title="Add Student | MoraExams" />
+              <AddStudent />
+            </>
+          }
+        />
+        <Route
+          path="/students/centre"
+          element={
+            <>
+              <PageTitle title="Students | MoraExams" />
+              <StudentsCentreWise />
+            </>
+          }
+        />
+        <Route
+          path="/students/unverified"
+          element={
+            <>
+              <PageTitle title="Students | MoraExams" />
+              <UnVerifiedStudents />
+            </>
+          }
+        />
         <Route
           path="/marks"
           element={
