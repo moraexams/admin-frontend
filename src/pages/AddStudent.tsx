@@ -31,7 +31,7 @@ const AddStudent = () => {
     const [currCenters, setCurrCenters] = useState<ExamCentre[]>([]);
 
     const handleSubmit = async () => {
-        if (indexNo !== 0 && name !== '' && email !== '' && phone !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
+        if (indexNo !== 0 && name !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
             addStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address)
                 .then(() => {
                     showSnackBar(true, "Student Added");
