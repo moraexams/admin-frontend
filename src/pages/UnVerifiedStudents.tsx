@@ -37,8 +37,7 @@ const UnVerifiedStudents = () => {
         const fetchStudents = async () => {
             try {
                 const students = await getUnVerifiedStudents();
-                const filteredStudents = students.filter((student: { registered_by_id: number; }) => student.registered_by_id === user);
-                setStudents(filteredStudents);
+                setStudents(students);
             } catch (error) {
                 setError("Failed to fetch Students");
             } finally {
@@ -96,7 +95,7 @@ const UnVerifiedStudents = () => {
                 </div>
             </div>
             <div className="flex flex-col gap-10">
-                {loading ? <div>Loading...</div> : <UnVerifiedStudentTable studentData={students} nameSearchKey={searchKey} itemsPerPage={itemsPerPage} />}
+                {loading ? <div>Loading...</div> : <UnVerifiedStudentTable studentData={students} nameSearchKey={searchKey} itemsPerPage={itemsPerPage} userId={user}/>}
             </div>
         </DefaultLayout>
     );

@@ -10,7 +10,9 @@ import { filterIt } from '../../services/filter';
 import { SnackBarConfig } from '../../types/snackbar';
 import Snackbar from '../Snackbar';
 
-const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearchKey */ }: { studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number }) => {
+const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey, userId/* streamSearchKey */ }: { studentData: Student[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number, userId: number }) => {
+  
+  studentData = studentData.filter(student => student.registered_by_id === userId);
   const items: Student[] = Array.isArray(studentData)
     ? (nameSearchKey !== "" ? filterIt(studentData, nameSearchKey) : studentData)
     : [];
