@@ -7,13 +7,13 @@ import UnVerifiedStudentTable from '../components/Tables/UnVerifiedStudentTable'
 import { getUsers } from '../services/userService';
 
 const UnVerifiedStudents = () => {
-    const currentUser = Number(localStorage.getItem('user_id')) || 1;
+    // const currentUser = Number(localStorage.getItem('user_id')) || 1;
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
     const [searchKey, setSearchKey] = useState<string>('');
-    const [user, setUser] = useState<number>(currentUser);
+    const [user, setUser] = useState<number>(-1);
     const [users, setUsers] = useState<User[]>([]);
 
     const handleUserSelect = (userId: number) => {
@@ -78,6 +78,7 @@ const UnVerifiedStudents = () => {
                         value={user.toString()}
                         onChange={(e) => handleUserSelect(Number(e.target.value))}
                     >
+                        <option value="-1">All</option>
                         {
                             users.map((user) => { return (<option key={user.id} value={user.id}>{user.username}</option>) })
                         }
