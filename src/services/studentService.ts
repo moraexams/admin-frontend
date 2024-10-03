@@ -87,6 +87,7 @@ export const updateStudent = async (
     name = name.trim().toUpperCase();
     school = school.trim().toUpperCase();
     address = address.trim().toUpperCase();
+    console.log("Sending ID: " + exam_centre_id)
     const response = await axiosInstance.put(
       "/student/" + index_no,
       {
@@ -115,7 +116,7 @@ export const updateStudent = async (
         },
       }
     );
-    console.log("response", response);
+    return response.data;
   } catch (err: any) {
     console.error("Error Updating Student:", err);
     throw err.response.data.error;

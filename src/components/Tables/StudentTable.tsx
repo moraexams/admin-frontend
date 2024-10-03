@@ -449,58 +449,115 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
           {action == "View" && (
             <>
               <div className="flex justify-around pb-8">
-                <div className="flex flex-wrap items-center rounded-lg">
+                <div className="flex items-center rounded-lg">
                   <button onClick={() => setViewSection("personal")} className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'personal' && 'border-primary bg-primary text-white'}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                     </svg>
                     Personal
                   </button>
-                  <button onClick={() => setViewSection("exam")} className={`inline-flex items-center gap-2.5 border-y border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'exam' && 'border-primary bg-primary text-white'}`}>
+                  <button onClick={() => setViewSection("exam")} className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'exam' && 'border-primary bg-primary text-white'}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                     </svg>
                     Exam
-                  </button>
-                  <button onClick={() => setViewSection("contact")} className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'contact' && 'border-primary bg-primary text-white'}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                    </svg>
-                    Contact
                   </button>
                 </div>
               </div>
               <div className="mb-6">
                 {viewSection === "personal" && (
                   <div className="space-y-2">
-                    <div>Name : {name}</div>
-                    <div>NIC : {nic}</div>
-                    <div>School : {school}</div>
-                    <div>Gender : {gender}</div>
+                    <table className="table-auto border-separate border-spacing-2 text-black">
+                      <tbody>
+                        <tr>
+                          <td>Name</td>
+                          <td>:</td>
+                          <td><strong>{name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>NIC</td>
+                          <td>:</td>
+                          <td><strong>{nic}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>School</td>
+                          <td>:</td>
+                          <td><strong>{school}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Gender</td>
+                          <td>:</td>
+                          <td><strong>{gender}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Phone</td>
+                          <td>:</td>
+                          <td><strong>{phone}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Email</td>
+                          <td>:</td>
+                          <td><strong>{email}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Address</td>
+                          <td>:</td>
+                          <td><strong>{address}</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 )}
                 {viewSection === "exam" && (
                   <div className="space-y-2">
-                    <div>Index No : {indexNo}</div>
-                    <div>Stream: {streams.find(stream => stream.id === streamId)?.name}</div>
-                    <div>Medium: {medium}</div>
-                    <div>Rank District: {centersDistricts.find(district => district.id === rankDistrictId)?.name}</div>
-                    <div>Exam District: {centersDistricts.find(district => district.id === examDistrictId)?.name}</div>
-                    <div>Exam Center: {centers.find(center => center.id === centreId)?.name}</div>
-                  </div>
-                )}
-
-                {viewSection === "contact" && (
-                  <div className="space-y-2">
-                    <div>Phone : {phone}</div>
-                    <div>Email: {email}</div>
-                    <div>Address: {address}</div>
-                    <div>Entered by: {users.find(user => user.id === addedBy)?.username || "Cannot find"}</div>
-                    <div>Checked by: {users.find(user => user.id === checkedBy)?.username || (<>
+                    <table className="table-auto border-separate border-spacing-2 text-black">
+                      <tbody>
+                        <tr>
+                          <td>Index No</td>
+                          <td>:</td>
+                          <td><strong>{indexNo}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Stream</td>
+                          <td>:</td>
+                          <td><strong>{streams.find(stream => stream.id === streamId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Medium</td>
+                          <td>:</td>
+                          <td><strong>{medium}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Rank District</td>
+                          <td>:</td>
+                          <td><strong>{centersDistricts.find(district => district.id === rankDistrictId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Exam District</td>
+                          <td>:</td>
+                          <td><strong>{centersDistricts.find(district => district.id === examDistrictId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Exam Center</td>
+                          <td>:</td>
+                          <td><strong>{centers.find(center => center.id === centreId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Entered by</td>
+                          <td>:</td>
+                          <td><strong>{users.find(user => user.id === addedBy)?.username || "Cannot find"}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Checked by</td>
+                          <td>:</td>
+                          <td><strong>{users.find(user => user.id === checkedBy)?.username || (<>
                       <button onClick={() => handleVerifyStudent()} className='bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2'>
                         Verify
                       </button>
-                    </>)}</div>
+                    </>)}</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>

@@ -89,6 +89,18 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
   const [checkedBy, setCheckedBy] = useState<number>(0);
 
   const currCenters = centers.filter(center => center.district_id === examDistrictId);
+
+  useEffect(() => {
+    const setCenters = async () => {
+      try {
+        setCentreId(currCenters[0]?.id ? currCenters[0].id : 100); //make it return error
+      } catch (error) {
+        console.log('Failed to fetch data', error);
+      }
+    };
+
+    setCenters();
+  }, [examDistrictId]);
   // useEffect(() => {
   //   const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
   //   //console.log(currentDistrict?.exam_centres);
@@ -133,30 +145,32 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
   const handleUpdateStudent = () => {
     if (name !== '' && streamId && rankDistrictId && examDistrictId && centreId && nic !== '' && medium !== '' && gender !== '') {
       updateStudent(indexNo, name, streamId, medium, rankDistrictId, examDistrictId, centreId, nic, gender, email, phone, school, address, checkedBy)
-        .then(() => {
+        .then((result) => {
           showSnackBar(true, "Student Updated");
+          const student = result.data;
           // update in the students variable
           const studentIndex = studentData.findIndex(x => x.index_no === indexNo);
           if (studentIndex !== -1) {
-            studentData[studentIndex].name = name;
-            studentData[studentIndex].stream_id = streamId;
-            studentData[studentIndex].medium = medium;
-            studentData[studentIndex].rank_district_id = rankDistrictId;
-            studentData[studentIndex].exam_district_id = examDistrictId;
-            studentData[studentIndex].exam_centre_id = centreId;
-            studentData[studentIndex].nic = nic;
-            studentData[studentIndex].address = address;
-            studentData[studentIndex].school = school;
-            studentData[studentIndex].email = email;
-            studentData[studentIndex].telephone_no = phone;
+            studentData[studentIndex].name = student.name;
+            studentData[studentIndex].stream_id = student.stream_id;
+            studentData[studentIndex].medium = student.medium;
+            studentData[studentIndex].rank_district_id = student.rank_district_id;
+            studentData[studentIndex].exam_district_id = student.exam_district_id;
+            studentData[studentIndex].exam_centre_id = student.exam_centre_id;
+            studentData[studentIndex].nic = student.nic;
+            studentData[studentIndex].school = student.school;
+            studentData[studentIndex].address = student.address;
+            studentData[studentIndex].telephone_no = student.telephone_no;
+            studentData[studentIndex].email = student.email;
+            studentData[studentIndex].checked_by_id = student.checked_by_id;
           }
 
           setModalOpen(false);
         }).catch((error) => {
-          showSnackBar(false,error);
+          showSnackBar(false, error);
         })
     } else {
-     showSnackBar(false,"fill all fields");
+      showSnackBar(false, "fill all fields");
     };
   }
   const handleDeleteStudent = () => {
@@ -167,17 +181,18 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
           showSnackBar(true, "Student Deleted");
           setModalOpen(false);
         }).catch((error) => {
-          showSnackBar(false,error);
+          showSnackBar(false, error);
         })
     } else {
-      showSnackBar(false,"No student selected");
+      showSnackBar(false, "No student selected");
     };
   }
   const handleVerifyStudent = () => {
     verifyStudent(indexNo).then(() => {
+
       showSnackBar(true, "Verified");
     }).catch((error) => {
-      showSnackBar(false,error);
+      showSnackBar(false, error);
     });
   }
 
@@ -204,7 +219,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
     const student = studentData.find(x => x.index_no === index_no);
 
     if (student && student.index_no) {
-      //alert(`Editing student: ${student.name}`)
+      // alert(`Editing student: ${student.name}`)
       setIndexNo(student.index_no);
       setName(student.name);
       setStreamId(student.stream_id);
@@ -221,7 +236,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
       setCheckedBy(student.checked_by_id);
       setModalOpen(true);
     } else {
-      showSnackBar(false,"Student not found");
+      showSnackBar(false, "Student not found");
     }
   };
 
@@ -232,7 +247,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
       setName(name);
       setModalOpen(true);
     } else {
-      showSnackBar(false,"No student Selected");
+      showSnackBar(false, "No student Selected");
     }
   }
 
@@ -259,7 +274,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
       setModalOpen(true);
     }
     else {
-      showSnackBar(false,"Student not found");
+      showSnackBar(false, "Student not found");
     }
 
   }
@@ -428,7 +443,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
 
       <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-y-auto ${!modalOpen && 'hidden'}`}
       >
-        <div className="w-full max-w-142.5 md:max-w-[40vw] rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
+        <div className="w-full max-w-142.5 lg:max-w-[40vw] rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
           <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
             {{
               'Add': `Add Student`,
@@ -441,58 +456,115 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
           {action == "View" && (
             <>
               <div className="flex justify-around pb-8">
-                <div className="flex flex-wrap items-center rounded-lg">
+                <div className="flex items-center rounded-lg">
                   <button onClick={() => setViewSection("personal")} className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'personal' && 'border-primary bg-primary text-white'}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                     </svg>
                     Personal
                   </button>
-                  <button onClick={() => setViewSection("exam")} className={`inline-flex items-center gap-2.5 border-y border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'exam' && 'border-primary bg-primary text-white'}`}>
+                  <button onClick={() => setViewSection("exam")} className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'exam' && 'border-primary bg-primary text-white'}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                     </svg>
                     Exam
-                  </button>
-                  <button onClick={() => setViewSection("contact")} className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 'contact' && 'border-primary bg-primary text-white'}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                    </svg>
-                    Contact
                   </button>
                 </div>
               </div>
               <div className="mb-6">
                 {viewSection === "personal" && (
                   <div className="space-y-2">
-                    <div>Name : {name}</div>
-                    <div>NIC : {nic}</div>
-                    <div>School : {school}</div>
-                    <div>Gender : {gender}</div>
+                    <table className="table-fixed border-separate border-spacing-2 text-black">
+                      <tbody>
+                        <tr>
+                          <td>Name</td>
+                          <td>:</td>
+                          <td><strong>{name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>NIC</td>
+                          <td>:</td>
+                          <td><strong>{nic}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>School</td>
+                          <td>:</td>
+                          <td><strong>{school}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Gender</td>
+                          <td>:</td>
+                          <td><strong>{gender}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Phone</td>
+                          <td>:</td>
+                          <td><strong>{phone}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Email</td>
+                          <td>:</td>
+                          <td><strong>{email}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Address</td>
+                          <td>:</td>
+                          <td><strong>{address}</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 )}
                 {viewSection === "exam" && (
                   <div className="space-y-2">
-                    <div>Index No : {indexNo}</div>
-                    <div>Stream: {streams.find(stream => stream.id === streamId)?.name}</div>
-                    <div>Medium: {medium}</div>
-                    <div>Rank District: {centersDistricts.find(district => district.id === rankDistrictId)?.name}</div>
-                    <div>Exam District: {centersDistricts.find(district => district.id === examDistrictId)?.name}</div>
-                    <div>Exam Center: {centers.find(center => center.id === centreId)?.name}</div>
-                  </div>
-                )}
-
-                {viewSection === "contact" && (
-                  <div className="space-y-2">
-                    <div>Phone : {phone}</div>
-                    <div>Email: {email}</div>
-                    <div>Address: {address}</div>
-                    <div>Entered by: {users.find(user => user.id === addedBy)?.username || "Cannot find"}</div>
-                    <div>Checked by: {users.find(user => user.id === checkedBy)?.username || (<>
+                    <table className="table-fixed border-separate border-spacing-2 text-black">
+                      <tbody>
+                        <tr>
+                          <td>Index No</td>
+                          <td>:</td>
+                          <td><strong>{indexNo}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Stream</td>
+                          <td>:</td>
+                          <td><strong>{streams.find(stream => stream.id === streamId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Medium</td>
+                          <td>:</td>
+                          <td><strong>{medium}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Rank District</td>
+                          <td>:</td>
+                          <td><strong>{centersDistricts.find(district => district.id === rankDistrictId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Exam District</td>
+                          <td>:</td>
+                          <td><strong>{centersDistricts.find(district => district.id === examDistrictId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Exam Center</td>
+                          <td>:</td>
+                          <td><strong>{centers.find(center => center.id === centreId)?.name}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Entered by</td>
+                          <td>:</td>
+                          <td><strong>{users.find(user => user.id === addedBy)?.username || "Cannot find"}</strong></td>
+                        </tr>
+                        <tr>
+                          <td>Checked by</td>
+                          <td>:</td>
+                          <td><strong>{users.find(user => user.id === checkedBy)?.username || (<>
                       <button onClick={() => handleVerifyStudent()} className='bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2'>
                         Verify
                       </button>
-                    </>)}</div>
+                    </>)}</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>
@@ -662,8 +734,8 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="" disabled>Select Medium</option>
-                      <option key="tamil" value="tamil">Tamil</option>
-                      <option key="english" value="english">English</option>
+                      <option key="tamil" value="Tamil">Tamil</option>
+                      <option key="english" value="English">English</option>
                     </select>
                   </div>
                   <div className="mb-4.5">
