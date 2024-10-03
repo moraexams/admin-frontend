@@ -89,6 +89,18 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
   const [checkedBy, setCheckedBy] = useState<number>(0);
 
   const currCenters = centers.filter(center => center.district_id === examDistrictId);
+
+  useEffect(() => {
+    const setCenters = async () => {
+      try {
+        setCentreId(currCenters[0]?.id ? currCenters[0].id : 100); //make it return error
+      } catch (error) {
+        console.log('Failed to fetch data', error);
+      }
+    };
+
+    setCenters();
+  }, [examDistrictId]);
   // useEffect(() => {
   //   const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
   //   //console.log(currentDistrict?.exam_centres);
@@ -467,7 +479,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
               <div className="mb-6">
                 {viewSection === "personal" && (
                   <div className="space-y-2">
-                    <table className="table-auto border-separate border-spacing-2 text-black">
+                    <table className="table-auto border-separate border-spacing-2 text-black dark:text-white">
                       <tbody>
                         <tr>
                           <td>Name</td>
@@ -510,7 +522,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                 )}
                 {viewSection === "exam" && (
                   <div className="space-y-2">
-                    <table className="table-auto border-separate border-spacing-2 text-black">
+                    <table className="table-auto border-separate border-spacing-2 text-black dark:text-white">
                       <tbody>
                         <tr>
                           <td>Index No</td>

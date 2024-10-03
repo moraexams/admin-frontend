@@ -476,7 +476,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey, user
               <div className="mb-6">
                 {viewSection === "personal" && (
                   <div className="space-y-2">
-                    <table className="table-fixed border-separate border-spacing-2 text-black">
+                    <table className="table-fixed border-separate border-spacing-2 text-black dark:text-white">
                       <tbody>
                         <tr>
                           <td>Name</td>
@@ -519,7 +519,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey, user
                 )}
                 {viewSection === "exam" && (
                   <div className="space-y-2">
-                    <table className="table-fixed border-separate border-spacing-2 text-black">
+                    <table className="table-fixed border-separate border-spacing-2 text-black dark:text-white">
                       <tbody>
                         <tr>
                           <td>Index No</td>

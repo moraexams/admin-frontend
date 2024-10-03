@@ -71,7 +71,7 @@ const VerifyStudent = () => {
 
                 <div className="py-4">
                     {student ? (
-                        <div><table className="table-fixed border-separate border-spacing-2 text-black">
+                        <div><table className="table-fixed border-separate border-spacing-2 text-black dark:text-white">
                             <tbody>
                                 <tr>
                                     <td>Name</td>
