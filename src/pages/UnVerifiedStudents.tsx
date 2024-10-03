@@ -7,12 +7,13 @@ import UnVerifiedStudentTable from '../components/Tables/UnVerifiedStudentTable'
 import { getUsers } from '../services/userService';
 
 const UnVerifiedStudents = () => {
+    const currentUser = Number(localStorage.getItem('user_id')) || 1;
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
     const [searchKey, setSearchKey] = useState<string>('');
-    const [user, setUser] = useState<number>(1);
+    const [user, setUser] = useState<number>(currentUser);
     const [users, setUsers] = useState<User[]>([]);
 
     const handleUserSelect = (userId: number) => {
@@ -45,7 +46,7 @@ const UnVerifiedStudents = () => {
             }
         };
         fetchStudents();
-    }, [user]);
+    }, []);
 
     if (error) {
         return <div>{error}</div>
