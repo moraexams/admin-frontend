@@ -333,7 +333,7 @@ const UnVerifiedStudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* st
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                         <p className="text-black dark:text-white">
-                          {users.find(user => user.id === student.registered_by_id)?.name}
+                          {users.find(user => user.id === student.registered_by_id)?.username}
                         </p>
                       </td>
                       <td>
