@@ -71,10 +71,14 @@ export interface Student {
   index_no?:number,
   name:string,
   stream_id:number,
+  stream?: Stream,
   medium:string,
   rank_district_id:number,
+  rank_district?: District,
   exam_district_id:number,
+  exam_district?: District,
   exam_centre_id: number,
+  exam_centre?: ExamCentre,
   nic:string;
   gender:string,
   email:string,
@@ -83,6 +87,7 @@ export interface Student {
   address:string,
   //not sure about these attributes
   registered_by_id:number,
+  registered_by?: User,
   reg_date:string,
   checked_by_id:number,
   checked_at:string,

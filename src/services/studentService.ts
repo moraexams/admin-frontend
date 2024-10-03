@@ -87,7 +87,7 @@ export const updateStudent = async (
     name = name.trim().toUpperCase();
     school = school.trim().toUpperCase();
     address = address.trim().toUpperCase();
-    console.log("Sending ID: " + exam_centre_id)
+    console.log("Sending ID: " + exam_centre_id);
     const response = await axiosInstance.put(
       "/student/" + index_no,
       {
@@ -173,11 +173,14 @@ export const getUnVerifiedStudents = async () => {
 export const getStudentsByCentre = async (centre_id: number) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axiosInstance.get("/student/filter?exam_centre_id=" + centre_id, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.get(
+      "/student/filter?exam_centre_id=" + centre_id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.log("Error fetching Students: ");
@@ -203,14 +206,32 @@ export const verifyStudent = async (index_no: number) => {
   } catch (error: any) {
     console.error("Error Verifying Student:", error);
     throw error.response.data.error;
-  } 
+  }
 };
 
 export const getStudentbyIndex = async (index_no: number) => {
-  if (index_no>=10000) {
+  if (index_no >= 100000) {
     try {
+      const token = localStorage.getItem("token");
+      const response = await axiosInstance.get("/student/" + index_no, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching Students: ");
+      return { error: "Student Does not exist!" };
+    }
+  } else {
+    return { error: "Invalid Index No!" };
+  }
+};
+
+export const getStudentforCheck = async (id: number) => {
+  try {
     const token = localStorage.getItem("token");
-    const response = await axiosInstance.get("/student/"+index_no, {
+    const response = await axiosInstance.get("/student/check/" + id, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -218,9 +239,6 @@ export const getStudentbyIndex = async (index_no: number) => {
     return response.data;
   } catch (error) {
     console.log("Error fetching Students: ");
-    return {name: "Student Does not exist!"};
+    return error;
   }
-} else {
-  return {name: "Invalid Index No!"};
-}
-}
+};
