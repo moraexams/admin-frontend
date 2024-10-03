@@ -51,6 +51,10 @@ export interface ExamCentre {
   //
   counts : Count[];
   bus_route: string;
+  bus_departure_time: string;
+  bus_arrival_time: string;
+  travel_duration: string;
+  substitude_times: string;
 }
 
 export interface Count {

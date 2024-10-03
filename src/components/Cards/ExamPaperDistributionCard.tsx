@@ -13,12 +13,42 @@ const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
 
 const CentreCard = ({ centre }: { centre: ExamCentre }) => {
     return (
-        <div className="border rounded-lg shadow-md p-4 m-2 bg-white dark:bg-slate-800 dark:text-white">
-            <h3 className="text-xl font-semibold text-black dark:text-white">{centre.name}</h3>
-            <p><strong>Bus Route:</strong> {centre.bus_route}</p>
+        <div className="border border-slate-300 rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
+            <h3 className="text-xl font-semibold text-black dark:text-white mb-2">{centre.name}</h3>
+            <div className="text-black dark:text-white py-2">
+                <table className="table-fixed border-separate border-spacing-1 text-black dark:text-white">
+                    <tbody>
+                        <tr>
+                            <td>Bus Route</td>
+                            <td>:</td>
+                            <td><strong>{centre.bus_route}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Departure Time</td>
+                            <td>:</td>
+                            <td><strong>{centre.bus_departure_time}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Arrival Time</td>
+                            <td>:</td>
+                            <td><strong>{centre.bus_arrival_time}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Travel Duration</td>
+                            <td>:</td>
+                            <td><strong>{centre.travel_duration}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Substitude Times</td>
+                            <td>:</td>
+                            <td><strong>{centre.substitude_times}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div className="mt-2">
                 {centre.counts && centre.counts.length > 0 ? (
-                    <table className="min-w-full divide-y divide-gray-200 mt-2 dark:bg-slate-800">
+                    <table className="min-w-full divide-y divide-gray-200 mt-2 dark:bg-slate-800 text-black dark:text-white">
                         <thead className="bg-gray">
                             <tr>
                                 <th className="px-4 py-2 text-left text-md font-medium text-black">Subject</th>
@@ -26,7 +56,7 @@ const CentreCard = ({ centre }: { centre: ExamCentre }) => {
                                 <th className="px-4 py-2 text-left text-md font-medium text-black">Count</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-slate-400">
                             {centre.counts.map((paper, i) => (
                                 <tr key={i} className='dark:bg-slate-700'>
                                     <td className="px-4 py-2 ">{paper.subject}</td>

@@ -43,7 +43,7 @@ const ExamPaperDistributionCardView = () => {
             Select District
           </label>
           <select
-            className="block w-full border border-gray-300 bg-white dark:bg-slate-800 dark:border-gray-600 text-black dark:text-white py-2 px-3 focus:outline-none focus:ring focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
+            className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             name="selectDistrict"
             id="selectDistrict"
             value={district.toString()}
@@ -59,7 +59,7 @@ const ExamPaperDistributionCardView = () => {
             Select Centre
           </label>
           <select
-            className="block w-full border border-gray-300 bg-white dark:bg-slate-800 dark:border-gray-600 text-black dark:text-white py-2 px-3 focus:outline-none focus:ring focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
+            className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             name="selectCentre"
             id="selectCentre"
             value={centre.toString()}

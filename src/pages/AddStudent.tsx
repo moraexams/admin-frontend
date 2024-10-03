@@ -98,7 +98,7 @@ const AddStudent = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName='Add Student' />
-            <div className="w-full w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
+            <div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <div>
                         <div className="mb-4.5">
