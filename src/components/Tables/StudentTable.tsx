@@ -90,17 +90,22 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
 
   const currCenters = centers.filter(center => center.district_id === examDistrictId);
 
-  useEffect(() => {
-    const setCenters = async () => {
-      try {
-        setCentreId(currCenters[0]?.id ? currCenters[0].id : 100); //make it return error
-      } catch (error) {
-        console.log('Failed to fetch data', error);
-      }
-    };
+  const examDistrictChange = (district_id: number) => {
+    setExamDistrictId(district_id);
+    const currentCenters = centers.filter(center => center.district_id === district_id);
+    setCentreId(currentCenters[0]?.id ? currentCenters[0].id : 100); //make it return error
+  } 
+  // useEffect(() => {
+  //   const setCenters = async () => {
+  //     try {
+  //       setCentreId(currCenters[0]?.id ? currCenters[0].id : 100); //make it return error
+  //     } catch (error) {
+  //       console.log('Failed to fetch data', error);
+  //     }
+  //   };
 
-    setCenters();
-  }, [examDistrictId]);
+  //   setCenters();
+  // }, [examDistrictId]);
   // useEffect(() => {
   //   const currentDistrict = centersDistricts.find(district => district.id === examDistrictId)!;
   //   //console.log(currentDistrict?.exam_centres);
@@ -766,7 +771,7 @@ const StudentTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearch
                     </label>
                     <select
                       value={examDistrictId}
-                      onChange={(e) => setExamDistrictId(Number(e.target.value))}
+                      onChange={(e) => examDistrictChange(Number(e.target.value))}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="" disabled>Select Exam District</option>
