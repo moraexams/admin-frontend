@@ -112,6 +112,7 @@ const AddStudent = () => {
                                     setIndexNo(Number(e.target.value))
                                 }
                                 placeholder="Enter Index No"
+                                inputMode="numeric"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
@@ -228,6 +229,7 @@ const AddStudent = () => {
                                         setNic(e.target.value)
                                     }
                                     placeholder="Enter NIC"
+                                    inputMode="numeric"
                                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                 />
                             </div>
@@ -300,6 +302,7 @@ const AddStudent = () => {
                                     setPhone(e.target.value)
                                 }
                                 placeholder="Enter Contact Number"
+                                inputMode="numeric"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
