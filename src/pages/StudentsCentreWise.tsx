@@ -55,9 +55,6 @@ const StudentsCentreWise = () => {
     if (error) {
         return <div>{error}</div>;
     }
-    if (error) {
-        return <div>{error}</div>
-    }
     return (
         <DefaultLayout>
             <Breadcrumb pageName='Students' />
