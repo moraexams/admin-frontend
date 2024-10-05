@@ -37,11 +37,8 @@ const ExamPaperDistributionCardView = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Exam Paper Distribution Card View" />
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-x-4">
         <div className="mb-5.5">
-          <label htmlFor="selectCentre" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Select District
-          </label>
           <select
             className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             name="selectDistrict"
@@ -50,14 +47,11 @@ const ExamPaperDistributionCardView = () => {
             onChange={(e) => handleDistrictSelect(Number(e.target.value))}
           >
             {
-              districts.map((district) => { return (<option value={district.id}>{district.name}</option>) })
+              districts.map((district) => { return (<option key={district.id} value={district.id}>{district.name}</option>) })
             }
           </select>
         </div>
         <div className="mb-5.5">
-          <label htmlFor="selectCentre" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Select Centre
-          </label>
           <select
             className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             name="selectCentre"
