@@ -1,4 +1,5 @@
-import { Coordinator, District, ExamCentre } from '../../types/types';
+import { sortByKey } from '../../services/filter';
+import { Coordinator, Count, District, ExamCentre } from '../../types/types';
 
 const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
     return (
@@ -57,7 +58,7 @@ const CentreCard = ({ centre }: { centre: ExamCentre }) => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-400">
-                            {centre.counts.map((paper, i) => (
+                            {sortByKey(centre.counts, "subject").map((paper: Count, i: number) => (
                                 <tr key={i} className='dark:bg-slate-700'>
                                     <td className="px-4 py-2 ">{paper.subject}</td>
                                     <td className="px-4 py-2 ">{paper.medium}</td>
