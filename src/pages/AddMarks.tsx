@@ -21,6 +21,8 @@ const AddMarks = () => {
     const [subject, setSubject] = useState(searchParams.get("subject") || defaultSubject);
     const [part, setPart] = useState(searchParams.get("part") || defaultPart);
 
+    const [submitDisabled, setSubmitDisabled] = useState(true);
+
     // Update URL query params when component mounts or when subject/part state changes
     useEffect(() => {
         if (!searchParams.get("subject") || !searchParams.get("part")) {
@@ -75,11 +77,13 @@ const AddMarks = () => {
             if (indexNo < 100000 || indexNo > 360000) {
                 setName('Student Not Found');
                 setMark(0);
+                setSubmitDisabled(true);
                 return
             };
             const studentMarks = await getStudentMarksData(indexNo);
             if (studentMarks) {
                 setName(studentMarks.name);
+                setSubmitDisabled(false);
                 if (studentMarks[`${subject}_${part}`]) {
                     setMark(studentMarks[`${subject}_${part}`]);
                 } else {
@@ -88,6 +92,7 @@ const AddMarks = () => {
             } else {
                 setName('Student Not Found');
                 setMark(0);
+                setSubmitDisabled(true);
             };
         };
 
@@ -109,7 +114,7 @@ const AddMarks = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName='Add Student' />
+            <Breadcrumb pageName='Add Marks' />
             <div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
                 <div>
                     <div className="flex flex-wrap gap-x-4">
@@ -199,7 +204,10 @@ const AddMarks = () => {
                     </div>
                 </div>
                 <div className="w-full px-3 pt-4">
-                    <button onClick={handleSubmit} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+                    <button
+                        disabled={submitDisabled}
+                        onClick={handleSubmit} className={"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90 "  +
+                            (submitDisabled && 'bg-opacity-70 hover:bg-opacity-70')}>
                         Add Marks
                     </button>
                 </div>
