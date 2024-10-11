@@ -62,7 +62,7 @@ module.exports = {
         bodydark: '#AEB7C0',
         bodydark1: '#DEE4EE',
         bodydark2: '#8A99AF',
-        primary: '#7F27FF',
+        primary: '#6528F7',
         secondary: '#865DFF',
         stroke: '#E2E8F0',
         gray: '#EFF4FB', // 
@@ -84,7 +84,7 @@ module.exports = {
         'meta-6': '#FFBA00',
         'meta-7': '#FF6766',
         'meta-8': '#F0950C',
-        'meta-9': '#E5E7EB',
+        'meta-9': '#7F27FF',
         success: '#219653',
         danger: '#D34053',
         warning: '#FFA70B',

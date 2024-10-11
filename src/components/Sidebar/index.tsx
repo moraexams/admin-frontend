@@ -74,7 +74,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/">
           {/* <img className="hidden dark:block h-40" src={DarkLogo} alt="Logo" /> */}
-          <img className="h-36" src={DarkLogo} alt="Logo" />
+          <img className="w-auto" src={DarkLogo} alt="Logo" />
         </NavLink>
 
         <button

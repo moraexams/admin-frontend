@@ -73,6 +73,8 @@ const AddMarks = () => {
     }
 
     useEffect(() => {
+        setName('Loading...');
+        setMark(0);
         const fetchData = async () => {
             if (indexNo < 100000 || indexNo > 360000) {
                 setName('Student Not Found');
@@ -128,7 +130,7 @@ const AddMarks = () => {
                             >
                                 <option value="s1">Math/Bio</option>
                                 <option value="s2">Physics</option>
-                                <option value="s3">Chem/ICT</option>
+                                <option value="s3">Che/ICT</option>
                             </select>
                         </div>
                         <div className="mb-5.5">
@@ -139,8 +141,8 @@ const AddMarks = () => {
                                 onChange={handlePartChange}
                                 disabled={selectDisabled}
                             >
-                                <option value="p1">Part 1</option>
-                                <option value="p2">Part 2</option>
+                                <option value="p1">I</option>
+                                <option value="p2">II</option>
                             </select>
                         </div>
 
@@ -203,13 +205,33 @@ const AddMarks = () => {
                         />
                     </div>
                 </div>
+
+                <div className="-mx-3 flex flex-wrap gap-y-4">
+                    <div className="px-3 2xsm:w-1/4">
+                        <button onClick={() => setIndexNo(indexNo - 1)} className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center">
+                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div className="px-3 2xsm:w-1/4">
+                        <button onClick={() => setIndexNo(indexNo + 1)} className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center">
+                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+                            </svg>
+
+                        </button>
+                    </div>
+                    <div className="w-full px-3 2xsm:w-1/2">
+                        <button
+                            disabled={submitDisabled}
+                            onClick={handleSubmit} className={"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition " +
+                                (submitDisabled ? 'bg-opacity-70 hover:bg-opacity-70' : 'hover:bg-opacity-90')}>
+                            Add Marks
+                        </button>
+                    </div>
+                </div>
                 <div className="w-full px-3 pt-4">
-                    <button
-                        disabled={submitDisabled}
-                        onClick={handleSubmit} className={"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90 "  +
-                            (submitDisabled && 'bg-opacity-70 hover:bg-opacity-70')}>
-                        Add Marks
-                    </button>
                 </div>
 
             </div>
