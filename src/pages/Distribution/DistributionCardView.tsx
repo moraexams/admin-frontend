@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import { District } from '../types/types';
-import ExamPaperDistributionCard from '../components/Cards/ExamPaperDistributionCard';
-import { getDistributions } from '../services/distributionService';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import { District } from '../../types/types';
+import ExamPaperDistributionCard from '../../components/Cards/ExamPaperDistributionCard';
+import { getDistributions } from '../../services/distributionService';
 
 
 const ExamPaperDistributionCardView = () => {

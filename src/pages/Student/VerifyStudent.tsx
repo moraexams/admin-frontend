@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import Snackbar from '../components/Snackbar';
-import { SnackBarConfig } from '../types/snackbar';
-import { getStudentbyIndex, verifyStudent } from '../services/studentService';
-import { Student } from '../types/types';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import Snackbar from '../../components/Snackbar';
+import { SnackBarConfig } from '../../types/snackbar';
+import { getStudentbyIndex, verifyStudent } from '../../services/studentService';
+import { Student } from '../../types/types';
 
 const VerifyStudent = () => {
     const [indexNo, setIndexNo] = useState<number>(0);

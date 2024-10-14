@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import Snackbar from '../components/Snackbar';
-import { SnackBarConfig } from '../types/snackbar';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import Snackbar from '../../components/Snackbar';
+import { SnackBarConfig } from '../../types/snackbar';
 import { useSearchParams } from 'react-router-dom';
-import { enterMark, getStudentMarksData } from '../services/markservices';
+import { enterMark, getStudentMarksData } from '../../services/markservices';
 
 const AddMarks = () => {
     const [searchParams, setSearchParams] = useSearchParams();

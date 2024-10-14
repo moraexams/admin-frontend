@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import { District } from '../types/types';
-import { getDistricts } from '../services/districtService';
-import DistrictsTable from '../components/Tables/DistrictsTable';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import { District } from '../../types/types';
+import { getDistricts } from '../../services/districtService';
+import DistrictsTable from '../../components/Tables/DistrictsTable';
 
 const Districts = () => {
   const [districts, setDistricts] = useState<District[]>([]);

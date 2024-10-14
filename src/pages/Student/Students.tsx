@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { getStudents } from '../services/studentService';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import { Student } from '../types/types';
+import { getStudents } from '../../services/studentService';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import { Student } from '../../types/types';
 
-import StudentTable  from '../components/Tables/StudentTable';
+import StudentTable  from '../../components/Tables/StudentTable';
 
 const Students = () => {
     const [students, setStudents] = useState<Student[]>([]);

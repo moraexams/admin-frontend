@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import { District, ExamCentre, Stream } from '../types/types';
-import { getDistrictsWithCentres } from '../services/districtService';
-import { getCenters } from '../services/examCentreService';
-import { getStreams } from '../services/streamServices';
-import { addStudent } from '../services/studentService';
-import Snackbar from '../components/Snackbar';
-import { SnackBarConfig } from '../types/snackbar';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import { District, ExamCentre, Stream } from '../../types/types';
+import { getDistrictsWithCentres } from '../../services/districtService';
+import { getCenters } from '../../services/examCentreService';
+import { getStreams } from '../../services/streamServices';
+import { addStudent } from '../../services/studentService';
+import Snackbar from '../../components/Snackbar';
+import { SnackBarConfig } from '../../types/snackbar';
 
 const AddStudent = () => {
     const [indexNo, setIndexNo] = useState<number>(0);

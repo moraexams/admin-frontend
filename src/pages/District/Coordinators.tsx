@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../layout/DefaultLayout';
-import { District } from '../types/types';
-import { getDistrictsWithCentres } from '../services/districtService';
-import ExamCentresTable from '../components/Tables/ExamCentresTable';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import { District } from '../../types/types';
+import { getDistrictsWithCoordinators } from '../../services/districtService';
+import CoordinatorsTable from '../../components/Tables/CoordinatorsTable';
 
-const Districts = () => {
+const Coordinators = () => {
   const [districts, setDistricts] = useState<District[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [searchKey, setSearchKey] = useState<string>('');
 
+  const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
+
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        const districts = await getDistrictsWithCentres();
+        const districts = await getDistrictsWithCoordinators();
         setDistricts(districts);
       } catch (error) {
         setError('Failed to fetch districts');
@@ -25,13 +27,13 @@ const Districts = () => {
     };
 
     fetchDistricts();
-  }, []);
+  }, [refreshKey]);
   if (error) {
     return <div>{error}</div>;
   }
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Exam Centres" />
+      <Breadcrumb pageName="Coordinators" />
 
       <div className="flex gap-4">
         <div className="mb-5.5">
@@ -60,12 +62,11 @@ const Districts = () => {
           />
         </div>
       </div>
-
       <div className="flex flex-col gap-10">
-        {loading ? <div>Loading...</div> : <ExamCentresTable districtData={districts} searchKey={searchKey} itemsPerPage={itemsPerPage} />}
+        {loading ? <div>Loading...</div> : <CoordinatorsTable districtData={districts} searchKey={searchKey} itemsPerPage={itemsPerPage} setRefreshKey={setRefreshKey}/>}
       </div>
     </DefaultLayout>
   );
 };
 
-export default Districts;
+export default Coordinators;
