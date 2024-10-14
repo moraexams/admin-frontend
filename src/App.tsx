@@ -18,7 +18,8 @@ import StudentsCentreWise from './pages/Student/StudentsCentreWise';
 import AddStudent from './pages/Student/AddStudent';
 import UnVerifiedStudents from './pages/Student/UnVerifiedStudents';
 import VerifyStudent from './pages/Student/VerifyStudent';
-import AddMarks from './pages/Marks/AddMarks';
+import EnterMarks from './pages/Marks/EnterMarks';
+import VerifyMarks from './pages/Marks/VerifyMarks';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -173,11 +174,20 @@ function App() {
           }
         />
         <Route
-          path="/marks/add"
+          path="/marks/enter"
           element={
             <>
-              <PageTitle title="Add Marks | MoraExams" />
-              <AddMarks />
+              <PageTitle title="Enter Marks | MoraExams" />
+              <EnterMarks />
+            </>
+          }
+        />
+        <Route
+          path="/marks/verify"
+          element={
+            <>
+              <PageTitle title="Verify Marks | MoraExams" />
+              <VerifyMarks />
             </>
           }
         />

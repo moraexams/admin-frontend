@@ -4,9 +4,9 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import Snackbar from '../../components/Snackbar';
 import { SnackBarConfig } from '../../types/snackbar';
 import { useSearchParams } from 'react-router-dom';
-import { enterMark, getStudentMarksData } from '../../services/markservices';
+import { getStudentVerificationMarksData, verifyMark } from '../../services/markservices';
 
-const AddMarks = () => {
+const VerifyMarks = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     // Default values
@@ -22,6 +22,7 @@ const AddMarks = () => {
     const [part, setPart] = useState(searchParams.get("part") || defaultPart);
 
     const [submitDisabled, setSubmitDisabled] = useState(true);
+    const [refresh, setRefresh] = useState(false);
 
     // Update URL query params when component mounts or when subject/part state changes
     useEffect(() => {
@@ -51,55 +52,47 @@ const AddMarks = () => {
         setSearchParams({ subject, part: newPart });
     };
     const [indexNo, setIndexNo] = useState<number>(0);
-    const [name, setName] = useState<string>('');
-    const [mark, setMark] = useState<number>(0);
+    const [studentMarks, setStudentMarks] = useState<any>({});
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = async () => {
         if (indexNo < 100000 || indexNo > 360000) {
             showSnackBar(false, "Invalid Index No");
             return;
         }
-        if (mark < 0 || mark > 100) {
-            showSnackBar(false, "Invalid Mark");
-            return;
-        }
 
         // Call the API to add the mark
-        await enterMark(indexNo, subject, part, mark).then(() => {
+        await verifyMark(indexNo, subject, part).then(() => {
             showSnackBar(true, "Mark Added Successfully");
+            setRefresh(!refresh);
         }).catch((error) => {
             showSnackBar(false, error);
         });
     }
 
     useEffect(() => {
-        setName('Loading...');
-        setMark(0);
+        setLoading(true);
+        setSubmitDisabled(true);
         const fetchData = async () => {
             if (indexNo < 100000 || indexNo > 360000) {
-                setName('Student Not Found');
-                setMark(0);
-                setSubmitDisabled(true);
+                setLoading(false);
+                setStudentMarks({});
                 return
             };
-            const studentMarks = await getStudentMarksData(indexNo);
+            const studentMarks = await getStudentVerificationMarksData(indexNo, subject, part);
             if (studentMarks) {
-                setName(studentMarks.name);
-                setSubmitDisabled(false);
-                if (studentMarks[`${subject}_${part}`]) {
-                    setMark(studentMarks[`${subject}_${part}`]);
-                } else {
-                    setMark(0);
-                }
+                setStudentMarks(studentMarks);
+                if (studentMarks.entered_by && !studentMarks.verified_by) {
+                    setSubmitDisabled(false);
+                } 
             } else {
-                setName('Student Not Found');
-                setMark(0);
-                setSubmitDisabled(true);
+                setStudentMarks({});
             };
+            setLoading(false);
         };
 
         fetchData();
-    }, [indexNo, subject, part]);
+    }, [indexNo, subject, part, refresh]);
 
     const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
         message: '',
@@ -116,7 +109,7 @@ const AddMarks = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName='Add Marks' />
+            <Breadcrumb pageName='Verify Marks' />
             <div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
                 <div>
                     <div className="flex flex-wrap gap-x-4">
@@ -174,6 +167,7 @@ const AddMarks = () => {
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                     </div>
+
                     <div className="mb-4.5">
                         <label className="mb-2.5 block text-black dark:text-white">
                             Student Name
@@ -181,43 +175,48 @@ const AddMarks = () => {
                         <input
                             disabled
                             type="text"
-                            value={name}
-                            onChange={(e) =>
-                                setName(e.target.value)
-                            }
+                            value={loading ? "Loading..." : (studentMarks.name? studentMarks.name : "Not Found")}
                             placeholder="Student Name"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                     </div>
                     <div className="mb-4.5">
                         <label className="mb-2.5 block text-black dark:text-white">
-                            Marks <span className="text-meta-1">*</span>
+                            Marks
                         </label>
                         <input
+                            disabled
                             type="text"
-                            value={mark}
-                            onChange={(e) =>
-                                setMark(Number(e.target.value))
-                            }
+                            value={studentMarks.entered_by ? studentMarks.mark : "Not Entered Yet"}
                             placeholder="Enter Index No"
                             inputMode="numeric"
-                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black font-bold outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                     </div>
+
+                    {studentMarks.entered_by && <div className="mb-4.5">
+                        Entered by: {studentMarks.entered_by} on {studentMarks.entered_at}
+                    </div>
+                    }
+                    {studentMarks.verified_by && <div className="mb-4.5">
+                        Verified by: {studentMarks.verified_by} on {studentMarks.verified_at}
+                    </div>
+                    }
+
                 </div>
 
                 <div className="-mx-3 flex flex-wrap gap-y-4">
                     <div className="px-3 2xsm:w-1/4">
                         <button onClick={() => setIndexNo(indexNo - 1)} className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center">
                             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
                             </svg>
                         </button>
                     </div>
                     <div className="px-3 2xsm:w-1/4">
                         <button onClick={() => setIndexNo(indexNo + 1)} className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center">
                             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
                             </svg>
 
                         </button>
@@ -227,7 +226,7 @@ const AddMarks = () => {
                             disabled={submitDisabled}
                             onClick={handleSubmit} className={"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition " +
                                 (submitDisabled ? 'bg-opacity-70 hover:bg-opacity-70' : 'hover:bg-opacity-90')}>
-                            Add Marks
+                            Verify Marks
                         </button>
                     </div>
                 </div>
@@ -241,4 +240,4 @@ const AddMarks = () => {
     );
 }
 
-export default AddMarks;
+export default VerifyMarks;
