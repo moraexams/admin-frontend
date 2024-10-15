@@ -52,14 +52,16 @@ const EnterMarks = () => {
     };
     const [indexNo, setIndexNo] = useState<number>(0);
     const [name, setName] = useState<string>('');
-    const [mark, setMark] = useState<number | null>(null);
+    const [stream, setStream] = useState<string>('');
+    const [centre, setCentre] = useState<string>('');
+    const [mark, setMark] = useState<number>(0);
 
     const handleSubmit = async () => {
         if (indexNo < 100000 || indexNo > 360000) {
             showSnackBar(false, "Invalid Index No");
             return;
         }
-        if (!mark || mark < 0 || mark > 100) {
+        if (mark < 0 || mark > 100) {
             showSnackBar(false, "Invalid Mark");
             return;
         }
@@ -72,29 +74,32 @@ const EnterMarks = () => {
         });
     }
 
-    useEffect(() => {
-        setName('Loading...');
+    const setContent = (message: string) => {
+        setName(message);
+        setCentre(message);
+        setStream(message);
         setMark(0);
+        setSubmitDisabled(true);
+    }
+
+    useEffect(() => {
+        setContent("Loading...");
         const fetchData = async () => {
             if (indexNo < 100000 || indexNo > 360000) {
-                setName('Student Not Found');
-                setMark(0);
-                setSubmitDisabled(true);
+                setContent('Invalid Index No');
                 return
             };
             const studentMarks = await getStudentMarksData(indexNo);
             if (studentMarks) {
                 setName(studentMarks.name);
+                setStream(studentMarks.stream);
+                setCentre(studentMarks.centre);
                 setSubmitDisabled(false);
                 if (studentMarks[`${subject}_${part}`]) {
                     setMark(studentMarks[`${subject}_${part}`]);
-                } else {
-                    setMark(0);
                 }
             } else {
-                setName('Student Not Found');
-                setMark(0);
-                setSubmitDisabled(true);
+                setContent('Student Not Found');
             };
         };
 
@@ -160,13 +165,24 @@ const EnterMarks = () => {
                         </div>
                     </div>
                     <div className="mb-4.5">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                            Student Name
-                        </label>
                         <input
                             disabled
                             type="text"
                             value={name}
+                            placeholder="Student Name"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                        <input
+                            disabled
+                            type="text"
+                            value={stream}
+                            placeholder="Student Name"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                        <input
+                            disabled
+                            type="text"
+                            value={centre}
                             placeholder="Student Name"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
@@ -192,7 +208,7 @@ const EnterMarks = () => {
                         </label>
                         <input
                             type="number"
-                            value={mark ? mark : ''}
+                            value={mark}
                             onChange={(e) =>
                                 setMark(Number(e.target.value))
                             }
