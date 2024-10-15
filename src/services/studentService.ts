@@ -242,3 +242,21 @@ export const getStudentforCheck = async (id: number) => {
     return error;
   }
 };
+
+export const getStudentMarksByCentre = async (centre_id: number, stream_id: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get(
+      `/student/marks/filter?exam_centre_id=${centre_id}${stream_id != -1 && "&stream_id=" + stream_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching Students: ");
+    return error;
+  }
+};

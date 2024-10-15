@@ -98,6 +98,18 @@ export interface Student {
   created_at: string,
 }
 
+export interface StudentMark {
+  index_no:number,
+  name:string,
+  stream: string,
+  s1_p1:number,
+  s1_p2:number,
+  s2_p1:number,
+  s2_p2:number,
+  s3_p1:number,
+  s3_p2:number,
+}
+
 export interface Stream {
   id: number;
   name: string;
