@@ -210,7 +210,7 @@ export const verifyStudent = async (index_no: number) => {
 };
 
 export const getStudentbyIndex = async (index_no: number) => {
-  if (index_no >= 100000) {
+  if (index_no >= 110000) {
     try {
       const token = localStorage.getItem("token");
       const response = await axiosInstance.get("/student/" + index_no, {

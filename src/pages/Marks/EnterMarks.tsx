@@ -54,16 +54,23 @@ const EnterMarks = () => {
     const [name, setName] = useState<string>('');
     const [stream, setStream] = useState<string>('');
     const [centre, setCentre] = useState<string>('');
-    const [mark, setMark] = useState<number>(0);
+    const [mark, setMark] = useState<number | null>(null);
 
     const handleSubmit = async () => {
-        if (indexNo < 100000 || indexNo > 360000) {
+        if (indexNo < 110000 || indexNo > 360000) {
             showSnackBar(false, "Invalid Index No");
             return;
         }
-        if (mark < 0 || mark > 100) {
-            showSnackBar(false, "Invalid Mark");
-            return;
+        if (mark) {
+            if (mark < 0 || mark > 100) {
+                showSnackBar(false, "Invalid Mark");
+                return;
+            }
+        } else {
+            if (mark !== 0) {
+                showSnackBar(false, "Invalid Mark");
+                return;
+            }
         }
 
         // Call the API to add the mark
@@ -78,14 +85,14 @@ const EnterMarks = () => {
         setName(message);
         setCentre(message);
         setStream(message);
-        setMark(0);
+        setMark(null);
         setSubmitDisabled(true);
     }
 
     useEffect(() => {
         setContent("Loading...");
         const fetchData = async () => {
-            if (indexNo < 100000 || indexNo > 360000) {
+            if (indexNo < 110000 || indexNo > 360000) {
                 setContent('Invalid Index No');
                 return
             };
@@ -95,8 +102,9 @@ const EnterMarks = () => {
                 setStream(studentMarks.stream);
                 setCentre(studentMarks.centre);
                 setSubmitDisabled(false);
-                if (studentMarks[`${subject}_${part}`]) {
+                if (studentMarks[`${subject}_${part}`] || studentMarks[`${subject}_${part}`] === 0) {
                     setMark(studentMarks[`${subject}_${part}`]);
+                    console.log(studentMarks[`${subject}_${part}`]);
                 }
             } else {
                 setContent('Student Not Found');
@@ -208,7 +216,7 @@ const EnterMarks = () => {
                         </label>
                         <input
                             type="number"
-                            value={mark}
+                            value={mark ? mark : (mark == 0 ? 0 : '')}
                             onChange={(e) =>
                                 setMark(Number(e.target.value))
                             }

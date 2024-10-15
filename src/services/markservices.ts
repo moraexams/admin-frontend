@@ -18,7 +18,7 @@ export const getMarkbyIndexNo = async (index_no: number) => {
 };
 
 export const getStudentMarksData = async (index_no: number) => {
-  if (index_no >= 100000) {
+  if (index_no >= 110000) {
     try {
       const token = localStorage.getItem("token");
       const response = await axiosInstance.get("/mark/check/" + index_no, {
@@ -39,7 +39,7 @@ export const getStudentVerificationMarksData = async (
   subject: string,
   part: string
 ) => {
-  if (index_no >= 100000) {
+  if (index_no >= 110000) {
     try {
       const token = localStorage.getItem("token");
       const response = await axiosInstance.get(`/mark/verify/${index_no}?subject=${subject}_${part}`, {
@@ -60,7 +60,7 @@ export const verifyMark = async (
   subject: string,
   part: string
 ) => {
-  if (index_no >= 100000) {
+  if (index_no >= 110000) {
     try {
       const token = localStorage.getItem("token");
       const response = await axiosInstance.put(`/mark/verify/${index_no}?subject=${subject}_${part}`, {}, {

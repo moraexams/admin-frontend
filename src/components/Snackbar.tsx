@@ -4,7 +4,7 @@ export default function Snackbar({ config }: { config: SnackBarConfig }) {
     return (
         <div
             className={`fixed bottom-10 left-1/2 z-999999 transition-transform duration-500 ease-in-out transform 
-                        ${config.show ? 'translate-y-0' : 'translate-y-20'} 
+                        ${config.show ? 'translate-y-0' : 'translate-y-40'} 
                         ${config.type ? 'bg-green-500' : 'bg-red-500'} 
                         text-white flex px-30 py-2 rounded-md shadow-lg -translate-x-1/2`}
         >

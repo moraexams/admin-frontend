@@ -56,7 +56,7 @@ const VerifyMarks = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = async () => {
-        if (indexNo < 100000 || indexNo > 360000) {
+        if (indexNo < 110000 || indexNo > 360000) {
             showSnackBar(false, "Invalid Index No");
             return;
         }
@@ -74,7 +74,7 @@ const VerifyMarks = () => {
         setLoading(true);
         setSubmitDisabled(true);
         const fetchData = async () => {
-            if (indexNo < 100000 || indexNo > 360000) {
+            if (indexNo < 110000 || indexNo > 360000) {
                 setLoading(false);
                 setStudentMarks({});
                 return
