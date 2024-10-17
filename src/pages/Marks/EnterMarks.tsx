@@ -21,6 +21,12 @@ const EnterMarks = () => {
     const [subject, setSubject] = useState(searchParams.get("subject") || defaultSubject);
     const [part, setPart] = useState(searchParams.get("part") || defaultPart);
 
+    const [indexNo, setIndexNo] = useState<number>(Number(searchParams.get("index_no")) || 0);
+    const [name, setName] = useState<string>('');
+    const [stream, setStream] = useState<string>('');
+    const [centre, setCentre] = useState<string>('');
+    const [mark, setMark] = useState<number | null>(null);
+
     const [submitDisabled, setSubmitDisabled] = useState(true);
 
     // Update URL query params when component mounts or when subject/part state changes
@@ -50,11 +56,6 @@ const EnterMarks = () => {
         setPart(newPart);
         setSearchParams({ subject, part: newPart });
     };
-    const [indexNo, setIndexNo] = useState<number>(0);
-    const [name, setName] = useState<string>('');
-    const [stream, setStream] = useState<string>('');
-    const [centre, setCentre] = useState<string>('');
-    const [mark, setMark] = useState<number | null>(null);
 
     const handleSubmit = async () => {
         if (indexNo < 110000 || indexNo > 360000) {
@@ -91,6 +92,7 @@ const EnterMarks = () => {
 
     useEffect(() => {
         setContent("Loading...");
+        setSearchParams({ subject, part, index_no: String(indexNo) });
         const fetchData = async () => {
             if (indexNo < 110000 || indexNo > 360000) {
                 setContent('Invalid Index No');
@@ -248,7 +250,7 @@ const EnterMarks = () => {
                             disabled={submitDisabled}
                             onClick={handleSubmit} className={"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition " +
                                 (submitDisabled ? 'bg-opacity-70 hover:bg-opacity-70' : 'hover:bg-opacity-90')}>
-                            Add Marks
+                            Enter Marks
                         </button>
                     </div>
                 </div>

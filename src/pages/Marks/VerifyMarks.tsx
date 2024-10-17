@@ -5,6 +5,7 @@ import Snackbar from '../../components/Snackbar';
 import { SnackBarConfig } from '../../types/snackbar';
 import { useSearchParams } from 'react-router-dom';
 import { getStudentVerificationMarksData, verifyMark } from '../../services/markservices';
+import { convertUTCToIST } from '../../services/utils';
 
 const VerifyMarks = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -20,6 +21,10 @@ const VerifyMarks = () => {
 
     const [subject, setSubject] = useState(searchParams.get("subject") || defaultSubject);
     const [part, setPart] = useState(searchParams.get("part") || defaultPart);
+
+    const [indexNo, setIndexNo] = useState<number>(Number(searchParams.get("index_no")) || 0);
+    const [studentMarks, setStudentMarks] = useState<any>({});
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [submitDisabled, setSubmitDisabled] = useState(true);
     const [refresh, setRefresh] = useState(false);
@@ -51,9 +56,6 @@ const VerifyMarks = () => {
         setPart(newPart);
         setSearchParams({ subject, part: newPart });
     };
-    const [indexNo, setIndexNo] = useState<number>(0);
-    const [studentMarks, setStudentMarks] = useState<any>({});
-    const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = async () => {
         if (indexNo < 110000 || indexNo > 360000) {
@@ -73,6 +75,7 @@ const VerifyMarks = () => {
     useEffect(() => {
         setLoading(true);
         setSubmitDisabled(true);
+        setSearchParams({ subject, part, index_no: String(indexNo) });
         const fetchData = async () => {
             if (indexNo < 110000 || indexNo > 360000) {
                 setLoading(false);
@@ -206,11 +209,11 @@ const VerifyMarks = () => {
                     </div>
 
                     {studentMarks.entered_by && <div className="mb-4.5">
-                        Entered by: {studentMarks.entered_by} on {studentMarks.entered_at}
+                        Entered by: {studentMarks.entered_by} at {convertUTCToIST(studentMarks.entered_at)}
                     </div>
                     }
                     {studentMarks.verified_by && <div className="mb-4.5">
-                        Verified by: {studentMarks.verified_by} on {studentMarks.verified_at}
+                        Verified by: {studentMarks.verified_by} at {convertUTCToIST(studentMarks.verified_at)}
                     </div>
                     }
 
