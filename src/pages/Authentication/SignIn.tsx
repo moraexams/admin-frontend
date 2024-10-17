@@ -9,18 +9,23 @@ const SignIn: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignIn = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    setLoading(true);
     if (username != '' && password != '') {
       await login(username, password).then(() => {
         navigate('/');
       }
-      ).catch((error) => { 
+      ).catch((error) => {
         setError(error);
+        setLoading(false);
       });
     }
   }
+
+
 
   useEffect(() => {
     if (token) {
@@ -36,8 +41,8 @@ const SignIn: React.FC = () => {
             <div className="flex flex-wrap items-center">
               <div className="hidden w-full xl:block xl:w-1/2">
                 <div className="py-17.5 px-26 text-center">
-                  
-                <div className="mb-5.5 inline-block">
+
+                  <div className="mb-5.5 inline-block">
                     <img className="hidden dark:block h-36" src={Logo} alt="Logo" />
                     <img className="dark:hidden h-36" src={Logo} alt="Logo" />
                   </div>
@@ -49,11 +54,19 @@ const SignIn: React.FC = () => {
               </div>
 
               <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-                <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-                  {/* <span className="mb-1.5 block font-medium">Start for free</span> */}
-                  <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                <div className="w-full p-10 sm:p-12.5 xl:p-17.5">
+
+                  <h2 className="mb-9 text-2xl font-bold text-black text-center xl:text-left dark:text-white sm:text-title-xl2">
                     Sign In to MoraExams
                   </h2>
+
+                  <div className="w-full xl:hidden">
+                    <div className="px-10 text-center">
+                      <div className="mb-5.5 inline-block">
+                        <img className="h-20" src={Logo} alt="Logo" />
+                      </div>
+                    </div>
+                  </div>
 
                   <form>
                     <div className="mb-4">
@@ -144,10 +157,12 @@ const SignIn: React.FC = () => {
 
                     <div className="my-5">
                       <button
-                        className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                        className={"w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90" + (loading ? ' cursor-progress bg-opacity-90' : '')}
                         onClick={handleSignIn}
+                        disabled={loading}
                       >
-                        Sign In</button>
+                        {loading ? 'Signing In...' : 'Sign In'}
+                      </button>
                     </div>
 
                     <div className="mt-6 text-center">

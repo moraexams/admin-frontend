@@ -370,7 +370,7 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
               </button>
             </div>
             <div className="w-full px-3 2xsm:w-1/2">
-              <button onClick={() => alert("need to implement")} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+              <button onClick={() => studentMark && handleEdit(studentMark?.index_no)} className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
                 Edit
               </button>
             </div>
