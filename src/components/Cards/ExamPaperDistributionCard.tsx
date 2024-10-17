@@ -1,4 +1,4 @@
-import { sortByKey } from '../../services/filter';
+import { sortByKey } from '../../services/utils';
 import { Coordinator, Count, District, ExamCentre } from '../../types/types';
 
 const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {

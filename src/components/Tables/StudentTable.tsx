@@ -6,7 +6,7 @@ import { getDistrictsWithCentres } from '../../services/districtService';
 import { getStreams } from '../../services/streamServices';
 import { getCenters } from '../../services/examCentreService';
 import { getUsers } from '../../services/userService';
-import { filterIt } from '../../services/filter';
+import { filterIt } from '../../services/utils';
 import { SnackBarConfig } from '../../types/snackbar';
 import Snackbar from '../Snackbar';
 

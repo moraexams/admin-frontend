@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Count, District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
-import { filterIt } from '../../services/filter';
+import { filterIt } from '../../services/utils';
 import React from 'react';
 
 const ExamPaperDistributionTable = ({ districtData, searchKey, itemsPerPage }: { districtData: District[], searchKey: string, itemsPerPage: number }) => {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addCoordinator, deleteCoordinator, updateCoordinator } from '../../services/coordinatorsService';
-import { filterIt } from '../../services/filter';
+import { filterIt } from '../../services/utils';
 import Snackbar from '../Snackbar';
 import { SnackBarConfig } from '../../types/snackbar';
 

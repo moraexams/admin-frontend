@@ -117,13 +117,48 @@ export interface Stream {
   subject2_code:string,
   subject3_code:string,
 }
-
 export interface Mark {
-  index_no: number,
-  s1_p1: number,
-  s1_p2: number,
-  s2_p1: number,
-  s2_p2: number,
-  s3_p1: number,
-  s3_p2: number,
+  index_no: number; // Primary key and unique
+  s1_p1?: number;
+  s1_p1_ent_by_id?: number;
+  s1_p1_ent_by?: User;
+  s1_p1_ent_at?: string;
+  s1_p1_vfd_by_id?: number;
+  s1_p1_vfd_by?: User;
+  s1_p1_vfd_at?: string;
+  s1_p2?: number;
+  s1_p2_ent_by_id?: number;
+  s1_p2_ent_by?: User;
+  s1_p2_ent_at?: string;
+  s1_p2_vfd_by_id?: number;
+  s1_p2_vfd_by?: User;
+  s1_p2_vfd_at?: string;
+  s2_p1?: number;
+  s2_p1_ent_by_id?: number;
+  s2_p1_ent_by?: User;
+  s2_p1_ent_at?: string;
+  s2_p1_vfd_by_id?: number;
+  s2_p1_vfd_by?: User;
+  s2_p1_vfd_at?: string;
+  s2_p2?: number;
+  s2_p2_ent_by_id?: number;
+  s2_p2_ent_by?: User;
+  s2_p2_ent_at?: string;
+  s2_p2_vfd_by_id?: number;
+  s2_p2_vfd_by?: User;
+  s2_p2_vfd_at?: string;
+  s3_p1?: number;
+  s3_p1_ent_by_id?: number;
+  s3_p1_ent_by?: User;
+  s3_p1_ent_at?: string;
+  s3_p1_vfd_by_id?: number;
+  s3_p1_vfd_by?: User;
+  s3_p1_vfd_at?: string;
+  s3_p2?: number;
+  s3_p2_ent_by_id?: number;
+  s3_p2_ent_by?: User;
+  s3_p2_ent_at?: string;
+  s3_p2_vfd_by_id?: number;
+  s3_p2_vfd_by?: User;
+  s3_p2_vfd_at?: string;
 }

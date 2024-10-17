@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { StudentMark } from '../../types/types';
+import { Mark, StudentMark } from '../../types/types';
 import ReactPaginate from 'react-paginate';
-import { filterIt } from '../../services/filter';
+import { convertUTCToIST, filterIt } from '../../services/utils';
 import { SnackBarConfig } from '../../types/snackbar';
 import Snackbar from '../Snackbar';
+import { getMarkbyIndexNo } from '../../services/markservices';
 
 const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamSearchKey */ }: { studentData: StudentMark[], nameSearchKey: string, /* streamSearchKey: string, */itemsPerPage: number }) => {
   const items: StudentMark[] = Array.isArray(studentData)
@@ -24,6 +25,7 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
     setItemOffset(newOffset);
   };
 
+  const [viewSection, setViewSection] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
     message: '',
@@ -38,13 +40,16 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
     }, 1000);
   };
 
-  const [student, setStudent] = useState<StudentMark | null>(null);
-  const handleViewModalOpen = (index_no: number) => {
-    const student = studentData.find(x => x.index_no === index_no);
+  const [studentMark, setStudentMark] = useState<Mark | null>(null);
+  const handleViewModalOpen = async (index_no: number) => {
+    const student = await getMarkbyIndexNo(index_no);
+    console.log(student);
     if (student) {
-      setStudent(student);
+      setStudentMark(student);
+      setModalOpen(true);
+    } else {
+      showSnackBar(false, 'Student Marks not entered yet');
     }
-    setModalOpen(true);
   };
 
   return (
@@ -191,63 +196,166 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
 
       <div className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-y-auto ${!modalOpen && 'hidden'}`}
       >
-        <div className="w-full max-w-142.5 md:max-w-[40vw] rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
+        <div className="w-full max-w-142.5 xl:max-w-[40vw] rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
           <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
             View Student Marks
           </h3>
           <span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
           <div className="mb-4">
-          {student && (
-            <table className="table-auto">
-              <tbody>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Index No</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.index_no}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Name</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.name}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Stream</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.stream}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Maths/Bio Part 1</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.s1_p1}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Maths/Bio Part 2</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.s1_p2}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Physics Part 1</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.s2_p1}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Physics Part 2</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.s2_p2}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Chem/ICT Part 1</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.s3_p1}</strong></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4 font-medium text-black dark:text-white">Chem/ICT Part 2</td>
-                  <td className="py-2 px-4 text-black dark:text-white">:</td>
-                  <td className="py-2 px-4 text-black dark:text-white"><strong>{student.s3_p2}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          )}
+            {studentMark && (
+              <>
+
+                <div className="sm:hidden mb-5.5">
+                  <select
+                    className="w-full rounded-lg border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    name="selectStream"
+                    id="selectStream"
+                    value={viewSection}
+                    onChange={(e) => setViewSection(Number(e.target.value))}
+                  >
+                    <option value="1">Maths/Bio</option>
+                    <option value="2">Physics</option>
+                    <option value="3">Chemistry/ICT</option>
+                  </select>
+                </div>
+                <div className="hidden sm:flex justify-around pb-8">
+                  <div className="flex items-center rounded-lg">
+                    <button onClick={() => setViewSection(1)} className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 1 && 'border-primary bg-primary text-white'}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                      </svg>
+                      Maths/Bio
+                    </button>
+                    <button onClick={() => setViewSection(2)} className={`inline-flex items-center gap-2.5 border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 2 && 'border-primary bg-primary text-white'}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                      </svg>
+                      Physics
+                    </button>
+                    <button onClick={() => setViewSection(3)} className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 3 && 'border-primary bg-primary text-white'}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                      </svg>
+                      Chem/ICT
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  {{
+                    1: (
+                      <table className="table-auto">
+                        <tbody>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Entered By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1_ent_at && studentMark.s1_p1_ent_by?.name + " at " + convertUTCToIST(studentMark.s1_p1_ent_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Verified By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1_vfd_at && studentMark.s1_p1_vfd_by?.name + " at " + convertUTCToIST(studentMark.s1_p1_vfd_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Entered By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2_ent_at && studentMark.s1_p2_ent_by?.name + " at " + convertUTCToIST(studentMark.s1_p2_ent_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Verified By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2_vfd_at && studentMark.s1_p2_vfd_by?.name + " at " + convertUTCToIST(studentMark.s1_p2_vfd_at)}</strong></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ),
+                    2: (
+                      <table className="table-auto">
+                        <tbody>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Entered By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1_ent_at && studentMark.s2_p1_ent_by?.name + " at " + convertUTCToIST(studentMark.s2_p1_ent_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Verified By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1_vfd_at && studentMark.s2_p1_vfd_by?.name + " at " + convertUTCToIST(studentMark.s2_p1_vfd_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Entered By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2_ent_at && studentMark.s2_p2_ent_by?.name + " at " + convertUTCToIST(studentMark.s2_p2_ent_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Verified By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2_vfd_at && studentMark.s2_p2_vfd_by?.name + " at " + convertUTCToIST(studentMark.s2_p2_vfd_at)}</strong></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ),
+                    3: (
+                      <table className="table-auto">
+                        <tbody>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Entered By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1_ent_at && studentMark.s3_p1_ent_by?.name + " at " + convertUTCToIST(studentMark.s3_p1_ent_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Verified By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1_vfd_at && studentMark.s3_p1_vfd_by?.name + " at " + convertUTCToIST(studentMark.s3_p1_vfd_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Entered By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2_ent_at && studentMark.s3_p2_ent_by?.name + " at " + convertUTCToIST(studentMark.s3_p2_ent_at)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Verified By</td>
+                            <td className="py-2 px-4 text-black dark:text-white">:</td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2_vfd_at && studentMark.s3_p2_vfd_by?.name + " at " + convertUTCToIST(studentMark.s3_p2_vfd_at)}</strong></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ),
+                  }[viewSection]}
+
+                </div>
+              </>
+            )}
           </div>
           <div className="-mx-3 flex flex-wrap gap-y-4">
             <div className="w-full px-3 2xsm:w-1/2">

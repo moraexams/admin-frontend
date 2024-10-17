@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { District } from '../../types/types';
 import ReactPaginate from 'react-paginate';
 import { addExamCentre, deleteExamCentre, updateExamCentre } from '../../services/examCentreService';
-import { filterIt } from '../../services/filter';
+import { filterIt } from '../../services/utils';
 
 const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: { districtData: District[], searchKey: string, itemsPerPage: number }) => {
 

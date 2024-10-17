@@ -25,3 +25,10 @@ function dynamicSort(property: string) {
     return result * sortOrder;
   };
 }
+
+export const convertUTCToIST = (dateString: string): string => {
+  const date = new Date(dateString);
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+  const istDate = new Date(date.getTime() + istOffset);
+  return istDate.toISOString().replace('T', ' ').substring(0, 19);
+};

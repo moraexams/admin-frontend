@@ -12,7 +12,7 @@ export const getMarkbyIndexNo = async (index_no: number) => {
       return response.data;
     } catch (error) {
       console.log("Error fetching mark: ");
-      return error;
+      return null;
     }
   }
 };
