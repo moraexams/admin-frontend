@@ -10,7 +10,6 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
     ? (nameSearchKey !== "" ? filterIt(studentData, nameSearchKey) : studentData)
     : [];
 
-
   const itemsLength = items.length;
 
   const [itemOffset, setItemOffset] = useState(0);

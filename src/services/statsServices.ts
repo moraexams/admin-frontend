@@ -42,3 +42,32 @@ export const getStatsStreamWise = async () => {
     throw error;
   }
 };
+
+export const getTotalEnteredMarksStats = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get("/stats/entered/marks/stream", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const getEnteredMarksStatsByCentre = async (centreId: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axiosInstance.get(`/stats/entered/marks/stream?exam_centre_id=${centreId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
