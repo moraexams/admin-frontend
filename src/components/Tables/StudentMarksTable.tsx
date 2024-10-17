@@ -260,12 +260,12 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Entered By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1_ent_at && studentMark.s1_p1_ent_by?.name + " at " + convertUTCToIST(studentMark.s1_p1_ent_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1_ent_at && studentMark.s1_p1_ent_by?.username + " at " + convertUTCToIST(studentMark.s1_p1_ent_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Verified By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1_vfd_at && studentMark.s1_p1_vfd_by?.name + " at " + convertUTCToIST(studentMark.s1_p1_vfd_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p1_vfd_at && studentMark.s1_p1_vfd_by?.username + " at " + convertUTCToIST(studentMark.s1_p1_vfd_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2</td>
@@ -275,12 +275,12 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Entered By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2_ent_at && studentMark.s1_p2_ent_by?.name + " at " + convertUTCToIST(studentMark.s1_p2_ent_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2_ent_at && studentMark.s1_p2_ent_by?.username + " at " + convertUTCToIST(studentMark.s1_p2_ent_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Verified By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2_vfd_at && studentMark.s1_p2_vfd_by?.name + " at " + convertUTCToIST(studentMark.s1_p2_vfd_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s1_p2_vfd_at && studentMark.s1_p2_vfd_by?.username + " at " + convertUTCToIST(studentMark.s1_p2_vfd_at)}</strong></td>
                           </tr>
                         </tbody>
                       </table>
@@ -296,12 +296,12 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Entered By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1_ent_at && studentMark.s2_p1_ent_by?.name + " at " + convertUTCToIST(studentMark.s2_p1_ent_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1_ent_at && studentMark.s2_p1_ent_by?.username + " at " + convertUTCToIST(studentMark.s2_p1_ent_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Verified By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1_vfd_at && studentMark.s2_p1_vfd_by?.name + " at " + convertUTCToIST(studentMark.s2_p1_vfd_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p1_vfd_at && studentMark.s2_p1_vfd_by?.username + " at " + convertUTCToIST(studentMark.s2_p1_vfd_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2</td>
@@ -311,12 +311,12 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Entered By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2_ent_at && studentMark.s2_p2_ent_by?.name + " at " + convertUTCToIST(studentMark.s2_p2_ent_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2_ent_at && studentMark.s2_p2_ent_by?.username + " at " + convertUTCToIST(studentMark.s2_p2_ent_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Verified By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2_vfd_at && studentMark.s2_p2_vfd_by?.name + " at " + convertUTCToIST(studentMark.s2_p2_vfd_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s2_p2_vfd_at && studentMark.s2_p2_vfd_by?.username + " at " + convertUTCToIST(studentMark.s2_p2_vfd_at)}</strong></td>
                           </tr>
                         </tbody>
                       </table>
@@ -332,12 +332,12 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Entered By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1_ent_at && studentMark.s3_p1_ent_by?.name + " at " + convertUTCToIST(studentMark.s3_p1_ent_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1_ent_at && studentMark.s3_p1_ent_by?.username + " at " + convertUTCToIST(studentMark.s3_p1_ent_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 1 Verified By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1_vfd_at && studentMark.s3_p1_vfd_by?.name + " at " + convertUTCToIST(studentMark.s3_p1_vfd_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p1_vfd_at && studentMark.s3_p1_vfd_by?.username + " at " + convertUTCToIST(studentMark.s3_p1_vfd_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2</td>
@@ -347,12 +347,12 @@ const StudentMarksTable = ({ studentData, itemsPerPage, nameSearchKey,/* streamS
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Entered By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2_ent_at && studentMark.s3_p2_ent_by?.name + " at " + convertUTCToIST(studentMark.s3_p2_ent_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2_ent_at && studentMark.s3_p2_ent_by?.username + " at " + convertUTCToIST(studentMark.s3_p2_ent_at)}</strong></td>
                           </tr>
                           <tr>
                             <td className="py-2 px-4 font-medium text-black dark:text-white">Part 2 Verified By</td>
                             <td className="py-2 px-4 text-black dark:text-white">:</td>
-                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2_vfd_at && studentMark.s3_p2_vfd_by?.name + " at " + convertUTCToIST(studentMark.s3_p2_vfd_at)}</strong></td>
+                            <td className="py-2 px-4 text-black dark:text-white"><strong>{studentMark.s3_p2_vfd_at && studentMark.s3_p2_vfd_by?.username + " at " + convertUTCToIST(studentMark.s3_p2_vfd_at)}</strong></td>
                           </tr>
                         </tbody>
                       </table>
