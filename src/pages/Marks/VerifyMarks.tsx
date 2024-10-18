@@ -3,13 +3,13 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Snackbar from '../../components/Snackbar';
 import { SnackBarConfig } from '../../types/snackbar';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getStudentVerificationMarksData, verifyMark } from '../../services/markservices';
 import { convertUTCToIST } from '../../services/utils';
 
 const VerifyMarks = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-
+    const navigate = useNavigate();
     // Default values
     const defaultSubject = "s1";
     const defaultPart = "p1";
@@ -87,7 +87,7 @@ const VerifyMarks = () => {
                 setStudentMarks(studentMarks);
                 if (studentMarks.entered_by && !studentMarks.verified_by) {
                     setSubmitDisabled(false);
-                } 
+                }
             } else {
                 setStudentMarks({});
             };
@@ -109,6 +109,14 @@ const VerifyMarks = () => {
             setSnackBarConfig(prev => ({ ...prev, show: false }));
         }, 1000);
     };
+
+    const editMarks = () => {
+        if (studentMarks.verified_by) {
+            showSnackBar(false, "Marks already verified");
+            return;
+        }
+        navigate(`/marks/enter?subject=${subject}&part=${part}&index_no=${indexNo}`);
+    }
 
     return (
         <DefaultLayout>
@@ -175,28 +183,36 @@ const VerifyMarks = () => {
                         <input
                             disabled
                             type="text"
-                            value={loading ? "Loading..." : (studentMarks.name? studentMarks.name : "Not Found")}
+                            value={loading ? "Loading..." : (studentMarks.name ? studentMarks.name : "Not Found")}
                             placeholder="Student Name"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                         <input
                             disabled
                             type="text"
-                            value={loading ? "Loading..." : (studentMarks.stream? studentMarks.stream : "Not Found")}
+                            value={loading ? "Loading..." : (studentMarks.centre ? studentMarks.centre : "Not Found")}
                             placeholder="Student Name"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                         <input
                             disabled
                             type="text"
-                            value={loading ? "Loading..." : (studentMarks.centre? studentMarks.centre : "Not Found")}
+                            value={loading ? "Loading..." : (studentMarks.stream ? studentMarks.stream : "Not Found")}
                             placeholder="Student Name"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                     </div>
                     <div className="mb-4.5">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                            Marks
+                        <label className="mb-2.5 block text-black dark:text-white flex flex-wrap gap-4">
+                            <span>
+                                Marks
+                            </span>
+                            <div className="cursor-pointer hover:text-primary" onClick={editMarks}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                            </div>
+
                         </label>
                         <input
                             disabled
