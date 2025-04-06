@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { signup } from '../../services/authServices';
-import Logo from '../../images/logo/logo.png';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { signup } from "../../services/authServices";
+import Logo from "../../images/logo/logo.png";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token')
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordR, setPasswordR] = useState('');
+  const token = localStorage.getItem("token");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordR, setPasswordR] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignUp = async (e: { preventDefault: () => void; }) => {
+  const handleSignUp = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (name != '' && username != '' && password != '') {
+    if (name != "" && username != "" && password != "") {
       if (password == passwordR) {
-        await signup(name, username, password).then(() => {
-          alert('User created successfully');
-          navigate('/auth/signin');
-        }
-        ).catch((error) => {
-          setError(error);
-        });
-      }
-      else {
-        setError('Passwords do not match');
+        await signup(name, username, password)
+          .then(() => {
+            alert("User created successfully");
+            navigate("/auth/signin");
+          })
+          .catch((error) => {
+            setError(error);
+          });
+      } else {
+        setError("Passwords do not match");
       }
     } else {
-      setError('Please fill all the fields');
+      setError("Please fill all the fields");
     }
-  }
+  };
 
   useEffect(() => {
     if (token) {
-      navigate('/');
+      navigate("/");
     }
   }, []);
   return (
@@ -46,11 +46,16 @@ const SignUp: React.FC = () => {
               <div className="hidden w-full xl:block xl:w-1/2">
                 <div className="py-17.5 px-26 text-center">
                   <div className="mb-5.5 inline-block">
-                    <img className="hidden dark:block h-36" src={Logo} alt="Logo" />
+                    <img
+                      className="hidden dark:block h-36"
+                      src={Logo}
+                      alt="Logo"
+                    />
                     <img className="dark:hidden h-36" src={Logo} alt="Logo" />
                   </div>
                   <p className="2xl:px-20">
-                    Dashboard for managing students, marks and exam for MoraExams.
+                    Dashboard for managing students, marks and exam for Mora
+                    Exams.
                   </p>
                 </div>
               </div>
@@ -58,7 +63,7 @@ const SignUp: React.FC = () => {
               <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                 <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
                   <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                    Sign Up to MoraExams
+                    Sign Up to Mora Exams
                   </h2>
 
                   <form>
@@ -229,7 +234,7 @@ const SignUp: React.FC = () => {
 
                     <div className="mt-6 text-center">
                       <p>
-                        Already have an account?{' '}
+                        Already have an account?{" "}
                         <Link to="/auth/signin" className="text-primary">
                           Sign in
                         </Link>

@@ -1,63 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../services/authServices';
-import Logo from '../../images/logo/logo.png';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../services/authServices";
+import Logo from "../../images/logo/logo.png";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token')
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const token = localStorage.getItem("token");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSignIn = async (e: { preventDefault: () => void; }) => {
+  const handleSignIn = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setLoading(true);
-    if (username != '' && password != '') {
-      await login(username, password).then(() => {
-        navigate('/');
-      }
-      ).catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
+    if (username != "" && password != "") {
+      await login(username, password)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          setError(error);
+          setLoading(false);
+        });
     }
-  }
-
-
+  };
 
   useEffect(() => {
     if (token) {
-      navigate('/');
+      navigate("/");
     }
   }, []);
   return (
     <div>
       <main>
         <div className="flex justify-center items-center h-screen">
-
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="flex flex-wrap items-center">
               <div className="hidden w-full xl:block xl:w-1/2">
                 <div className="py-17.5 px-26 text-center">
-
                   <div className="mb-5.5 inline-block">
-                    <img className="hidden dark:block h-36" src={Logo} alt="Logo" />
+                    <img
+                      className="hidden dark:block h-36"
+                      src={Logo}
+                      alt="Logo"
+                    />
                     <img className="dark:hidden h-36" src={Logo} alt="Logo" />
                   </div>
 
                   <p className="2xl:px-20">
-                    Dashboard for managing students, marks and exam for MoraExams.
+                    Dashboard for managing students, marks and exam for Mora
+                    Exams.
                   </p>
                 </div>
               </div>
 
               <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                 <div className="w-full p-10 sm:p-12.5 xl:p-17.5">
-
                   <h2 className="mb-9 text-2xl font-bold text-black text-center xl:text-left dark:text-white sm:text-title-xl2">
-                    Sign In to MoraExams
+                    Sign In to Mora Exams
                   </h2>
 
                   <div className="w-full xl:hidden">
@@ -157,17 +158,20 @@ const SignIn: React.FC = () => {
 
                     <div className="my-5">
                       <button
-                        className={"w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90" + (loading ? ' cursor-progress bg-opacity-90' : '')}
+                        className={
+                          "w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90" +
+                          (loading ? " cursor-progress bg-opacity-90" : "")
+                        }
                         onClick={handleSignIn}
                         disabled={loading}
                       >
-                        {loading ? 'Signing In...' : 'Sign In'}
+                        {loading ? "Signing In..." : "Sign In"}
                       </button>
                     </div>
 
                     <div className="mt-6 text-center">
                       <p>
-                        Don't have any account?{' '}
+                        Don't have any account?{" "}
                         <Link to="/auth/signup" className="text-primary">
                           Sign Up
                         </Link>

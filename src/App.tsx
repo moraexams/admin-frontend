@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 
-import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
-import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/Authentication/SignUp';
-import Dashboard from './pages/Dashboard';
-import Users from './pages/Users';
-import Districts from './pages/District/Districts';
-import ExamCentres from './pages/District/ExamCentres';
-import Coordinators from './pages/District/Coordinators';
-import ExamPaperDistributionTableView from './pages/Distribution/DistributionTableView';
-import ExamPaperDistributionCardView from './pages/Distribution/DistributionCardView';
-import Students from './pages/Student/Students';
-import Marks from './pages/Marks/Marks';
-import StudentsCentreWise from './pages/Student/StudentsCentreWise';
-import AddStudent from './pages/Student/AddStudent';
-import UnVerifiedStudents from './pages/Student/UnVerifiedStudents';
-import VerifyStudent from './pages/Student/VerifyStudent';
-import EnterMarks from './pages/Marks/EnterMarks';
-import VerifyMarks from './pages/Marks/VerifyMarks';
-import StudentMarksCentreWise from './pages/Marks/StudentMarksCentreWise';
-import EnteredStudentMarks from './pages/Stats/EnteredStudentMarks';
+import Loader from "./common/Loader";
+import PageTitle from "./components/PageTitle";
+import SignIn from "./pages/Authentication/SignIn";
+import SignUp from "./pages/Authentication/SignUp";
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import Districts from "./pages/District/Districts";
+import ExamCentres from "./pages/District/ExamCentres";
+import Coordinators from "./pages/District/Coordinators";
+import ExamPaperDistributionTableView from "./pages/Distribution/DistributionTableView";
+import ExamPaperDistributionCardView from "./pages/Distribution/DistributionCardView";
+import Students from "./pages/Student/Students";
+import Marks from "./pages/Marks/Marks";
+import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
+import AddStudent from "./pages/Student/AddStudent";
+import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
+import VerifyStudent from "./pages/Student/VerifyStudent";
+import EnterMarks from "./pages/Marks/EnterMarks";
+import VerifyMarks from "./pages/Marks/VerifyMarks";
+import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
+import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,7 +44,7 @@ function App() {
           path="/auth/signin"
           element={
             <>
-              <PageTitle title="Signin | MoraExams" />
+              <PageTitle title="Signin | Mora Exams" />
               <SignIn />
             </>
           }
@@ -53,7 +53,7 @@ function App() {
           path="/auth/signup"
           element={
             <>
-              <PageTitle title="Signup | MoraExams" />
+              <PageTitle title="Signup | Mora Exams" />
               <SignUp />
             </>
           }
@@ -62,7 +62,7 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="Dashboard | MoraExams" />
+              <PageTitle title="Dashboard | Mora Exams" />
               <Dashboard />
             </>
           }
@@ -71,7 +71,7 @@ function App() {
           path="/users"
           element={
             <>
-              <PageTitle title="Users | MoraExams" />
+              <PageTitle title="Users | Mora Exams" />
               <Users />
             </>
           }
@@ -89,7 +89,7 @@ function App() {
           path="/district/centres"
           element={
             <>
-              <PageTitle title="Exam Centres | MoraExams" />
+              <PageTitle title="Exam Centres | Mora Exams" />
               <ExamCentres />
             </>
           }
@@ -98,7 +98,7 @@ function App() {
           path="/district/coordinators"
           element={
             <>
-              <PageTitle title="Coordinators | MoraExams" />
+              <PageTitle title="Coordinators | Mora Exams" />
               <Coordinators />
             </>
           }
@@ -107,7 +107,7 @@ function App() {
           path="/distribution/table"
           element={
             <>
-              <PageTitle title="Exam Paper Distribution Table| MoraExams" />
+              <PageTitle title="Exam Paper Distribution Table| Mora Exams" />
               <ExamPaperDistributionTableView />
             </>
           }
@@ -116,7 +116,7 @@ function App() {
           path="/distribution/card"
           element={
             <>
-              <PageTitle title="Exam Paper Distribution Card | MoraExams" />
+              <PageTitle title="Exam Paper Distribution Card | Mora Exams" />
               <ExamPaperDistributionCardView />
             </>
           }
@@ -125,7 +125,7 @@ function App() {
           path="/students/all"
           element={
             <>
-              <PageTitle title="Students | MoraExams" />
+              <PageTitle title="Students | Mora Exams" />
               <Students />
             </>
           }
@@ -134,7 +134,7 @@ function App() {
           path="/students/add"
           element={
             <>
-              <PageTitle title="Add Student | MoraExams" />
+              <PageTitle title="Add Student | Mora Exams" />
               <AddStudent />
             </>
           }
@@ -143,7 +143,7 @@ function App() {
           path="/students/centre"
           element={
             <>
-              <PageTitle title="Students | MoraExams" />
+              <PageTitle title="Students | Mora Exams" />
               <StudentsCentreWise />
             </>
           }
@@ -152,7 +152,7 @@ function App() {
           path="/students/verify"
           element={
             <>
-              <PageTitle title="Students | MoraExams" />
+              <PageTitle title="Students | Mora Exams" />
               <VerifyStudent />
             </>
           }
@@ -161,7 +161,7 @@ function App() {
           path="/students/unverified"
           element={
             <>
-              <PageTitle title="Students | MoraExams" />
+              <PageTitle title="Students | Mora Exams" />
               <UnVerifiedStudents />
             </>
           }
@@ -170,7 +170,7 @@ function App() {
           path="/marks"
           element={
             <>
-              <PageTitle title="Marks | MoraExams" />
+              <PageTitle title="Marks | Mora Exams" />
               <Marks />
             </>
           }
@@ -179,7 +179,7 @@ function App() {
           path="/marks/enter"
           element={
             <>
-              <PageTitle title="Enter Marks | MoraExams" />
+              <PageTitle title="Enter Marks | Mora Exams" />
               <EnterMarks />
             </>
           }
@@ -188,7 +188,7 @@ function App() {
           path="/marks/verify"
           element={
             <>
-              <PageTitle title="Verify Marks | MoraExams" />
+              <PageTitle title="Verify Marks | Mora Exams" />
               <VerifyMarks />
             </>
           }
@@ -197,7 +197,7 @@ function App() {
           path="/studentmarks"
           element={
             <>
-              <PageTitle title="Student Marks | MoraExams" />
+              <PageTitle title="Student Marks | Mora Exams" />
               <StudentMarksCentreWise />
             </>
           }
@@ -206,7 +206,7 @@ function App() {
           path="/stats/enteredmarks"
           element={
             <>
-              <PageTitle title="Entered Marks | MoraExams" />
+              <PageTitle title="Entered Marks | Mora Exams" />
               <EnteredStudentMarks />
             </>
           }
