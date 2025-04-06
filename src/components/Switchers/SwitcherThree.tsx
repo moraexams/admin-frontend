@@ -1,14 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const SwitcherThree = () => {
   const [enabled, setEnabled] = useState(false);
 
   return (
     <div>
-      <label
-        htmlFor="toggle3"
-        className="flex cursor-pointer select-none items-center"
-      >
+      <label htmlFor="toggle3" className="flex cursor-pointer select-none items-center">
         <div className="relative">
           <input
             type="checkbox"
@@ -18,13 +15,13 @@ const SwitcherThree = () => {
               setEnabled(!enabled);
             }}
           />
-          <div className="block h-8 w-14 rounded-full bg-meta-9 dark:bg-[#5A616B]"></div>
+          <div className="block h-8 w-14 rounded-full bg-meta-9 dark:bg-[#5A616B]" />
           <div
             className={`dot absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${
-              enabled && '!right-1 !translate-x-full !bg-primary dark:!bg-white'
+              enabled && "!right-1 !translate-x-full !bg-primary dark:!bg-white"
             }`}
           >
-            <span className={`hidden ${enabled && '!block'}`}>
+            <span className={`hidden ${enabled && "!block"}`}>
               <svg
                 className="fill-white dark:fill-black"
                 width="11"
@@ -38,22 +35,17 @@ const SwitcherThree = () => {
                   fill=""
                   stroke=""
                   strokeWidth="0.4"
-                ></path>
+                />
               </svg>
             </span>
-            <span className={`${enabled && 'hidden'}`}>
+            <span className={`${enabled && "hidden"}`}>
               <svg
                 className="h-4 w-4 stroke-current"
                 fill="none"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </span>
           </div>

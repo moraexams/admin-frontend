@@ -1,34 +1,34 @@
 export const filterIt = (arr: any, searchKey: string) => {
-  return arr.filter((obj: { [x: string]: string | string[] }) =>
-    Object.keys(obj).some((key) =>
-      JSON.stringify(obj[key]).toLowerCase().includes(searchKey.toLowerCase())
-    )
-  );
+	return arr.filter((obj: { [x: string]: string | string[] }) =>
+		Object.keys(obj).some((key) =>
+			JSON.stringify(obj[key]).toLowerCase().includes(searchKey.toLowerCase()),
+		),
+	);
 };
 
 export const sortByKey = (arr: any, key: string) => {
-  return arr.sort(dynamicSort(key));
+	return arr.sort(dynamicSort(key));
 };
 
 function dynamicSort(property: string) {
-  var sortOrder = 1;
-  if (property[0] === "-") {
-    sortOrder = -1;
-    property = property.substring(1);
-  }
-  return function (a: any, b: any) {
-    /* next line works with strings and numbers,
-     * and you may want to customize it to your needs
-     */
-    var result =
-      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
-  };
+	var sortOrder = 1;
+	if (property[0] === "-") {
+		sortOrder = -1;
+		property = property.substring(1);
+	}
+	return (a: any, b: any) => {
+		/* next line works with strings and numbers,
+		 * and you may want to customize it to your needs
+		 */
+		var result =
+			a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+		return result * sortOrder;
+	};
 }
 
 export const convertUTCToIST = (dateString: string): string => {
-  const date = new Date(dateString);
-  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
-  const istDate = new Date(date.getTime() + istOffset);
-  return istDate.toISOString().replace('T', ' ').substring(0, 19);
+	const date = new Date(dateString);
+	const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+	const istDate = new Date(date.getTime() + istOffset);
+	return istDate.toISOString().replace("T", " ").substring(0, 19);
 };

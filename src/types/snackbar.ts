@@ -1,5 +1,5 @@
 export interface SnackBarConfig {
-  message: string;
-  type: boolean;
-  show: boolean;
+	message: string;
+	type: boolean;
+	show: boolean;
 }
