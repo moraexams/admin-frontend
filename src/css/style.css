@@ -3,12 +3,15 @@
 @tailwind utilities;
 
 @layer base {
+	:root {
+		color-scheme: light;
+	}
 	body {
 		@apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
 	}
-}
-
-@layer components {
+	:root:has(body.dark) {
+		color-scheme: dark;
+	}
 }
 
 @layer utilities {

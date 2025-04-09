@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
@@ -15,25 +15,25 @@ const Users = () => {
 	const [page, setPage] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
-	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const data = await getUsers(page, itemsPerPage);
-				setUsers(data.users);
-				setTotalCount(data.count);
-			} catch (error) {
-				if (typeof error === "string") {
-					setError(error);
-				} else {
-					setError("Failed to fetch users");
-				}
-			} finally {
-				setLoading(false);
+	const fetchUsers = useCallback(async () => {
+		try {
+			const data = await getUsers(page, itemsPerPage);
+			setUsers(data.users);
+			setTotalCount(data.count);
+		} catch (error) {
+			if (typeof error === "string") {
+				setError(error);
+			} else {
+				setError("Failed to fetch users");
 			}
-		};
-
-		fetchUsers();
+		} finally {
+			setLoading(false);
+		}
 	}, [page, itemsPerPage]);
+
+	useEffect(() => {
+		fetchUsers();
+	}, [fetchUsers]);
 
 	if (error) {
 		return (
@@ -106,6 +106,7 @@ const Users = () => {
 					<UsersTable
 						page={page}
 						itemsPerPage={itemsPerPage}
+						refetch={fetchUsers}
 						total={totalCount}
 						userData={users}
 					/>

@@ -36,3 +36,13 @@ export const approveUser = async (id: number) => {
 		return error;
 	}
 };
+
+export const editUser = async (user: User) => {
+	try {
+		const response = await axiosInstance.put(`/user/${user.id}`, user);
+		return response.data;
+	} catch (error) {
+		console.error("Error approving user:", error);
+		return error;
+	}
+};
