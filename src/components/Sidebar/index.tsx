@@ -13,8 +13,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 	const location = useLocation();
 	const { pathname } = location;
 
-	const trigger = useRef<any>(null);
-	const sidebar = useRef<any>(null);
+	const trigger = useRef<HTMLButtonElement | null>(null);
+	const sidebar = useRef<HTMLElement | null>(null);
 
 	const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
 	const [sidebarExpanded, setSidebarExpanded] = useState(
@@ -25,7 +25,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 	// close on click outside
 	useEffect(() => {
 		const clickHandler = ({ target }: MouseEvent) => {
-			if (!sidebar.current || !trigger.current) return;
+			if (
+				!sidebar.current ||
+				!trigger.current ||
+				!(target instanceof HTMLElement)
+			)
+				return;
 			if (
 				!sidebarOpen ||
 				sidebar.current.contains(target) ||
@@ -40,7 +45,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 	// close on click outside
 	useEffect(() => {
 		const clickHandler = ({ target }: MouseEvent) => {
-			if (!sidebar.current || !trigger.current) return;
+			if (
+				!sidebar.current ||
+				!trigger.current ||
+				!(target instanceof HTMLElement)
+			)
+				return;
 			if (
 				!sidebarOpen ||
 				sidebar.current.contains(target) ||
@@ -78,6 +88,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 				</NavLink>
 
 				<button
+					type="button"
 					ref={trigger}
 					onClick={() => setSidebarOpen(!sidebarOpen)}
 					aria-controls="sidebar"
@@ -267,9 +278,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													</svg>
 													Stats
 													<svg
-														className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-															open && "rotate-180"
-														}`}
+														className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"}`}
 														width="20"
 														height="20"
 														viewBox="0 0 20 20"
@@ -286,17 +295,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 												</NavLink>
 												{/* <!-- Dropdown Menu Start --> */}
 												<div
-													className={`translate transform overflow-hidden ${
-														!open && "hidden"
-													}`}
+													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
 														<li>
 															<NavLink
 																to="/stats/enteredmarks"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Entered Marks
@@ -402,17 +408,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													</NavLink>
 													{/* <!-- Dropdown Menu Start --> */}
 													<div
-														className={`translate transform overflow-hidden ${
-															!open && "hidden"
-														}`}
+														className={`translate transform overflow-hidden ${!open && "hidden"}`}
 													>
 														<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
 															<li>
 																<NavLink
 																	to="/districts"
 																	className={({ isActive }) =>
-																		"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																		(isActive && "!text-white")
+																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																	}
 																>
 																	Districts
@@ -422,8 +425,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 																<NavLink
 																	to="/district/centres"
 																	className={({ isActive }) =>
-																		"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																		(isActive && "!text-white")
+																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																	}
 																>
 																	Exam Centres
@@ -433,8 +435,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 																<NavLink
 																	to="/district/coordinators"
 																	className={({ isActive }) =>
-																		"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																		(isActive && "!text-white")
+																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																	}
 																>
 																	Coordinators
@@ -491,9 +492,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													</svg>
 													Paper Distribution
 													<svg
-														className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-															open && "rotate-180"
-														}`}
+														className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"}`}
 														width="20"
 														height="20"
 														viewBox="0 0 20 20"
@@ -510,17 +509,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 												</NavLink>
 												{/* <!-- Dropdown Menu Start --> */}
 												<div
-													className={`translate transform overflow-hidden ${
-														!open && "hidden"
-													}`}
+													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
 														<li>
 															<NavLink
 																to="/distribution/table"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Table View
@@ -530,8 +526,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															<NavLink
 																to="/distribution/card"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Details View
@@ -587,9 +582,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													</svg>
 													Students
 													<svg
-														className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-															open && "rotate-180"
-														}`}
+														className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"}`}
 														width="20"
 														height="20"
 														viewBox="0 0 20 20"
@@ -606,17 +599,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 												</NavLink>
 												{/* <!-- Dropdown Menu Start --> */}
 												<div
-													className={`translate transform overflow-hidden ${
-														!open && "hidden"
-													}`}
+													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
 														<li>
 															<NavLink
 																to="/students/add"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Add Student
@@ -626,8 +616,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															<NavLink
 																to="/students/verify"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Verify Student
@@ -637,8 +626,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															<NavLink
 																to="/students/unverified"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Unverified Students
@@ -648,8 +636,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															<NavLink
 																to="/students/centre"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																Centre Wise
@@ -659,8 +646,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															<NavLink
 																to="/students/all"
 																className={({ isActive }) =>
-																	"group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-																	(isActive && "!text-white")
+																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																}
 															>
 																All Students
