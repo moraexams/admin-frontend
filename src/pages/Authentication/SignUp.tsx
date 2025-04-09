@@ -39,8 +39,8 @@ const SignUp: React.FC = () => {
     }
   }, [token, navigate]);
   return (
-    <main className="mx-auto h-screen grid grid-cols-1 grid-rows-[auto_auto] gap-y-8 lg:grid-cols-[1fr_1fr] lg:grid-rows-1 items-center max-w-[min(80vw,1400px)]">
-      <div className="text-center">
+    <main className="mx-auto h-screen grid grid-cols-1 grid-rows-[auto_1fr] gap-y-8 lg:grid-cols-[1fr_1fr] lg:grid-rows-1 lg:items-center max-w-[min(80vw,1400px)]">
+      <div className="py-15 lg:py-0 text-center">
         <div className="mb-5.5 inline-block">
           <img className="h-28 lg:h-36" src={Logo} alt="Logo" />
         </div>
