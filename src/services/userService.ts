@@ -1,12 +1,23 @@
 import axiosInstance from "../axiosConfig";
+import type { User } from "../types/types";
 
-export const getUsers = async () => {
+interface UsersResponse {
+	users: User[];
+	count: number;
+}
+
+export const getUsers = async (
+	page: number,
+	itemsPerPage: number,
+): Promise<UsersResponse> => {
 	try {
-		const response = await axiosInstance.get("/user");
+		const response = await axiosInstance.get(
+			`/user?page=${page}&pageSize=${itemsPerPage}`,
+		);
 		return response.data;
 	} catch (error) {
 		console.error("Error fetching users:", error);
-		return error;
+		throw error;
 	}
 };
 
