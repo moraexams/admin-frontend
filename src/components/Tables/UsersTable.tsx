@@ -1,5 +1,3 @@
-import { useState } from "react";
-import ReactPaginate from "react-paginate";
 import { approveUser } from "../../services/userService";
 import type { User } from "../../types/types";
 
@@ -11,10 +9,19 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	minute: "2-digit",
 });
 
+interface UsersTableProps {
+	total: number;
+	userData: User[];
+	page: number;
+	itemsPerPage: number;
+}
+
 const UsersTable = ({
+	total,
 	userData,
+	page,
 	itemsPerPage,
-}: { userData: User[]; itemsPerPage: number }) => {
+}: UsersTableProps) => {
 	const callApproveUser = async (id: number) => {
 		try {
 			await approveUser(id);
@@ -25,21 +32,8 @@ const UsersTable = ({
 			alert("Failed to approve user");
 		}
 	};
-
-	const items = userData;
-	const itemsLength = items.length;
-	const [itemOffset, setItemOffset] = useState(0);
-
-	const endOffset = itemOffset + itemsPerPage;
-	console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-	const currentItems = items.slice(itemOffset, endOffset);
-	const pageCount = Math.ceil(itemsLength / itemsPerPage);
-
-	// Invoke when user click to request another page.
-	const handlePageClick = (event: { selected: number }) => {
-		const newOffset = (event.selected * itemsPerPage) % itemsLength;
-		setItemOffset(newOffset);
-	};
+	const start = itemsPerPage * (page - 1) + 1;
+	const end = start - 1 + userData.length;
 
 	return (
 		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -68,7 +62,7 @@ const UsersTable = ({
 						</tr>
 					</thead>
 					<tbody>
-						{currentItems?.map((user) => (
+						{userData?.map((user) => (
 							<tr key={user.id}>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 									<h5 className="font-medium text-black dark:text-white">
@@ -173,39 +167,7 @@ const UsersTable = ({
 
 			<div className="flex flex-wrap justify-between my-2">
 				<div className="flex items-center my-2">
-					Showing {itemOffset + 1} to{" "}
-					{endOffset < itemsLength ? endOffset : itemsLength} out of{" "}
-					{itemsLength}
-				</div>
-				<div className="overflow-x-auto my-2">
-					<ReactPaginate
-						breakLabel="..."
-						nextLabel=">"
-						onPageChange={handlePageClick}
-						pageRangeDisplayed={1}
-						pageCount={pageCount}
-						previousLabel="<"
-						renderOnZeroPageCount={null}
-						containerClassName={
-							"isolate inline-flex -space-x-px rounded-md shadow-sm"
-						}
-						pageLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-						}
-						breakLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-						}
-						activeLinkClassName={
-							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
-						}
-						previousLinkClassName={
-							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-						}
-						nextLinkClassName={
-							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-400"
-						}
-						disabledLinkClassName={"text-black-100"}
-					/>
+					Showing {start} to {end} out of {total}
 				</div>
 			</div>
 		</div>

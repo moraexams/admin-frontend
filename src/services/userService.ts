@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 import type { User } from "../types/types";
 
@@ -17,6 +18,11 @@ export const getUsers = async (
 		return response.data;
 	} catch (error) {
 		console.error("Error fetching users:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "Only admins can view users.";
+			}
+		}
 		throw error;
 	}
 };

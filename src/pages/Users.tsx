@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { NavLink } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import UsersTable from "../components/Tables/UsersTable";
 import DefaultLayout from "../layout/DefaultLayout";
@@ -21,7 +22,11 @@ const Users = () => {
 				setUsers(data.users);
 				setTotalCount(data.count);
 			} catch (error) {
-				setError("Failed to fetch users");
+				if (typeof error === "string") {
+					setError(error);
+				} else {
+					setError("Failed to fetch users");
+				}
 			} finally {
 				setLoading(false);
 			}
@@ -31,7 +36,14 @@ const Users = () => {
 	}, [page, itemsPerPage]);
 
 	if (error) {
-		return <div>{error}</div>;
+		return (
+			<div className="dark:bg-boxdark-2 dark:text-bodydark h-screen px-5 py-5">
+				<h1 className="text-3xl font-bold mb-4">{error}</h1>
+				<NavLink className="text-xl hover:underline" to="/">
+					Go home
+				</NavLink>
+			</div>
+		);
 	}
 
 	return (
