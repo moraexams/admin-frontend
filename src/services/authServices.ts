@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
 export const login = async (username: string, password: string) => {
@@ -14,9 +15,16 @@ export const login = async (username: string, password: string) => {
 		localStorage.setItem("role", user.role);
 		localStorage.setItem("user_id", user.id);
 		return true;
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error logging in:", error);
-		throw error.response.data.error;
+		if (error instanceof AxiosError) {
+			if (error.response?.data?.error) {
+				throw error.response.data.error;
+			}
+
+			throw error.message;
+		}
+		throw "Unknown error occurred";
 	}
 };
 
@@ -33,22 +41,25 @@ export const signup = async (
 		});
 		const message = response.data.message;
 		return message;
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error logging in:", error);
-		throw error.response.data.error;
+		if (error instanceof AxiosError) {
+			if (error.response?.data?.error) {
+				throw error.response.data.error;
+			}
+
+			throw error.message;
+		}
+		throw "Unknown error occurred";
 	}
 };
 
 export const validateToken = async () => {
-	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.get("/auth/validate", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		return response.data.success;
-	} catch (error) {
-		throw error;
-	}
+	const token = localStorage.getItem("token");
+	const response = await axiosInstance.get("/auth/validate", {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	return response.data.success;
 };
