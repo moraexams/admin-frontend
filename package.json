@@ -12,10 +12,6 @@
 		"lint-fix": "biome check --write .",
 		"prepare": "husky || true"
 	},
-	"author": {
-		"name": "Maathavan Nithiyananthan",
-		"email": "maathumaathavan@gmail.com"
-	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json}": "biome check --write --no-errors-on-unmatched",
 		"*.css": "biome check --write"
