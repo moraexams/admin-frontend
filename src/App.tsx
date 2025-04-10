@@ -5,6 +5,7 @@ import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import SignIn from "./pages/Authentication/SignIn";
 import SignUp from "./pages/Authentication/SignUp";
+import DangerZone from "./pages/DangerZone";
 import Dashboard from "./pages/Dashboard";
 import ExamPaperDistributionCardView from "./pages/Distribution/DistributionCardView";
 import ExamPaperDistributionTableView from "./pages/Distribution/DistributionTableView";
@@ -27,6 +28,7 @@ function App() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const { pathname } = useLocation();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: it has to be
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [pathname]);
@@ -73,6 +75,15 @@ function App() {
 						<>
 							<PageTitle title="Users | Mora Exams" />
 							<Users />
+						</>
+					}
+				/>
+				<Route
+					path="/danger-zone"
+					element={
+						<>
+							<PageTitle title="Danger Zone | Mora Exams" />
+							<DangerZone />
 						</>
 					}
 				/>
