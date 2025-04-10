@@ -1,15 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../layout/DefaultLayout";
-import { startSendingIndexNoEmails } from "../services/dangerzoneServices";
+import {
+	dangerZonePageData,
+	startSendingIndexNoEmails,
+} from "../services/dangerzoneServices";
 
 interface Feedback {
 	state: "success" | "error" | "loading";
 	message: string;
 }
 
+interface DangerZoneConstants {
+	students_index_no_sending_process_started: string;
+}
+
 const DangerZone = () => {
 	const [feedback, setFeedback] = useState<Feedback | null>(null);
+	const [constants, setConstants] = useState<DangerZoneConstants | null>(null);
+
+	useEffect(() => {
+		dangerZonePageData()
+			.then((data) => {
+				setConstants(data.constants);
+			})
+			.catch(console.error);
+	}, []);
+
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Danger Zone" />
@@ -20,7 +37,7 @@ const DangerZone = () => {
 				<p className="text-lg mb-3 max-w-prose col-start-1">
 					<b className="text-red-600 font-medium">IRREVERSIBLE</b>. After the
 					verification process is completed, send the index number of each
-					student to their email address.
+					student to their email address.{" "}
 					{feedback == null || feedback.state === "loading" ? null : (
 						<span
 							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
@@ -31,8 +48,14 @@ const DangerZone = () => {
 				</p>
 				<button
 					type="button"
-					className={`px-4 py-3 bg-meta-9 rounded-lg text-white font-medium col-start-1 h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2${feedback && feedback.state === "loading" ? " opacity-50 cursor-not-allowed" : ""}`}
-					disabled={feedback?.state === "loading"}
+					className={
+						"px-4 py-3 bg-meta-9 rounded-lg text-white font-medium col-start-1 h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2 disabled:bg-meta-9/50 disabled:hover:bg-meta-9/50 disabled:cursor-not-allowed hover:bg-meta-9/60 transition-colors"
+					}
+					disabled={
+						constants == null ||
+						constants.students_index_no_sending_process_started === "true" ||
+						feedback?.state === "loading"
+					}
 					onClick={async () => {
 						setFeedback({
 							state: "loading",
@@ -55,9 +78,11 @@ const DangerZone = () => {
 						}
 					}}
 				>
-					{feedback != null && feedback.state === "loading"
-						? "Sending..."
-						: "Start sending"}
+					{constants?.students_index_no_sending_process_started === "true"
+						? "Already started"
+						: feedback != null && feedback.state === "loading"
+							? "Sending..."
+							: "Start sending"}
 				</button>
 			</section>
 		</DefaultLayout>
