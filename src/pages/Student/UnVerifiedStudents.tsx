@@ -23,8 +23,9 @@ const UnVerifiedStudents = () => {
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
-				const users = await getUsers();
-				setUsers(users);
+				const data = await getUsers(1, 10);
+				console.log(data);
+				setUsers(data.users);
 			} catch (error) {
 				setError("Failed to fetch Students");
 			} finally {
