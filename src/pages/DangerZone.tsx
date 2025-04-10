@@ -1,8 +1,15 @@
+import { useState } from "react";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../layout/DefaultLayout";
 import { startSendingIndexNoEmails } from "../services/dangerzoneServices";
 
+interface Feedback {
+	state: "success" | "error" | "loading";
+	message: string;
+}
+
 const DangerZone = () => {
+	const [feedback, setFeedback] = useState<Feedback | null>(null);
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Danger Zone" />
@@ -14,21 +21,43 @@ const DangerZone = () => {
 					<b className="text-red-600 font-medium">IRREVERSIBLE</b>. After the
 					verification process is completed, send the index number of each
 					student to their email address.
+					{feedback == null || feedback.state === "loading" ? null : (
+						<span
+							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
+						>
+							{feedback.message}
+						</span>
+					)}
 				</p>
 				<button
 					type="button"
-					className="px-4 py-3 bg-red-600 rounded-lg text-white font-medium col-start-1 h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2"
-					onClick={() => {
+					className={`px-4 py-3 bg-meta-9 rounded-lg text-white font-medium col-start-1 h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2${feedback && feedback.state === "loading" ? " opacity-50 cursor-not-allowed" : ""}`}
+					disabled={feedback?.state === "loading"}
+					onClick={async () => {
+						setFeedback({
+							state: "loading",
+							message: "Sending emails...",
+						});
+
 						try {
-							startSendingIndexNoEmails();
+							await startSendingIndexNoEmails();
+							setFeedback({
+								state: "success",
+								message: "Emails sent successfully!",
+							});
 						} catch (error) {
 							if (typeof error === "string") {
-								alert(error);
+								setFeedback({ state: "error", message: error });
+								setTimeout(() => {
+									setFeedback(null);
+								}, 2000);
 							}
 						}
 					}}
 				>
-					Start sending
+					{feedback != null && feedback.state === "loading"
+						? "Sending..."
+						: "Start sending"}
 				</button>
 			</section>
 		</DefaultLayout>
