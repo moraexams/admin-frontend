@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import { MarksBoundariesView } from "../../components/MarksBoundariesView";
 import DefaultLayout from "../../layout/DefaultLayout";
 
 const Marks = () => {
@@ -34,7 +35,7 @@ const Marks = () => {
 						</thead>
 						<tbody>
 							<tr>
-								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 text-left font-bold">
+								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-left font-bold">
 									Bio/Maths
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -139,7 +140,7 @@ const Marks = () => {
 								</td>
 							</tr>
 							<tr>
-								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 text-left font-bold">
+								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-left font-bold">
 									Physics
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -244,7 +245,7 @@ const Marks = () => {
 								</td>
 							</tr>
 							<tr>
-								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 text-left font-bold">
+								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark font-bold">
 									Chem/ICT
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -352,6 +353,8 @@ const Marks = () => {
 					</table>
 				</div>
 			</div>
+
+			<MarksBoundariesView />
 		</DefaultLayout>
 	);
 };

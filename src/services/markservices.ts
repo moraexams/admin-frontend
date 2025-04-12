@@ -1,14 +1,10 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
 export const getMarkbyIndexNo = async (index_no: number) => {
 	if (index_no >= 10000) {
 		try {
-			const token = localStorage.getItem("token");
-			const response = await axiosInstance.get("/mark/" + index_no, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
+			const response = await axiosInstance.get(`/mark/${index_no}`);
 			return response.data;
 		} catch (error) {
 			console.log("Error fetching mark: ");
@@ -20,15 +16,10 @@ export const getMarkbyIndexNo = async (index_no: number) => {
 export const getStudentMarksData = async (index_no: number) => {
 	if (index_no >= 110000) {
 		try {
-			const token = localStorage.getItem("token");
-			const response = await axiosInstance.get("/mark/check/" + index_no, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
+			const response = await axiosInstance.get(`/mark/check/${index_no}`);
 			return response.data;
 		} catch (error) {
-			console.log("Error fetching mark: " + error);
+			console.log(`Error fetching mark: ${error}`);
 			return null;
 		}
 	}
@@ -41,18 +32,12 @@ export const getStudentVerificationMarksData = async (
 ) => {
 	if (index_no >= 110000) {
 		try {
-			const token = localStorage.getItem("token");
 			const response = await axiosInstance.get(
 				`/mark/verify/${index_no}?subject=${subject}_${part}`,
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
 			);
 			return response.data;
 		} catch (error) {
-			console.log("Error fetching mark: " + error);
+			console.log(`Error fetching mark: ${error}`);
 			return null;
 		}
 	}
@@ -65,19 +50,13 @@ export const verifyMark = async (
 ) => {
 	if (index_no >= 110000) {
 		try {
-			const token = localStorage.getItem("token");
 			const response = await axiosInstance.put(
 				`/mark/verify/${index_no}?subject=${subject}_${part}`,
 				{},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
 			);
 			return response.data;
 		} catch (error) {
-			console.log("Error verifying mark: " + error);
+			console.log(`Error verifying mark: ${error}`);
 			return null;
 		}
 	}
@@ -90,23 +69,28 @@ export const enterMark = async (
 	marks: number,
 ) => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.put(
-			"/mark/enter/" + index_no,
-			{
-				subject,
-				part,
-				marks,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
+		const response = await axiosInstance.put(`/mark/enter/${index_no}`, {
+			subject,
+			part,
+			marks,
+		});
 		console.log("Response:", response);
-	} catch (error: any) {
-		console.error("Error entering Mark:", error);
-		throw error.response.data.error;
+	} catch (error) {
+		if (error instanceof AxiosError) {
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw "Unknown error occurred";
+	}
+};
+
+export const getAllMarksBoundaries = async () => {
+	try {
+		const response = await axiosInstance.get("/marks-boundaries/all");
+		return response.data;
+	} catch (error) {
+		console.log(`Error fetching mark boundaries: ${error}`);
+		return null;
 	}
 };
