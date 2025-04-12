@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
+import type { MarksBoundaries } from "../types/types";
 
 export const getMarkbyIndexNo = async (index_no: number) => {
 	if (index_no >= 10000) {
@@ -91,6 +92,19 @@ export const getAllMarksBoundaries = async () => {
 		return response.data;
 	} catch (error) {
 		console.log(`Error fetching mark boundaries: ${error}`);
+		return null;
+	}
+};
+
+export const updateBoundaryValues = async (values: Array<MarksBoundaries>) => {
+	try {
+		const response = await axiosInstance.put(
+			"/marks-boundaries/update",
+			values,
+		);
+		return response.data;
+	} catch (error) {
+		console.log(`Error updating mark boundaries: ${error}`);
 		return null;
 	}
 };

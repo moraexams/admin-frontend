@@ -162,3 +162,12 @@ export interface Mark {
 	s3_p2_vfd_by?: User;
 	s3_p2_vfd_at?: string;
 }
+
+export interface MarksBoundaries {
+	subjectId: string;
+	subjectName: string;
+	forA: number;
+	forB: number;
+	forC: number;
+	forS: number;
+}
