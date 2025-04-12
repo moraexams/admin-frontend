@@ -8,6 +8,8 @@ This repository contains the source code for the admin dashboard of Mora Exams. 
 - Node.js (v20 or later)
 - npm (v10 or later)
 
+After cloning the repository, create an `.env` file in the root directory. Use `.env.example` for reference. 
+
 ### Commands
 
 | Command                   | Action                                           |
