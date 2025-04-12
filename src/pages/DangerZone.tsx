@@ -30,6 +30,9 @@ const DangerZone = () => {
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Danger Zone" />
+			<p className="mb-8 font-bold text-lg">
+				This page includes actions that are irreversible.
+			</p>
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto]">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
 					Send Index No through Emails
