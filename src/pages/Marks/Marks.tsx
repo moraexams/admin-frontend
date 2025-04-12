@@ -5,6 +5,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 
 const Marks = () => {
 	const navigate = useNavigate();
+	const role = localStorage.getItem("role");
 
 	const handleEdit = (subject: number, part: number) => {
 		navigate(`/marks/enter?subject=s${subject}&part=p${part}`);
@@ -354,7 +355,7 @@ const Marks = () => {
 				</div>
 			</div>
 
-			<MarksBoundariesView />
+			{role === "admin" ? <MarksBoundariesView /> : null}
 		</DefaultLayout>
 	);
 };
