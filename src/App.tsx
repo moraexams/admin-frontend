@@ -12,6 +12,7 @@ import ExamPaperDistributionTableView from "./pages/Distribution/DistributionTab
 import Coordinators from "./pages/District/Coordinators";
 import Districts from "./pages/District/Districts";
 import ExamCentres from "./pages/District/ExamCentres";
+import DashboardFinance from "./pages/Finance/DashboardFinance";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
@@ -219,6 +220,15 @@ function App() {
 						<>
 							<PageTitle title="Entered Marks | Mora Exams" />
 							<EnteredStudentMarks />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/dashboard"
+					element={
+						<>
+							<PageTitle title="Finance Dashboard | MoraExams" />
+							<DashboardFinance />
 						</>
 					}
 				/>
