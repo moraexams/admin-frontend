@@ -72,6 +72,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 		document.addEventListener("keydown", keyHandler);
 		return () => document.removeEventListener("keydown", keyHandler);
 	});
+	const isAdmin = role === "admin" || role === "super_admin";
 
 	return (
 		<aside
@@ -320,7 +321,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 							{/* <!-- Menu Item Students --> */}
 
 							{/* <!-- Menu Item Users --> */}
-							{role === "admin" && (
+							{isAdmin && (
 								<li>
 									<NavLink
 										to="/users"
@@ -349,7 +350,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 							{/* <!-- Menu Item Users --> */}
 
-							{role === "admin" && (
+							{isAdmin && (
 								<ul className="flex flex-col gap-1.5">
 									{/* <!-- Menu Item Auth Pages --> */}
 									<SidebarLinkGroup
@@ -710,7 +711,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									Student Marks
 								</NavLink>
 							</li>
-							{role !== "admin" ? null : (
+							{role === "super_admin" ? (
 								<li>
 									<NavLink
 										to="/danger-zone"
@@ -733,7 +734,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										Danger Zone
 									</NavLink>
 								</li>
-							)}
+							) : null}
 						</ul>
 					</div>
 				</nav>

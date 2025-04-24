@@ -355,7 +355,7 @@ const Marks = () => {
 				</div>
 			</div>
 
-			{role === "admin" ? <MarksBoundariesView /> : null}
+			{role === "super_admin" ? <MarksBoundariesView /> : null}
 		</DefaultLayout>
 	);
 };
