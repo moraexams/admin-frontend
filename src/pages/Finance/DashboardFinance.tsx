@@ -4,10 +4,17 @@ import { useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
 
-import { getBalance, getTotalExpenses, getTotalIncome } from "./mockData";
+import {
+	getBalance,
+	getDistrictNameById,
+	getRecentTransactions,
+	getTotalExpenses,
+	getTotalIncome,
+} from "./mockData";
 
 const DashboardFinance: React.FC = () => {
 	const [, setIsTransactionFormOpen] = useState(false);
+	const lastTransactions = getRecentTransactions();
 
 	return (
 		<DefaultLayout>
@@ -55,6 +62,60 @@ const DashboardFinance: React.FC = () => {
 						icon={<TrendingDown size={20} />}
 					/>
 				</div>
+
+				{/* Last 5 Transactions */}
+				<div className="bg-white p-6 rounded-lg shadow">
+					<h2 className="text-xl font-bold mb-4 text-gray-800">
+						Last 5 Transactions
+					</h2>
+					<ul className="space-y-4">
+						{lastTransactions.map((txn) => (
+							<li
+								key={txn.id}
+								className="py-4 transition-transform transform hover:scale-[1.02] hover:shadow-md rounded-lg px-4 bg-white"
+							>
+								<div className="grid grid-cols-4 items-start gap-4">
+									{/* Description */}
+									<div className="text-gray-700 font-medium">
+										{txn.description}
+									</div>
+
+									{/* Date with Dot */}
+									<div className="flex items-center space-x-2 text-sm text-gray-500">
+										<span
+											className={`w-2.5 h-2.5 rounded-full ${
+												txn.type === "income" ? "bg-green-500" : "bg-red-500"
+											}`}
+										/>
+										<span>{txn.date}</span>
+									</div>
+
+									{/* District */}
+									<div className="text-sm text-gray-600">
+										{getDistrictNameById(txn.districtId)}
+									</div>
+
+									{/* Amount with Type below */}
+									<div className="flex flex-col items-end">
+										<p
+											className={`font-bold ${
+												txn.type === "income"
+													? "text-green-500"
+													: "text-red-500"
+											}`}
+										>
+											{txn.type === "income" ? "+" : "-"}${txn.amount}
+										</p>
+										<p className="text-xs text-gray-400">
+											{txn.type.toUpperCase()}
+										</p>
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+				{/* End Transactions */}
 			</div>
 		</DefaultLayout>
 	);
