@@ -24,6 +24,7 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
+import Finance from "./pages/Finance/Finance";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -76,6 +77,15 @@ function App() {
 						<>
 							<PageTitle title="Users | Mora Exams" />
 							<Users />
+						</>
+					}
+				/>
+				<Route
+					path="/Finance"
+					element={
+						<>
+							<PageTitle title="Finance | Mora Exams" />
+							<Finance />
 						</>
 					}
 				/>
