@@ -3,10 +3,12 @@ import type React from "react";
 import { useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
+import { useNavigate } from "react-router-dom";
 
-import { getBalance, getTotalExpenses, getTotalIncome } from "./mockData";
+import { getBalance, getTotalDistrictsBudget, getTotalDistrictsExpenses, getTotalExpenses, getTotalIncome } from "./mockData";
 
 const DashboardFinance: React.FC = () => {
+	const navigate = useNavigate();
 	const [, setIsTransactionFormOpen] = useState(false);
 
 	return (
@@ -54,6 +56,22 @@ const DashboardFinance: React.FC = () => {
 						type="negative"
 						icon={<TrendingDown size={20} />}
 					/>
+			
+					<div
+						className="bg-white shadow rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
+						onClick={() => navigate("/Finance")} 
+					>
+						<h2 className="text-lg font-bold text-gray-900 mb-4">Districts</h2>
+						<div className="flex justify-between items-center mb-2">
+							<span className="text-gray-600">Total Budget</span>
+							<span className="text-gray-900 font-semibold">{getTotalDistrictsBudget()}</span>
+						</div>
+						<div className="flex justify-between items-center">
+							<span className="text-gray-600">Total Expenses</span>
+							<span className="text-gray-900 font-semibold">{getTotalDistrictsExpenses()}</span>
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		</DefaultLayout>

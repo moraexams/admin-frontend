@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Finance.module.css';
+import DefaultLayout from "../../layout/DefaultLayout";
+import { getDistricts } from '../../services/districtService';
 
 const TableComponent = () => {
   const initialData = [
@@ -8,7 +10,18 @@ const TableComponent = () => {
     { id: 3, name: 'Colombo', expense: 21450, pending: 15000 }
   ];
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
+
+
+  useEffect(() => {
+    getDistricts().then(data => {
+      console.log("received data", data);
+      setData(data);
+    })
+    console.log("Called the backend");
+  }, []);
+
+
   const [sortConfig, setSortConfig] = useState<{ key: keyof typeof initialData[0], direction: 'asc' | 'desc' } | null>(null);
 
   const headers: { key: keyof typeof initialData[0], label: string }[] = [
@@ -41,40 +54,42 @@ const TableComponent = () => {
   
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.card}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              {headers.map(({ key, label }) => (
-                <th
-                  key={key}
-                  onClick={() => handleSort(key)}
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
-                >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {label}
-                    <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
-                      {getSortSymbol(key)}
-                    </span>
-                  </span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((district) => (
-              <tr key={district.id}>
-                <td>{district.id}</td>
-                <td>{district.name}</td>
-                <td>{district.expense}</td>
-                <td>{district.pending}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <DefaultLayout>
+        <div className={styles.wrapper}>
+          <div className={styles.card}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  {headers.map(({ key, label }) => (
+                    <th
+                      key={key}
+                      onClick={() => handleSort(key)}
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                    >
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {label}
+                        <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+                          {getSortSymbol(key)}
+                        </span>
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((district) => (
+                  <tr key={district.id}>
+                    <td>{district.id}</td>
+                    <td>{district.name}</td>
+                    <td>{district.expense}</td>
+                    <td>{district.pending}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </DefaultLayout>
   );
 };
 

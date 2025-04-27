@@ -189,3 +189,20 @@ export const getRecentTransactions = (limit = 5): Transaction[] => {
 		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 		.slice(0, limit);
 };
+
+export const getTotalDistrictsExpenses = (): number => {
+	let totalExpenses = 0;
+	for (const district of districts) {
+		totalExpenses += district.spent;
+	}
+	return totalExpenses;
+};
+
+export const getTotalDistrictsBudget = (): number => {
+	let totalBudget = 0;
+	for (const district of districts) {
+		totalBudget += district.budget;
+	}
+	return totalBudget;
+}
+
