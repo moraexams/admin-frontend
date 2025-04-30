@@ -3,6 +3,9 @@ import type React from "react";
 import { useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
+import {PieChart,Pie,Cell,Tooltip,Legend,ResponsiveContainer,Label} from "recharts";
+
+
 
 import {
 	getBalance,
@@ -156,6 +159,58 @@ const DashboardFinance: React.FC = () => {
 					</ul>
 				</div>
 				{/* End Transactions */}
+
+				{/* Expense Breakdown Donut Chart */}
+				<div className="bg-white p-6 rounded-lg shadow mt-10 max-w-3xl">
+					<h2 className="text-xl font-bold mb-4 text-gray-800">Expense Breakdown</h2>
+					<ResponsiveContainer width="100%" height={300}>
+						<PieChart>
+							<Pie
+								data={
+									getRecentTransactions()
+										.filter((txn) => txn.type === "expense")
+										.reduce((acc, txn) => {
+											const found = acc.find((item) => item.name === txn.category);
+											if (found) {
+												found.value += txn.amount;
+											} else {
+												acc.push({ name: txn.category, value: txn.amount });
+											}
+											return acc;
+										}, [] as { name: string; value: number }[])
+								}
+								cx="50%"
+								cy="50%"
+								innerRadius={65}
+								outerRadius={100}
+								paddingAngle={2}
+								dataKey="value"
+								nameKey="name"
+							>
+								{["#81c784", "#64b5f6", "#ffb74d", "#e1bee7", "#80deea"].map((color, index) => (
+					<Cell key={index} fill={color} />
+				))}
+								<Label
+									value={`All\nLKR ${getTotalExpenses().toLocaleString("en-LK")}`}
+									position="center"
+									style={{
+										fill: "#333",
+										fontSize: "16px",
+										fontWeight: "bold",
+										textAlign: "center",
+										whiteSpace: "pre-line",
+									}}
+								/>
+							</Pie>
+							<Tooltip />
+							<Legend iconType="circle" layout="horizontal" verticalAlign="bottom" />
+						</PieChart>
+					</ResponsiveContainer>
+				</div>
+
+
+
+				
 			</div>
 		</DefaultLayout>
 	);
