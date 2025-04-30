@@ -64,7 +64,7 @@ const DashboardFinance: React.FC = () => {
 				</div>
 
 				{/* Last 5 Transactions */}
-				<div className="bg-white p-6 rounded-lg shadow">
+				<div className="bg-white p-6 rounded-lg shadow max-w-3xl ml-0">
 					<h2 className="text-xl font-bold mb-4 text-gray-800">
 						Last 5 Transactions
 					</h2>
@@ -72,14 +72,13 @@ const DashboardFinance: React.FC = () => {
 						{lastTransactions.map((txn) => (
 							<li
 								key={txn.id}
-								className="py-4 transition-transform transform hover:scale-[1.02] hover:shadow-md rounded-lg px-4 bg-white"
+								className="py-2 transition-transform transform hover:scale-[1.02] hover:shadow-md rounded-lg px-4 bg-white"
 							>
-								<div className="grid grid-cols-4 items-start gap-4">
-									{/* Description */}
-									<div className="text-gray-700 font-medium">
-										{txn.description}
-									</div>
-
+								{/* Desktop layout */}
+								<div
+									className="hidden sm:grid items-center gap-4"
+									style={{ gridTemplateColumns: "100px 1fr 150px 100px" }}
+								>
 									{/* Date with Dot */}
 									<div className="flex items-center space-x-2 text-sm text-gray-500">
 										<span
@@ -87,17 +86,55 @@ const DashboardFinance: React.FC = () => {
 												txn.type === "income" ? "bg-green-500" : "bg-red-500"
 											}`}
 										/>
-										<span>{txn.date}</span>
+										<span>
+											{new Date(txn.date).toLocaleDateString("en-US", {
+												month: "short",
+												day: "2-digit",
+											})}
+										</span>
+									</div>
+
+									{/* Description */}
+									<div className="truncate text-gray-700 font-medium">
+										{txn.description}
 									</div>
 
 									{/* District */}
-									<div className="text-sm text-gray-600">
+									<div className="text-sm text-gray-600 whitespace-nowrap">
 										{getDistrictNameById(txn.districtId)}
 									</div>
 
-									{/* Amount with Type below */}
-									<div className="flex flex-col items-end">
-										<p
+									{/* Amount */}
+									<div
+										className={`text-right font-bold ${
+											txn.type === "income"
+												? "text-green-500"
+												: "text-red-500"
+										}`}
+									>
+										{txn.type === "income" ? "+" : "-"}${txn.amount}
+									</div>
+								</div>
+
+								{/* Mobile layout */}
+								<div className="sm:hidden flex flex-col space-y-1 text-sm">
+									<div className="flex items-center justify-between text-gray-500">
+										<div className="flex items-center space-x-2">
+											<span
+												className={`w-2.5 h-2.5 rounded-full ${
+													txn.type === "income"
+														? "bg-green-500"
+														: "bg-red-500"
+												}`}
+											/>
+											<span>
+												{new Date(txn.date).toLocaleDateString("en-US", {
+													month: "short",
+													day: "2-digit",
+												})}
+											</span>
+										</div>
+										<div
 											className={`font-bold ${
 												txn.type === "income"
 													? "text-green-500"
@@ -105,10 +142,13 @@ const DashboardFinance: React.FC = () => {
 											}`}
 										>
 											{txn.type === "income" ? "+" : "-"}${txn.amount}
-										</p>
-										<p className="text-xs text-gray-400">
-											{txn.type.toUpperCase()}
-										</p>
+										</div>
+									</div>
+									<div className="text-gray-700 font-medium">
+										{txn.description}
+									</div>
+									<div className="text-gray-600">
+										{getDistrictNameById(txn.districtId)}
 									</div>
 								</div>
 							</li>
