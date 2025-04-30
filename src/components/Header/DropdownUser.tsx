@@ -1,18 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { snakeCaseToNormalCase } from "../../common/utils";
 import UserOne from "../../images/user/user-01.png";
 
 const DropdownUser = () => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 
-	const trigger = useRef<any>(null);
-	const dropdown = useRef<any>(null);
+	const trigger = useRef<HTMLAnchorElement>(null);
+	const dropdown = useRef<HTMLDivElement>(null);
 
 	// close on click outside
 	useEffect(() => {
 		const clickHandler = ({ target }: MouseEvent) => {
-			if (!dropdown.current) return;
+			if (
+				!dropdown.current ||
+				!trigger.current ||
+				!(target instanceof HTMLAnchorElement)
+			)
+				return;
 			if (
 				!dropdownOpen ||
 				dropdown.current.contains(target) ||
@@ -27,8 +33,8 @@ const DropdownUser = () => {
 
 	// close if the esc key is pressed
 	useEffect(() => {
-		const keyHandler = ({ keyCode }: KeyboardEvent) => {
-			if (!dropdownOpen || keyCode !== 27) return;
+		const keyHandler = ({ key }: KeyboardEvent) => {
+			if (!dropdownOpen || key !== "Escape") return;
 			setDropdownOpen(false);
 		};
 		document.addEventListener("keydown", keyHandler);
@@ -41,6 +47,7 @@ const DropdownUser = () => {
 		localStorage.removeItem("username");
 		window.location.href = "/auth/signin";
 	};
+	const role = localStorage.getItem("role");
 
 	return (
 		<div className="relative">
@@ -54,7 +61,9 @@ const DropdownUser = () => {
 					<span className="block text-sm font-medium text-black dark:text-white">
 						{localStorage.getItem("username")}
 					</span>
-					<span className="block text-xs">{localStorage.getItem("role")}</span>
+					<span className="block text-xs">
+						{typeof role === "string" ? snakeCaseToNormalCase(role) : "-"}
+					</span>
 				</span>
 
 				<span className="h-12 w-12 rounded-full">
@@ -88,6 +97,7 @@ const DropdownUser = () => {
 				}`}
 			>
 				<button
+					type="button"
 					onClick={handleSignOut}
 					className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
 				>
