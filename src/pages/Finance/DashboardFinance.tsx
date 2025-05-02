@@ -1,10 +1,10 @@
 import { Activity, PlusCircle, TrendingDown, TrendingUp } from "lucide-react";
 import type React from "react";
-import { useState } from "react";
+// import { useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
 import {PieChart,Pie,Cell,Tooltip,Legend,ResponsiveContainer,Label} from "recharts";
-
+import { useNavigate } from "react-router-dom";
 
 
 import {
@@ -16,7 +16,7 @@ import {
 } from "./mockData";
 
 const DashboardFinance: React.FC = () => {
-	const [, setIsTransactionFormOpen] = useState(false);
+	const navigate = useNavigate();
 	const lastTransactions = getRecentTransactions();
 
 	return (
@@ -33,7 +33,7 @@ const DashboardFinance: React.FC = () => {
 					<div className="mt-4 md:mt-0">
 						<button
 							type="button"
-							onClick={() => setIsTransactionFormOpen(true)}
+							onClick={() => navigate("/finance/add_finance")}
 							className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
 						>
 							<PlusCircle size={18} className="mr-2" />

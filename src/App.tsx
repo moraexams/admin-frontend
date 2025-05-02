@@ -13,6 +13,7 @@ import Coordinators from "./pages/District/Coordinators";
 import Districts from "./pages/District/Districts";
 import ExamCentres from "./pages/District/ExamCentres";
 import DashboardFinance from "./pages/Finance/DashboardFinance";
+import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
@@ -229,6 +230,15 @@ function App() {
 						<>
 							<PageTitle title="Finance Dashboard | MoraExams" />
 							<DashboardFinance />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/add_finance"
+					element={
+						<>
+							<PageTitle title="Finance_Add_Record | MoraExams" />
+							<AddFinanceRecord />
 						</>
 					}
 				/>
