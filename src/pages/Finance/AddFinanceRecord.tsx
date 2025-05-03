@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDropzone } from "react-dropzone";
 import DefaultLayout from "../../layout/DefaultLayout";
 
 type FinanceFormData = {
@@ -38,6 +39,7 @@ const AddFinanceRecord: React.FC = () => {
       transactionType: "expense",
     },
   });
+
   const transactionType = watch("transactionType");
   const [fileName, setFileName] = useState("");
 
@@ -45,15 +47,22 @@ const AddFinanceRecord: React.FC = () => {
     console.log("Submitted:", data);
   };
 
-  // const handleTemplateClick = () => {
-  //   setValue("transactionType", "expense");
-  //   setValue("expenseType", "Office Supplies");
-  //   setValue("description", "Purchased printer ink and paper");
-  //   setValue("amount", 1800);
-  //   setValue("paymentMethod", "cash");
-  // };
-
   const typeOptions = transactionType === "income" ? incomeTypes : expenseTypes;
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles?.[0]) {
+        // @ts-ignore
+        setValue("billFile", acceptedFiles);
+        setFileName(acceptedFiles[0].name);
+      }
+    },
+    accept: {
+      "image/*": [],
+      "application/pdf": [],
+    },
+    multiple: false,
+  });
 
   return (
     <DefaultLayout>
@@ -122,7 +131,7 @@ const AddFinanceRecord: React.FC = () => {
               type="number"
               {...register("amount", { required: true })}
               className="w-full mt-1 border px-3 py-2 rounded-md"
-              placeholder="1000"
+              placeholder="0000"
             />
           </div>
 
@@ -139,56 +148,60 @@ const AddFinanceRecord: React.FC = () => {
           {/* Payment Method */}
           <div>
             <label className="block font-medium mb-2">Payment Method</label>
-              <div className="flex flex-wrap gap-4">
-                {["cash", "credit", "online", "bank"].map((method) => (
-                  <label key={method} className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      value={method}
-                      {...register("paymentMethod", { required: true })}
-                      className="accent-blue-600"
-                    />
-                    <span className="capitalize">{method === "credit" ? "Credit/Debit Card" : method === "online" ? "Online Transfer" : method === "bank" ? "Bank Transfer" : "Cash"}</span>
-                  </label>
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-4">
+              {["cash", "credit", "online", "bank"].map((method) => (
+                <label key={method} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    value={method}
+                    {...register("paymentMethod", { required: true })}
+                    className="accent-blue-600"
+                  />
+                  <span className="capitalize">
+                    {method === "credit"
+                      ? "Credit/Debit Card"
+                      : method === "online"
+                      ? "Online Transfer"
+                      : method === "bank"
+                      ? "Bank Transfer"
+                      : "Cash"}
+                  </span>
+                </label>
+              ))}
+            </div>
           </div>
 
-
-          {/* Bill Upload */}
+          {/* Bill Upload - Dropzone */}
           <div>
-            <label className="block font-medium">Upload Bill</label>
-            <input
-              type="file"
-              {...register("billFile")}
-              accept="image/*,application/pdf"
-              onChange={(e) => {
-                if (e.target.files?.[0]) {
-                  setFileName(e.target.files[0].name);
-                }
-              }}
-              className="w-full mt-1"
-            />
-            {fileName && (
-              <p className="text-sm text-gray-600 mt-1">Selected: {fileName}</p>
-            )}
+            <label className="block font-medium mb-1">Upload Bill</label>
+            <div
+              {...getRootProps()}
+              className={`w-full px-4 py-10 text-center border-2 border-dashed rounded-md transition-colors cursor-pointer ${
+                isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
+              }`}
+            >
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p className="text-blue-500">Drop the file here ...</p>
+              ) : (
+                <p className="text-gray-500">
+                  Drag & drop a bill file here, or click to select
+                </p>
+              )}
+              {fileName && (
+                <p className="text-sm text-gray-600 mt-2">Selected: {fileName}</p>
+              )}
+            </div>
           </div>
 
-          {/* Buttons */}
-          <div className="flex justify-between items-center pt-4">
+          {/* Submit Button */}
+          <div className="flex justify-end pt-4">
             <button
               type="submit"
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Add Record
             </button>
-            {/* <button
-              type="button"
-              onClick={handleTemplateClick}
-              className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-100"
-            >
-              Use Template
-            </button> */}
           </div>
         </form>
       </div>
