@@ -13,6 +13,7 @@ import {
 	getRecentTransactions,
 	getTotalExpenses,
 	getTotalIncome,
+	getTotalDistrictExpenses
 } from "./mockData";
 
 const DashboardFinance: React.FC = () => {
@@ -61,6 +62,13 @@ const DashboardFinance: React.FC = () => {
 						title="Total Expenses"
 						value={getTotalExpenses()}
 						change={5}
+						type="negative"
+						icon={<TrendingDown size={20} />}
+					/>
+					<SummaryCard
+						title="District Expenses"
+						value={getTotalDistrictExpenses()}
+						change={0}
 						type="negative"
 						icon={<TrendingDown size={20} />}
 					/>
