@@ -84,7 +84,7 @@ const DashboardFinance = () => {
                 icon={<TrendingUp size={20} />}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
               <SummaryCard
                 title="Total Expenses"
                 value={getTotalExpenses()}
