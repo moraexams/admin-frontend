@@ -217,7 +217,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 								<NavLink
 									to="/"
 									className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-										(pathname === "/" || pathname.includes("dashboard")) &&
+										(pathname === "/") &&
 										"bg-graydark dark:bg-meta-4"
 									}`}
 								>
@@ -241,13 +241,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 							{/* <!-- Menu Item Dashboard --> */}
 
 							{/* <!-- Menu Item Finance Dashboard --> */}
-							{role === "admin" && (
+							{isAdmin && (
 								<ul className="flex flex-col gap-1.5">
 									{/* <!-- Menu Item Auth Pages --> */}
 									<SidebarLinkGroup
-										activeCondition={
-											pathname === "/finance" || pathname.includes("finance")
-										}
+										activeCondition={pathname.startsWith("/finance")}
 									>
 										{(handleClick, open) => {
 											return (
@@ -255,8 +253,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													<NavLink
 														to="/finance"
 														className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-															(pathname === "/finance" ||
-																pathname.includes("finance")) &&
+															pathname.startsWith("/finance") &&
 															"bg-graydark dark:bg-meta-4"
 														}`}
 														onClick={(e) => {
