@@ -24,7 +24,8 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
-import Finance from "./pages/Finance/Finance";
+import Bills from "./pages/Finance/Bills";
+import DistrictsExpense from "./pages/Finance/DistrictsExpense";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -77,15 +78,6 @@ function App() {
 						<>
 							<PageTitle title="Users | Mora Exams" />
 							<Users />
-						</>
-					}
-				/>
-				<Route
-					path="/Finance"
-					element={
-						<>
-							<PageTitle title="Finance | Mora Exams" />
-							<Finance />
 						</>
 					}
 				/>
@@ -234,11 +226,29 @@ function App() {
 					}
 				/>
 				<Route
-					path="/finance/dashboard"
+					path="/finance/dashboardfinance"
 					element={
 						<>
 							<PageTitle title="Finance Dashboard | MoraExams" />
 							<DashboardFinance />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/bills"
+					element={
+						<>
+							<PageTitle title="Bills | MoraExams" />
+							<Bills />
+						</>
+					}
+				/>
+				<Route 
+					path="/finance/districtsexpense"
+					element={
+						<>
+							<PageTitle title="Districts Expense | MoraExams" />
+							<DistrictsExpense />
 						</>
 					}
 				/>

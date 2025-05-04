@@ -3,14 +3,18 @@ import type React from "react";
 import { useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { useNavigate } from "react-router-dom";
 
-import { getBalance, getTotalExpenses, getTotalIncome } from "./mockData";
+
+import { getBalance, getRecentTransactions, getTotalExpenses, getTotalIncome } from "./mockData";
 
 const DashboardFinance: React.FC = () => {
-	const navigate = useNavigate();
+	
 	const [, setIsTransactionFormOpen] = useState(false);
 	const lastTransactions = getRecentTransactions();
+
+	function getDistrictNameById(districtId: string): React.ReactNode {
+		return null
+	}
 
 	return (
 		<DefaultLayout>
@@ -58,7 +62,7 @@ const DashboardFinance: React.FC = () => {
 						icon={<TrendingDown size={20} />}
 					/>
 			
-					<div
+					{/* <div
 						className="bg-white shadow rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
 						onClick={() => navigate("/Finance")} 
 					>
@@ -67,11 +71,11 @@ const DashboardFinance: React.FC = () => {
 							<span className="text-gray-600">Total Budget</span>
 							<span className="text-gray-900 font-semibold">{getTotalDistrictsBudget()}</span>
 						</div>
-						<div className="flex justify-between items-center">
+						<div className="flex justgit@github.com:moraexams/backend.gitify-between items-center">
 							<span className="text-gray-600">Total Expenses</span>
 							<span className="text-gray-900 font-semibold">{getTotalDistrictsExpenses()}</span>
 						</div>
-					</div>
+					</div> */}
 					
 				</div>
 
