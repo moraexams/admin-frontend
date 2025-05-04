@@ -58,9 +58,6 @@ const ExamPaperDistributionTable = ({
 				<table className="w-full table-auto">
 					<thead>
 						<tr className="bg-gray-2 text-left dark:bg-meta-4">
-							<th className="min-w-[80px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-								District ID
-							</th>
 							<th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
 								District Name
 							</th>
@@ -123,18 +120,10 @@ const ExamPaperDistributionTable = ({
 																			<>
 																				<td
 																					rowSpan={districtrowSpan}
-																					className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11"
-																				>
-																					<h5 className="font-medium text-black dark:text-white">
-																						{d_id}
-																					</h5>
-																				</td>
-																				<td
-																					rowSpan={districtrowSpan}
 																					className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
 																				>
 																					<p className="text-black dark:text-white">
-																						{name}
+																						({d_id}) {name}
 																					</p>
 																				</td>
 																			</>

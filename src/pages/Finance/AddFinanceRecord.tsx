@@ -122,7 +122,7 @@ const AddFinanceRecord: React.FC = () => {
   return (
     <DefaultLayout>
       <Toaster position="top-right" />
-      <div className="bg-white text-black max-w-2xl mx-auto p-6 shadow-md rounded-xl mt-8">
+      <div className="bg-white text-black max-w-2xl mx-auto p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold">Add Finance Record</h2>
         </div>
@@ -156,7 +156,7 @@ const AddFinanceRecord: React.FC = () => {
             <label className="block font-medium">Category</label>
             <select
               {...register("type")}
-              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             >
               <option value="">Select type</option>
               {["salary", "rent", "utilities", "sales", "misc"].map((type) => (
@@ -175,7 +175,7 @@ const AddFinanceRecord: React.FC = () => {
             <label className="block font-medium">Description</label>
             <textarea
               {...register("description")}
-              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               placeholder="Write a short description"
             />
           </div>
@@ -186,7 +186,7 @@ const AddFinanceRecord: React.FC = () => {
             <input
               type="number"
               {...register("amount")}
-              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               placeholder="0000"
             />
             {errors.amount && (
@@ -200,7 +200,7 @@ const AddFinanceRecord: React.FC = () => {
             <input
               type="datetime-local"
               {...register("dateTime")}
-              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
             {errors.dateTime && (
               <span className="text-red-500 text-sm">{errors.dateTime.message}</span>
@@ -241,7 +241,7 @@ const AddFinanceRecord: React.FC = () => {
             <label className="block font-medium mb-1">Upload Bill</label>
             <div
               {...getRootProps()}
-              className="w-full px-4 py-10 text-center border-2 border-dashed rounded-md transition-colors cursor-pointer border-gray-300 bg-white"
+              className="w-full px-4 py-10 text-center border-2 border-dashed rounded-md transition-colors cursor-pointer border-gray-300 bg-white dark:bg-form-input dark:border-form-strokedark dark:text-white"
             >
               <input {...getInputProps()} />
               {isDragActive ? (
