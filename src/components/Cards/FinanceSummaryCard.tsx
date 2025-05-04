@@ -43,8 +43,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 	};
 
 	return (
-		<div className="bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-md min-h-[180px]">
-	
+		<div className="bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-md dark:bg-boxdark dark:text-white">
 			<div className="flex justify-between items-start">
 				<div>
 					<h3 className="text-gray-500 text-sm font-medium mb-5">{title}</h3>

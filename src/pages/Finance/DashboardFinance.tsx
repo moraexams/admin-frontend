@@ -118,8 +118,8 @@ const DashboardFinance: React.FC = () => {
           </div>
 
           {/* Donut Chart */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">
+          <div className="bg-white p-6 rounded-lg shadow dark:bg-boxdark">
+            <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
               Expense Breakdown
             </h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -161,7 +161,7 @@ const DashboardFinance: React.FC = () => {
         </div>
 
         {/* Last 5 Transactions */}
-        <div className="bg-white p-6 rounded-lg shadow mt-10">
+        <div className="bg-white p-6 rounded-lg shadow mt-10 dark:bg-boxdark dark:text-white">
           <h2 className="text-xl font-bold mb-4 text-gray-800">
             Last 5 Transactions
           </h2>
@@ -169,7 +169,7 @@ const DashboardFinance: React.FC = () => {
             {lastTransactions.map((txn) => (
               <li
                 key={txn.id}
-                className="py-3 px-4 rounded-md bg-white hover:shadow-md hover:bg-blue-50 transition duration-150 ease-in-out cursor-pointer"
+                className="py-3 px-4 rounded-md bg-white hover:shadow-md hover:bg-blue-50 transition duration-150 ease-in-out cursor-pointer dark:bg-boxdark dark:hover:bg-meta-4 dark:text-white"
               >
                 {/* Desktop layout */}
                 <div
