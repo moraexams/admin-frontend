@@ -3,6 +3,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
+import { Link } from 'react-router-dom';
 import {
   PieChart,
   Pie,
@@ -30,12 +31,7 @@ interface FinanceStats {
 }
 
 const DashboardFinance: React.FC = () => {
-<<<<<<< HEAD
-	
-	const [, setIsTransactionFormOpen] = useState(false);
-=======
 	const navigate = useNavigate();
->>>>>>> 9e340ca8ede45e970de5388c500e6c5683156bc6
 	const lastTransactions = getRecentTransactions();
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
 	
@@ -45,22 +41,6 @@ const DashboardFinance: React.FC = () => {
     });
   }, []);
 
-<<<<<<< HEAD
-	function getDistrictNameById(districtId: string): React.ReactNode {
-		return null
-	}
-
-	return (
-		<DefaultLayout>
-			<div className="py-6">
-				<div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-					<div>
-						<h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-						<p className="text-gray-600 mt-1">
-							Welcome back to your financial overview
-						</p>
-					</div>
-=======
   // Prepare Pie Chart Data
   const expenseData: { name: string; value: number }[] =
     getRecentTransactions()
@@ -74,51 +54,9 @@ const DashboardFinance: React.FC = () => {
         }
         return acc;
       }, []);
->>>>>>> 9e340ca8ede45e970de5388c500e6c5683156bc6
 
   const pieColors = ["#81c784", "#64b5f6", "#ffb74d", "#e1bee7", "#80deea"];
 
-<<<<<<< HEAD
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-					<SummaryCard
-						title="Total Balance"
-						value={getBalance()}
-						change={8}
-						type="neutral"
-						icon={<Activity size={20} />}
-					/>
-					<SummaryCard
-						title="Total Income"
-						value={getTotalIncome()}
-						change={12}
-						type="positive"
-						icon={<TrendingUp size={20} />}
-					/>
-					<SummaryCard
-						title="Total Expenses"
-						value={getTotalExpenses()}
-						change={5}
-						type="negative"
-						icon={<TrendingDown size={20} />}
-					/>
-			
-					{/* <div
-						className="bg-white shadow rounded-lg p-6 cursor-pointer hover:shadow-lg transition-shadow"
-						onClick={() => navigate("/Finance")} 
-					>
-						<h2 className="text-lg font-bold text-gray-900 mb-4">Districts</h2>
-						<div className="flex justify-between items-center mb-2">
-							<span className="text-gray-600">Total Budget</span>
-							<span className="text-gray-900 font-semibold">{getTotalDistrictsBudget()}</span>
-						</div>
-						<div className="flex justgit@github.com:moraexams/backend.gitify-between items-center">
-							<span className="text-gray-600">Total Expenses</span>
-							<span className="text-gray-900 font-semibold">{getTotalDistrictsExpenses()}</span>
-						</div>
-					</div> */}
-					
-				</div>
-=======
   return (
     <DefaultLayout>
       <div className="py-6">
@@ -141,7 +79,6 @@ const DashboardFinance: React.FC = () => {
             </button>
           </div>
         </div>
->>>>>>> 9e340ca8ede45e970de5388c500e6c5683156bc6
 
         {/* Summary Cards + Donut Chart */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
@@ -171,6 +108,7 @@ const DashboardFinance: React.FC = () => {
                 type="negative"
                 icon={<TrendingDown size={20} />}
               />
+              <Link to="/finance/districtexpenses">
               <SummaryCard
                 title="District Expenses"
                 value={getTotalDistrictExpenses()}
@@ -178,6 +116,7 @@ const DashboardFinance: React.FC = () => {
                 type="negative"
                 icon={<TrendingDown size={20} />}
               />
+              </Link>
             </div>
           </div>
 

@@ -312,22 +312,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															</li>
 															<li>
 																<NavLink
-																	to="/finance/districtsexpense"
+																	to="/finance/districtexpenses"
 																	className={({ isActive }) =>
 																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																	}
 																>
-																	Districts
+																	District Expenses
 																</NavLink>
 															</li>
 															<li>
 																<NavLink
-																	to="/finance/bills"
+																	to="/finance/billgallery"
 																	className={({ isActive }) =>
 																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
 																	}
 																>
-																	Bills
+																	Bill Gallery
 																</NavLink>
 															</li>
 														</ul>
@@ -458,7 +458,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									{/* <!-- Menu Item Auth Pages --> */}
 									<SidebarLinkGroup
 										activeCondition={
-											pathname === "/district" || pathname.includes("district")
+											pathname === "/districts" || pathname.startsWith("/district/")
 										}
 									>
 										{(handleClick, open) => {
@@ -467,8 +467,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													<NavLink
 														to="/districts"
 														className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-															(pathname === "/district" ||
-																pathname.includes("district")) &&
+															(pathname === "/districts" ||
+																pathname.startsWith("/district/")) &&
 															"bg-graydark dark:bg-meta-4"
 														}`}
 														onClick={(e) => {

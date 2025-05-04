@@ -25,8 +25,8 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
-import Bills from "./pages/Finance/Bills";
-import DistrictsExpense from "./pages/Finance/DistrictsExpense";
+import DistrictExpenses from "./pages/Finance/DistrictExpenses";
+import BillGallery from "./pages/Finance/BillGallery";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -232,6 +232,24 @@ function App() {
 						<>
 							<PageTitle title="Finance Dashboard | MoraExams" />
 							<DashboardFinance />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/districtexpenses"
+					element={
+						<>
+							<PageTitle title="District Expenses | MoraExams" />
+							<DistrictExpenses />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/billgallery"
+					element={
+						<>
+							<PageTitle title="District Expenses | MoraExams" />
+							<BillGallery />
 						</>
 					}
 				/>
