@@ -1,4 +1,6 @@
 import { Activity, PlusCircle, TrendingDown, TrendingUp } from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
 import {
@@ -11,19 +13,32 @@ import {
   Label,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
-
+import { getFinanceStats } from "../../services/financeServices";
 import {
-  getBalance,
-  getDistrictNameById,
-  getRecentTransactions,
-  getTotalExpenses,
-  getTotalIncome,
-  getTotalDistrictExpenses,
+	getDistrictNameById,
+	getRecentTransactions,
+	getTotalDistrictExpenses,
+	getTotalExpenses,
 } from "./mockData";
 
-const DashboardFinance = () => {
-  const navigate = useNavigate();
-  const lastTransactions = getRecentTransactions();
+interface FinanceStats {
+	stats: {
+		current_balance: number;
+		total_income: number;
+		total_expenses: number;
+	};
+}
+
+const DashboardFinance: React.FC = () => {
+	const navigate = useNavigate();
+	const lastTransactions = getRecentTransactions();
+	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
+	
+  useEffect(() => {
+    getFinanceStats().then((data) => {
+      setFinanceStats(data);
+    });
+  }, []);
 
   // Prepare Pie Chart Data
   const expenseData: { name: string; value: number }[] =
@@ -71,14 +86,14 @@ const DashboardFinance = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <SummaryCard
                 title="Total Balance"
-                value={getBalance()}
+                value={financeStats == null ? 0 : financeStats.stats.current_balance}
                 change={8}
                 type="neutral"
                 icon={<Activity size={20} />}
               />
               <SummaryCard
                 title="Total Income"
-                value={getTotalIncome()}
+                value={financeStats == null ? 0 : financeStats.stats.total_income}
                 change={12}
                 type="positive"
                 icon={<TrendingUp size={20} />}
@@ -87,7 +102,7 @@ const DashboardFinance = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
               <SummaryCard
                 title="Total Expenses"
-                value={getTotalExpenses()}
+                value={financeStats == null ? 0 : financeStats.stats.total_expenses}
                 change={5}
                 type="negative"
                 icon={<TrendingDown size={20} />}
