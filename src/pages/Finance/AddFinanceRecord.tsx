@@ -27,7 +27,6 @@ const financeSchema = z.object({
 type FinanceFormData = z.infer<typeof financeSchema>;
 
 const AddFinanceRecord: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false); // State for dark mode
   const sriLankanTimeZone = "Asia/Colombo";
   const getCurrentDateTime = () =>
     format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: sriLankanTimeZone });
@@ -123,15 +122,9 @@ const AddFinanceRecord: React.FC = () => {
   return (
     <DefaultLayout>
       <Toaster position="top-right" />
-      <div className={`${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"} max-w-2xl mx-auto p-6 shadow-md rounded-xl mt-8`}>
+      <div className="bg-white text-black max-w-2xl mx-auto p-6 shadow-md rounded-xl mt-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold">Add Finance Record</h2>
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition"
-          >
-            Toggle {darkMode ? "Light" : "Dark"} Mode
-          </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -148,8 +141,6 @@ const AddFinanceRecord: React.FC = () => {
                       ? type === "income"
                         ? "bg-green-500 text-white"
                         : "bg-red-500 text-white"
-                      : darkMode
-                      ? "bg-gray-700 text-gray-300"
                       : "bg-gray-100 text-gray-700"
                   }`}
                   onClick={() => setValue("transactionType", type)}
@@ -162,12 +153,10 @@ const AddFinanceRecord: React.FC = () => {
 
           {/* Type */}
           <div>
-            <label className="block font-medium">Type</label>
+            <label className="block font-medium">Category</label>
             <select
               {...register("type")}
-              className={`w-full mt-1 border px-3 py-2 rounded-md ${
-                darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-black border-gray-300"
-              }`}
+              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
             >
               <option value="">Select type</option>
               {["salary", "rent", "utilities", "sales", "misc"].map((type) => (
@@ -186,9 +175,7 @@ const AddFinanceRecord: React.FC = () => {
             <label className="block font-medium">Description</label>
             <textarea
               {...register("description")}
-              className={`w-full mt-1 border px-3 py-2 rounded-md ${
-                darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-black border-gray-300"
-              }`}
+              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
               placeholder="Write a short description"
             />
           </div>
@@ -199,9 +186,7 @@ const AddFinanceRecord: React.FC = () => {
             <input
               type="number"
               {...register("amount")}
-              className={`w-full mt-1 border px-3 py-2 rounded-md ${
-                darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-black border-gray-300"
-              }`}
+              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
               placeholder="0000"
             />
             {errors.amount && (
@@ -215,9 +200,7 @@ const AddFinanceRecord: React.FC = () => {
             <input
               type="datetime-local"
               {...register("dateTime")}
-              className={`w-full mt-1 border px-3 py-2 rounded-md ${
-                darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-black border-gray-300"
-              }`}
+              className="w-full mt-1 border px-3 py-2 rounded-md bg-white text-black border-gray-300"
             />
             {errors.dateTime && (
               <span className="text-red-500 text-sm">{errors.dateTime.message}</span>
@@ -258,26 +241,18 @@ const AddFinanceRecord: React.FC = () => {
             <label className="block font-medium mb-1">Upload Bill</label>
             <div
               {...getRootProps()}
-              className={`w-full px-4 py-10 text-center border-2 border-dashed rounded-md transition-colors cursor-pointer ${
-                isDragActive
-                  ? "border-blue-500 bg-blue-50"
-                  : darkMode
-                  ? "border-gray-600 bg-gray-800"
-                  : "border-gray-300 bg-white"
-              }`}
+              className="w-full px-4 py-10 text-center border-2 border-dashed rounded-md transition-colors cursor-pointer border-gray-300 bg-white"
             >
               <input {...getInputProps()} />
               {isDragActive ? (
                 <p className="text-blue-500">Drop the file here ...</p>
               ) : (
-                <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-500"}`}>
+                <p className="text-sm text-gray-500">
                   Drag & drop a bill file here, or click to select
                 </p>
               )}
               {fileName && (
-                <p className={`text-sm mt-2 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                  Selected: {fileName}
-                </p>
+                <p className="text-sm mt-2 text-gray-600">Selected: {fileName}</p>
               )}
               {filePreview && (
                 <img
@@ -294,9 +269,7 @@ const AddFinanceRecord: React.FC = () => {
             <button
               type="button"
               onClick={resetForm}
-              className={`px-6 py-2 rounded-md shadow-md ${
-                darkMode ? "bg-red-600 hover:bg-red-500 text-white" : "bg-red-500 hover:bg-red-600 text-white"
-              }`}
+              className="px-6 py-2 rounded-md shadow-md bg-red-500 hover:bg-red-600 text-white"
             >
               Reset Form
             </button>
@@ -304,9 +277,7 @@ const AddFinanceRecord: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-6 py-2 rounded-md shadow-md ${
-                darkMode ? "bg-blue-600 hover:bg-blue-500 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"
-              }`}
+              className="px-6 py-2 rounded-md shadow-md bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
             >
               {isSubmitting ? "Submitting..." : "Add Record"}
             </button>
