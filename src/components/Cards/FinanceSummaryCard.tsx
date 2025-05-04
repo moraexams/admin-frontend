@@ -26,7 +26,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 		  .format(Math.abs(amount)) 
 		  .replace("LKR", "") 
 	  
-		return `LKR ${amount < 0 ? "-" : ""}${absFormatted.trim()}`; // Add the negative sign before the value if needed
+		return `LKR ${amount < 0 ? "-" : ""}${absFormatted.trim()}`; 
 	  };
 	  
 
