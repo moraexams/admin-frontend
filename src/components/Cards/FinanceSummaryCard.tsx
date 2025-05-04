@@ -17,13 +17,18 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 	icon = <DollarSign size={20} />,
 }) => {
 	const formatCurrency = (amount: number) => {
-		return new Intl.NumberFormat("en-US", {
-			style: "currency",
-			currency: "LKR",
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 0,
-		}).format(amount);
-	};
+		const absFormatted = new Intl.NumberFormat("en-LK", {
+		  style: "currency",
+		  currency: "LKR",
+		  minimumFractionDigits: 0,
+		  maximumFractionDigits: 0,
+		})
+		  .format(Math.abs(amount)) 
+		  .replace("LKR", "") 
+	  
+		return `LKR ${amount < 0 ? "-" : ""}${absFormatted.trim()}`; // Add the negative sign before the value if needed
+	  };
+	  
 
 	const getChangeColor = () => {
 		if (type === "positive") return "text-green-600 bg-green-50";
@@ -38,10 +43,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 	};
 
 	return (
-		<div className="bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-md">
+		<div className="bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-md min-h-[180px]">
+	
 			<div className="flex justify-between items-start">
 				<div>
-					<h3 className="text-gray-500 text-sm font-medium mb-1">{title}</h3>
+					<h3 className="text-gray-500 text-sm font-medium mb-5">{title}</h3>
 					<p className="text-2xl font-bold text-gray-900">
 						{formatCurrency(value)}
 					</p>
