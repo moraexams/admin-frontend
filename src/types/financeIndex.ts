@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Transaction {
 	id: string;
 	date: string;
@@ -43,3 +45,14 @@ export interface ChartData {
 	income: number;
 	expenses: number;
 }
+
+export const financeSchema = z.object({
+	transactionType: z.enum(["income", "expense"]),
+	category: z.string().nonempty("Please select a type"),
+	description: z.string().optional(),
+	amount: z.coerce.number().min(1, "Amount must be greater than 0"),
+	createdAt: z.string().nonempty("Date & Time is required"),
+	paymentAccount: z.enum(["bank", "cash"]),
+});
+
+export type FinanceFormData = z.infer<typeof financeSchema>;

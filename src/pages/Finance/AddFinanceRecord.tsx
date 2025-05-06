@@ -3,27 +3,18 @@ import { format } from "date-fns-tz";
 import type React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
-import * as z from "zod";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
 import DefaultLayout from "../../layout/DefaultLayout";
+import { type FinanceFormData, financeSchema } from "../../types/financeIndex";
+import { addTransaction } from "../../services/financeServices";
+import { capitalize } from "../../common/utils";
 
-const financeSchema = z.object({
-	transactionType: z.enum(["income", "expense"]),
-	type: z.string().nonempty("Please select a type"),
-	description: z.string().optional(),
-	amount: z.coerce.number().min(1, "Amount must be greater than 0"),
-	dateTime: z.string().nonempty("Date & Time is required"),
-	paymentAccount: z.enum(["bank", "cash"]),
-});
-
-type FinanceFormData = z.infer<typeof financeSchema>;
+const SRI_LANKA_TIMEZONE = "Asia/Colombo";
 
 const AddFinanceRecord: React.FC = () => {
-	const sriLankanTimeZone = "Asia/Colombo";
-	const getCurrentDateTime = () =>
-		format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: sriLankanTimeZone });
+	const getCurrentDateTime = () => format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: SRI_LANKA_TIMEZONE });
 
 	const {
 		register,
@@ -36,7 +27,7 @@ const AddFinanceRecord: React.FC = () => {
 		resolver: zodResolver(financeSchema),
 		defaultValues: {
 			transactionType: "expense",
-			dateTime: getCurrentDateTime(),
+			createdAt: getCurrentDateTime(),
 			paymentAccount: "cash",
 		},
 	});
@@ -44,24 +35,24 @@ const AddFinanceRecord: React.FC = () => {
 	const resetForm = () => {
 		reset({
 			transactionType: "expense",
-			type: "",
+			category: "",
 			description: "",
 			amount: 0,
-			dateTime: getCurrentDateTime(),
+			createdAt: getCurrentDateTime(),
 			paymentAccount: "cash",
 		});
-		toast.success("Form reset successfully!");
 	};
 
 	const onSubmit = async (data: FinanceFormData) => {
-		try {
-			console.log("Submitted:", data);
-			toast.success("Record added successfully!");
-			resetForm();
-		} catch (error) {
+	const formattedCreatedAt = format(data.createdAt, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone: SRI_LANKA_TIMEZONE });
+    console.log(formattedCreatedAt);
+    await addTransaction({ ...data, createdAt: formattedCreatedAt }).then(() => {
+  		toast.success("Transaction added successfully!");
+  		resetForm();
+		}).catch((error) => {
 			console.error(error);
 			toast.error("Failed to submit record. Please try again later.");
-		}
+		});
 	};
 
 	return (
@@ -89,26 +80,25 @@ const AddFinanceRecord: React.FC = () => {
 						</div>
 					</div>
 
-					{/* Type */}
 					<div>
 						<label className="block font-medium mb-2" htmlFor="category">
 							Category
 						</label>
 						<select
-							{...register("type")}
+							{...register("category")}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							id="category"
 						>
-							<option value="">Select type</option>
-							{["salary", "rent", "utilities", "sales", "misc"].map((type) => (
-								<option key={type} value={type}>
-									{type.charAt(0).toUpperCase() + type.slice(1)}
+							<option value="">Select category</option>
+							{["salary", "rent", "utilities", "sales", "misc"].map((category) => (
+								<option key={category} value={category}>
+								  {capitalize(category)}
 								</option>
 							))}
 						</select>
-						{errors.type && (
+						{errors.category && (
 							<span className="text-red-500 text-sm">
-								{errors.type.message}
+								{errors.category.message}
 							</span>
 						)}
 					</div>
@@ -138,12 +128,12 @@ const AddFinanceRecord: React.FC = () => {
 						</label>
 						<input
 							type="datetime-local"
-							{...register("dateTime")}
+							{...register("createdAt")}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
-						{errors.dateTime && (
+						{errors.createdAt && (
 							<span className="text-red-500 text-sm">
-								{errors.dateTime.message}
+								{errors.createdAt.message}
 							</span>
 						)}
 					</div>
@@ -159,8 +149,6 @@ const AddFinanceRecord: React.FC = () => {
 							placeholder="Write a short description"
 						/>
 					</div>
-
-					
 
 					<div>
 						<span className="block font-medium mb-2">Payment Account</span>
