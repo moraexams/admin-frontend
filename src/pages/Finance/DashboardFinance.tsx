@@ -13,7 +13,6 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
-import { useNavigate } from "react-router-dom";
 import { getFinanceStats } from "../../services/financeServices";
 import {
 	getDistrictNameById,
@@ -31,7 +30,6 @@ interface FinanceStats {
 }
 
 const DashboardFinance: React.FC = () => {
-	const navigate = useNavigate();
 	const lastTransactions = getRecentTransactions();
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
 	
@@ -69,14 +67,12 @@ const DashboardFinance: React.FC = () => {
             </p>
           </div>
           <div className="mt-4 md:mt-0">
-            <button
-              type="button"
-              onClick={() => navigate("/finance/add_finance")}
+            <Link
               className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <PlusCircle size={18} className="mr-2" />
-              New Transaction
-            </button>
+              to="/finance/add-finance-record">
+                <PlusCircle size={18} className="mr-2" />
+                New Transaction
+						</Link>
           </div>
         </div>
 
@@ -137,8 +133,8 @@ const DashboardFinance: React.FC = () => {
                   dataKey="value"
                   nameKey="name"
                 >
-                  {pieColors.map((color, index) => (
-                    <Cell key={index} fill={color} />
+                  {pieColors.map((color) => (
+                    <Cell key={color} fill={color} />
                   ))}
                   <Label
                     value={`All\nLKR ${getTotalExpenses().toLocaleString("en-LK")}`}
