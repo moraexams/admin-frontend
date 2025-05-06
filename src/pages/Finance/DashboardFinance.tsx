@@ -69,7 +69,7 @@ const DashboardFinance: React.FC = () => {
           <div className="mt-4 md:mt-0">
             <Link
               className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              to="/finance/add-finance-record">
+              to="/finance/add-transaction">
                 <PlusCircle size={18} className="mr-2" />
                 New Transaction
 						</Link>

@@ -254,10 +254,10 @@ function App() {
 					}
 				/>
 				<Route
-					path="/finance/add-finance-record"
+					path="/finance/add-transaction"
 					element={
 						<>
-							<PageTitle title="Add Finance Record | Mora Exams" />
+							<PageTitle title="Add Transaction | Mora Exams" />
 							<AddFinanceRecord />
 						</>
 					}
