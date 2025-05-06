@@ -27,6 +27,7 @@ import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
 import DistrictExpenses from "./pages/Finance/DistrictExpenses";
 import BillGallery from "./pages/Finance/BillGallery";
+import AllTransactions from "./pages/Finance/AllTransactions";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -259,6 +260,15 @@ function App() {
 						<>
 							<PageTitle title="Add Transaction | Mora Exams" />
 							<AddFinanceRecord />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/transactions"
+					element={
+						<>
+							<PageTitle title="Transactions | Mora Exams" />
+							<AllTransactions />
 						</>
 					}
 				/>

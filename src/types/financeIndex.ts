@@ -10,6 +10,9 @@ export interface Transaction {
 	districtId: string;
 	billId?: string;
 	templateId?: string;
+  created_at: string;
+  created_by_username: string;
+  associated_account: "Cash" | "Bank";
 }
 
 export interface District {

@@ -1,5 +1,6 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
-import type { FinanceFormData } from "../types/financeIndex";
+import type { FinanceFormData, Transaction } from "../types/financeIndex";
 
 export const getFinanceStats = async () => {
 	try {
@@ -13,3 +14,26 @@ export const getFinanceStats = async () => {
 export const addTransaction = async (data: FinanceFormData) => {
   return axiosInstance.post("/transaction/add", data);
 };
+
+  export const getTransactions = async (
+	page: number,
+	itemsPerPage: number,
+  ): Promise<{
+    count: number;
+    transactions:Array<Transaction>;
+  }> => {
+	try {
+		const response = await axiosInstance.get(
+			`/transaction?page=${page}&pageSize=${itemsPerPage}`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching transactions:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "Only finance team members and superadmins can view transactions.";
+			}
+		}
+		throw error;
+	}
+  };
