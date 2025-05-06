@@ -8,6 +8,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import toast, { Toaster } from "react-hot-toast";
 import { format } from "date-fns-tz";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 
 const financeSchema = z.object({
   transactionType: z.enum(["income", "expense"]),
@@ -123,14 +124,10 @@ const AddFinanceRecord: React.FC = () => {
 
   return (
     <DefaultLayout>
+      <Breadcrumb pageName="Add Finance Record" />
       <Toaster position="top-right" />
-      <div className="bg-white text-black max-w-2xl mx-auto p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold">Add Finance Record</h2>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          
+      <div className="bg-white text-black p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 xl:grid-cols-2 gap-5">
           <div>
             <span className="block font-medium mb-2">Transaction Type</span>
             <div className="grid grid-cols-2 gap-2">
@@ -141,10 +138,11 @@ const AddFinanceRecord: React.FC = () => {
           
           {/* Type */}
           <div>
-            <label className="block font-medium">Category</label>
+            <label className="block font-medium mb-2" htmlFor="category">Category</label>
             <select
               {...register("type")}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              id="category"
             >
               <option value="">Select type</option>
               {["salary", "rent", "utilities", "sales", "misc"].map((type) => (
@@ -160,22 +158,22 @@ const AddFinanceRecord: React.FC = () => {
 
           {/* Description */}
           <div>
-            <label className="block font-medium">Description</label>
+            <label className="block font-medium mb-2" htmlFor="description">Description</label>
             <textarea
               {...register("description")}
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary resize-none"
               placeholder="Write a short description"
             />
           </div>
 
           {/* Amount */}
           <div>
-            <label className="block font-medium">Amount</label>
+            <label className="block font-medium mb-2" htmlFor="amount">Amount</label>
             <input
               type="number"
               {...register("amount")}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              placeholder="0000"
+              placeholder="0000.00"
             />
             {errors.amount && (
               <span className="text-red-500 text-sm">{errors.amount.message}</span>
@@ -184,7 +182,7 @@ const AddFinanceRecord: React.FC = () => {
 
           {/* Date and Time */}
           <div>
-            <label className="block font-medium">Date & Time</label>
+            <label className="block font-medium mb-2" htmlFor="dateTime">Date & Time</label>
             <input
               type="datetime-local"
               {...register("dateTime")}
@@ -253,13 +251,13 @@ const AddFinanceRecord: React.FC = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end pt-4 space-x-4">
+          <div className="flex justify-end items-end h-fit mt-auto space-x-4">
             <button
               type="button"
               onClick={resetForm}
               className="px-6 py-2 rounded-md shadow-md bg-red-500 hover:bg-red-600 text-white"
             >
-              Reset Form
+              Reset
             </button>
 
             <button
