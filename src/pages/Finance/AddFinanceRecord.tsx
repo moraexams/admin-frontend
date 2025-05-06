@@ -6,6 +6,7 @@ import * as z from "zod";
 import DefaultLayout from "../../layout/DefaultLayout";
 import toast, { Toaster } from "react-hot-toast";
 import { format } from "date-fns-tz";
+import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
 
 const financeSchema = z.object({
   transactionType: z.enum(["income", "expense"]),
@@ -128,29 +129,15 @@ const AddFinanceRecord: React.FC = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Transaction Type */}
+          
           <div>
-            <label className="block font-medium mb-2">Transaction Type</label>
-            <div className="flex space-x-4">
-              {(["income", "expense"] as const).map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  className={`px-4 py-2 rounded-md font-medium ${
-                    watch("transactionType") === type
-                      ? type === "income"
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                      : "bg-gray-100 text-gray-700"
-                  }`}
-                  onClick={() => setValue("transactionType", type)}
-                >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </button>
-              ))}
+            <span className="block font-medium mb-2">Transaction Type</span>
+            <div className="grid grid-cols-2 gap-2">
+              <FinanceTransactionTypeSelectorItem isSelected={watch("transactionType") === "income"} onSelect={() => setValue("transactionType", "income")} type="income" />
+              <FinanceTransactionTypeSelectorItem isSelected={watch("transactionType") === "expense"} onSelect={() => setValue("transactionType", "expense")} type="expense" />
             </div>
           </div>
-
+          
           {/* Type */}
           <div>
             <label className="block font-medium">Category</label>
