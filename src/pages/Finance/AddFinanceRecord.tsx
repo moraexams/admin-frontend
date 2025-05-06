@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns-tz";
 import type React from "react";
-import { useState } from "react";
-import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import * as z from "zod";
@@ -18,19 +16,6 @@ const financeSchema = z.object({
 	amount: z.coerce.number().min(1, "Amount must be greater than 0"),
 	dateTime: z.string().nonempty("Date & Time is required"),
 	paymentAccount: z.enum(["bank", "cash"]),
-	billFile: z
-		.array(z.instanceof(File))
-		.optional()
-		.refine(
-			(files) =>
-				!files ||
-				files.every((file) =>
-					["image/", "application/pdf"].some((type) =>
-						file.type.startsWith(type),
-					),
-				),
-			"Only image or PDF files are allowed",
-		),
 });
 
 type FinanceFormData = z.infer<typeof financeSchema>;
@@ -56,9 +41,6 @@ const AddFinanceRecord: React.FC = () => {
 		},
 	});
 
-	const [fileName, setFileName] = useState("");
-	const [filePreview, setFilePreview] = useState<string | null>(null);
-
 	const resetForm = () => {
 		reset({
 			transactionType: "expense",
@@ -67,10 +49,7 @@ const AddFinanceRecord: React.FC = () => {
 			amount: 0,
 			dateTime: getCurrentDateTime(),
 			paymentAccount: "cash",
-			billFile: [],
 		});
-		setFileName("");
-		setFilePreview(null);
 		toast.success("Form reset successfully!");
 	};
 
@@ -84,52 +63,6 @@ const AddFinanceRecord: React.FC = () => {
 			toast.error("Failed to submit record. Please try again later.");
 		}
 	};
-
-	const { getRootProps, getInputProps, isDragActive } = useDropzone({
-		onDrop: (acceptedFiles) => {
-			const maxSize = 5 * 1024 * 1024; // 5 MB
-			if (acceptedFiles[0]?.size > maxSize) {
-				toast.error("File size exceeds 5 MB");
-				return;
-			}
-
-			if (acceptedFiles?.[0]) {
-				const serialNo = new Date().getTime(); // Use timestamp as a unique serial number
-				const transactionType = watch("transactionType"); // Get the current transaction type
-				const expenseType = watch("type"); // Get the current expense type
-				const fileExtension = acceptedFiles[0].name.split(".").pop(); // Extract file extension
-
-				// Determine the file name based on transaction type and expense type
-				let renamedFileName = `${transactionType}_${serialNo}.${fileExtension}`;
-				if (
-					transactionType === "expense" &&
-					expenseType.toLowerCase() === "transport"
-				) {
-					renamedFileName = `transport_${serialNo}.${fileExtension}`;
-				}
-
-				const renamedFile = new File([acceptedFiles[0]], renamedFileName, {
-					type: acceptedFiles[0].type,
-				});
-
-				setValue("billFile", [renamedFile]); // Store the renamed file
-				setFileName(renamedFileName); // Update the file name in the UI
-
-				if (renamedFile.type.startsWith("image/")) {
-					setFilePreview(URL.createObjectURL(renamedFile)); // Generate preview for images
-				} else {
-					setFilePreview(null); // No preview for non-image files
-				}
-
-				toast.success(`File renamed to ${renamedFileName}`);
-			}
-		},
-		accept: {
-			"image/*": [],
-			"application/pdf": [],
-		},
-		multiple: false, // Allow only one file
-	});
 
 	return (
 		<DefaultLayout>
@@ -180,18 +113,6 @@ const AddFinanceRecord: React.FC = () => {
 						)}
 					</div>
 
-					{/* Description */}
-					<div>
-						<label className="block font-medium mb-2" htmlFor="description">
-							Description
-						</label>
-						<textarea
-							{...register("description")}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary resize-none"
-							placeholder="Write a short description"
-						/>
-					</div>
-
 					{/* Amount */}
 					<div>
 						<label className="block font-medium mb-2" htmlFor="amount">
@@ -226,6 +147,20 @@ const AddFinanceRecord: React.FC = () => {
 							</span>
 						)}
 					</div>
+					
+					{/* Description */}
+					<div>
+						<label className="block font-medium mb-2" htmlFor="description">
+							Description
+						</label>
+						<textarea
+							{...register("description")}
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary resize-none"
+							placeholder="Write a short description"
+						/>
+					</div>
+
+					
 
 					<div>
 						<span className="block font-medium mb-2">Payment Account</span>
@@ -243,38 +178,8 @@ const AddFinanceRecord: React.FC = () => {
 						</div>
 					</div>
 
-					{/* Bill Upload */}
-					<div>
-						<label className="block font-medium mb-1">Upload Bill</label>
-						<div
-							{...getRootProps()}
-							className="w-full px-4 py-10 text-center border-2 border-dashed rounded-md transition-colors cursor-pointer border-gray-300 bg-white dark:bg-form-input dark:border-form-strokedark dark:text-white"
-						>
-							<input {...getInputProps()} />
-							{isDragActive ? (
-								<p className="text-blue-500">Drop the file here ...</p>
-							) : (
-								<p className="text-sm text-gray-500">
-									Drag & drop a bill file here, or click to select
-								</p>
-							)}
-							{fileName && (
-								<p className="text-sm mt-2 text-gray-600">
-									Selected: {fileName}
-								</p>
-							)}
-							{filePreview && (
-								<img
-									src={filePreview}
-									alt="Preview"
-									className="mx-auto mt-2 max-h-48 rounded-md"
-								/>
-							)}
-						</div>
-					</div>
-
 					{/* Buttons */}
-					<div className="flex justify-end items-end h-fit mt-auto space-x-4">
+					<div className="xl:col-start-2 ml-auto h-fit mt-auto space-x-3">
 						<button
 							type="button"
 							onClick={resetForm}
