@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
-import type { FinanceFormData, Transaction } from "../types/financeIndex";
+import type { FinanceFormData, Transaction } from "../types/finance";
 
 export const getFinanceStats = async () => {
 	try {

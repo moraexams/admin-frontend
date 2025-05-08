@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { Transaction } from "../../types/financeIndex";
+import type { Transaction } from "../../types/finance";
 import { ReceiptText } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {

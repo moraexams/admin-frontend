@@ -7,7 +7,7 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { type FinanceFormData, financeSchema } from "../../types/financeIndex";
+import { type FinanceFormData, financeSchema } from "../../types/finance";
 import { addTransaction } from "../../services/financeServices";
 import { capitalize } from "../../common/utils";
 

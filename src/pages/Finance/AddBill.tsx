@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import type { Transaction } from "../../types/financeIndex";
+import type { Transaction } from "../../types/finance";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { useParams } from "react-router-dom";
