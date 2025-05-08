@@ -12,7 +12,6 @@ export default function AddBill() {
   
   useEffect(() => {
     const transactionId = params["transaction-id"];
-    console.log(transactionId);
     if (transactionId === undefined) {
       setTransaction(null);
       return;
@@ -56,49 +55,45 @@ export default function AddBill() {
   return (
   <DefaultLayout>
     <Breadcrumb pageName="Add Bill" />
+    <p>
+      You are adding a bill relating to the below transaction.
+    </p>
     
-    <div className="mb-4">
-        <h2 className="text-xl font-bold">Transaction #{transaction.id}</h2>
-      <span className="px-3 py-1 text-sm font-medium text-white">
-        {transaction.created_at}
-      </span>
-    </div>
+    <h2 className="mt-6 mb-4 text-xl font-bold">Transaction #{transaction.id}</h2>
     
-    <div className={`p-3 rounded-md shadow-sm ${transaction.amount < 0 ? "bg-red-100" : "bg-green-100"}`}>
-      <p className="text-sm font-medium text-gray-500">Amount</p>
-      <p className={`text-lg font-semibold ${transaction.amount < 0 ? "text-red-600" : "text-green-600"}`}>
-        ${Math.abs(transaction.amount)}
-      </p>
-    </div>
-    
-    
-    <div className="grid grid-cols-2 gap-4">
-      <div className="p-3 bg-white rounded-md shadow-sm">
-        <p className="text-sm font-medium text-gray-500">Amount</p>
-        <p className="text-lg font-semibold text-gray-800">${transaction.amount}</p>
+    <div className="grid grid-cols-2 mb-5 gap-4">
+      <div className="rounded-md">
+        <p className="text-sm font-medium">Amount</p>
+        <p className={`text-lg font-semibold ${transaction.type === "expense" ? "text-red-600" : "text-green-600"}`}>
+          LKR {transaction.amount}
+        </p>
       </div>
-      <div className="p-3 bg-white rounded-md shadow-sm">
-        <p className="text-sm font-medium text-gray-500">Date</p>
-        <p className="text-lg font-semibold text-gray-800">{new Date(transaction.created_at).toLocaleDateString()}</p>
+      <div className="rounded-md">
+        <p className="text-sm font-medium">Added on</p>
+        <p className="text-lg font-semibold text-gray-800">{new Date(transaction.created_at).toLocaleString()}</p>
       </div>
-      <div className="p-3 bg-white rounded-md shadow-sm">
-        <p className="text-sm font-medium text-gray-500">Description</p>
-        <p className="text-lg font-semibold text-gray-800">{transaction.description || "No description provided"}</p>
+      <div className="rounded-md">
+        <p className="text-sm font-medium">Added by</p>
+        <p className="text-lg font-semibold text-gray-800">{transaction.created_by_username}</p>
+      </div>
+      <div className="rounded-md">
+        <p className="text-sm font-medium">Description</p>
+        <p className="text-lg font-semibold">{transaction.description || "None"}</p>
       </div>
     </div>
     
     <form>
-      <div {...getRootProps()} style={{ border: "2px dashed #ccc", padding: "20px", textAlign: "center" }}>
+      <div {...getRootProps()} className="text-center py-8 rounded-lg border-2 border-dashed border-gray/60 mb-5">
         <input {...getInputProps()} />
         <p>Drag & drop files here, or click to select files</p>
       </div>
       
       <button
-							type="submit"
-							className="px-6 py-2 rounded-md shadow-md bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
-						>
-						Submit
-						</button>
+				type="submit"
+				className="px-6 py-2 rounded-md shadow-md bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+			>
+			  Submit
+			</button>
     </form>
   </DefaultLayout>
   );
