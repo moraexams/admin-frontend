@@ -12,8 +12,12 @@ import ExamPaperDistributionTableView from "./pages/Distribution/DistributionTab
 import Coordinators from "./pages/District/Coordinators";
 import Districts from "./pages/District/Districts";
 import ExamCentres from "./pages/District/ExamCentres";
-import DashboardFinance from "./pages/Finance/DashboardFinance";
+import AddBill from "./pages/Finance/AddBill";
 import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
+import AllTransactions from "./pages/Finance/AllTransactions";
+import BillGallery from "./pages/Finance/BillGallery";
+import DashboardFinance from "./pages/Finance/DashboardFinance";
+import DistrictExpenses from "./pages/Finance/DistrictExpenses";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
@@ -25,10 +29,6 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
-import DistrictExpenses from "./pages/Finance/DistrictExpenses";
-import BillGallery from "./pages/Finance/BillGallery";
-import AllTransactions from "./pages/Finance/AllTransactions";
-import AddBill from "./pages/Finance/AddBill";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -274,14 +274,14 @@ function App() {
 					}
 				/>
 				<Route
-						path="/finance/add-bill/:transaction-id"
-						element={
-							<>
-								<PageTitle title="Add Bill | Mora Exams" />
-								<AddBill />
-							</>
-						}
-					/>
+					path="/finance/add-bill/:transaction-id"
+					element={
+						<>
+							<PageTitle title="Add Bill | Mora Exams" />
+							<AddBill />
+						</>
+					}
+				/>
 			</Routes>
 		</>
 	);

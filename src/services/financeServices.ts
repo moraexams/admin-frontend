@@ -7,25 +7,25 @@ export const getFinanceStats = async () => {
 		const response = await axiosInstance.get("/finance/stats");
 		return response.data;
 	} catch (error) {
-	console.error("Error while fetching finance stats: ", error);
+		console.error("Error while fetching finance stats: ", error);
 	}
 };
 
 export const addTransaction = async (data: FinanceFormData) => {
-  return axiosInstance.post("/transaction/add", data);
+	return axiosInstance.post("/transaction/add", data);
 };
 
-export const getTransaction = async(id: string) => {
-  return axiosInstance.get(`/transaction/${id}`);
-}
+export const getTransaction = async (id: string) => {
+	return axiosInstance.get(`/transaction/${id}`);
+};
 
 export const getTransactions = async (
 	page: number,
 	itemsPerPage: number,
-  ): Promise<{
-    count: number;
-    transactions:Array<Transaction>;
-  }> => {
+): Promise<{
+	count: number;
+	transactions: Array<Transaction>;
+}> => {
 	try {
 		const response = await axiosInstance.get(
 			`/transaction?page=${page}&pageSize=${itemsPerPage}`,
@@ -40,4 +40,4 @@ export const getTransactions = async (
 		}
 		throw error;
 	}
-  };
+};

@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
 import TransactionsTable from "../../components/Tables/TransactionsTable";
+import DefaultLayout from "../../layout/DefaultLayout";
 import { getTransactions } from "../../services/financeServices";
 import type { Transaction } from "../../types/finance";
 
 const Users = () => {
-  const [transactions, setTransactions] = useState < Array<Transaction>>([]);
+	const [transactions, setTransactions] = useState<Array<Transaction>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
@@ -17,10 +17,9 @@ const Users = () => {
 
 	const fetchUsers = useCallback(async () => {
 		try {
-		
-		const d = await getTransactions(page, itemsPerPage);
-      setTotalCount(d.count);
-      setTransactions(d.transactions);
+			const d = await getTransactions(page, itemsPerPage);
+			setTotalCount(d.count);
+			setTransactions(d.transactions);
 		} catch (error) {
 			if (typeof error === "string") {
 				setError(error);

@@ -3,18 +3,19 @@ import { format } from "date-fns-tz";
 import type React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { capitalize } from "../../common/utils";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { type FinanceFormData, financeSchema } from "../../types/finance";
 import { addTransaction } from "../../services/financeServices";
-import { capitalize } from "../../common/utils";
+import { type FinanceFormData, financeSchema } from "../../types/finance";
 
 const SRI_LANKA_TIMEZONE = "Asia/Colombo";
 
 const AddFinanceRecord: React.FC = () => {
-	const getCurrentDateTime = () => format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: SRI_LANKA_TIMEZONE });
+	const getCurrentDateTime = () =>
+		format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: SRI_LANKA_TIMEZONE });
 
 	const {
 		register,
@@ -45,15 +46,21 @@ const AddFinanceRecord: React.FC = () => {
 	};
 
 	const onSubmit = async (data: FinanceFormData) => {
-	const formattedCreatedAt = format(data.createdAt, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone: SRI_LANKA_TIMEZONE });
-    console.log(formattedCreatedAt);
-    await addTransaction({ ...data, createdAt: formattedCreatedAt }).then(() => {
-  		toast.success("Transaction added successfully!");
-  		resetForm();
-		}).catch((error) => {
-			console.error(error);
-			toast.error("Failed to submit record. Please try again later.");
-		});
+		const formattedCreatedAt = format(
+			data.createdAt,
+			"yyyy-MM-dd'T'HH:mm:ssXXX",
+			{ timeZone: SRI_LANKA_TIMEZONE },
+		);
+		console.log(formattedCreatedAt);
+		await addTransaction({ ...data, createdAt: formattedCreatedAt })
+			.then(() => {
+				toast.success("Transaction added successfully!");
+				resetForm();
+			})
+			.catch((error) => {
+				console.error(error);
+				toast.error("Failed to submit record. Please try again later.");
+			});
 	};
 console.log(watch("amount"));
   return (
@@ -91,11 +98,13 @@ console.log(watch("amount"));
 							id="category"
 						>
 							<option value="">Select category</option>
-							{["salary", "rent", "utilities", "sales", "misc"].map((category) => (
-								<option key={category} value={category}>
-								  {capitalize(category)}
-								</option>
-							))}
+							{["salary", "rent", "utilities", "sales", "misc"].map(
+								(category) => (
+									<option key={category} value={category}>
+										{capitalize(category)}
+									</option>
+								),
+							)}
 						</select>
 						{errors.category && (
 							<span className="text-red-500 text-sm">
@@ -159,7 +168,7 @@ console.log(watch("amount"));
 							</span>
 						)}
 					</div>
-					
+
 					{/* Description */}
 					<div>
 						<label className="block font-medium mb-2" htmlFor="description">
