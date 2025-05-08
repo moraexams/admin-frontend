@@ -1,3 +1,4 @@
+import type { FileWithPath } from "react-dropzone";
 import { z } from "zod";
 
 export interface Transaction {
@@ -58,3 +59,8 @@ export const financeSchema = z.object({
 });
 
 export type FinanceFormData = z.infer<typeof financeSchema>;
+
+export interface SelectedFile {
+  baseFile: FileWithPath, 
+  description: string;
+}

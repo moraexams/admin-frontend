@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react";
+import {
+	type ChangeEvent,
+	type FormEventHandler,
+	useEffect,
+	useState,
+} from "react";
 import { type FileWithPath, useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { getTransaction } from "../../services/financeServices";
-import type { Transaction } from "../../types/finance";
+import {
+	addBillToTransaction,
+	getTransaction,
+} from "../../services/financeServices";
+import type { SelectedFile, Transaction } from "../../types/finance";
 
 export default function AddBill() {
 	const params = useParams();
-	const [selectedFiles, setSelectedFiles] = useState<Array<FileWithPath>>([]);
+	const [selectedFiles, setSelectedFiles] = useState<Array<SelectedFile>>([]);
 	const [transaction, setTransaction] = useState<
 		Transaction | null | undefined
 	>();
@@ -27,7 +35,14 @@ export default function AddBill() {
 	}, [params]);
 
 	const handleDrop = (acceptedFiles: Array<FileWithPath>) => {
-		setSelectedFiles(acceptedFiles);
+		setSelectedFiles(
+			acceptedFiles.map((file) => {
+				return {
+					baseFile: file,
+					description: "",
+				};
+			}),
+		);
 	};
 
 	const { getRootProps, getInputProps } = useDropzone({
@@ -55,6 +70,35 @@ export default function AddBill() {
 			</DefaultLayout>
 		);
 	}
+
+	const updateFileDescription = (
+		fileIndex: number,
+		event: ChangeEvent<HTMLInputElement>,
+	) => {
+		const v = event.target.value;
+		setSelectedFiles((selectedFiles) => {
+			const d = selectedFiles.slice();
+			d[fileIndex].description = v;
+			return d;
+		});
+	};
+
+	const handleFormSubmit: FormEventHandler = (event) => {
+		event.preventDefault();
+		if (!(event.target instanceof HTMLFormElement)) {
+			return;
+		}
+		if (!transaction) {
+			return;
+		}
+
+		addBillToTransaction(transaction.id, selectedFiles)
+			.then((d) => {
+				console.log("success");
+				console.log(d);
+			})
+			.catch(console.error);
+	};
 
 	return (
 		<DefaultLayout>
@@ -94,43 +138,49 @@ export default function AddBill() {
 				</div>
 			</div>
 
-			<p className="my-3">
+			<p className="my-4">
 				You can select{" "}
 				<u className="font-medium">image and pdf files which are under 1MB</u>.
+				You can optionally add a description for each file.
 			</p>
 
-			<form>
+			<form onSubmit={handleFormSubmit}>
 				<div
 					{...getRootProps()}
-					className="text-center py-8 rounded-lg border-2 border-dashed border-gray/60 mb-5"
+					className="text-center py-8 rounded-lg cursor-pointer border-2 border-dashed border-gray/60 mb-5"
 				>
 					<input {...getInputProps()} />
 					<p>Drag & drop files here, or click to select files</p>
 				</div>
 
-				{selectedFiles.length === 0 ? (
-					<div className="rounded-lg border border-dashed min-h-20 flex justify-center w-full items-center mb-4">
-						No files are selected
-					</div>
-				) : (
-					<div className="flex gap-x-3">
-						{selectedFiles.map((file) => (
-							<div
-								className="py-2 px-4 min-w-60 rounded-md grid grid-cols-[1fr_auto] border border-gray-300"
-								key={file.name}
-							>
-								<p className="text-lg font-semibold text-gray-800 col-span-2">
-									{file.name}
-								</p>
-								<p className="text-sm text-gray-600">
-									{(file.size / 1024).toFixed(2)} KB
-								</p>
-								<p className="text-sm text-gray-600 opacity-65">
-									{file.type || "Unknown"}
-								</p>
-							</div>
-						))}
-					</div>
+				{selectedFiles.length === 0 ? null : (
+					<table className="mb-4 w-full">
+						<thead>
+							<tr className="font-medium">
+								<th className="text-left">Filename</th>
+								<th>Size</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							{selectedFiles.map((file, index) => (
+								<tr key={file.baseFile.name}>
+									<td className="py-2 text-gray-800 col-span-2">
+										{file.baseFile.name}
+									</td>
+									<td className="text-center text-gray-600">
+										{(file.baseFile.size / 1024).toFixed(2)} KB
+									</td>
+									<td className="text-center">
+										<input
+											className="w-full py-1 bg-transparent border px-2 rounded-md"
+											onChange={updateFileDescription.bind(null, index)}
+										/>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 				)}
 
 				<div className="flex justify-end">

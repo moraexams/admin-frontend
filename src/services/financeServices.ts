@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
-import type { FinanceFormData, Transaction } from "../types/finance";
+import type { FinanceFormData, SelectedFile, Transaction } from "../types/finance";
 
 export const getFinanceStats = async () => {
 	try {
@@ -41,3 +41,18 @@ export const getTransactions = async (
 		throw error;
 	}
 };
+
+export const addBillToTransaction = async (transactionId: string, billFiles: Array<SelectedFile>) => {
+  const n = new FormData();
+  n.set("transactionId", transactionId);
+  for (const f of billFiles) {
+    n.append("billFiles[]", f.baseFile);
+    n.append("billDescription[]", f.description);
+  }
+  
+  return axiosInstance.post("/bill", n, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  })
+}
