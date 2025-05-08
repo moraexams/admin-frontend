@@ -15,7 +15,11 @@ export const addTransaction = async (data: FinanceFormData) => {
   return axiosInstance.post("/transaction/add", data);
 };
 
-  export const getTransactions = async (
+export const getTransaction = async(id: string) => {
+  return axiosInstance.get(`/transaction/${id}`);
+}
+
+export const getTransactions = async (
 	page: number,
 	itemsPerPage: number,
   ): Promise<{

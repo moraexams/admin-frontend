@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import type { Transaction } from "../../types/financeIndex";
+import { ReceiptText } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -93,6 +95,10 @@ export default function TransactionsTable({
 
 									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 										<div className="flex items-center space-x-3.5">
+										  <Link to={`/finance/add-bill/${transaction.id}`} className="hover:text-primary">
+												<ReceiptText size="17" className="inline-block mr-1" />
+												Add bill
+												</Link>
 											<button type="button" className="hover:text-primary">
 												<svg
 													className="fill-current"

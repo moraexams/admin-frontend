@@ -28,6 +28,7 @@ import Users from "./pages/Users";
 import DistrictExpenses from "./pages/Finance/DistrictExpenses";
 import BillGallery from "./pages/Finance/BillGallery";
 import AllTransactions from "./pages/Finance/AllTransactions";
+import AddBill from "./pages/Finance/AddBill";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -272,6 +273,15 @@ function App() {
 						</>
 					}
 				/>
+				<Route
+						path="/finance/add-bill/:transaction-id"
+						element={
+							<>
+								<PageTitle title="Add Bill | Mora Exams" />
+								<AddBill />
+							</>
+						}
+					/>
 			</Routes>
 		</>
 	);

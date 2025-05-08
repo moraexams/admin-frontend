@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export interface Transaction {
 	id: string;
-	date: string;
 	type: "income" | "expense";
 	amount: number;
 	category: string;
