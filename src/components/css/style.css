@@ -60,7 +60,23 @@
 	}
 }
 
+@keyframes spinner {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 @layer utilities {
+	.spinner::before {
+		@apply size-full block;
+		content: "";
+		box-sizing: border-box;
+		border-radius: 50%;
+		border: 5px solid #ccc;
+		border-top-color: #07d;
+		animation: spinner 600ms linear infinite;
+	}
+
 	/* Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;

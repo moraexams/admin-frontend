@@ -6,24 +6,22 @@ const Loader = () => {
 	const token = localStorage.getItem("token");
 	const navigate = useNavigate();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: no need
 	useEffect(() => {
 		if (!token) {
 			navigate("/auth/signin");
 		}
-		validateToken()
-			.then((res) => {
-				console.log("res", res);
-			})
-			.catch(() => {
-				localStorage.removeItem("token");
-				localStorage.removeItem("user");
-				localStorage.removeItem("username");
-				navigate("/auth/signin");
-			});
+		validateToken().catch(() => {
+			localStorage.removeItem("token");
+			localStorage.removeItem("user");
+			localStorage.removeItem("username");
+			navigate("/auth/signin");
+		});
 	}, []);
+
 	return (
-		<div className="flex h-screen items-center justify-center bg-white">
-			<div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent" />
+		<div className="flex h-screen items-center justify-center">
+			<div className="size-12 spinner" />
 		</div>
 	);
 };
