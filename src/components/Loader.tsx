@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { validateToken } from "../../services/authServices";
+import { validateToken } from "../services/authServices";
 
 const Loader = () => {
 	const token = localStorage.getItem("token");
