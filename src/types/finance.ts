@@ -61,6 +61,6 @@ export const financeSchema = z.object({
 export type FinanceFormData = z.infer<typeof financeSchema>;
 
 export interface SelectedFile {
-  baseFile: FileWithPath, 
-  description: string;
+	baseFile: FileWithPath;
+	description: string;
 }

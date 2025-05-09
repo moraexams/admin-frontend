@@ -62,8 +62,8 @@ const AddFinanceRecord: React.FC = () => {
 				toast.error("Failed to submit record. Please try again later.");
 			});
 	};
-console.log(watch("amount"));
-  return (
+	console.log(watch("amount"));
+	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Transaction" />
 			<Toaster position="top-right" />

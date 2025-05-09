@@ -24,10 +24,10 @@ import Snackbar from "../Snackbar";
 const StudentTable = ({
 	studentData,
 	itemsPerPage,
-	nameSearchKey,	/* streamSearchKey */
+	nameSearchKey /* streamSearchKey */,
 	page,
 	refetch,
-	total, 
+	total,
 }: {
 	studentData: Student[];
 	nameSearchKey: string /* streamSearchKey: string, */;

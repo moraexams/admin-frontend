@@ -140,23 +140,23 @@ export const deleteStudent = async (index_no: number) => {
 	}
 };
 
-export const getStudents = async (
-	page: number, 
-	itemsPerPage: number) => {
+export const getStudents = async (page: number, itemsPerPage: number) => {
 	try {
-	  const token = localStorage.getItem("token");
-	  const response = await axiosInstance.get(
-		`/student?page=${page}&pageSize=${itemsPerPage}`, {
-		headers: {
-		  Authorization: `Bearer ${token}`,
-		},
-	  });
-	  return response.data;
+		const token = localStorage.getItem("token");
+		const response = await axiosInstance.get(
+			`/student?page=${page}&pageSize=${itemsPerPage}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+		return response.data;
 	} catch (error) {
-	  console.error("Error fetching Students: ", error);
-	  throw error;
+		console.error("Error fetching Students: ", error);
+		throw error;
 	}
-  };
+};
 
 export const getUnVerifiedStudents = async () => {
 	try {

@@ -18,17 +18,16 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 }) => {
 	const formatCurrency = (amount: number) => {
 		const absFormatted = new Intl.NumberFormat("en-LK", {
-		  style: "currency",
-		  currency: "LKR",
-		  minimumFractionDigits: 0,
-		  maximumFractionDigits: 0,
+			style: "currency",
+			currency: "LKR",
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0,
 		})
-		  .format(Math.abs(amount)) 
-		  .replace("LKR", "") 
-	  
-		return `LKR ${amount < 0 ? "-" : ""}${absFormatted.trim()}`; 
-	  };
-	  
+			.format(Math.abs(amount))
+			.replace("LKR", "");
+
+		return `LKR ${amount < 0 ? "-" : ""}${absFormatted.trim()}`;
+	};
 
 	const getChangeColor = () => {
 		if (type === "positive") return "text-green-600 bg-green-50";

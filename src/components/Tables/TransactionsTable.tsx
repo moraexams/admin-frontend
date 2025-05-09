@@ -1,6 +1,6 @@
+import { ReceiptText } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Transaction } from "../../types/finance";
-import { ReceiptText } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -35,10 +35,10 @@ export default function TransactionsTable({
 						<thead>
 							<tr className="bg-gray-2 text-left dark:bg-meta-4">
 								<th className="min-w-[80px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-								Id
+									Id
 								</th>
 								<th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-								Account
+									Account
 								</th>
 								<th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
 									Amount
@@ -65,16 +65,19 @@ export default function TransactionsTable({
 											{transaction.id}
 										</h5>
 									</td>
-									
+
 									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 										<p className="text-black dark:text-white">
-                      {transaction.associated_account}
+											{transaction.associated_account}
 										</p>
 									</td>
-									
+
 									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className={`${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}>
-                      {transaction.type === "income" ? "+" : "-"}{transaction.amount.toFixed(2)}
+										<p
+											className={`${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}
+										>
+											{transaction.type === "income" ? "+" : "-"}
+											{transaction.amount.toFixed(2)}
 										</p>
 									</td>
 									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -95,10 +98,13 @@ export default function TransactionsTable({
 
 									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 										<div className="flex items-center space-x-3.5">
-										  <Link to={`/finance/add-bill/${transaction.id}`} className="hover:text-primary">
+											<Link
+												to={`/finance/add-bill/${transaction.id}`}
+												className="hover:text-primary"
+											>
 												<ReceiptText size="17" className="inline-block mr-1" />
 												Add bill
-												</Link>
+											</Link>
 											<button type="button" className="hover:text-primary">
 												<svg
 													className="fill-current"
@@ -142,4 +148,4 @@ export default function TransactionsTable({
 			</div>
 		</>
 	);
-};
+}
