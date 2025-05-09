@@ -110,9 +110,21 @@ const AddFinanceRecord: React.FC = () => {
 						</label>
 						<input
 							type="number"
-							{...register("amount")}
+							{...register("amount", {
+								valueAsNumber: true, // Ensure the value is treated as a number
+								min: {
+									value: 0,
+									message: "Amount must be greater than or equal to 0",
+								},
+							})}
+							onInput={(e) => {
+								const input = e.target as HTMLInputElement;
+								if (Number(input.value) < 0) {
+									input.value = "0"; // Reset to 0 if the value is negative
+								}
+							}}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							placeholder="0000.00"
+							placeholder="0.00"
 						/>
 						{errors.amount && (
 							<span className="text-red-500 text-sm">
