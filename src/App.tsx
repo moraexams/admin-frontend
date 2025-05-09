@@ -12,6 +12,12 @@ import ExamPaperDistributionTableView from "./pages/Distribution/DistributionTab
 import Coordinators from "./pages/District/Coordinators";
 import Districts from "./pages/District/Districts";
 import ExamCentres from "./pages/District/ExamCentres";
+import AddBill from "./pages/Finance/AddBill";
+import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
+import AllTransactions from "./pages/Finance/AllTransactions";
+import BillGallery from "./pages/Finance/BillGallery";
+import DashboardFinance from "./pages/Finance/DashboardFinance";
+import DistrictExpenses from "./pages/Finance/DistrictExpenses";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
@@ -219,6 +225,60 @@ function App() {
 						<>
 							<PageTitle title="Entered Marks | Mora Exams" />
 							<EnteredStudentMarks />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/dashboardfinance"
+					element={
+						<>
+							<PageTitle title="Finance Dashboard | MoraExams" />
+							<DashboardFinance />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/districtexpenses"
+					element={
+						<>
+							<PageTitle title="District Expenses | MoraExams" />
+							<DistrictExpenses />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/billgallery"
+					element={
+						<>
+							<PageTitle title="District Expenses | MoraExams" />
+							<BillGallery />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/add-transaction"
+					element={
+						<>
+							<PageTitle title="Add Transaction | Mora Exams" />
+							<AddFinanceRecord />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/transactions"
+					element={
+						<>
+							<PageTitle title="Transactions | Mora Exams" />
+							<AllTransactions />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/add-bill/:transaction-id"
+					element={
+						<>
+							<PageTitle title="Add Bill | Mora Exams" />
+							<AddBill />
 						</>
 					}
 				/>

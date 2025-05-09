@@ -33,7 +33,10 @@ const DangerZone = () => {
 			<p className="mb-8 font-bold text-lg">
 				This page includes actions that are irreversible.
 			</p>
-			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto]">
+
+			<hr></hr>
+
+			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
 					Send Index No through Emails
 				</h2>
@@ -88,6 +91,26 @@ const DangerZone = () => {
 							: "Start sending"}
 				</button>
 			</section>
+			
+			<hr></hr>
+
+			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
+				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
+					Finalise Student
+				</h2>
+				<p className="text-lg mb-3 max-w-prose col-start-1">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod iure beatae autem at! Sapiente officiis modi rem magni autem porro consequatur, nulla qui? Hic dolorem odio laudantium nam dignissimos nesciunt?
+				</p>
+
+				<button
+					type="button"
+					className=
+						"px-4 py-3 bg-meta-9 rounded-lg text-white font-medium col-start-1 h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2 disabled:bg-meta-9/50 disabled:hover:bg-meta-9/50 disabled:cursor-not-allowed hover:bg-meta-9/60 transition-colors">
+						Start Finalising
+				</button>
+			</section>
+
+			<hr></hr>
 		</DefaultLayout>
 	);
 };

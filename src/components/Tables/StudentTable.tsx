@@ -24,11 +24,17 @@ import Snackbar from "../Snackbar";
 const StudentTable = ({
 	studentData,
 	itemsPerPage,
-	nameSearchKey /* streamSearchKey */,
+	nameSearchKey,	/* streamSearchKey */
+	page,
+	refetch,
+	total, 
 }: {
 	studentData: Student[];
 	nameSearchKey: string /* streamSearchKey: string, */;
 	itemsPerPage: number;
+	page: number;
+	refetch: () => Promise<void>;
+	total: number;
 }) => {
 	const items: Student[] = Array.isArray(studentData)
 		? nameSearchKey !== ""
@@ -51,11 +57,11 @@ const StudentTable = ({
 			try {
 				const Distcenters = await getDistrictsWithCentres();
 				const centers = await getCenters();
-				const users = await getUsers();
+				const usersResponse = await getUsers(1, 10); // Provide default values for page and itemsPerPage
 				const streams = await getStreams();
 				setCentersDistricts(Distcenters);
 				setCenters(centers);
-				setUsers(users);
+				setUsers(usersResponse.users); // Extract the users array
 				setStreams(streams);
 			} catch (error) {
 				console.log("Failed to fetch data", error);

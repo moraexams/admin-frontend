@@ -1,62 +1,73 @@
 import { useCallback, useEffect, useState } from "react";
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
-import { getStudents } from "../../services/studentService";
-import type { Student } from "../../types/types";
-
-import StudentTable from "../../components/Tables/StudentTable";
 import ReactPaginate from "react-paginate";
+import { NavLink } from "react-router-dom";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import TransactionsTable from "../../components/Tables/TransactionsTable";
+import DefaultLayout from "../../layout/DefaultLayout";
+import { getTransactions } from "../../services/financeServices";
+import type { Transaction } from "../../types/finance";
 
-const Students = () => {
-	const [students, setStudents] = useState<Student[]>([]);
+const Users = () => {
+	const [transactions, setTransactions] = useState<Array<Transaction>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-	const [searchKey, setSearchKey] = useState<string>("");
 	const [page, setPage] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
-	
-	const fetchStudents = useCallback(async () => {
-			try {
-				const data = await getStudents(page, itemsPerPage);
-				setStudents(data.students);
-				setTotalCount(data.count);
-			} catch (error) {
-				if (typeof error === "string") {
-					setError(error);
-				} else {
-					setError("Failed to fetch users");
-				}
-			} finally {
-				setLoading(false);
+
+	const fetchUsers = useCallback(async () => {
+		try {
+			const d = await getTransactions(page, itemsPerPage);
+			setTotalCount(d.count);
+			setTransactions(d.transactions);
+		} catch (error) {
+			if (typeof error === "string") {
+				setError(error);
+			} else {
+				setError("Failed to fetch transactions");
 			}
-		}, [page, itemsPerPage]);
-	
-		useEffect(() => {
-			fetchStudents();
-		}, [fetchStudents]);
+		} finally {
+			setLoading(false);
+		}
+	}, [page, itemsPerPage]);
+
+	useEffect(() => {
+		fetchUsers();
+	}, [fetchUsers]);
 
 	if (error) {
-		return <div>{error}</div>;
+		return (
+			<div className="dark:bg-boxdark-2 dark:text-bodydark h-screen px-5 py-5">
+				<h1 className="text-3xl font-bold mb-4">{error}</h1>
+				<NavLink className="text-xl hover:underline" to="/">
+					Go home
+				</NavLink>
+			</div>
+		);
 	}
+
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Students" />
-			<div className="flex gap-4">
-				<div className="mb-5.5">
-					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-						name="selectItemsPerPage"
-						id="selectItemsPerPage"
-						value={itemsPerPage}
-						onChange={(e) => setItemsPerPage(Number(e.target.value))}
-					>
-						<option value="5">5</option>
-						<option value="10">10</option>
-						<option value="100">100</option>
-						<option value="500">500</option>
-					</select>
-					<ReactPaginate
+			<Breadcrumb pageName="Transactions" />
+
+			<div className="mb-5.5 flex justify-between">
+				<select
+					className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+					name="selectDoctor"
+					id="selectDoctor"
+					value={itemsPerPage}
+					onChange={(e) => {
+						setPage(1);
+						setItemsPerPage(Number(e.target.value));
+					}}
+				>
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="100">100</option>
+					<option value="500">500</option>
+				</select>
+
+				<ReactPaginate
 					breakLabel="..."
 					nextLabel=">"
 					onPageChange={(event: { selected: number }) => {
@@ -87,28 +98,17 @@ const Students = () => {
 					}
 					disabledLinkClassName={"text-black-100"}
 				/>
-				</div>
-				<div className="mb-4.5">
-					<input
-						type="text"
-						value={searchKey}
-						onChange={(e) => setSearchKey(e.target.value)}
-						placeholder="Search..."
-						className="w-full rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-					/>
-				</div>
 			</div>
 			<div className="flex flex-col gap-10">
 				{loading ? (
 					<div>Loading...</div>
 				) : (
-					<StudentTable
+					<TransactionsTable
 						page={page}
-						studentData={students}
-						nameSearchKey={searchKey}
 						itemsPerPage={itemsPerPage}
-						refetch = {fetchStudents}
+						refetch={fetchUsers}
 						total={totalCount}
+						data={transactions}
 					/>
 				)}
 			</div>
@@ -116,4 +116,4 @@ const Students = () => {
 	);
 };
 
-export default Students;
+export default Users;
