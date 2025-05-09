@@ -96,7 +96,10 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 
 	return (
 		<div className="relative z-50">
-			<label className="mb-3 block text-sm font-medium text-black dark:text-white">
+			<label
+				htmlFor={id}
+				className="mb-3 block text-sm font-medium text-black dark:text-white"
+			>
 				Multiselect Dropdown
 			</label>
 			<div>
@@ -108,7 +111,12 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 				</select>
 
 				<div className="flex flex-col items-center">
-					<input name="values" type="hidden" defaultValue={selectedValues()} />
+					<input
+						name="values"
+						id={id}
+						type="hidden"
+						defaultValue={selectedValues()}
+					/>
 					<div className="relative z-20 inline-block w-full">
 						<div className="relative flex flex-col items-center">
 							<div ref={trigger} onClick={open} className="w-full">
@@ -141,7 +149,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 																clipRule="evenodd"
 																d="M9.35355 3.35355C9.54882 3.15829 9.54882 2.84171 9.35355 2.64645C9.15829 2.45118 8.84171 2.45118 8.64645 2.64645L6 5.29289L3.35355 2.64645C3.15829 2.45118 2.84171 2.45118 2.64645 2.64645C2.45118 2.84171 2.45118 3.15829 2.64645 3.35355L5.29289 6L2.64645 8.64645C2.45118 8.84171 2.45118 9.15829 2.64645 9.35355C2.84171 9.54882 3.15829 9.54882 3.35355 9.35355L6 6.70711L8.64645 9.35355C8.84171 9.54882 9.15829 9.54882 9.35355 9.35355C9.54882 9.15829 9.54882 8.84171 9.35355 8.64645L6.70711 6L9.35355 3.35355Z"
 																fill="currentColor"
-															></path>
+															/>
 														</svg>
 													</div>
 												</div>
@@ -176,7 +184,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 														clipRule="evenodd"
 														d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
 														fill="#637381"
-													></path>
+													/>
 												</g>
 											</svg>
 										</button>
@@ -194,7 +202,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 								>
 									<div className="flex w-full flex-col">
 										{options.map((option, index) => (
-											<div key={index}>
+											<div key={option.text.concat(index.toString())}>
 												<div
 													className="w-full cursor-pointer rounded-t border-b border-stroke hover:bg-primary/5 dark:border-form-strokedark"
 													onClick={(event) => select(index, event)}

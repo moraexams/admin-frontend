@@ -87,7 +87,7 @@ const DistrictExpensesTable = ({ data }: DistrictExpensesTableProps) => {
 								? ""
 								: "border-b border-stroke dark:border-strokedark"
 						}`}
-						key={key}
+						key={row.id}
 					>
 						<div className="flex items-center p-2.5 xl:p-5">
 							<p className="text-black dark:text-white">{row.id}</p>

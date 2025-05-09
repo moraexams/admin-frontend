@@ -8,6 +8,7 @@ interface PageTitleProps {
 const PageTitle: React.FC<PageTitleProps> = ({ title }) => {
 	const location = useLocation();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: location is a required dependency here
 	useEffect(() => {
 		document.title = title;
 	}, [location, title]);
