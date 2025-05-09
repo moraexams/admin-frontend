@@ -47,7 +47,7 @@ export const addBillToTransaction = async (transactionId: string, billFiles: Arr
   n.set("transactionId", transactionId);
   for (const f of billFiles) {
     n.append("billFiles[]", f.baseFile);
-    n.append("billDescription[]", f.description);
+    n.append("billDescriptions[]", f.description);
   }
   
   return axiosInstance.post("/bill", n, {

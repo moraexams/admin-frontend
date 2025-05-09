@@ -5,6 +5,7 @@ import {
 	useState,
 } from "react";
 import { type FileWithPath, useDropzone } from "react-dropzone";
+import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../layout/DefaultLayout";
@@ -93,16 +94,20 @@ export default function AddBill() {
 		}
 
 		addBillToTransaction(transaction.id, selectedFiles)
-			.then((d) => {
-				console.log("success");
-				console.log(d);
+			.then(() => {
+				setSelectedFiles([]);
+				toast.success("Bills added successfully");
 			})
-			.catch(console.error);
+			.catch((e) => {
+				toast.error("Some error occurred");
+				console.error(e);
+			});
 	};
 
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Bill" />
+			<Toaster position="top-right" />
 			<p>You are adding a bill relating to the below transaction.</p>
 
 			<h2 className="mt-6 mb-4 text-xl font-bold">
