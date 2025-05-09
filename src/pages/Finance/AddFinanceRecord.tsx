@@ -29,6 +29,7 @@ const AddFinanceRecord: React.FC = () => {
 			transactionType: "expense",
 			createdAt: getCurrentDateTime(),
 			paymentAccount: "cash",
+			amount: 0, // Initialize amount with a default value of 0
 		},
 	});
 
@@ -54,8 +55,8 @@ const AddFinanceRecord: React.FC = () => {
 			toast.error("Failed to submit record. Please try again later.");
 		});
 	};
-
-	return (
+console.log(watch("amount"));
+  return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Transaction" />
 			<Toaster position="top-right" />
@@ -108,6 +109,21 @@ const AddFinanceRecord: React.FC = () => {
 						<label className="block font-medium mb-2" htmlFor="amount">
 							Amount
 						</label>
+						{/* Visible Input for Displaying Comma-Separated Value */}
+						<input
+							type="text"
+							value={watch("amount")?.toLocaleString("en-US") || ""}
+							onChange={(e) => {
+								const rawValue = e.target.value.replace(/,/g, ""); // Remove commas
+								if (!isNaN(Number(rawValue)) && Number(rawValue) >= 0) {
+									setValue("amount", Number(rawValue)); // Update the raw value in the form state
+								}
+							}}
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							placeholder="000"
+						/>
+
+						{/* Hidden Input for Raw Numeric Value */}
 						<input
 							type="number"
 							{...register("amount", {
@@ -117,15 +133,9 @@ const AddFinanceRecord: React.FC = () => {
 									message: "Amount must be greater than or equal to 0",
 								},
 							})}
-							onInput={(e) => {
-								const input = e.target as HTMLInputElement;
-								if (Number(input.value) < 0) {
-									input.value = "0"; // Reset to 0 if the value is negative
-								}
-							}}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							placeholder="0.00"
+							className="hidden"
 						/>
+
 						{errors.amount && (
 							<span className="text-red-500 text-sm">
 								{errors.amount.message}
