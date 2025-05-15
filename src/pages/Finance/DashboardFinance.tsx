@@ -143,10 +143,10 @@ const DashboardFinance: React.FC = () => {
 										<Cell key={color} fill={color} />
 									))}
 									<Label
-										value={`All\nLKR ${getTotalExpenses().toLocaleString("en-LK")}`}
+										value={`LKR ${getTotalExpenses().toLocaleString("en-LK")}`}
 										position="center"
 										style={{
-											fill: "#333",
+											fill: "currentColor",
 											fontSize: "16px",
 											fontWeight: "bold",
 											textAlign: "center",
