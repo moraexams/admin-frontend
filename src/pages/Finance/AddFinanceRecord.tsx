@@ -58,7 +58,11 @@ const AddFinanceRecord: React.FC = () => {
 			})
 			.catch((error) => {
 				console.error(error);
-				toast.error("Failed to submit record. Please try again later.");
+				let message = "Failed to submit record. Please try again later.";
+				if (typeof error === "string") {
+					message = error;
+				}
+				toast.error(message);
 			});
 	};
 	console.log(watch("amount"));

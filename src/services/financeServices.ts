@@ -16,7 +16,14 @@ export const getFinanceStats = async () => {
 };
 
 export const addTransaction = async (data: FinanceFormData) => {
-	return axiosInstance.post("/transaction/add", data);
+	return axiosInstance.post("/transaction/add", data).catch((error) => {
+		if (error instanceof AxiosError) {
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	});
 };
 
 export const getTransaction = async (id: string) => {
