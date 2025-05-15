@@ -37,3 +37,10 @@ export const convertUTCToIST = (dateString: string): string => {
 	const istDate = new Date(date.getTime() + istOffset);
 	return istDate.toISOString().replace("T", " ").substring(0, 19);
 };
+
+export const CurrencyFormatter = new Intl.NumberFormat("en-LK", {
+	style: "currency",
+	currency: "LKR",
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2,
+});
