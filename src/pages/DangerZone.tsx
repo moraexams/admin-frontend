@@ -34,7 +34,7 @@ const DangerZone = () => {
 				This page includes actions that are irreversible.
 			</p>
 
-			<hr></hr>
+			<hr />
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
@@ -92,7 +92,7 @@ const DangerZone = () => {
 				</button>
 			</section>
 
-			<hr></hr>
+			<hr />
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
@@ -113,7 +113,7 @@ const DangerZone = () => {
 				</button>
 			</section>
 
-			<hr></hr>
+			<hr />
 		</DefaultLayout>
 	);
 };

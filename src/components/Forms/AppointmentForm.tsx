@@ -27,7 +27,7 @@ const AppointmentForm = () => {
 
 						<div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 							<div className="w-full sm:w-1/2">
-								<DatePickerOne />
+								<DatePickerOne id="appointment-form-datepicker" />
 							</div>
 
 							<div className="w-full sm:w-1/2">

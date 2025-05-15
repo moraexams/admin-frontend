@@ -3,13 +3,18 @@ import { useEffect, useRef, useState } from "react";
 const DropdownDefault = () => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 
-	const trigger = useRef<any>(null);
-	const dropdown = useRef<any>(null);
+	const trigger = useRef<HTMLButtonElement | null>(null);
+	const dropdown = useRef<HTMLDivElement | null>(null);
 
 	// close on click outside
 	useEffect(() => {
 		const clickHandler = ({ target }: MouseEvent) => {
-			if (!dropdown.current) return;
+			if (
+				!dropdown.current ||
+				!trigger.current ||
+				!(target instanceof HTMLElement)
+			)
+				return;
 			if (
 				!dropdownOpen ||
 				dropdown.current.contains(target) ||
@@ -70,7 +75,10 @@ const DropdownDefault = () => {
 					dropdownOpen === true ? "block" : "hidden"
 				}`}
 			>
-				<button className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
+				<button
+					type="button"
+					className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+				>
 					<svg
 						className="fill-current"
 						width="16"
@@ -93,7 +101,10 @@ const DropdownDefault = () => {
 					</svg>
 					Edit
 				</button>
-				<button className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
+				<button
+					type="button"
+					className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+				>
 					<svg
 						className="fill-current"
 						width="16"
