@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
 			}
 		};
 		fetchStudents();
-	}, [district, centre]);
+	}, [centre]);
 
 	if (error) {
 		return <div>{error}</div>;
@@ -183,31 +183,30 @@ const Dashboard: React.FC = () => {
 									</thead>
 									<tbody>
 										<>
-											{streamStats.counts &&
-												streamStats.counts.map((count: any, key: number) => (
-													<tr key={key}>
-														<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
-															<h5 className="font-medium text-black dark:text-white">
-																{count.stream_name}
-															</h5>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.tamil_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.english_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="font-semibold text-black dark:text-white">
-																{count.total_count}
-															</p>
-														</td>
-													</tr>
-												))}
+											{streamStats.counts?.map((count: any, key: number) => (
+												<tr key={key}>
+													<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
+														<h5 className="font-medium text-black dark:text-white">
+															{count.stream_name}
+														</h5>
+													</td>
+													<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+														<p className="text-black dark:text-white">
+															{count.tamil_count}
+														</p>
+													</td>
+													<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+														<p className="text-black dark:text-white">
+															{count.english_count}
+														</p>
+													</td>
+													<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+														<p className="font-semibold text-black dark:text-white">
+															{count.total_count}
+														</p>
+													</td>
+												</tr>
+											))}
 											<tr className="font-semibold">
 												<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 													<h5 className="text-black dark:text-white">
@@ -306,31 +305,30 @@ const Dashboard: React.FC = () => {
 									</thead>
 									<tbody>
 										<>
-											{centreStats.counts &&
-												centreStats.counts.map((count: any, key: number) => (
-													<tr key={key}>
-														<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
-															<h5 className="font-medium text-black dark:text-white">
-																{count.stream_name}
-															</h5>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.male_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.female_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="font-semibold text-black dark:text-white">
-																{count.total_count}
-															</p>
-														</td>
-													</tr>
-												))}
+											{centreStats.counts?.map((count: any, key: number) => (
+												<tr key={key}>
+													<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
+														<h5 className="font-medium text-black dark:text-white">
+															{count.stream_name}
+														</h5>
+													</td>
+													<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+														<p className="text-black dark:text-white">
+															{count.male_count}
+														</p>
+													</td>
+													<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+														<p className="text-black dark:text-white">
+															{count.female_count}
+														</p>
+													</td>
+													<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+														<p className="font-semibold text-black dark:text-white">
+															{count.total_count}
+														</p>
+													</td>
+												</tr>
+											))}
 											<tr className="font-semibold">
 												<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 													<h5 className="text-black dark:text-white">

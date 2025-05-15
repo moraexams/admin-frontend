@@ -189,14 +189,14 @@ const DistrictsTable = ({
 						</tr>
 					</thead>
 					<tbody>
-						{currentItems?.map((district, key) => {
+						{currentItems?.map((district) => {
 							const { id, name, coordinators } = district;
 							const rowSpan = coordinators ? coordinators.length : 1;
 							return (
 								<>
 									{coordinators && coordinators.length > 0 ? (
 										coordinators.map((coordinator, ckey) => (
-											<tr key={ckey}>
+											<tr key={coordinator.id}>
 												{ckey === 0 && (
 													<>
 														<td
@@ -322,7 +322,7 @@ const DistrictsTable = ({
 											</tr>
 										))
 									) : (
-										<tr key={key}>
+										<tr key={id}>
 											<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 												<h5 className="font-medium text-black dark:text-white">
 													{id}
@@ -423,20 +423,24 @@ const DistrictsTable = ({
 							}[action]
 						}
 					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
+					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary" />
 
-					{action == "Delete" ? (
+					{action === "Delete" ? (
 						<div className="mb-4.5">
 							Confirm to delete coordinator: {name} with id: {coordinatorID}
 						</div>
 					) : (
 						<>
 							<div className="mb-4.5">
-								<label className="mb-2.5 block text-black dark:text-white">
+								<label
+									htmlFor="coordinator-name"
+									className="mb-2.5 block text-black dark:text-white"
+								>
 									Coordinator Name <span className="text-meta-1">*</span>
 								</label>
 								<input
 									type="text"
+									id="coordinator-name"
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 									placeholder="Enter Coordinator Name"
@@ -445,10 +449,14 @@ const DistrictsTable = ({
 							</div>
 
 							<div className="mb-4.5">
-								<label className="mb-2.5 block text-black dark:text-white">
+								<label
+									htmlFor="phone-number"
+									className="mb-2.5 block text-black dark:text-white"
+								>
 									Phone Number
 								</label>
 								<input
+									id="phone-number"
 									type="text"
 									value={telephone_no}
 									onChange={(e) => setTelephone_No(e.target.value)}
@@ -462,6 +470,7 @@ const DistrictsTable = ({
 					<div className="-mx-3 flex flex-wrap gap-y-4">
 						<div className="w-full px-3 2xsm:w-1/2">
 							<button
+								type="button"
 								onClick={() => setModalOpen(false)}
 								className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 							>
@@ -470,6 +479,7 @@ const DistrictsTable = ({
 						</div>
 						<div className="w-full px-3 2xsm:w-1/2">
 							<button
+								type="button"
 								onClick={handleModalSubmit}
 								className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 							>
