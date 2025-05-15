@@ -1,5 +1,6 @@
 import type React from "react";
 import { type ReactNode, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import Header from "../components/Header/index";
 import Sidebar from "../components/Sidebar/index";
 
@@ -8,6 +9,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 	return (
 		<div>
+			<Toaster position="top-right" />
 			{/* <!-- ===== Page Wrapper Start ===== --> */}
 			<div className="flex h-screen overflow-hidden">
 				{/* <!-- ===== Sidebar Start ===== --> */}
