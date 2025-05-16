@@ -4,7 +4,7 @@ import type {
 	District,
 	Template,
 	Transaction,
-} from "../../types/financeIndex";
+}  from "../../types/finance";
 
 // Mock Districts
 export const districts: District[] = [
