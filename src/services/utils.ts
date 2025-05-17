@@ -1,4 +1,8 @@
-export const filterIt = (arr: any, searchKey: string) => {
+export const filterIt = <T = unknown>(
+	arr: Array<T>,
+	searchKey: string,
+): Array<T> => {
+	// @ts-expect-error
 	return arr.filter((obj: { [x: string]: string | string[] }) =>
 		Object.keys(obj).some((key) =>
 			JSON.stringify(obj[key]).toLowerCase().includes(searchKey.toLowerCase()),
@@ -6,7 +10,7 @@ export const filterIt = (arr: any, searchKey: string) => {
 	);
 };
 
-export const sortByKey = (arr: any, key: string) => {
+export const sortByKey = (arr: Array<unknown>, key: string) => {
 	return arr.sort(dynamicSort(key));
 };
 
@@ -16,11 +20,12 @@ function dynamicSort(property: string) {
 		sortOrder = -1;
 		property = property.substring(1);
 	}
-	return (a: any, b: any) => {
+	return (a: unknown, b: unknown) => {
 		/* next line works with strings and numbers,
 		 * and you may want to customize it to your needs
 		 */
 		const result =
+			// @ts-expect-error
 			a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
 		return result * sortOrder;
 	};
@@ -32,3 +37,10 @@ export const convertUTCToIST = (dateString: string): string => {
 	const istDate = new Date(date.getTime() + istOffset);
 	return istDate.toISOString().replace("T", " ").substring(0, 19);
 };
+
+export const CurrencyFormatter = new Intl.NumberFormat("en-LK", {
+	style: "currency",
+	currency: "LKR",
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2,
+});

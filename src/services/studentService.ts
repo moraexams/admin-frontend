@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
 export const addStudent = async (
@@ -55,9 +56,11 @@ export const addStudent = async (
 		);
 		console.log("response", response);
 		return true;
-	} catch (error: any) {
+	} catch (error) {
 		console.error("Error Adding Student:", error);
-		throw error.response.data.error;
+		if (error instanceof AxiosError && error.response) {
+			throw error.response.data.error;
+		}
 	}
 };
 
@@ -83,73 +86,56 @@ export const updateStudent = async (
     created_at: string, */
 ) => {
 	try {
-		const token = localStorage.getItem("token");
 		name = name.trim().toUpperCase();
 		school = school.trim().toUpperCase();
 		address = address.trim().toUpperCase();
-		console.log("Sending ID: " + exam_centre_id);
-		const response = await axiosInstance.put(
-			"/student/" + index_no,
-			{
-				name,
-				stream_id,
-				medium,
-				rank_district_id,
-				exam_district_id,
-				exam_centre_id,
-				nic,
-				gender,
-				email,
-				telephone_no,
-				school,
-				address,
-				checked_by_id,
-				/*  reg_by,
+		console.log(`Sending ID: ${exam_centre_id}`);
+		const response = await axiosInstance.put(`/student/${index_no}`, {
+			name,
+			stream_id,
+			medium,
+			rank_district_id,
+			exam_district_id,
+			exam_centre_id,
+			nic,
+			gender,
+			email,
+			telephone_no,
+			school,
+			address,
+			checked_by_id,
+			/*  reg_by,
             reg_date,
             checked_by,
             checked_at,
             created_at, */
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
+		});
 		return response.data;
-	} catch (err: any) {
-		console.error("Error Updating Student:", err);
-		throw err.response.data.error;
+	} catch (error) {
+		console.error("Error Updating Student:", error);
+		if (error instanceof AxiosError && error.response) {
+			throw error.response.data.error;
+		}
 	}
 };
 //need to give permission only to admin
 export const deleteStudent = async (index_no: number) => {
 	try {
-		console.log(index_no);
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.delete("/student/" + index_no, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		const response = await axiosInstance.delete(`/student/${index_no}`);
 		console.log("response", response);
 		return true;
-	} catch (error: any) {
+	} catch (error) {
 		console.error("Error Deleting Student:", error);
-		throw error.response.data.error;
+		if (error instanceof AxiosError && error.response) {
+			throw error.response.data.error;
+		}
 	}
 };
 
 export const getStudents = async (page: number, itemsPerPage: number) => {
 	try {
-		const token = localStorage.getItem("token");
 		const response = await axiosInstance.get(
 			`/student?page=${page}&pageSize=${itemsPerPage}`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
 		);
 		return response.data;
 	} catch (error) {
@@ -160,12 +146,7 @@ export const getStudents = async (page: number, itemsPerPage: number) => {
 
 export const getUnVerifiedStudents = async () => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.get("/student/unverified", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		const response = await axiosInstance.get("/student/unverified");
 		return response.data;
 	} catch (error) {
 		console.log("Error fetching Students: ");
@@ -177,7 +158,7 @@ export const getStudentsByCentre = async (centre_id: number) => {
 	try {
 		const token = localStorage.getItem("token");
 		const response = await axiosInstance.get(
-			"/student/filter?exam_centre_id=" + centre_id,
+			`/student/filter?exam_centre_id=${centre_id}`,
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -193,22 +174,15 @@ export const getStudentsByCentre = async (centre_id: number) => {
 
 export const verifyStudent = async (index_no: number) => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.put(
-			"/student/verify/" + index_no,
-			{
-				index_no,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
+		const response = await axiosInstance.put(`/student/verify/${index_no}`, {
+			index_no,
+		});
 		return response.data;
-	} catch (error: any) {
+	} catch (error) {
 		console.error("Error Verifying Student:", error);
-		throw error.response.data.error;
+		if (error instanceof AxiosError && error.response) {
+			throw error.response.data.error;
+		}
 	}
 };
 
@@ -216,7 +190,7 @@ export const getStudentbyIndex = async (index_no: number) => {
 	if (index_no >= 110000) {
 		try {
 			const token = localStorage.getItem("token");
-			const response = await axiosInstance.get("/student/" + index_no, {
+			const response = await axiosInstance.get(`/student/${index_no}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -233,12 +207,7 @@ export const getStudentbyIndex = async (index_no: number) => {
 
 export const getStudentforCheck = async (id: number) => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.get("/student/check/" + id, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		const response = await axiosInstance.get(`/student/check/${id}`);
 		return response.data;
 	} catch (error) {
 		console.log("Error fetching Students: ");
@@ -251,14 +220,8 @@ export const getStudentMarksByCentre = async (
 	stream_id: number,
 ) => {
 	try {
-		const token = localStorage.getItem("token");
 		const response = await axiosInstance.get(
-			`/student/marks/filter?exam_centre_id=${centre_id}${stream_id != -1 && "&stream_id=" + stream_id}`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
+			`/student/marks/filter?exam_centre_id=${centre_id}${stream_id !== -1 && `&stream_id=${stream_id}`}`,
 		);
 		return response.data;
 	} catch (error) {

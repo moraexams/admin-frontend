@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns-tz";
 import type React from "react";
 import { useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { capitalize } from "../../common/utils";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
@@ -36,12 +36,12 @@ const AddFinanceRecord: React.FC = () => {
 
 	const resetForm = () => {
 		reset({
-			transactionType: "expense",
+			transactionType: watch("transactionType"),
 			category: "",
 			description: "",
 			amount: 0,
 			createdAt: getCurrentDateTime(),
-			paymentAccount: "cash",
+			paymentAccount: watch("paymentAccount"),
 		});
 	};
 
@@ -51,7 +51,6 @@ const AddFinanceRecord: React.FC = () => {
 			"yyyy-MM-dd'T'HH:mm:ssXXX",
 			{ timeZone: SRI_LANKA_TIMEZONE },
 		);
-		console.log(formattedCreatedAt);
 		await addTransaction({ ...data, createdAt: formattedCreatedAt })
 			.then(() => {
 				toast.success("Transaction added successfully!");
@@ -59,14 +58,17 @@ const AddFinanceRecord: React.FC = () => {
 			})
 			.catch((error) => {
 				console.error(error);
-				toast.error("Failed to submit record. Please try again later.");
+				let message = "Failed to submit record. Please try again later.";
+				if (typeof error === "string") {
+					message = error;
+				}
+				toast.error(message);
 			});
 	};
 	console.log(watch("amount"));
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Transaction" />
-			<Toaster position="top-right" />
 			<div className="bg-white text-black p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
 				<form
 					onSubmit={handleSubmit(onSubmit)}
@@ -124,7 +126,7 @@ const AddFinanceRecord: React.FC = () => {
 							value={watch("amount")?.toLocaleString("en-US") || ""}
 							onChange={(e) => {
 								const rawValue = e.target.value.replace(/,/g, ""); // Remove commas
-								if (!isNaN(Number(rawValue)) && Number(rawValue) >= 0) {
+								if (!Number.isNaN(Number(rawValue)) && Number(rawValue) >= 0) {
 									setValue("amount", Number(rawValue)); // Update the raw value in the form state
 								}
 							}}
@@ -186,12 +188,12 @@ const AddFinanceRecord: React.FC = () => {
 						<div className="grid grid-cols-2 gap-2">
 							<FinanceAccountSelectorItem
 								isSelected={watch("paymentAccount") === "cash"}
-								onSelect={() => setValue("paymentAccount", "cash")}
+								onSelect={setValue.bind(null, "paymentAccount", "cash")}
 								type="cash"
 							/>
 							<FinanceAccountSelectorItem
 								isSelected={watch("paymentAccount") === "bank"}
-								onSelect={() => setValue("paymentAccount", "bank")}
+								onSelect={setValue.bind(null, "paymentAccount", "bank")}
 								type="bank"
 							/>
 						</div>

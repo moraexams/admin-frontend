@@ -1,4 +1,4 @@
-import { Activity, PlusCircle, TrendingDown, TrendingUp } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -86,18 +86,12 @@ const DashboardFinance: React.FC = () => {
 								value={
 									financeStats == null ? 0 : financeStats.stats.current_balance
 								}
-								change={8}
-								type="neutral"
-								icon={<Activity size={20} />}
 							/>
 							<SummaryCard
 								title="Total Income"
 								value={
 									financeStats == null ? 0 : financeStats.stats.total_income
 								}
-								change={12}
-								type="positive"
-								icon={<TrendingUp size={20} />}
 							/>
 						</div>
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
@@ -106,17 +100,11 @@ const DashboardFinance: React.FC = () => {
 								value={
 									financeStats == null ? 0 : financeStats.stats.total_expenses
 								}
-								change={5}
-								type="negative"
-								icon={<TrendingDown size={20} />}
 							/>
 							<Link to="/finance/districtexpenses">
 								<SummaryCard
 									title="District Expenses"
 									value={getTotalDistrictExpenses()}
-									change={0}
-									type="negative"
-									icon={<TrendingDown size={20} />}
 								/>
 							</Link>
 						</div>
@@ -143,10 +131,10 @@ const DashboardFinance: React.FC = () => {
 										<Cell key={color} fill={color} />
 									))}
 									<Label
-										value={`All\nLKR ${getTotalExpenses().toLocaleString("en-LK")}`}
+										value={`LKR ${getTotalExpenses().toLocaleString("en-LK")}`}
 										position="center"
 										style={{
-											fill: "#333",
+											fill: "currentColor",
 											fontSize: "16px",
 											fontWeight: "bold",
 											textAlign: "center",

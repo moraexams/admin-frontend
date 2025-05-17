@@ -1,7 +1,11 @@
 import flatpickr from "flatpickr";
 import { useEffect } from "react";
 
-const DatePickerTwo = () => {
+interface Props {
+	id: string;
+}
+
+const DatePickerTwo = (props: Props) => {
 	useEffect(() => {
 		// Init flatpickr
 		flatpickr(".form-datepicker", {
@@ -18,7 +22,10 @@ const DatePickerTwo = () => {
 
 	return (
 		<div>
-			<label className="mb-3 block text-sm font-medium text-black dark:text-white">
+			<label
+				htmlFor={props.id}
+				className="mb-3 block text-sm font-medium text-black dark:text-white"
+			>
 				Select date
 			</label>
 			<div className="relative">
@@ -26,6 +33,7 @@ const DatePickerTwo = () => {
 					className="form-datepicker w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
 					placeholder="mm/dd/yyyy"
 					data-class="flatpickr-right"
+					id={props.id}
 				/>
 
 				<div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
