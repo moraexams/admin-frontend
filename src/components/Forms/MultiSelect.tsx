@@ -16,8 +16,8 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 	const [options, setOptions] = useState<Option[]>([]);
 	const [selected, setSelected] = useState<number[]>([]);
 	const [show, setShow] = useState(false);
-	const dropdownRef = useRef<any>(null);
-	const trigger = useRef<any>(null);
+	const dropdownRef = useRef<HTMLDivElement | null>(null);
+	const trigger = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
 		const loadOptions = () => {
@@ -81,7 +81,12 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 
 	useEffect(() => {
 		const clickHandler = ({ target }: MouseEvent) => {
-			if (!dropdownRef.current) return;
+			if (
+				!dropdownRef.current ||
+				!trigger.current ||
+				!(target instanceof HTMLElement)
+			)
+				return;
 			if (
 				!show ||
 				dropdownRef.current.contains(target) ||
@@ -137,7 +142,6 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 													>
 														<svg
 															className="fill-current"
-															role="button"
 															width="12"
 															height="12"
 															viewBox="0 0 12 12"

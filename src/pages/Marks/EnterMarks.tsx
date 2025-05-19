@@ -172,6 +172,7 @@ const EnterMarks = () => {
 
 						<div className="mb-6">
 							<button
+								type="button"
 								onClick={() => setSelectDisabled(!selectDisabled)}
 								className="block rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 							>
@@ -233,10 +234,14 @@ const EnterMarks = () => {
 						/>
 					</div>
 					<div className="mb-4.5">
-						<label className="mb-2.5 block text-black dark:text-white">
+						<label
+							htmlFor="index-no"
+							className="mb-2.5 block text-black dark:text-white"
+						>
 							Index No <span className="text-meta-1">*</span>
 						</label>
 						<input
+							id="index-no"
 							type="text"
 							value={indexNo}
 							onChange={(e) => setIndexNo(Number(e.target.value))}
@@ -246,12 +251,16 @@ const EnterMarks = () => {
 						/>
 					</div>
 					<div className="mb-4.5">
-						<label className="mb-2.5 block text-black dark:text-white">
+						<label
+							htmlFor="marks"
+							className="mb-2.5 block text-black dark:text-white"
+						>
 							Marks <span className="text-meta-1">*</span>
 						</label>
 						<input
+							id="marks"
 							type="number"
-							value={mark ? mark : mark == 0 ? 0 : ""}
+							value={mark ? mark : mark === 0 ? 0 : ""}
 							onChange={(e) => setMark(Number(e.target.value))}
 							placeholder="Enter Marks"
 							inputMode="numeric"
@@ -263,8 +272,9 @@ const EnterMarks = () => {
 				<div className="-mx-3 flex flex-wrap gap-y-4">
 					<div className="px-3 2xsm:w-1/4">
 						<button
+							type="button"
 							onClick={() => setIndexNo(indexNo - 1)}
-							className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
+							className="w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
 						>
 							<svg
 								className="w-6 h-6 text-gray-800 dark:text-white"
@@ -287,8 +297,9 @@ const EnterMarks = () => {
 					</div>
 					<div className="px-3 2xsm:w-1/4">
 						<button
+							type="button"
 							onClick={() => setIndexNo(indexNo + 1)}
-							className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
+							className="w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
 						>
 							<svg
 								className="w-6 h-6 text-gray-800 dark:text-white"
@@ -311,20 +322,20 @@ const EnterMarks = () => {
 					</div>
 					<div className="w-full px-3 2xsm:w-1/2">
 						<button
+							type="button"
 							disabled={submitDisabled}
 							onClick={handleSubmit}
-							className={
-								"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition " +
-								(submitDisabled
+							className={`block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition ${
+								submitDisabled
 									? "bg-opacity-70 hover:bg-opacity-70"
-									: "hover:bg-opacity-90")
-							}
+									: "hover:bg-opacity-90"
+							}`}
 						>
 							Enter Marks
 						</button>
 					</div>
 				</div>
-				<div className="w-full px-3 pt-4"></div>
+				<div className="w-full px-3 pt-4" />
 			</div>
 
 			<Snackbar config={snackBarConfig} />

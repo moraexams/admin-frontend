@@ -10,16 +10,14 @@ import type { SnackBarConfig } from "../../types/snackbar";
 import type { District } from "../../types/types";
 import Snackbar from "../Snackbar";
 
-const DistrictsTable = ({
-	districtData,
-	searchKey,
-	itemsPerPage,
-}: {
+interface Props {
 	districtData: District[];
 	searchKey: string;
 	itemsPerPage: number;
-	setRefreshKey: any;
-}) => {
+	setRefreshKey: number;
+}
+
+const DistrictsTable = ({ districtData, searchKey, itemsPerPage }: Props) => {
 	const items: District[] =
 		searchKey !== "" ? filterIt(districtData, searchKey) : districtData;
 	const itemsLength = items.length;

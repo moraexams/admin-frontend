@@ -51,10 +51,7 @@ const options: ApexOptions = {
 		horizontalAlign: "left",
 		fontWeight: 500,
 		fontSize: "14px",
-
-		markers: {
-			radius: 99,
-		},
+		markers: {},
 	},
 	fill: {
 		opacity: 1,

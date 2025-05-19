@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { filterIt } from "../../services/utils";
@@ -9,7 +9,7 @@ const ExamPaperDistributionTable = ({
 	searchKey,
 	itemsPerPage,
 }: { districtData: District[]; searchKey: string; itemsPerPage: number }) => {
-	const [item, setItem] = useState<District[]>();
+	const [item, setItem] = useState<District[]>([]);
 	useEffect(() => {
 		const defaultCount: Count = {
 			subject: "-",
@@ -32,7 +32,7 @@ const ExamPaperDistributionTable = ({
 		}));
 
 		setItem(updatedDistricts);
-	}, []);
+	}, [districtData]);
 
 	const items: District[] =
 		searchKey !== "" ? filterIt(item, searchKey) : districtData;
@@ -95,7 +95,6 @@ const ExamPaperDistributionTable = ({
 								}
 							}
 
-							// console.log("districtrowSpan", districtrowSpan)
 							return (
 								<>
 									{exam_centres && exam_centres.length > 0 ? (
@@ -107,12 +106,15 @@ const ExamPaperDistributionTable = ({
 											} = exam_centre;
 											const centrerowSpan = counts ? counts.length : 1;
 											return (
-												<>
+												<Fragment key={name}>
 													{counts.map((paper_count, pkey) => {
 														const { subject, code, medium, count } =
 															paper_count;
 														return (
-															<tr key={pkey} className="text-center">
+															<tr
+																key={paper_count.code}
+																className="text-center"
+															>
 																{pkey === 0 && ckey === 0 && (
 																	<td
 																		rowSpan={districtrowSpan}
@@ -126,6 +128,7 @@ const ExamPaperDistributionTable = ({
 
 																{pkey === 0 && (
 																	<td
+																		key={code.concat("0")}
 																		rowSpan={centrerowSpan}
 																		className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
 																	>
@@ -170,7 +173,10 @@ const ExamPaperDistributionTable = ({
 																	>
 																		{coordinators && coordinators.length > 0 ? (
 																			coordinators?.map((coordinator) => (
-																				<h5 className="font-medium text-black dark:text-white">
+																				<h5
+																					key={coordinator.id}
+																					className="font-medium text-black dark:text-white"
+																				>
 																					<div className="m-1">
 																						{coordinator.name}
 																					</div>
@@ -189,7 +195,7 @@ const ExamPaperDistributionTable = ({
 															</tr>
 														);
 													})}
-												</>
+												</Fragment>
 											);
 										})
 									) : (

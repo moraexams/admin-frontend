@@ -307,7 +307,7 @@ const StudentTable = ({
 		setAction("Update");
 		const student = studentData.find((x) => x.index_no === index_no);
 
-		if (student && student.index_no) {
+		if (student?.index_no) {
 			//alert(`Editing student: ${student.name}`)
 			setIndexNo(student.index_no);
 			setName(student.name);
@@ -347,7 +347,7 @@ const StudentTable = ({
 		const student = studentData.find((x) => x.index_no === index_no);
 		setAction("View");
 		console.log("View");
-		if (student && student.index_no) {
+		if (student?.index_no) {
 			setIndexNo(index_no);
 			setName(student.name);
 			setStreamId(student.stream_id);
@@ -373,6 +373,7 @@ const StudentTable = ({
 		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 			<div className="flex items-center justify-center space-x-3.5">
 				<button
+					type="button"
 					onClick={() => handleAddModalOpen()}
 					className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white px-4 py-2 rounded-md mb-5 transition-colors duration-200 ease-in-out"
 				>
@@ -421,175 +422,173 @@ const StudentTable = ({
 						</tr>
 					</thead>
 					<tbody>
-						<>
-							{currentItems &&
-								currentItems.map((student, key) => {
-									// const rowSpan = studentData ? studentData.length : 1;
-									return (
-										<tr key={key}>
-											<td
-												rowSpan={1}
-												className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11"
+						{currentItems?.map((student) => {
+							if (student.index_no === undefined) {
+								console.error(student);
+								return null;
+							}
+							// const rowSpan = studentData ? studentData.length : 1;
+							return (
+								<tr key={student.index_no}>
+									<td
+										rowSpan={1}
+										className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11"
+									>
+										<h5 className="font-medium text-black dark:text-white">
+											<pre>{student.index_no}</pre>
+										</h5>
+									</td>
+									<td
+										rowSpan={1}
+										className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+									>
+										<p className="text-black dark:text-white">{student.name}</p>
+									</td>
+									<td
+										rowSpan={1}
+										className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+									>
+										<p className="text-black dark:text-white">
+											<pre>{student.nic}</pre>
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{
+												streams.find(
+													(stream) => stream.id === student.stream_id,
+												)?.name
+											}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.medium}
+										</p>
+									</td>
+									<td>
+										<div className="flex items-center justify-center">
+											{student.checked_by_id ? (
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="green"
+													className="size-6"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+													/>
+												</svg>
+											) : (
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="red"
+													className="size-6"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+													/>
+												</svg>
+											)}
+										</div>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<div className="flex items-center justify-center space-x-3.5">
+											<button
+												type="button"
+												onClick={handleViewModalOpen.bind(
+													null,
+													student.index_no,
+												)}
+												className="hover:text-primary"
 											>
-												<h5 className="font-medium text-black dark:text-white">
-													<pre>{student.index_no}</pre>
-												</h5>
-											</td>
-											<td
-												rowSpan={1}
-												className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="currentColor"
+													className="size-6"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+													/>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+													/>
+												</svg>
+											</button>
+											<button
+												type="button"
+												onClick={() => handleEditModalOpen(student.index_no)}
+												className="hover:text-primary"
 											>
-												<p className="text-black dark:text-white">
-													{student.name}
-												</p>
-											</td>
-											<td
-												rowSpan={1}
-												className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="currentColor"
+													className="size-6"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+													/>
+												</svg>
+											</button>
+											<button
+												type="button"
+												onClick={() =>
+													handleDeleteModalOpen(student.index_no, student.name)
+												}
+												className="hover:text-primary"
 											>
-												<p className="text-black dark:text-white">
-													<pre>{student.nic}</pre>
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{
-														streams.find(
-															(stream) => stream.id === student.stream_id,
-														)?.name
-													}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.medium}
-												</p>
-											</td>
-											<td>
-												<div className="flex items-center justify-center">
-													{student.checked_by_id ? (
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="green"
-															className="size-6"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-															/>
-														</svg>
-													) : (
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="red"
-															className="size-6"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-															/>
-														</svg>
-													)}
-												</div>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<div className="flex items-center justify-center space-x-3.5">
-													<button
-														onClick={() =>
-															handleViewModalOpen(student.index_no!)
-														}
-														className="hover:text-primary"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															className="size-6"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-															/>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-															/>
-														</svg>
-													</button>
-													<button
-														onClick={() =>
-															handleEditModalOpen(student.index_no)
-														}
-														className="hover:text-primary"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															className="size-6"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-															/>
-														</svg>
-													</button>
-													<button
-														onClick={() =>
-															handleDeleteModalOpen(
-																student.index_no,
-																student.name,
-															)
-														}
-														className="hover:text-primary"
-													>
-														<svg
-															className="fill-current"
-															width="18"
-															height="18"
-															viewBox="0 0 18 18"
-															fill="none"
-															xmlns="http://www.w3.org/2000/svg"
-														>
-															<path
-																d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z"
-																fill=""
-															/>
-															<path
-																d="M9.00039 9.11255C8.66289 9.11255 8.35352 9.3938 8.35352 9.75942V13.3313C8.35352 13.6688 8.63477 13.9782 9.00039 13.9782C9.33789 13.9782 9.64727 13.6969 9.64727 13.3313V9.75942C9.64727 9.3938 9.33789 9.11255 9.00039 9.11255Z"
-																fill=""
-															/>
-															<path
-																d="M11.2502 9.67504C10.8846 9.64692 10.6033 9.90004 10.5752 10.2657L10.4064 12.7407C10.3783 13.0782 10.6314 13.3875 10.9971 13.4157C11.0252 13.4157 11.0252 13.4157 11.0533 13.4157C11.3908 13.4157 11.6721 13.1625 11.6721 12.825L11.8408 10.35C11.8408 9.98442 11.5877 9.70317 11.2502 9.67504Z"
-																fill=""
-															/>
-															<path
-																d="M6.72245 9.67504C6.38495 9.70317 6.1037 10.0125 6.13182 10.35L6.3287 12.825C6.35683 13.1625 6.63808 13.4157 6.94745 13.4157C6.97558 13.4157 6.97558 13.4157 7.0037 13.4157C7.3412 13.3875 7.62245 13.0782 7.59433 12.7407L7.39745 10.2657C7.39745 9.90004 7.08808 9.64692 6.72245 9.67504Z"
-																fill=""
-															/>
-														</svg>
-													</button>
-												</div>
-											</td>
-										</tr>
-									);
-								})}
-						</>
+												<svg
+													className="fill-current"
+													width="18"
+													height="18"
+													viewBox="0 0 18 18"
+													fill="none"
+													xmlns="http://www.w3.org/2000/svg"
+												>
+													<path
+														d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z"
+														fill=""
+													/>
+													<path
+														d="M9.00039 9.11255C8.66289 9.11255 8.35352 9.3938 8.35352 9.75942V13.3313C8.35352 13.6688 8.63477 13.9782 9.00039 13.9782C9.33789 13.9782 9.64727 13.6969 9.64727 13.3313V9.75942C9.64727 9.3938 9.33789 9.11255 9.00039 9.11255Z"
+														fill=""
+													/>
+													<path
+														d="M11.2502 9.67504C10.8846 9.64692 10.6033 9.90004 10.5752 10.2657L10.4064 12.7407C10.3783 13.0782 10.6314 13.3875 10.9971 13.4157C11.0252 13.4157 11.0252 13.4157 11.0533 13.4157C11.3908 13.4157 11.6721 13.1625 11.6721 12.825L11.8408 10.35C11.8408 9.98442 11.5877 9.70317 11.2502 9.67504Z"
+														fill=""
+													/>
+													<path
+														d="M6.72245 9.67504C6.38495 9.70317 6.1037 10.0125 6.13182 10.35L6.3287 12.825C6.35683 13.1625 6.63808 13.4157 6.94745 13.4157C6.97558 13.4157 6.97558 13.4157 7.0037 13.4157C7.3412 13.3875 7.62245 13.0782 7.59433 12.7407L7.39745 10.2657C7.39745 9.90004 7.08808 9.64692 6.72245 9.67504Z"
+														fill=""
+													/>
+												</svg>
+											</button>
+										</div>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>
@@ -639,21 +638,22 @@ const StudentTable = ({
 					<h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
 						{
 							{
-								Add: `Add Student`,
-								Update: `Update Student`,
+								Add: "Add Student",
+								Update: "Update Student",
 								Delete: "Delete Student",
 								View: "View Student",
 							}[action]
 						}
 					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
-					{action == "View" && (
+					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary" />
+					{action === "View" && (
 						<>
 							<div className="flex justify-around pb-8">
 								<div className="flex items-center rounded-lg">
 									<button
+										type="button"
 										onClick={() => setViewSection("personal")}
-										className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == "personal" && "border-primary bg-primary text-white"}`}
+										className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection === "personal" && "border-primary bg-primary text-white"}`}
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -672,8 +672,9 @@ const StudentTable = ({
 										Personal
 									</button>
 									<button
+										type="button"
 										onClick={() => setViewSection("exam")}
-										className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == "exam" && "border-primary bg-primary text-white"}`}
+										className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection === "exam" && "border-primary bg-primary text-white"}`}
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -836,14 +837,13 @@ const StudentTable = ({
 														<strong>
 															{users.find((user) => user.id === checkedBy)
 																?.username || (
-																<>
-																	<button
-																		onClick={() => handleVerifyStudent()}
-																		className="bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2"
-																	>
-																		Verify
-																	</button>
-																</>
+																<button
+																	type="button"
+																	onClick={() => handleVerifyStudent()}
+																	className="bg-purple-500 text-white border border-purple-600 rounded-xl py-2 px-4 hover:bg-purple-600 hover:border-purple-700 transition duration-200 ease-in-out m-2"
+																>
+																	Verify
+																</button>
 															)}
 														</strong>
 													</td>
@@ -857,6 +857,7 @@ const StudentTable = ({
 							<div className="-mx-3 flex flex-wrap gap-y-4">
 								<div className="w-full px-3 2xsm:w-1/2">
 									<button
+										type="button"
 										onClick={() => setModalOpen(false)}
 										className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 									>
@@ -865,6 +866,7 @@ const StudentTable = ({
 								</div>
 								<div className="w-full px-3 2xsm:w-1/2">
 									<button
+										type="button"
 										onClick={() => {
 											handleEditModalOpen(indexNo);
 										}}
@@ -876,7 +878,7 @@ const StudentTable = ({
 							</div>
 						</>
 					)}
-					{action == "Delete" && (
+					{action === "Delete" && (
 						<>
 							<div className="mb-4.5">
 								Confirm to delete Student: {name} with id: {indexNo}
@@ -884,6 +886,7 @@ const StudentTable = ({
 							<div className="-mx-3 flex flex-wrap gap-y-4">
 								<div className="w-full px-3 2xsm:w-1/2">
 									<button
+										type="button"
 										onClick={() => setModalOpen(false)}
 										className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 									>
@@ -892,6 +895,7 @@ const StudentTable = ({
 								</div>
 								<div className="w-full px-3 2xsm:w-1/2">
 									<button
+										type="button"
 										onClick={handleModalSubmit}
 										className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 									>
@@ -902,15 +906,19 @@ const StudentTable = ({
 						</>
 					)}
 
-					{(action == "Update" || action == "Add") && (
+					{(action === "Update" || action === "Add") && (
 						<>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="index_no"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Index No <span className="text-meta-1">*</span>
 										</label>
 										<input
+											id="index_no"
 											type="text"
 											value={indexNo}
 											onChange={(e) => setIndexNo(Number(e.target.value))}
@@ -919,11 +927,15 @@ const StudentTable = ({
 										/>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="student-name"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Student Name <span className="text-meta-1">*</span>
 										</label>
 										<input
 											type="text"
+											id="student-name"
 											value={name}
 											onChange={(e) => setName(e.target.value)}
 											placeholder="Enter Student Name"
@@ -931,10 +943,14 @@ const StudentTable = ({
 										/>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="school"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											School
 										</label>
 										<input
+											id="school"
 											type="text"
 											value={school}
 											onChange={(e) => setSchool(e.target.value)}
@@ -943,11 +959,15 @@ const StudentTable = ({
 										/>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="nic"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											NIC <span className="text-meta-1">*</span>
 										</label>
 										<input
 											type="text"
+											id="nic"
 											value={nic}
 											onChange={(e) => setNic(e.target.value)}
 											placeholder="Enter NIC"
@@ -955,10 +975,14 @@ const StudentTable = ({
 										/>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="gender"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Gender <span className="text-meta-1">*</span>
 										</label>
 										<select
+											id="gender"
 											value={gender}
 											onChange={(e) => setGender(e.target.value)}
 											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -971,11 +995,15 @@ const StudentTable = ({
 										</select>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="email"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Email
 										</label>
 										<input
 											type="email"
+											id="email"
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
 											placeholder="Enter Email Address"
@@ -983,10 +1011,14 @@ const StudentTable = ({
 										/>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="address"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Address
 										</label>
 										<input
+											id="address"
 											type="text"
 											value={address}
 											onChange={(e) => setAddress(e.target.value)}
@@ -997,10 +1029,14 @@ const StudentTable = ({
 								</div>
 								<div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="stream"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Stream <span className="text-meta-1">*</span>
 										</label>
 										<select
+											id="stream"
 											value={streamId}
 											onChange={(e) => setStreamId(Number(e.target.value))}
 											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1016,10 +1052,14 @@ const StudentTable = ({
 										</select>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="medium"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Medium <span className="text-meta-1">*</span>
 										</label>
 										<select
+											id="medium"
 											value={medium}
 											onChange={(e) => setMedium(e.target.value)}
 											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1036,10 +1076,14 @@ const StudentTable = ({
 										</select>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="rank-district"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Rank District <span className="text-meta-1">*</span>
 										</label>
 										<select
+											id="rank-district"
 											value={rankDistrictId}
 											onChange={(e) =>
 												setRankDistrictId(Number(e.target.value))
@@ -1057,11 +1101,15 @@ const StudentTable = ({
 										</select>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="exam-district"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Exam District <span className="text-meta-1">*</span>
 										</label>
 										<select
 											value={examDistrictId}
+											id="exam-district"
 											onChange={(e) =>
 												examDistrictChange(Number(e.target.value))
 											}
@@ -1078,10 +1126,14 @@ const StudentTable = ({
 										</select>
 									</div>
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="center"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Center <span className="text-meta-1">*</span>
 										</label>
 										<select
+											id="center"
 											value={centreId}
 											onChange={(e) => {
 												setCentreId(Number(e.target.value));
@@ -1101,11 +1153,15 @@ const StudentTable = ({
 									</div>
 
 									<div className="mb-4.5">
-										<label className="mb-2.5 block text-black dark:text-white">
+										<label
+											htmlFor="phone"
+											className="mb-2.5 block text-black dark:text-white"
+										>
 											Phone
 										</label>
 										<input
 											type="text"
+											id="phone"
 											value={phone}
 											onChange={(e) => setPhone(e.target.value)}
 											placeholder="Enter Contact Number"
@@ -1117,6 +1173,7 @@ const StudentTable = ({
 							<div className="-mx-3 flex flex-wrap gap-y-4">
 								<div className="w-full px-3 2xsm:w-1/2">
 									<button
+										type="button"
 										onClick={() => setModalOpen(false)}
 										className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 									>
@@ -1125,6 +1182,7 @@ const StudentTable = ({
 								</div>
 								<div className="w-full px-3 2xsm:w-1/2">
 									<button
+										type="button"
 										onClick={handleModalSubmit}
 										className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 									>

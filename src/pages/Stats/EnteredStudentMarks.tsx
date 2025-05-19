@@ -55,7 +55,7 @@ const EnteredStudentMarks: React.FC = () => {
 			}
 		};
 		fetchStudents();
-	}, [district, centre]);
+	}, [centre]);
 
 	if (error) {
 		return <div>{error}</div>;
@@ -106,53 +106,50 @@ const EnteredStudentMarks: React.FC = () => {
 										</tr>
 									</thead>
 									<tbody>
-										<>
-											{totalStats &&
-												totalStats.map((count: any, key: number) => (
-													<tr key={key}>
-														<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
-															<h5 className="font-semibold text-black dark:text-white">
-																{count.stream_name}
-															</h5>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="font-bold text-black dark:text-white">
-																{count.total_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s1_p1_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s1_p2_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s2_p1_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s2_p2_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s3_p1_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s3_p2_count}
-															</p>
-														</td>
-													</tr>
-												))}
-										</>
+										{totalStats?.map((count: any, key: number) => (
+											<tr key={key}>
+												<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
+													<h5 className="font-semibold text-black dark:text-white">
+														{count.stream_name}
+													</h5>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="font-bold text-black dark:text-white">
+														{count.total_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s1_p1_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s1_p2_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s2_p1_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s2_p2_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s3_p1_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s3_p2_count}
+													</p>
+												</td>
+											</tr>
+										))}
 									</tbody>
 								</table>
 							</div>
@@ -237,53 +234,50 @@ const EnteredStudentMarks: React.FC = () => {
 										</tr>
 									</thead>
 									<tbody>
-										<>
-											{centreStats &&
-												centreStats.map((count: any, key: number) => (
-													<tr key={key}>
-														<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
-															<h5 className="font-semibold text-black dark:text-white">
-																{count.stream_name}
-															</h5>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="font-bold text-black dark:text-white">
-																{count.total_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s1_p1_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s1_p2_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s2_p1_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s2_p2_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s3_p1_count}
-															</p>
-														</td>
-														<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-															<p className="text-black dark:text-white">
-																{count.s3_p2_count}
-															</p>
-														</td>
-													</tr>
-												))}
-										</>
+										{centreStats?.map((count: any, key: number) => (
+											<tr key={key}>
+												<td className="border-b border-[#eee] py-5 px-4 pl-4 dark:border-strokedark xl:pl-11">
+													<h5 className="font-semibold text-black dark:text-white">
+														{count.stream_name}
+													</h5>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="font-bold text-black dark:text-white">
+														{count.total_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s1_p1_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s1_p2_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s2_p1_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s2_p2_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s3_p1_count}
+													</p>
+												</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<p className="text-black dark:text-white">
+														{count.s3_p2_count}
+													</p>
+												</td>
+											</tr>
+										))}
 									</tbody>
 								</table>
 							</div>

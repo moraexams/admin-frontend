@@ -10,17 +10,20 @@ export const filterIt = <T = unknown>(
 	);
 };
 
-export const sortByKey = (arr: Array<unknown>, key: string) => {
+export const sortByKey = <T = unknown>(
+	arr: Array<T>,
+	key: string,
+): Array<T> => {
 	return arr.sort(dynamicSort(key));
 };
 
-function dynamicSort(property: string) {
+function dynamicSort<T = unknown>(property: string) {
 	let sortOrder = 1;
 	if (property[0] === "-") {
 		sortOrder = -1;
 		property = property.substring(1);
 	}
-	return (a: unknown, b: unknown) => {
+	return (a: T, b: T) => {
 		/* next line works with strings and numbers,
 		 * and you may want to customize it to your needs
 		 */
