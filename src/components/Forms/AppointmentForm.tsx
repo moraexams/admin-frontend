@@ -9,7 +9,7 @@ const AppointmentForm = () => {
 						{/* select doctor */}
 						<div className="mb-5.5">
 							<label
-								className="mb-3 block text-sm font-medium text-black dark:text-white"
+								className="mb-3 block text-sm font-medium"
 								htmlFor="selectDoctor"
 							>
 								Select Doctor
@@ -32,7 +32,7 @@ const AppointmentForm = () => {
 
 							<div className="w-full sm:w-1/2">
 								<label
-									className="mb-3 block text-sm font-medium text-black dark:text-white"
+									className="mb-3 block text-sm font-medium"
 									htmlFor="Time"
 								>
 									Time
