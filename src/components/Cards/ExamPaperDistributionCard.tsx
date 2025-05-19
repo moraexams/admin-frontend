@@ -9,9 +9,7 @@ import type {
 const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
 	return (
 		<div className="min-w-40 rounded-sm border border-stroke bg-white dark:bg-boxdark p-4 shadow-default transition duration-300 ease-in-out">
-			<h3 className="text-lg font-bold">
-				{coordinator.name}
-			</h3>
+			<h3 className="text-lg font-bold">{coordinator.name}</h3>
 			<p className="text-gray-700 dark:text-white">
 				<strong>{coordinator.telephone_no}</strong>
 			</p>
@@ -22,9 +20,7 @@ const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
 const CentreCard = ({ centre }: { centre: ExamCentre }) => {
 	return (
 		<div className="border border-slate-300 rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
-			<h3 className="text-xl font-semibold mb-2">
-				{centre.name}
-			</h3>
+			<h3 className="text-xl font-semibold mb-2">{centre.name}</h3>
 			<div className="text-black dark:text-white py-2">
 				<table className="table-fixed border-separate border-spacing-1">
 					<tbody>
@@ -124,9 +120,7 @@ const ExamPaperDistributionCard = ({
 			{/* Display coordinators */}
 			{coordinators.length > 0 ? (
 				<div className="w-full mt-2">
-					<h2 className="text-2xl font-bold text-center mb-2">
-						Coordinators
-					</h2>
+					<h2 className="text-2xl font-bold text-center mb-2">Coordinators</h2>
 					<div className="flex flex-wrap justify-center">
 						{coordinators.map((coordinator) => (
 							<CoordinatorCard key={coordinator.id} coordinator={coordinator} />
