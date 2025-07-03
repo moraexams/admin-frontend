@@ -70,3 +70,7 @@ export const addBillToTransaction = async (
 		},
 	});
 };
+
+export const getAllBills = async (page?: number, pageSize?: number) => {
+	return axiosInstance.get("/bill/all");
+};
