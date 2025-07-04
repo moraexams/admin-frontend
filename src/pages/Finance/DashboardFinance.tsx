@@ -1,6 +1,7 @@
 import { PlusCircle } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
 	Cell,
@@ -13,7 +14,10 @@ import {
 } from "recharts";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { getFinanceStats } from "../../services/financeServices";
+import {
+	type FinanceStats,
+	getFinanceStats,
+} from "../../services/financeServices";
 import {
 	getDistrictNameById,
 	getRecentTransactions,
@@ -21,22 +25,27 @@ import {
 	getTotalExpenses,
 } from "./mockData";
 
-interface FinanceStats {
-	stats: {
-		current_balance: number;
-		total_income: number;
-		total_expenses: number;
-	};
-}
-
 const DashboardFinance: React.FC = () => {
 	const lastTransactions = getRecentTransactions();
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
 
 	useEffect(() => {
-		getFinanceStats().then((data) => {
-			setFinanceStats(data);
-		});
+		getFinanceStats()
+			.then((data) => {
+				if (!data) {
+					toast.error("Failed to fetch finance stats");
+					return;
+				}
+				setFinanceStats(data);
+			})
+			.catch((error) => {
+				console.error(error);
+				let message = "Failed to fetch finance stats. Please try again later.";
+				if (typeof error === "string") {
+					message = error;
+				}
+				toast.error(message);
+			});
 	}, []);
 
 	// Prepare Pie Chart Data
@@ -82,9 +91,19 @@ const DashboardFinance: React.FC = () => {
 					<div className="col-span-1 lg:col-span-2 flex flex-col gap-6">
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 							<SummaryCard
-								title="Total Balance"
+								title="Cash Balance"
 								value={
-									financeStats == null ? 0 : financeStats.stats.current_balance
+									financeStats == null
+										? 0
+										: financeStats.stats.current_balance.cash
+								}
+							/>
+							<SummaryCard
+								title="Bank Balance"
+								value={
+									financeStats == null
+										? 0
+										: financeStats.stats.current_balance.bank
 								}
 							/>
 							<SummaryCard
@@ -93,8 +112,6 @@ const DashboardFinance: React.FC = () => {
 									financeStats == null ? 0 : financeStats.stats.total_income
 								}
 							/>
-						</div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
 							<SummaryCard
 								title="Total Expenses"
 								value={

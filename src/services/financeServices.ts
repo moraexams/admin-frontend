@@ -6,9 +6,20 @@ import type {
 	Transaction,
 } from "../types/finance";
 
+export interface FinanceStats {
+	stats: {
+		current_balance: {
+			cash: number;
+			bank: number;
+		};
+		total_income: number;
+		total_expenses: number;
+	};
+}
+
 export const getFinanceStats = async () => {
 	try {
-		const response = await axiosInstance.get("/finance/stats");
+		const response = await axiosInstance.get<FinanceStats>("/finance/stats");
 		return response.data;
 	} catch (error) {
 		console.error("Error while fetching finance stats: ", error);
