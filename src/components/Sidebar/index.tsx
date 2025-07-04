@@ -3,7 +3,9 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import DarkLogo from "../../images/logo/logo-dark.png";
 import LightLogo from "../../images/logo/logo.png";
+import SidebarLink from "./SidebarLink";
 import SidebarLinkGroup from "./SidebarLinkGroup";
+import SidebarSubLink from "./SidebarSubLink";
 
 interface SidebarProps {
 	sidebarOpen: boolean;
@@ -85,8 +87,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 			{/* <!-- SIDEBAR HEADER --> */}
 			<div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
 				<NavLink to="/">
-					<img className="dark:hidden block w-full h-auto" src={LightLogo} alt="Logo" />
-					<img className="w-full hidden dark:block h-auto" src={DarkLogo} alt="Logo" />
+					<img
+						className="dark:hidden block w-full h-auto"
+						src={LightLogo}
+						alt="Logo"
+					/>
+					<img
+						className="w-full hidden dark:block h-auto"
+						src={DarkLogo}
+						alt="Logo"
+					/>
 				</NavLink>
 
 				<button
@@ -124,12 +134,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 						<ul className="mb-6 flex flex-col gap-1.5">
 							{/* <!-- Menu Item Dashboard --> */}
 							<li>
-								<NavLink
-									to="/"
-									className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-										pathname === "/" && "bg-graydark dark:bg-meta-4"
-									}`}
-								>
+								<SidebarLink to="/" isActive={pathname === "/"}>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
@@ -145,7 +150,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										/>
 									</svg>
 									Dashboard
-								</NavLink>
+								</SidebarLink>
 							</li>
 							{/* <!-- Menu Item Dashboard --> */}
 
@@ -159,12 +164,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										{(handleClick, open) => {
 											return (
 												<React.Fragment>
-													<NavLink
+													<SidebarLink
 														to="/finance"
-														className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-															pathname.startsWith("/finance") &&
-															"bg-graydark dark:bg-meta-4"
-														}`}
+														isActive={pathname.startsWith("/finance")}
 														onClick={(e) => {
 															e.preventDefault();
 															handleClick();
@@ -203,62 +205,27 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 																fill=""
 															/>
 														</svg>
-													</NavLink>
+													</SidebarLink>
 													{/* <!-- Dropdown Menu Start --> */}
 													<div
 														className={`translate transform overflow-hidden ${!open && "hidden"}`}
 													>
 														<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-															<li>
-																<NavLink
-																	to="/finance/dashboardfinance"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	Dashboard
-																</NavLink>
-															</li>
-															<li>
-																<NavLink
-																	to="/finance/add-transaction"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	Add Transaction
-																</NavLink>
-															</li>
-															<li>
-																<NavLink
-																	to="/finance/transactions"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	All Transactions
-																</NavLink>
-															</li>
-															<li>
-																<NavLink
-																	to="/finance/districtexpenses"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	District Expenses
-																</NavLink>
-															</li>
-															<li>
-																<NavLink
-																	to="/finance/billgallery"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	Bill Gallery
-																</NavLink>
-															</li>
+															<SidebarSubLink to="/finance/dashboardfinance">
+																Dashboard
+															</SidebarSubLink>
+															<SidebarSubLink to="/finance/add-transaction">
+																Add Transaction
+															</SidebarSubLink>
+															<SidebarSubLink to="/finance/transactions">
+																All Transactions
+															</SidebarSubLink>
+															<SidebarSubLink to="/finance/districtexpenses">
+																District Expenses
+															</SidebarSubLink>
+															<SidebarSubLink to="/finance/billgallery">
+																Bill Gallery
+															</SidebarSubLink>
 														</ul>
 													</div>
 													{/* <!-- Dropdown Menu End --> */}
@@ -282,13 +249,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									{(handleClick, open) => {
 										return (
 											<React.Fragment>
-												<NavLink
+												<SidebarLink
 													to="/stats"
-													className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-														(pathname === "/stats" ||
-															pathname.includes("stats/")) &&
-														"bg-graydark dark:bg-meta-4"
-													}`}
+													isActive={
+														pathname === "/stats" || pathname.includes("stats")
+													}
 													onClick={(e) => {
 														e.preventDefault();
 														handleClick();
@@ -325,22 +290,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															fill=""
 														/>
 													</svg>
-												</NavLink>
+												</SidebarLink>
 												{/* <!-- Dropdown Menu Start --> */}
 												<div
 													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-														<li>
-															<NavLink
-																to="/stats/enteredmarks"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Entered Marks
-															</NavLink>
-														</li>
+														<SidebarSubLink to="/stats/enteredmarks">
+															Entered Marks
+														</SidebarSubLink>
 													</ul>
 												</div>
 												{/* <!-- Dropdown Menu End --> */}
@@ -394,13 +352,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										{(handleClick, open) => {
 											return (
 												<React.Fragment>
-													<NavLink
+													<SidebarLink
 														to="/districts"
-														className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-															(pathname === "/districts" ||
-																pathname.startsWith("/district/")) &&
-															"bg-graydark dark:bg-meta-4"
-														}`}
+														isActive={
+															pathname === "/districts" ||
+															pathname.startsWith("/district/")
+														}
 														onClick={(e) => {
 															e.preventDefault();
 															handleClick();
@@ -439,42 +396,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 																fill=""
 															/>
 														</svg>
-													</NavLink>
+													</SidebarLink>
 													{/* <!-- Dropdown Menu Start --> */}
 													<div
 														className={`translate transform overflow-hidden ${!open && "hidden"}`}
 													>
 														<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-															<li>
-																<NavLink
-																	to="/districts"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	Districts
-																</NavLink>
-															</li>
-															<li>
-																<NavLink
-																	to="/district/centres"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	Exam Centres
-																</NavLink>
-															</li>
-															<li>
-																<NavLink
-																	to="/district/coordinators"
-																	className={({ isActive }) =>
-																		`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																	}
-																>
-																	Coordinators
-																</NavLink>
-															</li>
+															<SidebarSubLink to="/districts">
+																Districts
+															</SidebarSubLink>
+															<SidebarSubLink to="/district/centres">
+																Exam Centres
+															</SidebarSubLink>
+															<SidebarSubLink to="/district/coordinators">
+																Coordinators
+															</SidebarSubLink>
 														</ul>
 													</div>
 													{/* <!-- Dropdown Menu End --> */}
@@ -497,13 +433,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									{(handleClick, open) => {
 										return (
 											<React.Fragment>
-												<NavLink
+												<SidebarLink
+													isActive={
+														pathname === "/distribution" ||
+														pathname.includes("distribution")
+													}
 													to="/distribution"
-													className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-														(pathname === "/distribution" ||
-															pathname.includes("distribution")) &&
-														"bg-graydark dark:bg-meta-4"
-													}`}
 													onClick={(e) => {
 														e.preventDefault();
 														handleClick();
@@ -540,32 +475,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															fill=""
 														/>
 													</svg>
-												</NavLink>
+												</SidebarLink>
 												{/* <!-- Dropdown Menu Start --> */}
 												<div
 													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-														<li>
-															<NavLink
-																to="/distribution/table"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Table View
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/distribution/card"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Details View
-															</NavLink>
-														</li>
+														<SidebarSubLink to="/distribution/table">
+															Table View
+														</SidebarSubLink>
+														<SidebarSubLink to="/distribution/card">
+															Details View
+														</SidebarSubLink>
 													</ul>
 												</div>
 												{/* <!-- Dropdown Menu End --> */}
@@ -587,13 +508,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									{(handleClick, open) => {
 										return (
 											<React.Fragment>
-												<NavLink
+												<SidebarLink
 													to="/students"
-													className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-														(pathname === "/students" ||
-															pathname.includes("students/")) &&
-														"bg-graydark dark:bg-meta-4"
-													}`}
+													isActive={
+														pathname === "/students" ||
+														pathname.includes("students/")
+													}
 													onClick={(e) => {
 														e.preventDefault();
 														handleClick();
@@ -630,62 +550,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															fill=""
 														/>
 													</svg>
-												</NavLink>
+												</SidebarLink>
 												{/* <!-- Dropdown Menu Start --> */}
 												<div
 													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-														<li>
-															<NavLink
-																to="/students/add"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Add Student
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/verify"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Verify Student
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/unverified"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Unverified Students
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/centre"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																Centre Wise
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/all"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive && "!text-white"}`
-																}
-															>
-																All Students
-															</NavLink>
-														</li>
+														<SidebarSubLink to="/students/verify">
+															Verify Student
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/unverified">
+															Unverified Students
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/centre">
+															Centre Wise
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/all">
+															All Students
+														</SidebarSubLink>
 													</ul>
 												</div>
 												{/* <!-- Dropdown Menu End --> */}
@@ -698,12 +580,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 							{/* <!-- Menu Item Students --> */}
 							{/*Menu item Marks*/}
 							<li>
-								<NavLink
+								<SidebarLink
 									to="/marks"
-									className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-										(pathname === "/marks" || pathname.includes("/marks")) &&
-										"bg-graydark dark:bg-meta-4"
-									}`}
+									isActive={
+										pathname === "/marks" || pathname.includes("/marks")
+									}
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -718,14 +599,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										/>
 									</svg>
 									Marks
-								</NavLink>
+								</SidebarLink>
 							</li>
 							<li>
-								<NavLink
+								<SidebarLink
 									to="/studentmarks"
-									className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-										pathname === "/studentmarks" && "bg-graydark dark:bg-meta-4"
-									}`}
+									isActive={pathname === "/studentmarks"}
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -742,16 +621,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										/>
 									</svg>
 									Student Marks
-								</NavLink>
+								</SidebarLink>
 							</li>
 							{role === "super_admin" ? (
 								<li>
-									<NavLink
+									<SidebarLink
 										to="/danger-zone"
-										className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-											pathname === "/danger-zone" &&
-											"bg-graydark dark:bg-meta-4"
-										}`}
+										isActive={pathname === "/danger-zone"}
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -765,7 +641,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 											<path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" />
 										</svg>
 										Danger Zone
-									</NavLink>
+									</SidebarLink>
 								</li>
 							) : null}
 						</ul>
