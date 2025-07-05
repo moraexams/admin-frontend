@@ -25,7 +25,7 @@ import {
 	getTotalExpenses,
 } from "./mockData";
 
-const DashboardFinance: React.FC = () => {
+const Dashboard: React.FC = () => {
 	const lastTransactions = getRecentTransactions();
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
 
@@ -264,4 +264,4 @@ const DashboardFinance: React.FC = () => {
 	);
 };
 
-export default DashboardFinance;
+export default Dashboard;
