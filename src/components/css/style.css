@@ -49,10 +49,7 @@
 	}
 
 	:root {
-		color-scheme: light;
-	}
-	:root:has(body.dark) {
-		color-scheme: dark;
+		color-scheme: light dark;
 	}
 
 	body {
