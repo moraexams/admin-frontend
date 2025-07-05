@@ -53,7 +53,10 @@ export const financeSchema = z.object({
 	transactionType: z.enum(["income", "expense"]),
 	category: z.string().nonempty("Please select a type"),
 	description: z.string().optional(),
-	amount: z.coerce.number().min(1, "Amount must be greater than 0"),
+	amount: z
+		.number()
+		.finite("Amount must be a valid number")
+		.min(0.01, "Amount must be greater than 0"),
 	createdAt: z.string().nonempty("Date & Time is required"),
 	paymentAccount: z.enum(["bank", "cash"]),
 });

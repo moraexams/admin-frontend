@@ -33,19 +33,19 @@ const AddFinanceRecord: React.FC = () => {
 			amount: 0, // Initialize amount with a default value of 0
 		},
 	});
-
 	const resetForm = () => {
 		reset({
 			transactionType: watch("transactionType"),
 			category: "",
 			description: "",
-			amount: 0,
+			amount: 0.0,
 			createdAt: getCurrentDateTime(),
 			paymentAccount: watch("paymentAccount"),
 		});
 	};
 
 	const onSubmit = async (data: FinanceFormData) => {
+		console.log("Form data:", data);
 		const formattedCreatedAt = format(
 			data.createdAt,
 			"yyyy-MM-dd'T'HH:mm:ssXXX",
@@ -65,7 +65,7 @@ const AddFinanceRecord: React.FC = () => {
 				toast.error(message);
 			});
 	};
-	console.log(watch("amount"));
+
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Transaction" />
@@ -120,38 +120,21 @@ const AddFinanceRecord: React.FC = () => {
 						<label className="block font-medium mb-2" htmlFor="amount">
 							Amount
 						</label>
-						{/* Visible Input for Displaying Comma-Separated Value */}
-						<input
-							type="text"
-							value={watch("amount")?.toLocaleString("en-US") || ""}
-							onChange={(e) => {
-								const rawValue = e.target.value.replace(/,/g, ""); // Remove commas
-								if (!Number.isNaN(Number(rawValue)) && Number(rawValue) >= 0) {
-									setValue("amount", Number(rawValue)); // Update the raw value in the form state
-								}
-							}}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							placeholder="000"
-						/>
-
-						{/* Hidden Input for Raw Numeric Value */}
 						<input
 							type="number"
+							step={0.01}
+							autoComplete="off"
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							{...register("amount", {
-								valueAsNumber: true, // Ensure the value is treated as a number
-								min: {
-									value: 0,
-									message: "Amount must be greater than or equal to 0",
-								},
+								valueAsNumber: true,
 							})}
-							className="hidden"
 						/>
 
-						{errors.amount && (
+						{errors.amount ? (
 							<span className="text-red-500 text-sm">
 								{errors.amount.message}
 							</span>
-						)}
+						) : null}
 					</div>
 
 					{/* Date and Time */}
