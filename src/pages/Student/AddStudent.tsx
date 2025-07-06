@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import Snackbar from "../../components/Snackbar";
+// import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import { getCenters } from "../../services/examCentreService";
 import { getStreams } from "../../services/streamServices";
 import { addStudent } from "../../services/studentService";
-import type { SnackBarConfig } from "../../types/snackbar";
+// import type { SnackBarConfig } from "../../types/snackbar";
 import type { District, ExamCentre, Stream } from "../../types/types";
+import toast from 'react-hot-toast';
 
 const AddStudent = () => {
 	const [name, setName] = useState<string>("");
@@ -55,7 +56,8 @@ const AddStudent = () => {
 				address,
 			)
 				.then(() => {
-					showSnackBar(true, "Student Added");
+					// showSnackBar(true, "Student Added");
+					toast.success("Student Added Successfully");
 
 					setName("");
 					setEmail("");
@@ -65,10 +67,12 @@ const AddStudent = () => {
 					setNic("");
 				})
 				.catch((error) => {
-					showSnackBar(false, error);
+					// showSnackBar(false, error);
+					toast.error(`Failed to add student: ${error.message}`);
 				});
 		} else {
-			showSnackBar(false, "Fill all fields");
+			// showSnackBar(false, "Fill all fields");
+			toast.error("Please fill all required fields");
 		}
 	};
 
@@ -110,18 +114,18 @@ const AddStudent = () => {
 		setCenters();
 	}, [examDistrictId]);
 
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Student" />
@@ -332,7 +336,7 @@ const AddStudent = () => {
 				</div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</DefaultLayout>
 	);
 };

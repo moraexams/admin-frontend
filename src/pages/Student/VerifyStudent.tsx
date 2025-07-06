@@ -1,41 +1,47 @@
 import { useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import Snackbar from "../../components/Snackbar";
+// import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	getStudentbyIndex,
 	verifyStudent,
 } from "../../services/studentService";
-import type { SnackBarConfig } from "../../types/snackbar";
+// import type { SnackBarConfig } from "../../types/snackbar";
 import type { Student } from "../../types/types";
+import toast from "react-hot-toast";
 
 const VerifyStudent = () => {
 	const [indexNo, setIndexNo] = useState<number>(0);
 	const [student, setStudent] = useState<Student | null>(null);
 	const [showVerify, setShowVerify] = useState<boolean>(true);
 
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
 	const handleVerifyStudent = async () => {
 		if (student) {
 			verifyStudent(Number(student.index_no))
 				.then(() => {
-					showSnackBar(true, "Verified");
+					// showSnackBar(true, "Verified");
+					toast.success("Student Verified Successfully");
 					setShowVerify(false);
 				})
 				.catch((error) => {
-					showSnackBar(false, error);
+					// showSnackBar(false, error);
+					toast.error(`Failed to verify student: ${error.message}`);
 				});
 		}
 	};
 
 	const searchStudent = async () => {
-		if (indexNo === 0) {
-			showSnackBar(false, "Please enter a valid index number");
+		if (indexNo === 0 || isNaN(indexNo)) {
+			// showSnackBar(false, "Please enter a valid index number");
+			toast.error("Please enter a valid index number");
+			setIndexNo(0);
+		
 		} else {
 			const student = await getStudentbyIndex(indexNo);
 			if (student.error) {
@@ -47,12 +53,12 @@ const VerifyStudent = () => {
 		}
 	};
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Verify Student" />
@@ -162,7 +168,7 @@ const VerifyStudent = () => {
 				</div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</DefaultLayout>
 	);
 };
