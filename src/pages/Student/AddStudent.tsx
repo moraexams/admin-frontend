@@ -131,19 +131,7 @@ const AddStudent = () => {
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<div className="mb-4.5">
-							<label className="mb-2.5 block text-black dark:text-white">
-								Index No <span className="text-meta-1">*</span>
-							</label>
-							<input
-								type="text"
-								value={indexNo}
-								onChange={(e) => setIndexNo(Number(e.target.value))}
-								placeholder="Enter Index No"
-								inputMode="numeric"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							/>
-						</div>
+						
 						<div className="mb-4.5">
 							<label className="mb-2.5 block text-black dark:text-white">
 								Student Name <span className="text-meta-1">*</span>
