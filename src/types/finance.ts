@@ -51,7 +51,9 @@ export interface ChartData {
 
 export const financeSchema = z.object({
 	transactionType: z.enum(["income", "expense"]),
-	category: z.string().nonempty("Please select a type"),
+	category: z.coerce.number({
+		required_error: "Category is required",
+	}),
 	description: z.string().optional(),
 	amount: z
 		.number()
@@ -66,4 +68,20 @@ export type FinanceFormData = z.infer<typeof financeSchema>;
 export interface SelectedFile {
 	baseFile: FileWithPath;
 	description: string;
+}
+
+export interface FinanceStats {
+	stats: {
+		current_balance: {
+			cash: number;
+			bank: number;
+		};
+		total_income: number;
+		total_expenses: number;
+	};
+}
+
+export interface TransactionCategory {
+	id: string;
+	name: string;
 }
