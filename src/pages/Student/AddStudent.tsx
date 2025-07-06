@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
@@ -8,7 +9,6 @@ import { getStreams } from "../../services/streamServices";
 import { addStudent } from "../../services/studentService";
 // import type { SnackBarConfig } from "../../types/snackbar";
 import type { District, ExamCentre, Stream } from "../../types/types";
-import toast from 'react-hot-toast';
 
 const AddStudent = () => {
 	const [name, setName] = useState<string>("");

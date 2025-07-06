@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
@@ -8,7 +9,6 @@ import {
 } from "../../services/studentService";
 // import type { SnackBarConfig } from "../../types/snackbar";
 import type { Student } from "../../types/types";
-import toast from "react-hot-toast";
 
 const VerifyStudent = () => {
 	const [indexNo, setIndexNo] = useState<number>(0);
@@ -41,7 +41,6 @@ const VerifyStudent = () => {
 			// showSnackBar(false, "Please enter a valid index number");
 			toast.error("Please enter a valid index number");
 			setIndexNo(0);
-		
 		} else {
 			const student = await getStudentbyIndex(indexNo);
 			if (student.error) {

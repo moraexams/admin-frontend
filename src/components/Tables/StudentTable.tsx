@@ -178,7 +178,6 @@ const StudentTable = ({
 			gender !== ""
 		) {
 			addStudent(
-			
 				name,
 				streamId,
 				medium,
