@@ -2,7 +2,6 @@ import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
 export const addStudent = async (
-	index_no: number,
 	name: string,
 	stream_id: number,
 	medium: string,
@@ -29,7 +28,6 @@ export const addStudent = async (
 		const response = await axiosInstance.post(
 			"/student/add",
 			{
-				index_no,
 				name,
 				stream_id,
 				medium,
@@ -221,7 +219,9 @@ export const getStudentMarksByCentre = async (
 ) => {
 	try {
 		const response = await axiosInstance.get(
-			`/student/marks/filter?exam_centre_id=${centre_id}${stream_id !== -1 && `&stream_id=${stream_id}`}`,
+			`/student/marks/filter?exam_centre_id=${centre_id}${
+				stream_id !== -1 && `&stream_id=${stream_id}`
+			}`,
 		);
 		return response.data;
 	} catch (error) {

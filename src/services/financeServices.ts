@@ -2,8 +2,10 @@ import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 import type {
 	FinanceFormData,
+	FinanceStats,
 	SelectedFile,
 	Transaction,
+	TransactionCategory,
 } from "../types/finance";
 
 export const getFinanceStats = async () => {
@@ -70,3 +72,16 @@ export const addBillToTransaction = async (
 		},
 	});
 };
+<<<<<<< HEAD
+=======
+
+export const getAllBills = async (page?: number, pageSize?: number) => {
+	return axiosInstance.get("/bill/all");
+};
+
+export const getAllTransactionCategories = async () => {
+	return axiosInstance.get<Array<TransactionCategory>>(
+		"/transaction/categories",
+	);
+};
+>>>>>>> aa1c8055d6213b01ccd5c8f93f89260015cdb3f3

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import Snackbar from "../../components/Snackbar";
+// import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import { getCenters } from "../../services/examCentreService";
 import { getStreams } from "../../services/streamServices";
 import { addStudent } from "../../services/studentService";
-import type { SnackBarConfig } from "../../types/snackbar";
+// import type { SnackBarConfig } from "../../types/snackbar";
 import type { District, ExamCentre, Stream } from "../../types/types";
 
 const AddStudent = () => {
-	const [indexNo, setIndexNo] = useState<number>(0);
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [phone, setPhone] = useState<string>("");
@@ -32,7 +32,6 @@ const AddStudent = () => {
 
 	const handleSubmit = async () => {
 		if (
-			indexNo > 110000 &&
 			name !== "" &&
 			streamId &&
 			rankDistrictId &&
@@ -43,7 +42,6 @@ const AddStudent = () => {
 			gender !== ""
 		) {
 			addStudent(
-				indexNo,
 				name,
 				streamId,
 				medium,
@@ -58,8 +56,9 @@ const AddStudent = () => {
 				address,
 			)
 				.then(() => {
-					showSnackBar(true, "Student Added");
-					setIndexNo(0);
+					// showSnackBar(true, "Student Added");
+					toast.success("Student Added Successfully");
+
 					setName("");
 					setEmail("");
 					setPhone("");
@@ -68,10 +67,12 @@ const AddStudent = () => {
 					setNic("");
 				})
 				.catch((error) => {
-					showSnackBar(false, error);
+					// showSnackBar(false, error);
+					toast.error(`Failed to add student: ${error.message}`);
 				});
 		} else {
-			showSnackBar(false, "Fill all fields");
+			// showSnackBar(false, "Fill all fields");
+			toast.error("Please fill all required fields");
 		}
 	};
 
@@ -113,37 +114,24 @@ const AddStudent = () => {
 		setCenters();
 	}, [examDistrictId]);
 
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Student" />
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<div className="mb-4.5">
-							<label className="mb-2.5 block text-black dark:text-white">
-								Index No <span className="text-meta-1">*</span>
-							</label>
-							<input
-								type="text"
-								value={indexNo}
-								onChange={(e) => setIndexNo(Number(e.target.value))}
-								placeholder="Enter Index No"
-								inputMode="numeric"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							/>
-						</div>
 						<div className="mb-4.5">
 							<label className="mb-2.5 block text-black dark:text-white">
 								Student Name <span className="text-meta-1">*</span>
@@ -348,7 +336,7 @@ const AddStudent = () => {
 				</div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</DefaultLayout>
 	);
 };

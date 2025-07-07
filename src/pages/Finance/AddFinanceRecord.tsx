@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns-tz";
 import type React from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { capitalize } from "../../common/utils";
@@ -8,12 +9,20 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { addTransaction } from "../../services/financeServices";
-import { type FinanceFormData, financeSchema } from "../../types/finance";
+import {
+	addTransaction,
+	getAllTransactionCategories,
+} from "../../services/financeServices";
+import {
+	type FinanceFormData,
+	type TransactionCategory,
+	financeSchema,
+} from "../../types/finance";
 
 const SRI_LANKA_TIMEZONE = "Asia/Colombo";
 
 const AddFinanceRecord: React.FC = () => {
+	const [categories, setCategories] = useState<Array<TransactionCategory>>([]);
 	const getCurrentDateTime = () =>
 		format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: SRI_LANKA_TIMEZONE });
 
@@ -37,7 +46,6 @@ const AddFinanceRecord: React.FC = () => {
 	const resetForm = () => {
 		reset({
 			transactionType: watch("transactionType"),
-			category: "",
 			description: "",
 			amount: 0,
 			createdAt: getCurrentDateTime(),
@@ -65,7 +73,25 @@ const AddFinanceRecord: React.FC = () => {
 				toast.error(message);
 			});
 	};
+<<<<<<< HEAD
 	console.log(watch("amount"));
+=======
+
+	useEffect(() => {
+		getAllTransactionCategories()
+			.then((response) => {
+				setCategories(response.data);
+			})
+			.catch((error) => {
+				let message = "Failed to fetch categories. Please try again later.";
+				if (typeof error === "string") {
+					message = error;
+				}
+				toast.error(message);
+			});
+	}, []);
+
+>>>>>>> aa1c8055d6213b01ccd5c8f93f89260015cdb3f3
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Transaction" />
@@ -100,13 +126,11 @@ const AddFinanceRecord: React.FC = () => {
 							id="category"
 						>
 							<option value="">Select category</option>
-							{["salary", "rent", "utilities", "sales", "misc"].map(
-								(category) => (
-									<option key={category} value={category}>
-										{capitalize(category)}
-									</option>
-								),
-							)}
+							{categories.map((category) => (
+								<option key={category.id} value={category.id}>
+									{capitalize(category.name)}
+								</option>
+							))}
 						</select>
 						{errors.category && (
 							<span className="text-red-500 text-sm">

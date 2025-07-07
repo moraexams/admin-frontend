@@ -726,6 +726,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+<<<<<<< HEAD
 														<li>
 															<NavLink
 																to="/students/add"
@@ -776,6 +777,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 																All Students
 															</NavLink>
 														</li>
+=======
+														<SidebarSubLink to="/students/add">
+															Add Student
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/verify">
+															Verify Student
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/unverified">
+															Unverified Students
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/centre">
+															Centre Wise
+														</SidebarSubLink>
+														<SidebarSubLink to="/students/all">
+															All Students
+														</SidebarSubLink>
+>>>>>>> aa1c8055d6213b01ccd5c8f93f89260015cdb3f3
 													</ul>
 												</div>
 												{/* <!-- Dropdown Menu End --> */}
