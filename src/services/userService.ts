@@ -26,17 +26,6 @@ export const getUsers = async (
 		throw error;
 	}
 };
-
-export const approveUser = async (id: number) => {
-	try {
-		const response = await axiosInstance.put(`/user/approve/${id}`);
-		return response.data;
-	} catch (error) {
-		console.error("Error approving user:", error);
-		return error;
-	}
-};
-
 export const editUser = async (user: User) => {
 	try {
 		const response = await axiosInstance.put(`/user/${user.id}`, user);

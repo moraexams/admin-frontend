@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import axiosInstance from "../../axiosConfig";
 import { capitalize } from "../../common/utils";
-import { approveUser, editUser } from "../../services/userService";
+import { editUser } from "../../services/userService";
 import type { User } from "../../types/types";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -49,16 +48,7 @@ const UsersTable = ({
 			setIsLoading(false);
 		}
 	};
-	const callApproveUser = async (id: number) => {
-		try {
-			await approveUser(id);
-			alert("User approved successfully");
-			location.reload();
-		} catch (error) {
-			console.error("Error approving user:", error);
-			alert("Failed to approve user");
-		}
-	};
+
 	const start = itemsPerPage * (page - 1) + 1;
 	const end = start - 1 + userData.length;
 
