@@ -1,10 +1,9 @@
 import type {
 	Bill,
-	ChartData,
 	District,
 	Template,
 	Transaction,
-}  from "../../types/finance";
+} from "../../types/finance";
 
 // Mock Districts
 export const districts: District[] = [
@@ -142,46 +141,11 @@ export const templates: Template[] = [
 	},
 ];
 
-// Mock Chart Data
-export const monthlyFinanceData: ChartData[] = [
-	{ name: "Jan", income: 12000, expenses: 10000 },
-	{ name: "Feb", income: 15000, expenses: 12000 },
-	{ name: "Mar", income: 18000, expenses: 14000 },
-	{ name: "Apr", income: 22000, expenses: 16000 },
-	{ name: "May", income: 21000, expenses: 15000 },
-	{ name: "Jun", income: 25000, expenses: 18000 },
-];
-
-export const districtFinanceData: ChartData[] = [
-	{ name: "Colombo", income: 12000, expenses: 24500 },
-	{ name: "Jaffna", income: 15000, expenses: 32000 },
-	{ name: "Trincomalee", income: 9000, expenses: 18000 },
-	{ name: "Vavuniya", income: 11000, expenses: 21000 },
-];
-
-// Helper functions for data management
-export const getTransactionsByDistrict = (
-	districtId: string,
-): Transaction[] => {
-	return transactions.filter(
-		(transaction) => transaction.districtId === districtId,
-	);
-};
-
-export const getTotalIncome = (): number => {
-	return transactions
-		.filter((transaction) => transaction.type === "income")
-		.reduce((sum, transaction) => sum + transaction.amount, 0);
-};
 
 export const getTotalExpenses = (): number => {
 	return transactions
 		.filter((transaction) => transaction.type === "expense")
 		.reduce((sum, transaction) => sum + transaction.amount, 0);
-};
-
-export const getBalance = (): number => {
-	return getTotalIncome() - getTotalExpenses();
 };
 
 export const getRecentTransactions = (limit = 5): Transaction[] => {
