@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Loader from "./components/Loader";
 import PageTitle from "./components/PageTitle";
 
+import AuditLogs from "./pages/AuditLogs";
 import SignIn from "./pages/Authentication/SignIn";
 import SignUp from "./pages/Authentication/SignUp";
 import DangerZone from "./pages/DangerZone";
@@ -30,7 +31,6 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
-import AuditLogs from "./pages/AuditLogs";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
