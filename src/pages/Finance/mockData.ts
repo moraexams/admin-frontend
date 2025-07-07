@@ -141,7 +141,6 @@ export const templates: Template[] = [
 	},
 ];
 
-
 export const getTotalExpenses = (): number => {
 	return transactions
 		.filter((transaction) => transaction.type === "expense")
