@@ -72,8 +72,6 @@ export const addBillToTransaction = async (
 		},
 	});
 };
-<<<<<<< HEAD
-=======
 
 export const getAllBills = async (page?: number, pageSize?: number) => {
 	return axiosInstance.get("/bill/all");
@@ -84,4 +82,3 @@ export const getAllTransactionCategories = async () => {
 		"/transaction/categories",
 	);
 };
->>>>>>> aa1c8055d6213b01ccd5c8f93f89260015cdb3f3

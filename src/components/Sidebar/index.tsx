@@ -3,6 +3,7 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import DarkLogo from "../../images/logo/logo-dark.png";
 import SidebarLinkGroup from "./SidebarLinkGroup";
+import SidebarSubLink from "./SidebarSubLink";
 
 interface SidebarProps {
 	sidebarOpen: boolean;
@@ -726,58 +727,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 													className={`translate transform overflow-hidden ${!open && "hidden"}`}
 												>
 													<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-<<<<<<< HEAD
-														<li>
-															<NavLink
-																to="/students/add"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
-																}
-															>
-																Add Student
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/verify"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
-																}
-															>
-																Verify Student
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/unverified"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
-																}
-															>
-																Unverified Students
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/centre"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
-																}
-															>
-																Centre Wise
-															</NavLink>
-														</li>
-														<li>
-															<NavLink
-																to="/students/all"
-																className={({ isActive }) =>
-																	`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${isActive && "!text-white"}`
-																}
-															>
-																All Students
-															</NavLink>
-														</li>
-=======
 														<SidebarSubLink to="/students/add">
 															Add Student
 														</SidebarSubLink>
@@ -793,7 +742,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 														<SidebarSubLink to="/students/all">
 															All Students
 														</SidebarSubLink>
->>>>>>> aa1c8055d6213b01ccd5c8f93f89260015cdb3f3
 													</ul>
 												</div>
 												{/* <!-- Dropdown Menu End --> */}

@@ -73,9 +73,6 @@ const AddFinanceRecord: React.FC = () => {
 				toast.error(message);
 			});
 	};
-<<<<<<< HEAD
-	console.log(watch("amount"));
-=======
 
 	useEffect(() => {
 		getAllTransactionCategories()
@@ -91,7 +88,6 @@ const AddFinanceRecord: React.FC = () => {
 			});
 	}, []);
 
->>>>>>> aa1c8055d6213b01ccd5c8f93f89260015cdb3f3
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Add Transaction" />
