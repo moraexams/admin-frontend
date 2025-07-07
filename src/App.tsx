@@ -30,6 +30,7 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
+import AuditLogs from "./pages/AuditLogs";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -280,6 +281,15 @@ function App() {
 						<>
 							<PageTitle title="Add Bill | Mora Exams" />
 							<AddBill />
+						</>
+					}
+				/>
+				<Route
+					path="/audit-logs"
+					element={
+						<>
+							<PageTitle title="Audit Logs | Mora Exams" />
+							<AuditLogs />
 						</>
 					}
 				/>

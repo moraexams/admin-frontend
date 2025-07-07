@@ -801,6 +801,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 								</NavLink>
 							</li>
 							{role === "super_admin" ? (
+								<>
+								<li>
+<NavLink
+										to="/audit-logs"
+										className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+											pathname === "/audit-logs" &&
+											"bg-graydark dark:bg-meta-4"
+										}`}
+									>
+										<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-logs"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 12h.01" /><path d="M4 6h.01" /><path d="M4 18h.01" /><path d="M8 18h2" /><path d="M8 12h2" /><path d="M8 6h2" /><path d="M14 6h6" /><path d="M14 12h6" /><path d="M14 18h6" /></svg>
+										Audit Logs
+										
+									</NavLink>
+
+								</li>
 								<li>
 									<NavLink
 										to="/danger-zone"
@@ -823,6 +838,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 										Danger Zone
 									</NavLink>
 								</li>
+								</>
 							) : null}
 						</ul>
 					</div>
