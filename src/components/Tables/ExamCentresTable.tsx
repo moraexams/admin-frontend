@@ -7,6 +7,8 @@ import {
 } from "../../services/examCentreService";
 import { filterIt } from "../../services/utils";
 import type { District } from "../../types/types";
+import toast from "react-hot-toast";
+
 
 const DistrictsTable = ({
 	districtData,
@@ -60,8 +62,9 @@ const DistrictsTable = ({
 		if (centreName !== "" && location !== "" && districtID) {
 			addExamCentre(centreName, location, gender, districtID)
 				.then(() => {
-					window.location.reload();
-				})
+					setModalOpen(false)
+					toast.success("Successfully Added")
+					setTimeout(() => window.location.reload(), 400);				})
 				.catch((error) => {
 					alert(error);
 				});
@@ -74,13 +77,17 @@ const DistrictsTable = ({
 		if (centreName !== "" && location !== "" && centreID) {
 			updateExamCentre(centreID, centreName, location, gender)
 				.then(() => {
-					window.location.reload();
+					setModalOpen(false)
+					toast.success("Successfully Updated")
+					setTimeout(()=>window.location.reload(),400);
 				})
 				.catch((error) => {
 					alert(error);
 				});
 		} else {
-			alert("fill all fields");
+			// alert("fill all fields");
+			setModalOpen(false)
+			toast.error("Fill all fields")
 		}
 	};
 
@@ -88,8 +95,9 @@ const DistrictsTable = ({
 		if (centreID) {
 			deleteExamCentre(centreID)
 				.then(() => {
-					window.location.reload();
-				})
+					setModalOpen(false);
+					toast.success("Successfully deleted")
+					setTimeout(() => window.location.reload(), 400);				})
 				.catch((error) => {
 					alert(error);
 				});
