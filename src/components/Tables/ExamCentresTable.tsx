@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
 import {
 	addExamCentre,
@@ -7,8 +8,6 @@ import {
 } from "../../services/examCentreService";
 import { filterIt } from "../../services/utils";
 import type { District } from "../../types/types";
-import toast from "react-hot-toast";
-
 
 const DistrictsTable = ({
 	districtData,
@@ -62,9 +61,10 @@ const DistrictsTable = ({
 		if (centreName !== "" && location !== "" && districtID) {
 			addExamCentre(centreName, location, gender, districtID)
 				.then(() => {
-					setModalOpen(false)
-					toast.success("Successfully Added")
-					setTimeout(() => window.location.reload(), 400);				})
+					setModalOpen(false);
+					toast.success("Successfully Added");
+					setTimeout(() => window.location.reload(), 400);
+				})
 				.catch((error) => {
 					alert(error);
 				});
@@ -77,17 +77,17 @@ const DistrictsTable = ({
 		if (centreName !== "" && location !== "" && centreID) {
 			updateExamCentre(centreID, centreName, location, gender)
 				.then(() => {
-					setModalOpen(false)
-					toast.success("Successfully Updated")
-					setTimeout(()=>window.location.reload(),400);
+					setModalOpen(false);
+					toast.success("Successfully Updated");
+					setTimeout(() => window.location.reload(), 400);
 				})
 				.catch((error) => {
 					alert(error);
 				});
 		} else {
 			// alert("fill all fields");
-			setModalOpen(false)
-			toast.error("Fill all fields")
+			setModalOpen(false);
+			toast.error("Fill all fields");
 		}
 	};
 
@@ -96,8 +96,9 @@ const DistrictsTable = ({
 			deleteExamCentre(centreID)
 				.then(() => {
 					setModalOpen(false);
-					toast.success("Successfully deleted")
-					setTimeout(() => window.location.reload(), 400);				})
+					toast.success("Successfully deleted");
+					setTimeout(() => window.location.reload(), 400);
+				})
 				.catch((error) => {
 					alert(error);
 				});
