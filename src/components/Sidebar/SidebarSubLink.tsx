@@ -10,7 +10,7 @@ export default function SidebarSubLink(props: PropsWithChildren<Props>) {
 			<NavLink
 				to={props.to}
 				className={({ isActive }) =>
-					`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline ${isActive ? "underline" : ""}`
+					`group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out hover:underline text-white ${isActive ? "underline" : ""}`
 				}
 			>
 				{props.children}
