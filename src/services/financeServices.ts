@@ -82,3 +82,7 @@ export const getAllTransactionCategories = async () => {
 		"/transaction/categories",
 	);
 };
+
+export const deleteTransaction = async (id: string) => {
+	return axiosInstance.delete(`/transaction/${id}`);
+}
