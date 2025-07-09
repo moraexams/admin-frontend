@@ -1,6 +1,8 @@
 import { ReceiptText } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Transaction } from "../../types/finance";
+import { deleteTransaction } from "../../services/financeServices";
+import toast from "react-hot-toast";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -23,9 +25,22 @@ export default function TransactionsTable({
 	data,
 	page,
 	itemsPerPage,
+	refetch,
 }: TransactionsTableProps) {
 	const start = itemsPerPage * (page - 1) + 1;
 	const end = start - 1 + data.length;
+	
+	function deleteTransactionAfterConfirmation(transactionId: string) {
+	const confirmed  = window.confirm(`Are you sure you want to delete transaction #${transactionId}?
+	This action cannot be undone.`)	
+
+		if (confirmed) {
+			deleteTransaction(transactionId).catch(error => {
+				toast.error(`Failed to delete transaction #${transactionId}: ${error instanceof Error ? error.message : "Unknown error"}`);
+			});
+			refetch();
+		}
+	}
 
 	return (
 		<>
@@ -105,7 +120,7 @@ export default function TransactionsTable({
 												<ReceiptText size="17" className="inline-block mr-1" />
 												Add bill
 											</Link>
-											<button type="button" className="hover:text-primary">
+											<button type="button" className="hover:text-primary" onClick={deleteTransactionAfterConfirmation.bind(null, transaction.id)} title={`Delete Transaction #${transaction.id}`}>
 												<svg
 													className="fill-current"
 													width="18"
