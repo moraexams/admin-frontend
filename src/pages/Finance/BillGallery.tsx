@@ -48,7 +48,7 @@ const Gallery: React.FC = () => {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Bill Gallery" />
+			<Breadcrumb pageName="Bill Gallery" dashboardPath="/finance/dashboardfinance"/>
 			<div className="min-h-screen bg-gray-50 dark:bg-boxdark p-6">
 				<div className="max-w-5xl mx-auto">
 					<div className="flex flex-col md:flex-row gap-4 mb-6">
