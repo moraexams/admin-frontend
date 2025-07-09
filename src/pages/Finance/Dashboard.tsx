@@ -23,7 +23,10 @@ import {
 
 interface FinanceStats {
 	stats: {
-		current_balance: number;
+		current_balance: {
+			bank: number;
+			cash: number;
+		};
 		total_income: number;
 		total_expenses: number;
 	};
@@ -82,9 +85,19 @@ const FinanceDashboard: React.FC = () => {
 					<div className="col-span-1 lg:col-span-2 flex flex-col gap-6">
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 							<SummaryCard
-								title="Total Balance"
+								title="Bank Balance"
 								value={
-									financeStats == null ? 0 : financeStats.stats.current_balance
+									financeStats == null
+										? 0
+										: financeStats.stats.current_balance.bank
+								}
+							/>
+							<SummaryCard
+								title="Cash Balance"
+								value={
+									financeStats == null
+										? 0
+										: financeStats.stats.current_balance.cash
 								}
 							/>
 							<SummaryCard
@@ -93,8 +106,6 @@ const FinanceDashboard: React.FC = () => {
 									financeStats == null ? 0 : financeStats.stats.total_income
 								}
 							/>
-						</div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
 							<SummaryCard
 								title="Total Expenses"
 								value={
