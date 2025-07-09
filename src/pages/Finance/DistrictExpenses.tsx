@@ -23,7 +23,10 @@ const DistrictExpenses = () => {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="District Expenses" dashboardPath="/finance/dashboardfinance"/>
+			<Breadcrumb
+				pageName="District Expenses"
+				dashboardPath="/finance/dashboard"
+			/>
 			<DistrictExpensesTable
 				data={districts.map((district, index) => ({
 					id: index + 1,

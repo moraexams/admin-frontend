@@ -106,7 +106,7 @@ export default function AddBill() {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Add Bill" />
+			<Breadcrumb pageName="Add Bill" dashboardPath="/finance/dashboard" />
 			<Toaster position="top-right" />
 			<p>You are adding a bill relating to the below transaction.</p>
 

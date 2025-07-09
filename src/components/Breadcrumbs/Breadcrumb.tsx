@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 interface BreadcrumbProps {
 	pageName: string;
-	dashboardPath?: string; 
+	dashboardPath?: string;
 }
 
 const Breadcrumb = ({ pageName, dashboardPath = "/" }: BreadcrumbProps) => {

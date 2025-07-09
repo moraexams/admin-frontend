@@ -90,7 +90,10 @@ const AddFinanceRecord: React.FC = () => {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Add Transaction" dashboardPath="/finance/dashboardfinance"/>
+			<Breadcrumb
+				pageName="Add Transaction"
+				dashboardPath="/finance/dashboard"
+			/>
 			<div className="bg-white text-black p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
 				<form
 					onSubmit={handleSubmit(onSubmit)}

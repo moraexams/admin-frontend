@@ -18,7 +18,7 @@ import AddBill from "./pages/Finance/AddBill";
 import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
 import AllTransactions from "./pages/Finance/AllTransactions";
 import BillGallery from "./pages/Finance/BillGallery";
-import DashboardFinance from "./pages/Finance/DashboardFinance";
+import FinanceDashboard from "./pages/Finance/Dashboard";
 import DistrictExpenses from "./pages/Finance/DistrictExpenses";
 import TransactionCategories from "./pages/Finance/TransactionCategories";
 import EnterMarks from "./pages/Marks/EnterMarks";
@@ -232,11 +232,11 @@ function App() {
 					}
 				/>
 				<Route
-					path="/finance/dashboardfinance"
+					path="/finance/dashboard"
 					element={
 						<>
 							<PageTitle title="Finance Dashboard | MoraExams" />
-							<DashboardFinance />
+							<FinanceDashboard />
 						</>
 					}
 				/>

@@ -48,7 +48,7 @@ const Users = () => {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Transactions" />
+			<Breadcrumb pageName="Transactions" dashboardPath="/finance/dashboard" />
 
 			<div className="mb-5.5 flex justify-between">
 				<select

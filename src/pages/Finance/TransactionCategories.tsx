@@ -22,7 +22,10 @@ export default function TransactionCategories() {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Transaction Categories" />
+			<Breadcrumb
+				pageName="Transaction Categories"
+				dashboardPath="/finance/dashboard"
+			/>
 
 			<Table
 				headers={["Id", "Name"]}

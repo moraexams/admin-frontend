@@ -29,7 +29,7 @@ interface FinanceStats {
 	};
 }
 
-const DashboardFinance: React.FC = () => {
+const FinanceDashboard: React.FC = () => {
 	const lastTransactions = getRecentTransactions();
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
 
@@ -247,4 +247,4 @@ const DashboardFinance: React.FC = () => {
 	);
 };
 
-export default DashboardFinance;
+export default FinanceDashboard;
