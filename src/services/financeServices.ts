@@ -85,4 +85,4 @@ export const getAllTransactionCategories = async () => {
 
 export const deleteTransaction = async (id: string) => {
 	return axiosInstance.delete(`/transaction/${id}`);
-}
+};

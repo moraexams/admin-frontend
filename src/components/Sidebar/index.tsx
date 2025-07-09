@@ -179,6 +179,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 															<SidebarSubLink to="/finance/dashboardfinance">
 																Dashboard
 															</SidebarSubLink>
+															<SidebarSubLink to="/finance/transaction-categories">
+																Transaction Categories
+															</SidebarSubLink>
 															<SidebarSubLink to="/finance/add-transaction">
 																Add Transaction
 															</SidebarSubLink>

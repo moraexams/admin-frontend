@@ -20,6 +20,7 @@ import AllTransactions from "./pages/Finance/AllTransactions";
 import BillGallery from "./pages/Finance/BillGallery";
 import DashboardFinance from "./pages/Finance/DashboardFinance";
 import DistrictExpenses from "./pages/Finance/DistrictExpenses";
+import TransactionCategories from "./pages/Finance/TransactionCategories";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
@@ -281,6 +282,15 @@ function App() {
 						<>
 							<PageTitle title="Add Bill | Mora Exams" />
 							<AddBill />
+						</>
+					}
+				/>
+				<Route
+					path="/finance/transaction-categories"
+					element={
+						<>
+							<PageTitle title="Transaction Categories | Mora Exams" />
+							<TransactionCategories />
 						</>
 					}
 				/>
