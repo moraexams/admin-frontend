@@ -54,6 +54,9 @@ export const financeSchema = z.object({
 	category: z.coerce.number({
 		required_error: "Category is required",
 	}),
+	district: z.coerce.string({
+		required_error:"District is required"
+	}),
 	description: z.string().optional(),
 	amount: z.coerce.number().min(1, "Amount must be greater than 0"),
 	createdAt: z.string().nonempty("Date & Time is required"),
@@ -79,6 +82,10 @@ export interface FinanceStats {
 }
 
 export interface TransactionCategory {
+	id: string;
+	name: string;
+}
+export interface TransactionDistrict{
 	id: string;
 	name: string;
 }
