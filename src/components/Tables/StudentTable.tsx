@@ -12,7 +12,7 @@ import {
 } from "../../services/studentService";
 import { getUsers } from "../../services/userService";
 import { filterIt } from "../../services/utils";
-import type { SnackBarConfig } from "../../types/snackbar";
+// import type { SnackBarConfig } from "../../types/snackbar";
 import type {
 	District,
 	ExamCentre,
@@ -20,7 +20,7 @@ import type {
 	Student,
 	User,
 } from "../../types/types";
-import Snackbar from "../Snackbar";
+// import Snackbar from "../Snackbar";
 
 const StudentTable = ({
 	studentData,
@@ -85,18 +85,18 @@ const StudentTable = ({
 		setItemOffset(newOffset);
 	};
 
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const [viewSection, setViewSection] = useState<string>("personal");
@@ -199,10 +199,12 @@ const StudentTable = ({
 					window.location.reload();
 				})
 				.catch((error) => {
-					showSnackBar(false, error);
+					// showSnackBar(false, error);
+					toast.error(error);
 				});
 		} else {
-			showSnackBar(false, "fill all fields");
+			// showSnackBar(false, "fill all fields");
+			toast.error("fill all fields");
 		}
 	};
 
@@ -234,7 +236,8 @@ const StudentTable = ({
 				checkedBy,
 			)
 				.then(() => {
-					showSnackBar(true, "Student Updated");
+					// showSnackBar(true, "Student Updated");
+					toast.success("Student Updated");
 					// update in the students variable
 					const studentIndex = studentData.findIndex(
 						(x) => x.index_no === indexNo,
@@ -256,10 +259,12 @@ const StudentTable = ({
 					setModalOpen(false);
 				})
 				.catch((error) => {
-					showSnackBar(false, error);
+					// showSnackBar(false, error);
+					toast.error(error);
 				});
 		} else {
-			showSnackBar(false, "fill all fields");
+			// showSnackBar(false, "fill all fields");
+			toast.error("fill all fields");
 		}
 	};
 	const handleDeleteStudent = () => {
@@ -267,23 +272,29 @@ const StudentTable = ({
 			console.log(indexNo);
 			deleteStudent(indexNo)
 				.then(() => {
-					showSnackBar(true, "Student Deleted");
+					// showSnackBar(true, "Student Deleted");
 					setModalOpen(false);
+					toast.success("Student Deleted");
+					setTimeout(() => window.location.reload(), 300);
 				})
 				.catch((error) => {
-					showSnackBar(false, error);
+					// showSnackBar(false, error);
+					toast.success(error);
 				});
 		} else {
-			showSnackBar(false, "No student selected");
+			// showSnackBar(false, "No student selected");
+			toast.error("No student selected");
 		}
 	};
 	const handleVerifyStudent = () => {
 		verifyStudent(indexNo)
 			.then(() => {
-				showSnackBar(true, "Verified");
+				// showSnackBar(true, "Verified");
+				toast.success("Verified");
 			})
 			.catch((error) => {
-				showSnackBar(false, error);
+				// showSnackBar(false, error);
+				toast.error(error);
 			});
 	};
 
@@ -326,7 +337,8 @@ const StudentTable = ({
 			setCheckedBy(student.checked_by_id);
 			setModalOpen(true);
 		} else {
-			showSnackBar(false, "Student not found");
+			// showSnackBar(false, "Student not found");
+			toast.error("Student not found");
 		}
 	};
 
@@ -340,7 +352,8 @@ const StudentTable = ({
 			setName(name);
 			setModalOpen(true);
 		} else {
-			showSnackBar(false, "No student Selected");
+			// showSnackBar(false, "No student Selected");
+			toast.error("No student selected");
 		}
 	};
 
@@ -366,7 +379,8 @@ const StudentTable = ({
 			setAddedBy(student.registered_by_id);
 			setModalOpen(true);
 		} else {
-			showSnackBar(false, "Student not found");
+			// showSnackBar(false, "Student not found");
+			toast.error("Student not found");
 		}
 	};
 
@@ -1146,7 +1160,7 @@ const StudentTable = ({
 				</div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</div>
 	);
 };
