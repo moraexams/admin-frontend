@@ -42,10 +42,9 @@ const Students = () => {
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Students" />
-			<div className="flex gap-4">
-				<div className="mb-5.5">
+			<div className="flex gap-4 mb-3 items-center">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke h-full bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectItemsPerPage"
 						id="selectItemsPerPage"
 						value={itemsPerPage}
@@ -56,6 +55,13 @@ const Students = () => {
 						<option value="100">100</option>
 						<option value="500">500</option>
 					</select>
+					<input
+						type="text"
+						value={searchKey}
+						onChange={(e) => setSearchKey(e.target.value)}
+						placeholder="Search..."
+						className="mr-auto w-full max-w-96 rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+					/>
 					<ReactPaginate
 						breakLabel="..."
 						nextLabel=">"
@@ -87,16 +93,6 @@ const Students = () => {
 						}
 						disabledLinkClassName={"text-black-100"}
 					/>
-				</div>
-				<div className="mb-4.5">
-					<input
-						type="text"
-						value={searchKey}
-						onChange={(e) => setSearchKey(e.target.value)}
-						placeholder="Search..."
-						className="w-full rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-					/>
-				</div>
 			</div>
 			<div className="flex flex-col gap-10">
 				{loading ? (
