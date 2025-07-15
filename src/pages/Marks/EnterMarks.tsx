@@ -222,21 +222,21 @@ const EnterMarks = () => {
 							type="text"
 							value={name}
 							placeholder="Student Name"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:disabled:bg-slate-400 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						<input
 							disabled
 							type="text"
 							value={stream}
 							placeholder="Student Stream"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:disabled:bg-slate-400 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						<input
 							disabled
 							type="text"
 							value={centre}
 							placeholder="Student Centre"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:disabled:bg-slate-400 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 					</div>
 					<div className="mb-4.5">
