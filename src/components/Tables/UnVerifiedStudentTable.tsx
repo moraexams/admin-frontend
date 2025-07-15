@@ -173,7 +173,6 @@ const UnVerifiedStudentTable = ({
 			gender !== ""
 		) {
 			addStudent(
-				indexNo,
 				name,
 				streamId,
 				medium,
@@ -284,24 +283,7 @@ const UnVerifiedStudentTable = ({
 			});
 	};
 
-	const handleAddModalOpen = () => {
-		setAction("Add");
-		setIndexNo(0);
-		setName("");
-		setStreamId(1);
-		setMedium("");
-		setRankDistrictId(1);
-		setExamDistrictId(1);
-		setCentreId(1); //should add a easy way instead of asking centre id as input
-		setNic("");
-		setGender("");
-		setEmail("");
-		setPhone("");
-		setAddress("");
-		setSchool("");
-		setModalOpen(true);
-	};
-
+	
 	const handleEditModalOpen = (index_no: number | undefined) => {
 		setAction("Update");
 		const student = studentData.find((x) => x.index_no === index_no);
@@ -370,29 +352,7 @@ const UnVerifiedStudentTable = ({
 
 	return (
 		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-			<div className="flex items-center justify-center space-x-3.5">
-				<button
-					type="button"
-					onClick={() => handleAddModalOpen()}
-					className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white px-4 py-2 rounded-md mb-5 transition-colors duration-200 ease-in-out"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						strokeWidth={1.5}
-						stroke="currentColor"
-						className="inline size-6 pr-[2px]"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
-						/>
-					</svg>
-					&nbsp; Add Student
-				</button>
-			</div>
+			
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
 					<thead>
