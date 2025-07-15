@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import Snackbar from "../../components/Snackbar";
+// import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { enterMark, getStudentMarksData } from "../../services/markservices";
-import type { SnackBarConfig } from "../../types/snackbar";
+// import type { SnackBarConfig } from "../../types/snackbar";
+import toast from "react-hot-toast"
 
 const EnterMarks = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -62,18 +63,22 @@ const EnterMarks = () => {
 	};
 
 	const handleSubmit = async () => {
-		if (indexNo < 110000 || indexNo > 360000) {
-			showSnackBar(false, "Invalid Index No");
-			return;
-		}
+		// if (indexNo > 200000000000) {
+		// 	toast.error("Invalid Index No");
+		// 	// showSnackBar(false, "Invalid Index No");
+		// 	return;
+		// }
 		if (mark) {
 			if (mark < 0 || mark > 100) {
-				showSnackBar(false, "Invalid Mark");
+				toast.error("Invalid Mark");
+				// showSnackBar(false, "Invalid Mark");
 				return;
 			}
 		} else {
 			if (mark !== 0) {
-				showSnackBar(false, "Invalid Mark");
+				toast.error("Invalid Mark");
+
+				// showSnackBar(false, "Invalid Mark");
 				return;
 			}
 		}
@@ -81,10 +86,12 @@ const EnterMarks = () => {
 		// Call the API to add the mark
 		await enterMark(indexNo, subject, part, mark)
 			.then(() => {
-				showSnackBar(true, "Mark Added Successfully");
+				toast.success("Mark Added Successfully");
+				// showSnackBar(true, "Mark Added Successfully");
 			})
 			.catch((error) => {
-				showSnackBar(false, error);
+				toast.error(error)
+				// showSnackBar(false, error);
 			});
 	};
 
@@ -100,10 +107,10 @@ const EnterMarks = () => {
 		setContent("Loading...");
 		setSearchParams({ subject, part, index_no: String(indexNo) });
 		const fetchData = async () => {
-			if (indexNo < 110000 || indexNo > 360000) {
-				setContent("Invalid Index No");
-				return;
-			}
+			// if (indexNo < 110000 || indexNo > 360000) {
+			// 	setContent("Invalid Index No");
+			// 	return;
+			// }
 			const studentMarks = await getStudentMarksData(indexNo);
 			if (studentMarks) {
 				setName(studentMarks.name);
@@ -125,18 +132,18 @@ const EnterMarks = () => {
 		fetchData();
 	}, [indexNo, subject, part]);
 
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 
 	return (
 		<DefaultLayout>
@@ -221,14 +228,14 @@ const EnterMarks = () => {
 							disabled
 							type="text"
 							value={stream}
-							placeholder="Student Name"
+							placeholder="Student Stream"
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						<input
 							disabled
 							type="text"
 							value={centre}
-							placeholder="Student Name"
+							placeholder="Student Centre"
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 					</div>
@@ -311,7 +318,7 @@ const EnterMarks = () => {
 					</div>
 					<div className="w-full px-3 2xsm:w-1/2">
 						<button
-							disabled={submitDisabled}
+							// disabled={submitDisabled}
 							onClick={handleSubmit}
 							className={
 								"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition " +
@@ -327,7 +334,7 @@ const EnterMarks = () => {
 				<div className="w-full px-3 pt-4"></div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</DefaultLayout>
 	);
 };

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import Snackbar from "../../components/Snackbar";
+// import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	getStudentVerificationMarksData,
 	verifyMark,
 } from "../../services/markservices";
 import { convertUTCToIST } from "../../services/utils";
-import type { SnackBarConfig } from "../../types/snackbar";
+import toast from "react-hot-toast"
+// import type { SnackBarConfig } from "../../types/snackbar";
 
 const VerifyMarks = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -65,19 +66,22 @@ const VerifyMarks = () => {
 	};
 
 	const handleSubmit = async () => {
-		if (indexNo < 110000 || indexNo > 360000) {
-			showSnackBar(false, "Invalid Index No");
-			return;
-		}
+		// if (indexNo < 110000 || indexNo > 360000) {
+		// 	toast.error("Invalid Index No");
+		// 	// showSnackBar(false, "Invalid Index No");
+		// 	return;
+		// }
 
 		// Call the API to add the mark
 		await verifyMark(indexNo, subject, part)
 			.then(() => {
-				showSnackBar(true, "Mark Added Successfully");
+				toast.error("Mark Added Successfully");
+				// showSnackBar(true, "Mark Added Successfully");
 				setRefresh(!refresh);
 			})
 			.catch((error) => {
-				showSnackBar(false, error);
+				toast.error(error)
+				// showSnackBar(false, error);
 			});
 	};
 
@@ -86,11 +90,11 @@ const VerifyMarks = () => {
 		setSubmitDisabled(true);
 		setSearchParams({ subject, part, index_no: String(indexNo) });
 		const fetchData = async () => {
-			if (indexNo < 110000 || indexNo > 360000) {
-				setLoading(false);
-				setStudentMarks({});
-				return;
-			}
+			// if (indexNo < 110000 || indexNo > 360000) {
+			// 	setLoading(false);
+			// 	setStudentMarks({});
+			// 	return;
+			// }
 			const studentMarks = await getStudentVerificationMarksData(
 				indexNo,
 				subject,
@@ -110,22 +114,23 @@ const VerifyMarks = () => {
 		fetchData();
 	}, [indexNo, subject, part, refresh]);
 
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 
 	const editMarks = () => {
 		if (studentMarks.verified_by) {
-			showSnackBar(false, "Marks already verified");
+			toast.error("Marks already verified");
+			// showSnackBar(false, "Marks already verified");
 			return;
 		}
 		navigate(
@@ -375,7 +380,7 @@ const VerifyMarks = () => {
 				<div className="w-full px-3 pt-4"></div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</DefaultLayout>
 	);
 };

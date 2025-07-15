@@ -3,9 +3,10 @@ import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import { getMarkbyIndexNo } from "../../services/markservices";
 import { convertUTCToIST, filterIt } from "../../services/utils";
-import type { SnackBarConfig } from "../../types/snackbar";
+// import type { SnackBarConfig } from "../../types/snackbar";
 import type { Mark, StudentMark } from "../../types/types";
-import Snackbar from "../Snackbar";
+import toast from "react-hot-toast"
+// import Snackbar from "../Snackbar";
 
 const StudentMarksTable = ({
 	studentData,
@@ -41,18 +42,18 @@ const StudentMarksTable = ({
 
 	const [viewSection, setViewSection] = useState(1);
 	const [modalOpen, setModalOpen] = useState(false);
-	const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-		message: "",
-		type: false,
-		show: false,
-	});
+	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
+	// 	message: "",
+	// 	type: false,
+	// 	show: false,
+	// });
 
-	const showSnackBar = (type: boolean, message: string) => {
-		setSnackBarConfig({ message: message, type: type, show: true });
-		setTimeout(() => {
-			setSnackBarConfig((prev) => ({ ...prev, show: false }));
-		}, 1000);
-	};
+	// const showSnackBar = (type: boolean, message: string) => {
+	// 	setSnackBarConfig({ message: message, type: type, show: true });
+	// 	setTimeout(() => {
+	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
+	// 	}, 1000);
+	// };
 
 	const [studentMark, setStudentMark] = useState<Mark | null>(null);
 	const handleViewModalOpen = async (index_no: number) => {
@@ -62,7 +63,8 @@ const StudentMarksTable = ({
 			setStudentMark(student);
 			setModalOpen(true);
 		} else {
-			showSnackBar(false, "Student Marks not entered yet");
+			toast.error("Student Marks not entered yet");
+			// showSnackBar(false, "Student Marks not entered yet");
 		}
 	};
 
@@ -659,7 +661,7 @@ const StudentMarksTable = ({
 				</div>
 			</div>
 
-			<Snackbar config={snackBarConfig} />
+			{/* <Snackbar config={snackBarConfig} /> */}
 		</div>
 	);
 };
