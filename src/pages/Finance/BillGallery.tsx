@@ -137,39 +137,39 @@ const Gallery: React.FC = () => {
 										disabledLinkClassName={"text-black-100"}
 									/>
 								</div>
-								<div className="flex flex-col gap-10">
-									{loading ? (
-							<div>Loading...</div>
-						) : images.length > 0 ? (
-							images
-								.filter(
-									(img) =>
-										(category === "All" || img.category === category) &&
-										img.description.toLowerCase().includes(query.toLowerCase())
-								)
-								.map((img) => (
-									<div
-										key={img.id}
-										className="bg-white dark:bg-boxdark rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-									>
-										<img
-											src={img.image_url}
-											alt={img.description}
-											className="w-full h-48 object-cover"
-										/>
-										<div className="p-4">
-											<p className="text-sm text-gray-700 dark:text-white">
-												{img.description}
-											</p>
-										</div>
-									</div>
-								))
-						) : (
-							<p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
-								No images match your search.
-							</p>
-						)}
-								</div>
+								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    {loading ? (
+        <div>Loading...</div>
+    ) : images.length > 0 ? (
+        images
+            .filter(
+                (img) =>
+                    (category === "All" || img.category === category) &&
+                    img.description.toLowerCase().includes(query.toLowerCase())
+            )
+            .map((img) => (
+                <div
+                    key={img.id}
+                    className="bg-white dark:bg-boxdark rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+                >
+                    <img
+                        src={img.image_url}
+                        alt={img.description}
+                        className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                        <p className="text-sm text-gray-700 dark:text-white">
+                            {img.description}
+                        </p>
+                    </div>
+                </div>
+            ))
+    ) : (
+        <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
+            No images match your search.
+        </p>
+    )}
+</div>
 				</div>
 			</div>
 		</DefaultLayout>
