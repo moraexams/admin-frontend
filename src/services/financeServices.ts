@@ -87,6 +87,9 @@ export const addTransactionCategory = async (name: string) => {
 	return axiosInstance.post("/transaction/categories", { name });
 };
 
+export const deleteTransactionCategory = async (id: string) => {
+	return axiosInstance.delete(`/transaction/categories/${id}`);
+};
 
 
 export const getAllTransactionDistricts = async () => {

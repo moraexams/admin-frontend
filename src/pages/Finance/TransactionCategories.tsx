@@ -73,7 +73,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         </button>
       </form>
       <Table
-        headers={["Id", "Name"]}
+        headers={["Id", "Name", "Actions"]}
         data={categories
           .filter(
             (log) => log && log.id !== undefined && log.name !== undefined
