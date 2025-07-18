@@ -24,8 +24,9 @@ import {
 const SRI_LANKA_TIMEZONE = "Asia/Colombo";
 
 const AddFinanceRecord: React.FC = () => {
-	const [categories, setCategories] = useState<Array<TransactionCategory>>([]);
-	const [districts, setDistricts] = useState<Array<TransactionDistrict>>([]);
+	const [categories, setCategories] = useState<TransactionCategory[]>([]);
+	const [districts, setDistricts] = useState<TransactionDistrict[]>([]);
+
 	const getCurrentDateTime = () =>
 		format(new Date(), "yyyy-MM-dd'T'HH:mm", { timeZone: SRI_LANKA_TIMEZONE });
 
@@ -42,9 +43,18 @@ const AddFinanceRecord: React.FC = () => {
 			transactionType: "expense",
 			createdAt: getCurrentDateTime(),
 			paymentAccount: "cash",
-			amount: 0, // Initialize amount with a default value of 0
+			amount: 0,
+			
+			
 		},
 	});
+
+	const [amountInput, setAmountInput] = useState("0");
+
+	useEffect(() => {
+		const parsed = parseFloat(amountInput);
+		setValue("amount", isNaN(parsed) ? 0 : parsed, { shouldValidate: true });
+	}, [amountInput, setValue]);
 
 	const resetForm = () => {
 		reset({
@@ -53,28 +63,30 @@ const AddFinanceRecord: React.FC = () => {
 			amount: 0,
 			createdAt: getCurrentDateTime(),
 			paymentAccount: watch("paymentAccount"),
+			
+		
 		});
+		setAmountInput("0");
 	};
 
 	const onSubmit = async (data: FinanceFormData) => {
-		const formattedCreatedAt = format(
-			data.createdAt,
-			"yyyy-MM-dd'T'HH:mm:ssXXX",
-			{ timeZone: SRI_LANKA_TIMEZONE },
-		);
-		await addTransaction({ ...data, createdAt: formattedCreatedAt })
-			.then(() => {
-				toast.success("Transaction added successfully!");
-				resetForm();
-			})
-			.catch((error) => {
-				console.error(error);
-				let message = "Failed to submit record. Please try again later.";
-				if (typeof error === "string") {
-					message = error;
-				}
-				toast.error(message);
-			});
+		try {
+			const formattedCreatedAt = format(
+				data.createdAt,
+				"yyyy-MM-dd'T'HH:mm:ssXXX",
+				{ timeZone: SRI_LANKA_TIMEZONE },
+			);
+			await addTransaction({ ...data, createdAt: formattedCreatedAt });
+			toast.success("Transaction added successfully!");
+			resetForm();
+		} catch (error) {
+			console.error(error);
+			let message = "Failed to submit record. Please try again later.";
+			if (typeof error === "string") {
+				message = error;
+			}
+			toast.error(message);
+		}
 	};
 
 	useEffect(() => {
@@ -90,6 +102,7 @@ const AddFinanceRecord: React.FC = () => {
 				toast.error(message);
 			});
 	}, []);
+
 	useEffect(() => {
 		getAllTransactionDistricts()
 			.then((response) => {
@@ -106,15 +119,13 @@ const AddFinanceRecord: React.FC = () => {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb
-				pageName="Add Transaction"
-				dashboardPath="/finance/dashboard"
-			/>
+			<Breadcrumb pageName="Add Transaction" dashboardPath="/finance/dashboard" />
 			<div className="bg-white text-black p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
 				<form
 					onSubmit={handleSubmit(onSubmit)}
 					className="grid grid-cols-1 xl:grid-cols-2 gap-5"
 				>
+					{/* Transaction Type */}
 					<div>
 						<span className="block font-medium mb-2">Transaction Type</span>
 						<div className="grid grid-cols-2 gap-2">
@@ -131,14 +142,15 @@ const AddFinanceRecord: React.FC = () => {
 						</div>
 					</div>
 
+					{/* Category */}
 					<div>
 						<label className="block font-medium mb-2" htmlFor="category">
 							Category
 						</label>
 						<select
 							{...register("category")}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							id="category"
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						>
 							<option value="">Select category</option>
 							{categories.map((category) => (
@@ -148,9 +160,7 @@ const AddFinanceRecord: React.FC = () => {
 							))}
 						</select>
 						{errors.category && (
-							<span className="text-red-500 text-sm">
-								{errors.category.message}
-							</span>
+							<span className="text-red-500 text-sm">{errors.category.message}</span>
 						)}
 					</div>
 
@@ -159,47 +169,40 @@ const AddFinanceRecord: React.FC = () => {
 						<label className="block font-medium mb-2" htmlFor="amount">
 							Amount
 						</label>
-						{/* Visible Input for Displaying Comma-Separated Value */}
 						<input
-							type="text"
-							value={watch("amount")?.toLocaleString("en-US") || ""}
+							type="number"
+							id="amount"
+							step="0.01"
+							inputMode="decimal"
+							value={amountInput}
 							onChange={(e) => {
-								const rawValue = e.target.value.replace(/,/g, ""); // Remove commas
-								if (!Number.isNaN(Number(rawValue)) && Number(rawValue) >= 0) {
-									setValue("amount", Number(rawValue)); // Update the raw value in the form state
+								const newVal = e.target.value;
+								if (
+									amountInput === "0" &&
+									newVal !== "0" &&
+									!newVal.startsWith("0.")
+								) {
+									setAmountInput(newVal.replace(/^0+/, ""));
+								} else {
+									setAmountInput(newVal);
 								}
 							}}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							placeholder="000"
 						/>
-
-						{/* Hidden Input for Raw Numeric Value */}
-						<input
-							type="number"
-							{...register("amount", {
-								valueAsNumber: true, // Ensure the value is treated as a number
-								min: {
-									value: 0,
-									message: "Amount must be greater than or equal to 0",
-								},
-							})}
-							className="hidden"
-						/>
-
 						{errors.amount && (
-							<span className="text-red-500 text-sm">
-								{errors.amount.message}
-							</span>
+							<span className="text-red-500 text-sm">{errors.amount.message}</span>
 						)}
 					</div>
+
+					{/* District */}
 					<div>
 						<label className="block font-medium mb-2" htmlFor="district">
 							District
 						</label>
 						<select
 							{...register("district")}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							id="district"
+							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						>
 							<option value="">Select district</option>
 							{districts.map((district) => (
@@ -209,26 +212,23 @@ const AddFinanceRecord: React.FC = () => {
 							))}
 						</select>
 						{errors.district && (
-							<span className="text-red-500 text-sm">
-								{errors.district.message}
-							</span>
+							<span className="text-red-500 text-sm">{errors.district.message}</span>
 						)}
 					</div>
 
 					{/* Date and Time */}
 					<div>
-						<label className="block font-medium mb-2" htmlFor="dateTime">
+						<label className="block font-medium mb-2" htmlFor="createdAt">
 							Date & Time
 						</label>
 						<input
 							type="datetime-local"
+							id="createdAt"
 							{...register("createdAt")}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						{errors.createdAt && (
-							<span className="text-red-500 text-sm">
-								{errors.createdAt.message}
-							</span>
+							<span className="text-red-500 text-sm">{errors.createdAt.message}</span>
 						)}
 					</div>
 
@@ -238,23 +238,25 @@ const AddFinanceRecord: React.FC = () => {
 							Description
 						</label>
 						<textarea
+							id="description"
 							{...register("description")}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary resize-none"
 							placeholder="Write a short description"
 						/>
 					</div>
 
+					{/* Payment Account */}
 					<div>
 						<span className="block font-medium mb-2">Payment Account</span>
 						<div className="grid grid-cols-2 gap-2">
 							<FinanceAccountSelectorItem
 								isSelected={watch("paymentAccount") === "cash"}
-								onSelect={setValue.bind(null, "paymentAccount", "cash")}
+								onSelect={() => setValue("paymentAccount", "cash")}
 								type="cash"
 							/>
 							<FinanceAccountSelectorItem
 								isSelected={watch("paymentAccount") === "bank"}
-								onSelect={setValue.bind(null, "paymentAccount", "bank")}
+								onSelect={() => setValue("paymentAccount", "bank")}
 								type="bank"
 							/>
 						</div>

@@ -58,7 +58,10 @@ export const financeSchema = z.object({
 		required_error: "District is required",
 	}),
 	description: z.string().optional(),
-	amount: z.coerce.number().min(1, "Amount must be greater than 0"),
+	amount: z
+		.number()
+		.finite("Amount must be a valid number")
+		.min(0.01, "Amount must be greater than 0"),
 	createdAt: z.string().nonempty("Date & Time is required"),
 	paymentAccount: z.enum(["bank", "cash"]),
 });
