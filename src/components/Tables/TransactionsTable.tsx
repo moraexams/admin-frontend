@@ -43,9 +43,12 @@ export default function TransactionsTable({
 				);	
 			});
 			refetch();
+			setTimeout(() => {
+        window.location.reload();
+      }, 400);
+      toast.success(`Transaction #${transactionId} deleted successfully.`);
 		}
-		setTimeout(() => {window.location.reload()}, 400);
-		toast.success(`Transaction #${transactionId} deleted successfully.`);
+		
 	}
 
 	return (
