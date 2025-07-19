@@ -14,6 +14,7 @@ import {
 	getTransaction,
 } from "../../services/financeServices";
 import type { SelectedFile, Transaction } from "../../types/finance";
+import { CircleX } from "lucide-react";
 
 export default function AddBill() {
 	const params = useParams();
@@ -103,6 +104,14 @@ export default function AddBill() {
 				console.error(e);
 			});
 	};
+	
+	const removeBilFile = (fileIndex: number) => {
+		setSelectedFiles((selectedFiles) => {
+			const d = selectedFiles.slice();
+			d.splice(fileIndex, 1);
+			return d;
+		});
+	};
 
 	return (
 		<DefaultLayout>
@@ -162,6 +171,7 @@ export default function AddBill() {
 					<table className="mb-4 w-full">
 						<thead>
 							<tr className="font-medium">
+							<th></th>
 								<th className="text-left">Filename</th>
 								<th>Size</th>
 								<th>Description</th>
@@ -170,6 +180,11 @@ export default function AddBill() {
 						<tbody>
 							{selectedFiles.map((file, index) => (
 								<tr key={file.baseFile.name}>
+									<td className="w-fit">
+										<button className="text-red-600 hover:text-red-700 hover:bg-zinc-200 p-2 rounded-full" type="button" onClick={() => removeBilFile(index)}>
+												<CircleX className="size-5" />
+										</button>
+									</td>
 									<td className="py-2 text-gray-800 col-span-2">
 										{file.baseFile.name}
 									</td>

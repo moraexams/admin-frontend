@@ -92,7 +92,17 @@ export const addBillToTransaction = async (
 };
 
 export const getAllBills = async (page?: number, pageSize?: number) => {
-	return axiosInstance.get("/bill/all");
+	if (page !== undefined && pageSize !== undefined) {
+		return axiosInstance.get(
+			`/bill/all?page=${page}&pageSize=${pageSize}`,
+		);
+	} else if (page !== undefined) {
+		return axiosInstance.get(`/bill/all?pageSize=${pageSize}`);
+	} else if (pageSize !== undefined) {
+		return axiosInstance.get(`/bill/all?page=${page}`);
+	} else {
+		return axiosInstance.get(`/bill/all?page=${page ?? 1}&pageSize=${pageSize ?? 10}`);
+	}
 };
 
 export const getAllTransactionCategories = async () => {
