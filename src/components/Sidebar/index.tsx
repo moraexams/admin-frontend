@@ -53,7 +53,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 		document.addEventListener("keydown", keyHandler);
 		return () => document.removeEventListener("keydown", keyHandler);
 	});
-	const isAdmin = role === "admin" || role === "super_admin";
 
 	return (
 		<aside
@@ -123,7 +122,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									Dashboard
 								</SidebarLink>
 							</li>
-							{isAdmin && (
+							{typeof role === "string" && ["TECH_COORDINATOR", "TREASURER", "FINANCE_TEAM_MEMBER"].includes(role) && (
 								<ul className="flex flex-col gap-1.5">
 									<SidebarLinkGroup
 										activeCondition={pathname.startsWith("/finance")}
@@ -264,7 +263,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									}}
 								</SidebarLinkGroup>
 							</ul>
-							{isAdmin && (
+							{typeof role === "string" && ["TECH_COORDINATOR"].includes(role) && (
 								<li>
 									<SidebarLink to="/users">
 										<svg
@@ -288,7 +287,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 							{/* <!-- Menu Item Users --> */}
 
-							{isAdmin && (
+							{typeof role === "string" && ["TECH_COORDINATOR", "DISTRICTS_COORDINATOR"].includes(role) && (
 								<ul className="flex flex-col gap-1.5">
 									{/* <!-- Menu Item Auth Pages --> */}
 									<SidebarLinkGroup
@@ -540,7 +539,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									Student Marks
 								</SidebarLink>
 							</li>
-							{role === "super_admin" ? (
+							{role === "TECH_COORDINATOR" ? (
 								<>
 									<li>
 										<SidebarLink to="/audit-logs">
