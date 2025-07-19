@@ -26,6 +26,15 @@ export const GetExpenseCategoryBreakdown = async () => {
 	}
 };
 
+export const getRecentTransactions = async () => {
+	try {
+		const response = await axiosInstance.get("/finance/recent-transactions");
+		return response.data;
+	} catch (error) {
+		console.error("Error while fetching finance stats: ", error);
+	}
+};
+
 export const addTransaction = async (data: FinanceFormData) => {
 	return axiosInstance.post("/transaction/add", data).catch((error) => {
 		if (error instanceof AxiosError) {

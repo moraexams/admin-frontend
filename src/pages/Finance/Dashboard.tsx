@@ -13,10 +13,11 @@ import {
 } from "recharts";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { GetExpenseCategoryBreakdown, getFinanceStats } from "../../services/financeServices";
+import { GetExpenseCategoryBreakdown, getFinanceStats,	getRecentTransactions } from "../../services/financeServices";
+
 import {
 	getDistrictNameById,
-	getRecentTransactions,
+
 	getTotalDistrictExpenses,
 } from "./mockData";
 
@@ -31,13 +32,30 @@ interface FinanceStats {
 	};
 }
 
+interface Transaction {
+	id: string;
+	type: "income" | "expense";
+	amount: number;
+	category: string;
+	description: string;
+	districtId: string;
+	billId?: string;
+	templateId?: string;
+	created_at: string;
+	created_by_username: string;
+	associated_account: "Cash" | "Bank";
+}
+	
+	
+
+
 interface ExpenseCategory {
 	category: string;
 	amount: number;
 }
 
 const FinanceDashboard: React.FC = () => {
-	const lastTransactions = getRecentTransactions();
+	const [lastTransactions, setRecentTransactions] = useState<Transaction[]>([]);
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
 	const [expenseCategoryBreakdown, setExpenseCategoryBreakdown] = useState<ExpenseCategory[]>([]);
 
@@ -52,6 +70,13 @@ const FinanceDashboard: React.FC = () => {
 			setExpenseCategoryBreakdown(data.categories);
 		});
 	}, []);
+
+	useEffect(() => {
+		getRecentTransactions().then((data) => {
+			setRecentTransactions(data.transactions);
+		});
+	}, []);
+
 
 	let total = 0;
 	// Prepare Pie Chart Data
@@ -198,7 +223,7 @@ const FinanceDashboard: React.FC = () => {
 											}`}
 										/>
 										<span className="font-medium">
-											{new Date(txn.date).toLocaleDateString("en-US", {
+											{new Date(txn.created_at).toLocaleDateString("en-US", {
 												month: "short",
 												day: "2-digit",
 											})}
@@ -235,7 +260,7 @@ const FinanceDashboard: React.FC = () => {
 												}`}
 											/>
 											<span className="font-medium">
-												{new Date(txn.date).toLocaleDateString("en-US", {
+												{new Date(txn.created_at).toLocaleDateString("en-US", {
 													month: "short",
 													day: "2-digit",
 												})}
