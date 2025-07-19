@@ -13,12 +13,11 @@ import {
 } from "recharts";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { getFinanceStats } from "../../services/financeServices";
+import { GetExpenseCategoryBreakdown, getFinanceStats } from "../../services/financeServices";
 import {
 	getDistrictNameById,
 	getRecentTransactions,
 	getTotalDistrictExpenses,
-	getTotalExpenses,
 } from "./mockData";
 
 interface FinanceStats {
@@ -32,28 +31,37 @@ interface FinanceStats {
 	};
 }
 
+interface ExpenseCategory {
+	category: string;
+	amount: number;
+}
+
 const FinanceDashboard: React.FC = () => {
 	const lastTransactions = getRecentTransactions();
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
+	const [expenseCategoryBreakdown, setExpenseCategoryBreakdown] = useState<ExpenseCategory[]>([]);
 
 	useEffect(() => {
 		getFinanceStats().then((data) => {
 			setFinanceStats(data);
 		});
 	}, []);
+	
+	useEffect(() => {
+		GetExpenseCategoryBreakdown().then((data) => {
+			setExpenseCategoryBreakdown(data.categories);
+		});
+	}, []);
 
+	let total = 0;
 	// Prepare Pie Chart Data
-	const expenseData: { name: string; value: number }[] = getRecentTransactions()
-		.filter((txn) => txn.type === "expense")
-		.reduce<{ name: string; value: number }[]>((acc, txn) => {
-			const found = acc.find((item) => item.name === txn.category);
-			if (found) {
-				found.value += txn.amount;
-			} else {
-				acc.push({ name: txn.category, value: txn.amount });
-			}
-			return acc;
-		}, []);
+	const expenseData = expenseCategoryBreakdown.map(item => {
+		total += item.amount;
+		
+		return {
+  name: item.category,
+  value: item.amount,
+}});
 
 	const pieColors = ["#81c784", "#64b5f6", "#ffb74d", "#e1bee7", "#80deea"];
 
@@ -122,6 +130,7 @@ const FinanceDashboard: React.FC = () => {
 					</div>
 
 					{/* Donut Chart */}
+					{expenseCategoryBreakdown.length === 0 ? null :
 					<div className="bg-white p-6 rounded-lg shadow dark:bg-boxdark">
 						<h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
 							Expense Breakdown
@@ -142,7 +151,7 @@ const FinanceDashboard: React.FC = () => {
 										<Cell key={color} fill={color} />
 									))}
 									<Label
-										value={`LKR ${getTotalExpenses().toLocaleString("en-LK")}`}
+										value={`LKR ${total.toLocaleString("en-LK")}`}
 										position="center"
 										style={{
 											fill: "currentColor",
@@ -162,6 +171,7 @@ const FinanceDashboard: React.FC = () => {
 							</PieChart>
 						</ResponsiveContainer>
 					</div>
+}
 				</div>
 
 				{/* Last 5 Transactions */}

@@ -141,12 +141,6 @@ export const templates: Template[] = [
 	},
 ];
 
-export const getTotalExpenses = (): number => {
-	return transactions
-		.filter((transaction) => transaction.type === "expense")
-		.reduce((sum, transaction) => sum + transaction.amount, 0);
-};
-
 export const getRecentTransactions = (limit = 5): Transaction[] => {
 	return [...transactions]
 		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
