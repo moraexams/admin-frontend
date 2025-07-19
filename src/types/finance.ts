@@ -54,7 +54,7 @@ export const financeSchema = z.object({
 	category: z.coerce.number({
 		required_error: "Category is required",
 	}),
-	district: z.coerce.string({
+	district: z.coerce.number({
 		required_error: "District is required",
 	}),
 	description: z.string().optional(),
