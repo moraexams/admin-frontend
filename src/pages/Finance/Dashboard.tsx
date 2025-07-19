@@ -34,7 +34,7 @@ interface FinanceStats {
 
 interface Transaction {
 	id: string;
-	type: "income" | "expense";
+	record_type: "income" | "expense";
 	amount: number;
 	category: string;
 	description: string;
@@ -219,7 +219,7 @@ const FinanceDashboard: React.FC = () => {
 									<div className="flex items-center space-x-2 text-sm text-gray-500">
 										<span
 											className={`w-2 h-2 rounded-full ${
-												txn.type === "income" ? "bg-green-500" : "bg-red-500"
+												txn.record_type === "income" ? "bg-green-500" : "bg-red-500"
 											}`}
 										/>
 										<span className="font-medium">
@@ -243,10 +243,10 @@ const FinanceDashboard: React.FC = () => {
 									{/* Amount */}
 									<div
 										className={`text-right font-bold ${
-											txn.type === "income" ? "text-green-600" : "text-red-600"
+											txn.record_type === "income" ? "text-green-600" : "text-red-600"
 										}`}
 									>
-										{txn.type === "income" ? "+" : "-"}${txn.amount.toFixed(2)}
+										{txn.record_type === "income" ? "+" : "-"}${txn.amount.toFixed(2)}
 									</div>
 								</div>
 
@@ -256,7 +256,7 @@ const FinanceDashboard: React.FC = () => {
 										<div className="flex items-center space-x-2">
 											<span
 												className={`w-2 h-2 rounded-full ${
-													txn.type === "income" ? "bg-green-500" : "bg-red-500"
+													txn.record_type === "income" ? "bg-green-500" : "bg-red-500"
 												}`}
 											/>
 											<span className="font-medium">
@@ -268,12 +268,12 @@ const FinanceDashboard: React.FC = () => {
 										</div>
 										<div
 											className={`font-bold ${
-												txn.type === "income"
+												txn.record_type === "income"
 													? "text-green-600"
 													: "text-red-600"
 											}`}
 										>
-											{txn.type === "income" ? "+" : "-"}$
+											{txn.record_type === "income" ? "+" : "-"}$
 											{txn.amount.toFixed(2)}
 										</div>
 									</div>
