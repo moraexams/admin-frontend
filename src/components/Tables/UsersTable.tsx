@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { capitalize } from "../../common/utils";
 import { editUser } from "../../services/userService";
 import type { User } from "../../types/types";
+import { ROLE_DISTRICTS_COORDINATOR, ROLE_EXAM_COORDINATOR, ROLE_FINANCE_TEAM_MEMBER, ROLE_MARKETING_COORDINATOR, ROLE_NONE, ROLE_PRESIDENT, ROLE_SECRETARY, ROLE_TREASURER, ROLE_USER, ROLE_VICE_PRESIDENT, ROLE_VICE_SECRETARY } from "../../common/roles";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -18,6 +19,19 @@ interface UsersTableProps {
 	itemsPerPage: number;
 	refetch: () => void;
 }
+
+const AVAILABLE_ROLES_FOR_SETTING = [
+	ROLE_PRESIDENT,
+	ROLE_VICE_PRESIDENT,
+	ROLE_SECRETARY,
+	ROLE_VICE_SECRETARY,
+	ROLE_TREASURER,
+	ROLE_DISTRICTS_COORDINATOR,
+	ROLE_EXAM_COORDINATOR,
+	ROLE_MARKETING_COORDINATOR,
+	ROLE_FINANCE_TEAM_MEMBER,
+	ROLE_USER,
+] as const;
 
 const UsersTable = ({
 	total,
@@ -112,9 +126,11 @@ const UsersTable = ({
 									setSelectedUser({ ...selectedUser, role: e.target.value });
 								}}
 							>
-								<option value="user">User</option>
-								<option value="admin">Admin</option>
-								<option value="finance_team">Finance Team</option>
+								{AVAILABLE_ROLES_FOR_SETTING.map((role) => (
+									<option key={role} value={role}>
+										{role}
+									</option>
+								))}
 							</select>
 						</div>
 						<div className="flex gap-3">
