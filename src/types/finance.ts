@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export interface Transaction {
 	id: string;
-	record_type: "income" | "expense";
+	type: "income" | "expense";
 	amount: number;
 	category: string;
 	description: string;

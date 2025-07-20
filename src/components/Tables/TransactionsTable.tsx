@@ -42,7 +42,6 @@ export default function TransactionsTable({
 					`Failed to delete transaction #${transactionId}: ${error instanceof Error ? error.message : "Unknown error"}`,
 				);
 			});
-			refetch();
 			setTimeout(() => {
 				window.location.reload();
 			}, 400);

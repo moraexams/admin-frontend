@@ -7,7 +7,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import { getTransactions } from "../../services/financeServices";
 import type { Transaction } from "../../types/finance";
 
-const Users = () => {
+export default function Transactions() {
 	const [transactions, setTransactions] = useState<Array<Transaction>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
@@ -15,7 +15,7 @@ const Users = () => {
 	const [page, setPage] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
-	const fetchUsers = useCallback(async () => {
+	const fetchTransactions = useCallback(async () => {
 		try {
 			const d = await getTransactions(page, itemsPerPage);
 			setTotalCount(d.count);
@@ -32,8 +32,8 @@ const Users = () => {
 	}, [page, itemsPerPage]);
 
 	useEffect(() => {
-		fetchUsers();
-	}, [fetchUsers]);
+		fetchTransactions();
+	}, []);
 
 	if (error) {
 		return (
@@ -106,7 +106,7 @@ const Users = () => {
 					<TransactionsTable
 						page={page}
 						itemsPerPage={itemsPerPage}
-						refetch={fetchUsers}
+						refetch={fetchTransactions}
 						total={totalCount}
 						data={transactions}
 					/>
@@ -115,5 +115,3 @@ const Users = () => {
 		</DefaultLayout>
 	);
 };
-
-export default Users;

@@ -198,7 +198,7 @@ const FinanceDashboard: React.FC = () => {
 									<div className="flex items-center space-x-2 text-sm text-gray-500">
 										<span
 											className={`w-2 h-2 rounded-full ${
-												txn.record_type === "income"
+												txn.type === "income"
 													? "bg-green-500"
 													: "bg-red-500"
 											}`}
@@ -224,12 +224,12 @@ const FinanceDashboard: React.FC = () => {
 									{/* Amount */}
 									<div
 										className={`text-right font-bold ${
-											txn.record_type === "income"
+											txn.type === "income"
 												? "text-green-600"
 												: "text-red-600"
 										}`}
 									>
-										{txn.record_type === "income" ? "+" : "-"}$
+										{txn.type === "income" ? "+" : "-"}$
 										{txn.amount.toFixed(2)}
 									</div>
 								</div>
@@ -240,7 +240,7 @@ const FinanceDashboard: React.FC = () => {
 										<div className="flex items-center space-x-2">
 											<span
 												className={`w-2 h-2 rounded-full ${
-													txn.record_type === "income"
+													txn.type === "income"
 														? "bg-green-500"
 														: "bg-red-500"
 												}`}
@@ -254,12 +254,12 @@ const FinanceDashboard: React.FC = () => {
 										</div>
 										<div
 											className={`font-bold ${
-												txn.record_type === "income"
+												txn.type === "income"
 													? "text-green-600"
 													: "text-red-600"
 											}`}
 										>
-											{txn.record_type === "income" ? "+" : "-"}$
+											{txn.type === "income" ? "+" : "-"}$
 											{txn.amount.toFixed(2)}
 										</div>
 									</div>
