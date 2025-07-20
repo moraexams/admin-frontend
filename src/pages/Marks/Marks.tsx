@@ -3,6 +3,8 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import { MarksBoundariesView } from "../../components/MarksBoundariesView";
 import DefaultLayout from "../../layout/DefaultLayout";
 
+const PERMISSION__MARKS_BOUNDARY_VIEW = ["PRESIDENT", "TECH_COORDINATOR"];
+
 const Marks = () => {
 	const navigate = useNavigate();
 	const role = localStorage.getItem("role");
@@ -355,7 +357,7 @@ const Marks = () => {
 				</div>
 			</div>
 
-			{role === "super_admin" ? <MarksBoundariesView /> : null}
+			{typeof role === "string" && PERMISSION__MARKS_BOUNDARY_VIEW.includes(role) ? <MarksBoundariesView /> : null}
 		</DefaultLayout>
 	);
 };
