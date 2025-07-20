@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export interface Transaction {
 	id: string;
-	type: "income" | "expense";
+	record_type: "income" | "expense";
 	amount: number;
 	category: string;
 	description: string;
@@ -73,6 +73,11 @@ export interface SelectedFile {
 	description: string;
 }
 
+export interface ExpenseCategory {
+	category: string;
+	amount: number;
+}
+
 export interface FinanceStats {
 	stats: {
 		current_balance: {
@@ -81,6 +86,8 @@ export interface FinanceStats {
 		};
 		total_income: number;
 		total_expenses: number;
+	recent_transactions: Transaction[];
+	expense_category_breakdown: Array<ExpenseCategory>;
 	};
 }
 

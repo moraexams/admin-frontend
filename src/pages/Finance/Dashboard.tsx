@@ -14,65 +14,24 @@ import {
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
 import {
-	getExpenseCategoryBreakdown,
 	getFinanceStats,
-	getRecentTransactions,
 } from "../../services/financeServices";
-
 import { getDistrictNameById, getTotalDistrictExpenses } from "./mockData";
-
-interface FinanceStats {
-	stats: {
-		current_balance: {
-			bank: number;
-			cash: number;
-		};
-		total_income: number;
-		total_expenses: number;
-	};
-}
-
-interface Transaction {
-	id: string;
-	record_type: "income" | "expense";
-	amount: number;
-	category: string;
-	description: string;
-	districtId: string;
-	billId?: string;
-	templateId?: string;
-	created_at: string;
-	created_by_username: string;
-	associated_account: "Cash" | "Bank";
-}
-
-interface ExpenseCategory {
-	category: string;
-	amount: number;
-}
+import type { FinanceStats} from "../../types/finance";
 
 const FinanceDashboard: React.FC = () => {
-	const [lastTransactions, setRecentTransactions] = useState<Transaction[]>([]);
-	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
-	const [expenseCategoryBreakdown, setExpenseCategoryBreakdown] = useState<
-		ExpenseCategory[]
-	>([]);
+	const [financeStats, setFinanceStats] = useState<FinanceStats["stats"] | null>(null);
 
 	useEffect(() => {
 		getFinanceStats().then((data) => {
-			setFinanceStats(data);
-		});
-		getExpenseCategoryBreakdown().then((data) => {
-			setExpenseCategoryBreakdown(data.categories);
-		});
-		getRecentTransactions().then((data) => {
-			setRecentTransactions(data.transactions);
+			if (!data) return;
+			setFinanceStats(data.stats);
 		});
 	}, []);
 
 	let total = 0;
 	// Prepare Pie Chart Data
-	const expenseData = expenseCategoryBreakdown.map((item) => {
+	const expenseData = financeStats === null ? [] : financeStats.expense_category_breakdown.map((item) => {
 		total += item.amount;
 
 		return {
@@ -142,7 +101,7 @@ const FinanceDashboard: React.FC = () => {
 								value={
 									financeStats == null
 										? 0
-										: financeStats.stats.current_balance.bank
+										: financeStats.current_balance.bank
 								}
 							/>
 							<SummaryCard
@@ -150,19 +109,19 @@ const FinanceDashboard: React.FC = () => {
 								value={
 									financeStats == null
 										? 0
-										: financeStats.stats.current_balance.cash
+										: financeStats.current_balance.cash
 								}
 							/>
 							<SummaryCard
 								title="Total Income"
 								value={
-									financeStats == null ? 0 : financeStats.stats.total_income
+									financeStats == null ? 0 : financeStats.total_income
 								}
 							/>
 							<SummaryCard
 								title="Total Expenses"
 								value={
-									financeStats == null ? 0 : financeStats.stats.total_expenses
+									financeStats == null ? 0 : financeStats.total_expenses
 								}
 							/>
 							<Link to="/finance/districtexpenses">
@@ -175,7 +134,7 @@ const FinanceDashboard: React.FC = () => {
 					</div>
 
 					{/* Donut Chart */}
-					{expenseCategoryBreakdown.length === 0 ? null : (
+					{expenseData.length === 0 ? null : (
 						<div className="bg-white p-6 rounded-lg shadow dark:bg-boxdark">
 							<h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
 								Expense Breakdown
@@ -225,7 +184,7 @@ const FinanceDashboard: React.FC = () => {
 						Last 5 Transactions
 					</h2>
 					<ul className="space-y-4">
-						{lastTransactions.map((txn) => (
+						{financeStats.recent_transactions.map((txn) => (
 							<li
 								key={txn.id}
 								className="py-3 px-4 rounded-md bg-white hover:shadow-md hover:bg-blue-50 transition duration-150 ease-in-out cursor-pointer dark:bg-boxdark dark:hover:bg-meta-4 dark:text-white"

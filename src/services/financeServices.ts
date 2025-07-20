@@ -10,25 +10,7 @@ import type {
 
 export const getFinanceStats = async () => {
 	try {
-		const response = await axiosInstance.get("/finance/stats");
-		return response.data;
-	} catch (error) {
-		console.error("Error while fetching finance stats: ", error);
-	}
-};
-
-export const getExpenseCategoryBreakdown = async () => {
-	try {
-		const response = await axiosInstance.get("/finance/expense-breakdown");
-		return response.data;
-	} catch (error) {
-		console.error("Error while fetching finance stats: ", error);
-	}
-};
-
-export const getRecentTransactions = async () => {
-	try {
-		const response = await axiosInstance.get("/finance/recent-transactions");
+		const response = await axiosInstance.get<FinanceStats>("/finance/stats");
 		return response.data;
 	} catch (error) {
 		console.error("Error while fetching finance stats: ", error);
