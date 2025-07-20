@@ -122,85 +122,90 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									Dashboard
 								</SidebarLink>
 							</li>
-							{typeof role === "string" && ["TECH_COORDINATOR", "TREASURER", "FINANCE_TEAM_MEMBER"].includes(role) && (
-								<ul className="flex flex-col gap-1.5">
-									<SidebarLinkGroup
-										activeCondition={pathname.startsWith("/finance")}
-									>
-										{(handleClick, open) => {
-											return (
-												<React.Fragment>
-													<SidebarLink
-														to="/finance"
-														onClick={(e) => {
-															e.preventDefault();
-															handleClick();
-															setSidebarExpanded(!sidebarExpanded);
-														}}
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															className="size-6"
+							{typeof role === "string" &&
+								[
+									"TECH_COORDINATOR",
+									"TREASURER",
+									"FINANCE_TEAM_MEMBER",
+								].includes(role) && (
+									<ul className="flex flex-col gap-1.5">
+										<SidebarLinkGroup
+											activeCondition={pathname.startsWith("/finance")}
+										>
+											{(handleClick, open) => {
+												return (
+													<React.Fragment>
+														<SidebarLink
+															to="/finance"
+															onClick={(e) => {
+																e.preventDefault();
+																handleClick();
+																setSidebarExpanded(!sidebarExpanded);
+															}}
 														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
-															/>
-														</svg>
-														Finance
-														<svg
-															className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-																open && "rotate-180"
-															}`}
-															width="20"
-															height="20"
-															viewBox="0 0 20 20"
-															fill="none"
-															xmlns="http://www.w3.org/2000/svg"
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																fill="none"
+																viewBox="0 0 24 24"
+																strokeWidth={1.5}
+																stroke="currentColor"
+																className="size-6"
+															>
+																<path
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																	d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
+																/>
+															</svg>
+															Finance
+															<svg
+																className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
+																	open && "rotate-180"
+																}`}
+																width="20"
+																height="20"
+																viewBox="0 0 20 20"
+																fill="none"
+																xmlns="http://www.w3.org/2000/svg"
+															>
+																<path
+																	fillRule="evenodd"
+																	clipRule="evenodd"
+																	d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+																	fill=""
+																/>
+															</svg>
+														</SidebarLink>
+														<div
+															className={`translate transform overflow-hidden ${!open && "hidden"}`}
 														>
-															<path
-																fillRule="evenodd"
-																clipRule="evenodd"
-																d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-																fill=""
-															/>
-														</svg>
-													</SidebarLink>
-													<div
-														className={`translate transform overflow-hidden ${!open && "hidden"}`}
-													>
-														<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-															<SidebarSubLink to="/finance/dashboard">
-																Dashboard
-															</SidebarSubLink>
-															<SidebarSubLink to="/finance/transaction-categories">
-																Transaction Categories
-															</SidebarSubLink>
-															<SidebarSubLink to="/finance/add-transaction">
-																Add Transaction
-															</SidebarSubLink>
-															<SidebarSubLink to="/finance/transactions">
-																All Transactions
-															</SidebarSubLink>
-															<SidebarSubLink to="/finance/districtexpenses">
-																District Expenses
-															</SidebarSubLink>
-															<SidebarSubLink to="/finance/billgallery">
-																Bill Gallery
-															</SidebarSubLink>
-														</ul>
-													</div>
-												</React.Fragment>
-											);
-										}}
-									</SidebarLinkGroup>
-								</ul>
-							)}
+															<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+																<SidebarSubLink to="/finance/dashboard">
+																	Dashboard
+																</SidebarSubLink>
+																<SidebarSubLink to="/finance/transaction-categories">
+																	Transaction Categories
+																</SidebarSubLink>
+																<SidebarSubLink to="/finance/add-transaction">
+																	Add Transaction
+																</SidebarSubLink>
+																<SidebarSubLink to="/finance/transactions">
+																	All Transactions
+																</SidebarSubLink>
+																<SidebarSubLink to="/finance/districtexpenses">
+																	District Expenses
+																</SidebarSubLink>
+																<SidebarSubLink to="/finance/billgallery">
+																	Bill Gallery
+																</SidebarSubLink>
+															</ul>
+														</div>
+													</React.Fragment>
+												);
+											}}
+										</SidebarLinkGroup>
+									</ul>
+								)}
 							<ul className="flex flex-col gap-1.5">
 								<SidebarLinkGroup
 									activeCondition={
@@ -263,104 +268,108 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 									}}
 								</SidebarLinkGroup>
 							</ul>
-							{typeof role === "string" && ["TECH_COORDINATOR"].includes(role) && (
-								<li>
-									<SidebarLink to="/users">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											strokeWidth={1.5}
-											stroke="currentColor"
-											className="size-6"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-											/>
-										</svg>
-										Users
-									</SidebarLink>
-								</li>
-							)}
+							{typeof role === "string" &&
+								["TECH_COORDINATOR"].includes(role) && (
+									<li>
+										<SidebarLink to="/users">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												strokeWidth={1.5}
+												stroke="currentColor"
+												className="size-6"
+											>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+												/>
+											</svg>
+											Users
+										</SidebarLink>
+									</li>
+								)}
 
 							{/* <!-- Menu Item Users --> */}
 
-							{typeof role === "string" && ["TECH_COORDINATOR", "DISTRICTS_COORDINATOR"].includes(role) && (
-								<ul className="flex flex-col gap-1.5">
-									{/* <!-- Menu Item Auth Pages --> */}
-									<SidebarLinkGroup
-										activeCondition={
-											pathname === "/districts" ||
-											pathname.startsWith("/district/")
-										}
-									>
-										{(handleClick, open) => {
-											return (
-												<React.Fragment>
-													<SidebarLink
-														to="/districts"
-														onClick={(e) => {
-															e.preventDefault();
-															handleClick();
-															setSidebarExpanded(!sidebarExpanded);
-														}}
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															className="size-6"
+							{typeof role === "string" &&
+								["TECH_COORDINATOR", "DISTRICTS_COORDINATOR"].includes(
+									role,
+								) && (
+									<ul className="flex flex-col gap-1.5">
+										{/* <!-- Menu Item Auth Pages --> */}
+										<SidebarLinkGroup
+											activeCondition={
+												pathname === "/districts" ||
+												pathname.startsWith("/district/")
+											}
+										>
+											{(handleClick, open) => {
+												return (
+													<React.Fragment>
+														<SidebarLink
+															to="/districts"
+															onClick={(e) => {
+																e.preventDefault();
+																handleClick();
+																setSidebarExpanded(!sidebarExpanded);
+															}}
 														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
-															/>
-														</svg>
-														District
-														<svg
-															className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-																open && "rotate-180"
-															}`}
-															width="20"
-															height="20"
-															viewBox="0 0 20 20"
-															fill="none"
-															xmlns="http://www.w3.org/2000/svg"
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																fill="none"
+																viewBox="0 0 24 24"
+																strokeWidth={1.5}
+																stroke="currentColor"
+																className="size-6"
+															>
+																<path
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																	d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
+																/>
+															</svg>
+															District
+															<svg
+																className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
+																	open && "rotate-180"
+																}`}
+																width="20"
+																height="20"
+																viewBox="0 0 20 20"
+																fill="none"
+																xmlns="http://www.w3.org/2000/svg"
+															>
+																<path
+																	fillRule="evenodd"
+																	clipRule="evenodd"
+																	d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+																	fill=""
+																/>
+															</svg>
+														</SidebarLink>
+														<div
+															className={`translate transform overflow-hidden ${!open && "hidden"}`}
 														>
-															<path
-																fillRule="evenodd"
-																clipRule="evenodd"
-																d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-																fill=""
-															/>
-														</svg>
-													</SidebarLink>
-													<div
-														className={`translate transform overflow-hidden ${!open && "hidden"}`}
-													>
-														<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-															<SidebarSubLink to="/districts">
-																Districts
-															</SidebarSubLink>
-															<SidebarSubLink to="/district/centres">
-																Exam Centres
-															</SidebarSubLink>
-															<SidebarSubLink to="/district/coordinators">
-																Coordinators
-															</SidebarSubLink>
-														</ul>
-													</div>
-												</React.Fragment>
-											);
-										}}
-									</SidebarLinkGroup>
-								</ul>
-							)}
+															<ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+																<SidebarSubLink to="/districts">
+																	Districts
+																</SidebarSubLink>
+																<SidebarSubLink to="/district/centres">
+																	Exam Centres
+																</SidebarSubLink>
+																<SidebarSubLink to="/district/coordinators">
+																	Coordinators
+																</SidebarSubLink>
+															</ul>
+														</div>
+													</React.Fragment>
+												);
+											}}
+										</SidebarLinkGroup>
+									</ul>
+								)}
 
 							<ul className="flex flex-col gap-1.5">
 								<SidebarLinkGroup

@@ -357,7 +357,10 @@ const Marks = () => {
 				</div>
 			</div>
 
-			{typeof role === "string" && PERMISSION__MARKS_BOUNDARY_VIEW.includes(role) ? <MarksBoundariesView /> : null}
+			{typeof role === "string" &&
+			PERMISSION__MARKS_BOUNDARY_VIEW.includes(role) ? (
+				<MarksBoundariesView />
+			) : null}
 		</DefaultLayout>
 	);
 };

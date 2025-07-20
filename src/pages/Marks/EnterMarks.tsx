@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+// import type { SnackBarConfig } from "../../types/snackbar";
+import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { enterMark, getStudentMarksData } from "../../services/markservices";
-// import type { SnackBarConfig } from "../../types/snackbar";
-import toast from "react-hot-toast"
 
 const EnterMarks = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -90,7 +90,7 @@ const EnterMarks = () => {
 				// showSnackBar(true, "Mark Added Successfully");
 			})
 			.catch((error) => {
-				toast.error(error)
+				toast.error(error);
 				// showSnackBar(false, error);
 			});
 	};

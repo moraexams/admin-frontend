@@ -1,11 +1,11 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import { getMarkbyIndexNo } from "../../services/markservices";
 import { convertUTCToIST, filterIt } from "../../services/utils";
 // import type { SnackBarConfig } from "../../types/snackbar";
 import type { Mark, StudentMark } from "../../types/types";
-import toast from "react-hot-toast"
 // import Snackbar from "../Snackbar";
 
 const StudentMarksTable = ({

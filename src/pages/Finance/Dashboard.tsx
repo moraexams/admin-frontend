@@ -13,13 +13,13 @@ import {
 } from "recharts";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { GetExpenseCategoryBreakdown, getFinanceStats,	getRecentTransactions } from "../../services/financeServices";
-
 import {
-	getDistrictNameById,
+	getExpenseCategoryBreakdown,
+	getFinanceStats,
+	getRecentTransactions,
+} from "../../services/financeServices";
 
-	getTotalDistrictExpenses,
-} from "./mockData";
+import { getDistrictNameById, getTotalDistrictExpenses } from "./mockData";
 
 interface FinanceStats {
 	stats: {
@@ -45,9 +45,6 @@ interface Transaction {
 	created_by_username: string;
 	associated_account: "Cash" | "Bank";
 }
-	
-	
-
 
 interface ExpenseCategory {
 	category: string;
@@ -57,38 +54,61 @@ interface ExpenseCategory {
 const FinanceDashboard: React.FC = () => {
 	const [lastTransactions, setRecentTransactions] = useState<Transaction[]>([]);
 	const [financeStats, setFinanceStats] = useState<FinanceStats | null>(null);
-	const [expenseCategoryBreakdown, setExpenseCategoryBreakdown] = useState<ExpenseCategory[]>([]);
+	const [expenseCategoryBreakdown, setExpenseCategoryBreakdown] = useState<
+		ExpenseCategory[]
+	>([]);
 
 	useEffect(() => {
 		getFinanceStats().then((data) => {
 			setFinanceStats(data);
 		});
-	}, []);
-	
-	useEffect(() => {
-		GetExpenseCategoryBreakdown().then((data) => {
+		getExpenseCategoryBreakdown().then((data) => {
 			setExpenseCategoryBreakdown(data.categories);
 		});
-	}, []);
-
-	useEffect(() => {
 		getRecentTransactions().then((data) => {
 			setRecentTransactions(data.transactions);
 		});
 	}, []);
 
-
 	let total = 0;
 	// Prepare Pie Chart Data
-	const expenseData = expenseCategoryBreakdown.map(item => {
+	const expenseData = expenseCategoryBreakdown.map((item) => {
 		total += item.amount;
-		
+
 		return {
-  name: item.category,
-  value: item.amount,
-}});
+			name: item.category,
+			value: item.amount,
+		};
+	});
 
 	const pieColors = ["#81c784", "#64b5f6", "#ffb74d", "#e1bee7", "#80deea"];
+	
+	console.log(financeStats)
+	if (financeStats == null) {
+		return <DefaultLayout>
+			<div className="py-6">
+				{/* Header */}
+				<div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+					<div>
+						<h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+						<p className="text-gray-600 mt-1">
+							Welcome back to your financial overview
+						</p>
+					</div>
+					<div className="mt-4 md:mt-0">
+						<Link
+							className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+							to="/finance/add-transaction"
+						>
+							<PlusCircle size={18} className="mr-2" />
+							New Transaction
+						</Link>
+					</div>
+				</div>
+			</div>
+		</DefaultLayout>
+	}
+
 
 	return (
 		<DefaultLayout>
@@ -155,48 +175,48 @@ const FinanceDashboard: React.FC = () => {
 					</div>
 
 					{/* Donut Chart */}
-					{expenseCategoryBreakdown.length === 0 ? null :
-					<div className="bg-white p-6 rounded-lg shadow dark:bg-boxdark">
-						<h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
-							Expense Breakdown
-						</h2>
-						<ResponsiveContainer width="100%" height={300}>
-							<PieChart>
-								<Pie
-									data={expenseData}
-									cx="50%"
-									cy="50%"
-									innerRadius={65}
-									outerRadius={100}
-									paddingAngle={2}
-									dataKey="value"
-									nameKey="name"
-								>
-									{pieColors.map((color) => (
-										<Cell key={color} fill={color} />
-									))}
-									<Label
-										value={`LKR ${total.toLocaleString("en-LK")}`}
-										position="center"
-										style={{
-											fill: "currentColor",
-											fontSize: "16px",
-											fontWeight: "bold",
-											textAlign: "center",
-											whiteSpace: "pre-line",
-										}}
+					{expenseCategoryBreakdown.length === 0 ? null : (
+						<div className="bg-white p-6 rounded-lg shadow dark:bg-boxdark">
+							<h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
+								Expense Breakdown
+							</h2>
+							<ResponsiveContainer width="100%" height={300}>
+								<PieChart>
+									<Pie
+										data={expenseData}
+										cx="50%"
+										cy="50%"
+										innerRadius={65}
+										outerRadius={100}
+										paddingAngle={2}
+										dataKey="value"
+										nameKey="name"
+									>
+										{pieColors.map((color) => (
+											<Cell key={color} fill={color} />
+										))}
+										<Label
+											value={`LKR ${total.toLocaleString("en-LK")}`}
+											position="center"
+											style={{
+												fill: "currentColor",
+												fontSize: "16px",
+												fontWeight: "bold",
+												textAlign: "center",
+												whiteSpace: "pre-line",
+											}}
+										/>
+									</Pie>
+									<Tooltip />
+									<Legend
+										iconType="circle"
+										layout="horizontal"
+										verticalAlign="bottom"
 									/>
-								</Pie>
-								<Tooltip />
-								<Legend
-									iconType="circle"
-									layout="horizontal"
-									verticalAlign="bottom"
-								/>
-							</PieChart>
-						</ResponsiveContainer>
-					</div>
-}
+								</PieChart>
+							</ResponsiveContainer>
+						</div>
+					)}
 				</div>
 
 				{/* Last 5 Transactions */}
@@ -219,7 +239,9 @@ const FinanceDashboard: React.FC = () => {
 									<div className="flex items-center space-x-2 text-sm text-gray-500">
 										<span
 											className={`w-2 h-2 rounded-full ${
-												txn.record_type === "income" ? "bg-green-500" : "bg-red-500"
+												txn.record_type === "income"
+													? "bg-green-500"
+													: "bg-red-500"
 											}`}
 										/>
 										<span className="font-medium">
@@ -243,10 +265,13 @@ const FinanceDashboard: React.FC = () => {
 									{/* Amount */}
 									<div
 										className={`text-right font-bold ${
-											txn.record_type === "income" ? "text-green-600" : "text-red-600"
+											txn.record_type === "income"
+												? "text-green-600"
+												: "text-red-600"
 										}`}
 									>
-										{txn.record_type === "income" ? "+" : "-"}${txn.amount.toFixed(2)}
+										{txn.record_type === "income" ? "+" : "-"}$
+										{txn.amount.toFixed(2)}
 									</div>
 								</div>
 
@@ -256,7 +281,9 @@ const FinanceDashboard: React.FC = () => {
 										<div className="flex items-center space-x-2">
 											<span
 												className={`w-2 h-2 rounded-full ${
-													txn.record_type === "income" ? "bg-green-500" : "bg-red-500"
+													txn.record_type === "income"
+														? "bg-green-500"
+														: "bg-red-500"
 												}`}
 											/>
 											<span className="font-medium">

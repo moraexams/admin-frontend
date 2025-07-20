@@ -1,9 +1,9 @@
+import { set } from "date-fns";
 import { ReceiptText } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { deleteTransaction } from "../../services/financeServices";
 import type { Transaction } from "../../types/finance";
-import { set } from "date-fns";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -40,15 +40,14 @@ export default function TransactionsTable({
 			deleteTransaction(transactionId).catch((error) => {
 				toast.error(
 					`Failed to delete transaction #${transactionId}: ${error instanceof Error ? error.message : "Unknown error"}`,
-				);	
+				);
 			});
 			refetch();
 			setTimeout(() => {
-        window.location.reload();
-      }, 400);
-      toast.success(`Transaction #${transactionId} deleted successfully.`);
+				window.location.reload();
+			}, 400);
+			toast.success(`Transaction #${transactionId} deleted successfully.`);
 		}
-		
 	}
 
 	return (

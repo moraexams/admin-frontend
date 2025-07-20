@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
@@ -8,7 +9,6 @@ import {
 	verifyMark,
 } from "../../services/markservices";
 import { convertUTCToIST } from "../../services/utils";
-import toast from "react-hot-toast"
 // import type { SnackBarConfig } from "../../types/snackbar";
 
 const VerifyMarks = () => {
@@ -80,7 +80,7 @@ const VerifyMarks = () => {
 				setRefresh(!refresh);
 			})
 			.catch((error) => {
-				toast.error(error)
+				toast.error(error);
 				// showSnackBar(false, error);
 			});
 	};

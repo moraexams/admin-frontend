@@ -24,7 +24,7 @@ const SignIn: React.FC = () => {
 					setError(error);
 					setLoading(false);
 				});
-		}else if (username === "" || password === "") {
+		} else if (username === "" || password === "") {
 			setError("Please enter your username and password");
 			setLoading(false);
 		}

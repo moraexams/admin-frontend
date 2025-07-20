@@ -1,8 +1,20 @@
 import { useEffect, useRef, useState } from "react";
+import {
+	ROLE_DISTRICTS_COORDINATOR,
+	ROLE_EXAM_COORDINATOR,
+	ROLE_FINANCE_TEAM_MEMBER,
+	ROLE_MARKETING_COORDINATOR,
+	ROLE_NONE,
+	ROLE_PRESIDENT,
+	ROLE_SECRETARY,
+	ROLE_TREASURER,
+	ROLE_USER,
+	ROLE_VICE_PRESIDENT,
+	ROLE_VICE_SECRETARY,
+} from "../../common/roles";
 import { capitalize } from "../../common/utils";
 import { editUser } from "../../services/userService";
 import type { User } from "../../types/types";
-import { ROLE_DISTRICTS_COORDINATOR, ROLE_EXAM_COORDINATOR, ROLE_FINANCE_TEAM_MEMBER, ROLE_MARKETING_COORDINATOR, ROLE_NONE, ROLE_PRESIDENT, ROLE_SECRETARY, ROLE_TREASURER, ROLE_USER, ROLE_VICE_PRESIDENT, ROLE_VICE_SECRETARY } from "../../common/roles";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",

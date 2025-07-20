@@ -44,15 +44,13 @@ const AddFinanceRecord: React.FC = () => {
 			createdAt: getCurrentDateTime(),
 			paymentAccount: "cash",
 			amount: 0,
-			
-			
 		},
 	});
 
 	const [amountInput, setAmountInput] = useState("0");
 
 	useEffect(() => {
-		const parsed = parseFloat(amountInput);
+		const parsed = Number.parseFloat(amountInput);
 		setValue("amount", isNaN(parsed) ? 0 : parsed, { shouldValidate: true });
 	}, [amountInput, setValue]);
 
@@ -63,8 +61,6 @@ const AddFinanceRecord: React.FC = () => {
 			amount: 0,
 			createdAt: getCurrentDateTime(),
 			paymentAccount: watch("paymentAccount"),
-			
-		
 		});
 		setAmountInput("0");
 	};
@@ -119,7 +115,10 @@ const AddFinanceRecord: React.FC = () => {
 
 	return (
 		<DefaultLayout>
-			<Breadcrumb pageName="Add Transaction" dashboardPath="/finance/dashboard" />
+			<Breadcrumb
+				pageName="Add Transaction"
+				dashboardPath="/finance/dashboard"
+			/>
 			<div className="bg-white text-black p-6 shadow-md rounded-xl mt-8 dark:bg-boxdark dark:text-white">
 				<form
 					onSubmit={handleSubmit(onSubmit)}
@@ -160,7 +159,9 @@ const AddFinanceRecord: React.FC = () => {
 							))}
 						</select>
 						{errors.category && (
-							<span className="text-red-500 text-sm">{errors.category.message}</span>
+							<span className="text-red-500 text-sm">
+								{errors.category.message}
+							</span>
 						)}
 					</div>
 
@@ -190,7 +191,9 @@ const AddFinanceRecord: React.FC = () => {
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						{errors.amount && (
-							<span className="text-red-500 text-sm">{errors.amount.message}</span>
+							<span className="text-red-500 text-sm">
+								{errors.amount.message}
+							</span>
 						)}
 					</div>
 
@@ -212,7 +215,9 @@ const AddFinanceRecord: React.FC = () => {
 							))}
 						</select>
 						{errors.district && (
-							<span className="text-red-500 text-sm">{errors.district.message}</span>
+							<span className="text-red-500 text-sm">
+								{errors.district.message}
+							</span>
 						)}
 					</div>
 
@@ -228,7 +233,9 @@ const AddFinanceRecord: React.FC = () => {
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						{errors.createdAt && (
-							<span className="text-red-500 text-sm">{errors.createdAt.message}</span>
+							<span className="text-red-500 text-sm">
+								{errors.createdAt.message}
+							</span>
 						)}
 					</div>
 

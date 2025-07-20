@@ -17,7 +17,7 @@ export const getFinanceStats = async () => {
 	}
 };
 
-export const GetExpenseCategoryBreakdown = async () => {
+export const getExpenseCategoryBreakdown = async () => {
 	try {
 		const response = await axiosInstance.get("/finance/expense-breakdown");
 		return response.data;
@@ -93,15 +93,15 @@ export const addBillToTransaction = async (
 
 export const getAllBills = async (page?: number, pageSize?: number) => {
 	if (page !== undefined && pageSize !== undefined) {
-		return axiosInstance.get(
-			`/bill/all?page=${page}&pageSize=${pageSize}`,
-		);
+		return axiosInstance.get(`/bill/all?page=${page}&pageSize=${pageSize}`);
 	} else if (page !== undefined) {
 		return axiosInstance.get(`/bill/all?pageSize=${pageSize}`);
 	} else if (pageSize !== undefined) {
 		return axiosInstance.get(`/bill/all?page=${page}`);
 	} else {
-		return axiosInstance.get(`/bill/all?page=${page ?? 1}&pageSize=${pageSize ?? 10}`);
+		return axiosInstance.get(
+			`/bill/all?page=${page ?? 1}&pageSize=${pageSize ?? 10}`,
+		);
 	}
 };
 
@@ -118,7 +118,6 @@ export const addTransactionCategory = async (name: string) => {
 export const deleteTransactionCategory = async (id: string) => {
 	return axiosInstance.delete(`/transaction/categories/${id}`);
 };
-
 
 export const getAllTransactionDistricts = async () => {
 	return axiosInstance.get<Array<TransactionCategory>>("/district");
