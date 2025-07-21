@@ -12,18 +12,18 @@ After cloning the repository, create an `.env` file in the root directory. Use `
 
 ### Commands
 
-| Command                   | Action                                           |
-| ------------------------- | ------------------------------------------------ |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:5173`      |
-| `npm run build`           | Build the site for production (to `./dist/`)     |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run lint`            | Lints the code                                   |
-| `npm run lint-fix`        | Fixes linting issues                             |
+| Command            | Action                                       |
+| ------------------ | -------------------------------------------- |
+| `npm install`      | Installs dependencies                        |
+| `npm run dev`      | Starts local dev server at `localhost:5173`  |
+| `npm run build`    | Build the site for production (to `./dist/`) |
+| `npm run preview`  | Preview your build locally, before deploying |
+| `npm run lint`     | Lints the code                               |
+| `npm run lint-fix` | Fixes linting issues                         |
 
 ### Deployment
 
-The admin dashboard is deployed with Netlify on https://admin.moraexams.org.
+The admin dashboard is deployed with Netlify on https://manage.moraexams.org.
 
 ### Project structure
 
