@@ -1,21 +1,25 @@
-MIT License
+Mora Exams Exclusive Use License (Version 1.0)
 
-Copyright (c) 2023 MoraExams
+Copyright © 2025 Mora Exams
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software and all associated files (collectively referred to as "the Software") are proprietary and confidential.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+**License Grant:**
+Permission is granted to use, copy, modify, and operate the Software **solely and exclusively** for the purpose of operating, maintaining, developing, or testing the **Mora Exams** platform and related activities authorized by Mora Exams.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+**Strict Prohibitions:**
+- **No Other Use:** Any use of the Software for purposes unrelated to Mora Exams is strictly prohibited.
+- **No Redistribution:** The Software may not be shared, distributed, sublicensed, or disclosed to any third party in any form.
+- **No Commercial Use Outside Mora Exams:** Commercial exploitation of the Software in any context other than Mora Exams is strictly prohibited.
+- **No Derivative Works for Other Purposes:** Modifications or derivative works may only be made for Mora Exams use.
+- **Confidentiality:** The Software is confidential and proprietary. Unauthorized disclosure is prohibited.
+
+**Termination:**
+Violation of any terms in this license results in immediate and automatic termination of all granted rights.
+
+**Disclaimer:**
+The Software is provided "as is," without warranty of any kind, express or implied.
+
+For permissions beyond the scope of this license, contact:
+Mora Exams
+examsmora@gmail.com
