@@ -31,7 +31,7 @@ const FinanceDashboard: React.FC = () => {
 
 	let total = 0;
 	// Prepare Pie Chart Data
-	const expenseData = financeStats === null ? [] : financeStats.expense_category_breakdown.map((item) => {
+	const expenseData = financeStats === null || financeStats.expense_category_breakdown === null ? [] : financeStats.expense_category_breakdown.map((item) => {
 		total += item.amount;
 
 		return {
@@ -179,6 +179,11 @@ const FinanceDashboard: React.FC = () => {
 				</div>
 
 				{/* Last 5 Transactions */}
+				{
+					financeStats.recent_transactions === null || financeStats.recent_transactions.length === 0 ? (
+						null
+
+					) : (
 				<div className="bg-white p-6 rounded-lg shadow mt-10 dark:bg-boxdark dark:text-white">
 					<h2 className="text-xl font-bold mb-4 text-gray-800">
 						Last 5 Transactions
@@ -274,6 +279,9 @@ const FinanceDashboard: React.FC = () => {
 						))}
 					</ul>
 				</div>
+					)
+
+				}
 			</div>
 		</DefaultLayout>
 	);
