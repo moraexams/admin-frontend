@@ -124,7 +124,7 @@ const FinanceDashboard: React.FC = () => {
 									financeStats == null ? 0 : financeStats.total_expenses
 								}
 							/>
-							<Link to="/finance/districtexpenses">
+							<Link to="/finance/districts">
 								<SummaryCard
 									title="District Expenses"
 									value={getTotalDistrictExpenses()}

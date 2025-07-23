@@ -4,7 +4,7 @@ import DistrictExpensesTable from "../../components/Tables/DistrictExpenseTable"
 import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistricts } from "../../services/districtService";
 
-const DistrictExpenses = () => {
+const DistrictsSummary = () => {
 	const [districts, setDistricts] = useState<{ name: string }[]>([]);
 	useEffect(() => {
 		const fetchDistricts = async () => {
@@ -24,7 +24,7 @@ const DistrictExpenses = () => {
 	return (
 		<DefaultLayout>
 			<Breadcrumb
-				pageName="District Expenses"
+				pageName="District Summary"
 				dashboardPath="/finance/dashboard"
 			/>
 			<DistrictExpensesTable
@@ -39,7 +39,7 @@ const DistrictExpenses = () => {
 	);
 };
 
-export default DistrictExpenses;
+export default DistrictsSummary;
 function setError(_arg0: string) {
 	throw new Error("Function not implemented.");
 }

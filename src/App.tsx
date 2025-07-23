@@ -19,7 +19,7 @@ import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
 import AllTransactions from "./pages/Finance/AllTransactions";
 import BillGallery from "./pages/Finance/BillGallery";
 import FinanceDashboard from "./pages/Finance/Dashboard";
-import DistrictExpenses from "./pages/Finance/DistrictExpenses";
+import DistrictsSummary from "./pages/Finance/DistrictsSummary";
 import TransactionCategories from "./pages/Finance/TransactionCategories";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
@@ -241,11 +241,11 @@ function App() {
 					}
 				/>
 				<Route
-					path="/finance/districtexpenses"
+					path="/finance/districts"
 					element={
 						<>
-							<PageTitle title="District Expenses | MoraExams" />
-							<DistrictExpenses />
+							<PageTitle title="Districts Summary | MoraExams" />
+							<DistrictsSummary />
 						</>
 					}
 				/>
@@ -253,7 +253,7 @@ function App() {
 					path="/finance/billgallery"
 					element={
 						<>
-							<PageTitle title="District Expenses | MoraExams" />
+							<PageTitle title="Bills | MoraExams" />
 							<BillGallery />
 						</>
 					}
