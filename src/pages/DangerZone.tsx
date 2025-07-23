@@ -5,6 +5,8 @@ import {
 	dangerZonePageData,
 	startSendingIndexNoEmails,
 } from "../services/dangerzoneServices";
+import { downloadAttendanceSheets, generateAttendanceSheetPDFs } from "../services/attendanceSheetService";
+import toast from 'react-hot-toast';
 
 interface Feedback {
 	state: "success" | "error" | "loading";
@@ -89,6 +91,55 @@ const DangerZone = () => {
 							: "Start sending"}
 				</button>
 			</section>
+
+
+			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
+				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
+					Generate the Attendance sheets
+				</h2>
+				<p className="text-lg mb-3 max-w-prose col-start-1">
+					Can be re-generate and download. 
+					 After the verification process is completed, generate the attendance sheets for the exam centres.{" "}
+					{feedback == null || feedback.state === "loading" ? null : (
+						<span
+							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
+						>
+							{feedback.message}
+						</span>
+					)}
+				</p>
+				<button
+					type="button"
+					className={
+						"px-4 py-3 bg-meta-9 rounded-lg text-white font-medium col-start-1 h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2 disabled:bg-meta-9/50 disabled:hover:bg-meta-9/50 disabled:cursor-not-allowed hover:bg-meta-9/60 transition-colors"
+					}
+					disabled={
+						constants == null ||
+						feedback?.state === "loading"
+					}
+					onClick={async () => {
+						const toastId = toast.loading("Generating PDFs....");
+						{toastId}
+						// Dismiss after 2 minutes (120000 ms)
+						setTimeout(() => {
+							toast.dismiss(toastId);
+						}, 120000);
+
+						try {
+							await generateAttendanceSheetPDFs();
+							toast.success("Generating PDF process started!");
+							setFeedback(null);
+						} catch (error) {
+							toast.error(typeof error === "string" ? error : "Failed to generate attendance sheets");
+							setFeedback(null);
+						}
+					}}
+				>
+					{"Generate"}
+				</button>
+			</section>
+
+			
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">

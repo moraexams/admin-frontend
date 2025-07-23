@@ -29,6 +29,6 @@ export const downloadAttendanceSheets = async () => {
                 throw new Error(error.response?.data.message);
             }
         }
-        throw "An error occurred while download attendance sheet zip file";
+        throw "An error occurred while downloading attendance sheet zip file";
     }
 }
