@@ -118,13 +118,6 @@ const DangerZone = () => {
 						feedback?.state === "loading"
 					}
 					onClick={async () => {
-						const toastId = toast.loading("Generating PDFs....");
-						{toastId}
-						// Dismiss after 2 minutes (120000 ms)
-						setTimeout(() => {
-							toast.dismiss(toastId);
-						}, 120000);
-
 						try {
 							await generateAttendanceSheetPDFs();
 							toast.success("Generating PDF process started!");
