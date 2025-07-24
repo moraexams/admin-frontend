@@ -80,6 +80,7 @@ export interface ExpenseCategory {
 
 export interface FinanceStats {
 	stats: {
+		out_district_expense_total: number;
 		current_balance: {
 			cash: number;
 			bank: number;
