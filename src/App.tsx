@@ -241,7 +241,7 @@ function App() {
 					}
 				/>
 				<Route
-					path="/finance/districts"
+					path="/finance/districtexpenses"
 					element={
 						<>
 							<PageTitle title="Districts Summary | MoraExams" />
