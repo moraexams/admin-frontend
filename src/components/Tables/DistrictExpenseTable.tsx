@@ -75,7 +75,7 @@ const DistrictExpensesTable = ({ data }: DistrictExpensesTableProps) => {
 						onClick={() => handleSort("pending")}
 					>
 						<h5 className="text-sm font-bold uppercase xsm:text-base flex items-center gap-1">
-							Pending <span className="text-xs">{getArrow("pending")}</span>
+							Income <span className="text-xs">{getArrow("pending")}</span>
 						</h5>
 					</div>
 				</div>

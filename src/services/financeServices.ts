@@ -123,15 +123,14 @@ export const getDistrictFinanceStats = async (): Promise<
   try {
     const response = await axiosInstance.get("/finance/stats/districts");
 
-    // Backend returns: { districts: [...] }
     const districts = response.data.districts;
 
-    // Map backend fields to frontend expected structure
+    
     return districts.map((d: any) => ({
-      district: d.name,             // 'name' → 'district'
-      budget: d.total_income,       // 'total_income' → 'budget'
-      expense: d.total_expense,     // 'total_expense' → 'expense'
-      paid: 0,                     // No 'paid' in backend, set 0 or calculate if needed
+      district: d.name,             
+      budget: d.total_income,  
+      expense: d.total_expense,     
+      paid: 0,                     
     }));
   } catch (error) {
     console.error("Error fetching district finance stats:", error);
@@ -139,4 +138,4 @@ export const getDistrictFinanceStats = async (): Promise<
   }
 };
 
-// ... rest of your financeService code remains unchanged
+
