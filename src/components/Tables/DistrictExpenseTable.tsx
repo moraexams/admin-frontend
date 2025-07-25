@@ -96,10 +96,10 @@ const DistrictExpensesTable = ({ data }: DistrictExpensesTableProps) => {
 							<p className="text-black dark:text-white">{row.district}</p>
 						</div>
 						<div className="flex items-center p-2.5 xl:p-5">
-							<p className="text-meta-3">{row.expense}</p>
+							<p className="text-red-600">{row.expense}</p>
 						</div>
 						<div className="flex items-center p-2.5 xl:p-5">
-							<p className="text-meta-5">{row.pending}</p>
+							<p className="text-meta-3">{row.pending}</p>
 						</div>
 					</div>
 				))}
