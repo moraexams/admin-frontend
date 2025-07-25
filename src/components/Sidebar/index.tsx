@@ -192,7 +192,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 																<SidebarSubLink to="/finance/transactions">
 																	All Transactions
 																</SidebarSubLink>
-																<SidebarSubLink to="/finance/districtexpenses">
+																<SidebarSubLink to="/finance/districts">
 																	District Expenses
 																</SidebarSubLink>
 																<SidebarSubLink to="/finance/billgallery">
