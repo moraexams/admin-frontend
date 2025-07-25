@@ -108,3 +108,35 @@ export const getAllTransactionDistricts = async () => {
 export const deleteTransaction = async (id: string) => {
 	return axiosInstance.delete(`/transaction/${id}`);
 };
+
+
+
+
+export const getDistrictFinanceStats = async (): Promise<
+  Array<{
+    district: string;
+    budget: number;
+    expense: number;
+    paid: number;
+  }>
+> => {
+  try {
+    const response = await axiosInstance.get("/finance/stats/districts");
+
+    // Backend returns: { districts: [...] }
+    const districts = response.data.districts;
+
+    // Map backend fields to frontend expected structure
+    return districts.map((d: any) => ({
+      district: d.name,             // 'name' → 'district'
+      budget: d.total_income,       // 'total_income' → 'budget'
+      expense: d.total_expense,     // 'total_expense' → 'expense'
+      paid: 0,                     // No 'paid' in backend, set 0 or calculate if needed
+    }));
+  } catch (error) {
+    console.error("Error fetching district finance stats:", error);
+    throw error;
+  }
+};
+
+// ... rest of your financeService code remains unchanged

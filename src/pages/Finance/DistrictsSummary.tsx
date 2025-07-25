@@ -2,48 +2,56 @@ import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DistrictExpensesTable from "../../components/Tables/DistrictExpenseTable";
 import DefaultLayout from "../../layout/DefaultLayout";
-import { getDistricts } from "../../services/districtService";
+import { getDistrictFinanceStats } from "../../services/financeServices";
 
 const DistrictsSummary = () => {
-	const [districts, setDistricts] = useState<{ name: string }[]>([]);
-	useEffect(() => {
-		const fetchDistricts = async () => {
-			try {
-				const districts = await getDistricts();
-				setDistricts(districts);
-			} catch (error) {
-				setError("Failed to fetch districts");
-			} finally {
-				setLoading(false);
-			}
-		};
+  const [districtStats, setDistrictStats] = useState<
+    Array<{
+      district: string;
+      budget: number;
+      expense: number;
+      paid: number;
+    }>
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-		fetchDistricts();
-	}, []);
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getDistrictFinanceStats();
+        setDistrictStats(data);
+      } catch (err) {
+        setError("Failed to fetch district finance stats");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
 
-	return (
-		<DefaultLayout>
-			<Breadcrumb
-				pageName="District Summary"
-				dashboardPath="/finance/dashboard"
-			/>
-			<DistrictExpensesTable
-				data={districts.map((district, index) => ({
-					id: index + 1,
-					district: district.name, // Assuming each district object has a 'name' property
-					expense: Math.floor(Math.random() * 10000), // Replace with actual expense data
-					pending: Math.floor(Math.random() * 5000), // Replace with actual pending data
-				}))}
-			/>
-		</DefaultLayout>
-	);
+  return (
+    <DefaultLayout>
+      <Breadcrumb pageName="District Summary" dashboardPath="/finance/dashboard" />
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <DistrictExpensesTable
+          data={districtStats.map((d, index) => ({
+            id: index + 1,
+            district: d.district,
+            budget: d.budget,
+            expense: d.expense,
+            paid: d.paid,
+            pending: d.budget - d.paid,
+          }))}
+        />
+      )}
+    </DefaultLayout>
+  );
 };
 
 export default DistrictsSummary;
-function setError(_arg0: string) {
-	throw new Error("Function not implemented.");
-}
-
-function setLoading(_arg0: boolean) {
-	throw new Error("Function not implemented.");
-}
