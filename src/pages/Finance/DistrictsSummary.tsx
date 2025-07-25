@@ -20,6 +20,7 @@ const DistrictsSummary = () => {
     const fetchStats = async () => {
       try {
         const data = await getDistrictFinanceStats();
+        console.log(data);
         setDistrictStats(data);
       } catch (err) {
         setError("Failed to fetch district finance stats");
@@ -38,7 +39,9 @@ const DistrictsSummary = () => {
         <p>Loading...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
-      ) : (
+      ) : districtStats.length === 0 ? <p>
+        Add transactions to view district expenses.
+      </p> : (
         <DistrictExpensesTable
           data={districtStats.map((d, index) => ({
             id: index + 1,
