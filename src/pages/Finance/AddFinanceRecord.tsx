@@ -36,7 +36,7 @@ const AddFinanceRecord: React.FC = () => {
 		setValue,
 		reset,
 		watch,
-		formState: { errors, isSubmitting },
+		formState: { errors, isSubmitting, dirtyFields },
 	} = useForm<FinanceFormData>({
 		resolver: zodResolver(financeSchema),
 		defaultValues: {
@@ -190,11 +190,11 @@ const AddFinanceRecord: React.FC = () => {
 							}}
 							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
-						{errors.amount && (
+						{dirtyFields.amount && errors.amount ? (
 							<span className="text-red-500 text-sm">
 								{errors.amount.message}
 							</span>
-						)}
+						) : null}
 					</div>
 
 					{/* District */}
