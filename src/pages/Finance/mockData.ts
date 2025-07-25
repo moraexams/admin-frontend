@@ -151,7 +151,3 @@ export const getDistrictNameById = (districtId: string): string => {
 	const district = districts.find((d) => d.id === districtId);
 	return district ? district.name : "Unknown District";
 };
-
-export const getTotalDistrictExpenses = (): number => {
-	return districts.reduce((sum, district) => sum + district.spent, 0);
-};

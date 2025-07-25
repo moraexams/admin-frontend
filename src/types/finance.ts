@@ -87,8 +87,8 @@ export interface FinanceStats {
 		};
 		total_income: number;
 		total_expenses: number;
-	recent_transactions: Array<Transaction> | null;
-	expense_category_breakdown: Array<ExpenseCategory> | null;
+		recent_transactions: Array<Transaction> | null;
+		expense_category_breakdown: Array<ExpenseCategory> | null;
 	};
 }
 
