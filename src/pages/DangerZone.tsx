@@ -41,14 +41,34 @@ const DangerZone = () => {
 				This page includes actions that are irreversible.
 			</p>
 
-			<p className="mb-8 font-medium">
-				You are connected to moraexams backend @{" "}
+			<p className="mb-8 text-lg">
+				You are using{" "}
 				<a
-				className="underline text-blue-500"
+					className="underline text-blue-500 dark:text-blue-300"
+					href={`https://github.com/moraexams/admin-frontend/commit/${import.meta.env.VITE_GIT_COMMIT}`}
+					target="_blank"
+					rel="noreferrer"
+				>
+					admin-frontend @{import.meta.env.VITE_GIT_COMMIT.slice(0, 6)}
+				</a>{" "}
+				built on{" "}
+				<time dateTime={import.meta.env.BUILD_TIME} className="underline">
+					{new Date(import.meta.env.BUILD_TIME).toLocaleString("en-LK", {
+						year: "numeric",
+						month: "2-digit",
+						day: "2-digit",
+						hour: "2-digit",
+						minute: "2-digit",
+					})}
+				</time>{" "}
+				connected to{" "}
+				<a
+					className="underline text-blue-500 dark:text-blue-300"
 					href={`https://github.com/moraexams/backend/commit/${constants?.latest_git_commit}`}
 					target="_blank"
+					rel="noreferrer"
 				>
-				{constants?.latest_git_commit.slice(0, 6)}
+					backend @{constants?.latest_git_commit.slice(0, 6)}
 				</a>
 				{constants?.build_time ? (
 					<>
