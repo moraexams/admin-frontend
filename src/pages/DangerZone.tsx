@@ -45,11 +45,11 @@ const DangerZone = () => {
 				You are using{" "}
 				<a
 					className="underline text-blue-500 dark:text-blue-300"
-					href={`https://github.com/moraexams/admin-frontend/commit/${import.meta.env.VITE_GIT_COMMIT}`}
+					href={`https://github.com/moraexams/admin-frontend/commit/${import.meta.env.LATEST_GIT_COMMIT}`}
 					target="_blank"
 					rel="noreferrer"
 				>
-					admin-frontend @{import.meta.env.VITE_GIT_COMMIT.slice(0, 6)}
+					admin-frontend @{import.meta.env.LATEST_GIT_COMMIT.slice(0, 6)}
 				</a>{" "}
 				built on{" "}
 				<time dateTime={import.meta.env.BUILD_TIME} className="underline">
@@ -60,29 +60,34 @@ const DangerZone = () => {
 						hour: "2-digit",
 						minute: "2-digit",
 					})}
-				</time>{" "}
-				connected to{" "}
-				<a
-					className="underline text-blue-500 dark:text-blue-300"
-					href={`https://github.com/moraexams/backend/commit/${constants?.latest_git_commit}`}
-					target="_blank"
-					rel="noreferrer"
-				>
-					backend @{constants?.latest_git_commit.slice(0, 6)}
-				</a>
-				{constants?.build_time ? (
+				</time>
+				{constants?.latest_git_commit ? (
 					<>
 						{" "}
-						built on{" "}
-						<time dateTime={constants?.build_time} className="underline">
-							{new Date(constants?.build_time).toLocaleString("en-LK", {
-								year: "numeric",
-								month: "2-digit",
-								day: "2-digit",
-								hour: "2-digit",
-								minute: "2-digit",
-							})}
-						</time>
+						connected to{" "}
+						<a
+							className="underline text-blue-500 dark:text-blue-300"
+							href={`https://github.com/moraexams/backend/commit/${constants.latest_git_commit}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							backend @{constants.latest_git_commit.slice(0, 6)}
+						</a>
+						{constants?.build_time ? (
+							<>
+								{" "}
+								built on{" "}
+								<time dateTime={constants?.build_time} className="underline">
+									{new Date(constants?.build_time).toLocaleString("en-LK", {
+										year: "numeric",
+										month: "2-digit",
+										day: "2-digit",
+										hour: "2-digit",
+										minute: "2-digit",
+									})}
+								</time>
+							</>
+						) : null}
 					</>
 				) : null}
 				.
