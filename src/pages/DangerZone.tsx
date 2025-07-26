@@ -18,6 +18,8 @@ interface Feedback {
 
 interface DangerZoneConstants {
 	students_index_no_sending_process_started: string;
+	latest_git_commit: string;
+	build_time: string;
 }
 
 const DangerZone = () => {
@@ -35,8 +37,35 @@ const DangerZone = () => {
 	return (
 		<DefaultLayout>
 			<Breadcrumb pageName="Danger Zone" />
-			<p className="mb-8 font-bold text-lg">
+			<p className="font-bold text-lg">
 				This page includes actions that are irreversible.
+			</p>
+
+			<p className="mb-8 font-medium">
+				You are connected to moraexams backend @{" "}
+				<a
+				className="underline text-blue-500"
+					href={`https://github.com/moraexams/backend/commit/${constants?.latest_git_commit}`}
+					target="_blank"
+				>
+				{constants?.latest_git_commit.slice(0, 6)}
+				</a>
+				{constants?.build_time ? (
+					<>
+						{" "}
+						built on{" "}
+						<time dateTime={constants?.build_time} className="underline">
+							{new Date(constants?.build_time).toLocaleString("en-LK", {
+								year: "numeric",
+								month: "2-digit",
+								day: "2-digit",
+								hour: "2-digit",
+								minute: "2-digit",
+							})}
+						</time>
+					</>
+				) : null}
+				.
 			</p>
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
