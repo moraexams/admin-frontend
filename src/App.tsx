@@ -44,6 +44,11 @@ function App() {
 
 	useEffect(() => {
 		setTimeout(() => setLoading(false), 1000);
+	document.documentElement.classList.toggle(
+		"dark",
+		window.matchMedia("(prefers-color-scheme: dark)").matches
+	);
+
 	}, []);
 
 	return loading ? (

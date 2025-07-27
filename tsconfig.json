@@ -12,7 +12,10 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
-
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+		},
 		/* Linting */
 		"strict": true,
 		"noUnusedLocals": true,
@@ -20,5 +23,7 @@
 		"noFallthroughCasesInSwitch": true
 	},
 	"include": ["src", "src/lib.d.ts", "vite-env.d.ts"],
-	"references": [{ "path": "./tsconfig.node.json" }]
+	"references": [
+		{ "path": "./tsconfig.node.json" }
+	]
 }

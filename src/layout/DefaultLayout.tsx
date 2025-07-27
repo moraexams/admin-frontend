@@ -11,7 +11,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
 		<div>
 			<Toaster position="top-right" />
 			{/* <!-- ===== Page Wrapper Start ===== --> */}
-			<div className="flex h-screen overflow-hidden">
+			<div className="flex h-screen bg-background overflow-hidden">
 				{/* <!-- ===== Sidebar Start ===== --> */}
 				<Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 				{/* <!-- ===== Sidebar End ===== --> */}
