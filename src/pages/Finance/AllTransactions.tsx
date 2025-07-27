@@ -33,7 +33,7 @@ export default function Transactions() {
 
 	useEffect(() => {
 		fetchTransactions();
-	}, []);
+	}, [page, itemsPerPage]);
 
 	if (error) {
 		return (
