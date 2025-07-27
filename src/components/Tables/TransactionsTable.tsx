@@ -1,9 +1,9 @@
-import { set } from "date-fns";
 import { ReceiptText } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { deleteTransaction } from "../../services/financeServices";
 import type { Transaction } from "../../types/finance";
+import { CurrencyFormatter } from "../../services/utils";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -26,7 +26,6 @@ export default function TransactionsTable({
 	data,
 	page,
 	itemsPerPage,
-	refetch,
 }: TransactionsTableProps) {
 	const start = itemsPerPage * (page - 1) + 1;
 	const end = start - 1 + data.length;
@@ -99,7 +98,7 @@ export default function TransactionsTable({
 											className={`${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}
 										>
 											{transaction.type === "income" ? "+" : "-"}
-											{transaction.amount.toFixed(2)}
+											{CurrencyFormatter.format(transaction.amount)}
 										</p>
 									</td>
 									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

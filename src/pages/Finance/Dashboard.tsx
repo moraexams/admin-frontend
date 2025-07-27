@@ -16,6 +16,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import { getFinanceStats } from "../../services/financeServices";
 import type { FinanceStats } from "../../types/finance";
 import { getDistrictNameById } from "./mockData";
+import { CurrencyFormatter } from "../../services/utils";
 
 const FinanceDashboard: React.FC = () => {
 	const [financeStats, setFinanceStats] = useState<
@@ -190,7 +191,7 @@ const FinanceDashboard: React.FC = () => {
 									{/* Desktop layout */}
 									<div
 										className="hidden sm:grid items-center gap-4"
-										style={{ gridTemplateColumns: "110px 1fr 140px 100px" }}
+										style={{ gridTemplateColumns: "auto 1fr auto auto" }}
 									>
 										{/* Date with Dot */}
 										<div className="flex items-center space-x-2 text-sm text-gray-500">
@@ -225,8 +226,8 @@ const FinanceDashboard: React.FC = () => {
 													: "text-red-600"
 											}`}
 										>
-											{txn.type === "income" ? "+" : "-"}$
-											{txn.amount.toFixed(2)}
+											{txn.type === "income" ? "+" : "-"}
+											{CurrencyFormatter.format(txn.amount)}
 										</div>
 									</div>
 
