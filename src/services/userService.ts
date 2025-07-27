@@ -31,7 +31,15 @@ export const editUser = async (user: User) => {
 		const response = await axiosInstance.put(`/user/${user.id}`, user);
 		return response.data;
 	} catch (error) {
-		console.error("Error approving user:", error);
-		return error;
+		console.error("Error editing users:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "Only tech coordinator can edit users.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
 	}
 };

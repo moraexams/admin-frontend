@@ -1,6 +1,12 @@
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
+export const LOCAL_STORAGE__TOKEN = "token";
+export const LOCAL_STORAGE__USER = "user";
+export const LOCAL_STORAGE__USERNAME = "username";
+export const LOCAL_STORAGE__ROLE = "role";
+export const LOCAL_STORAGE__USER_ID = "user_id";
+
 export const login = async (username: string, password: string) => {
 	try {
 		const response = await axiosInstance.post("/auth/login", {
@@ -9,11 +15,11 @@ export const login = async (username: string, password: string) => {
 		});
 		const token = response.data.token;
 		const user = response.data.user;
-		localStorage.setItem("token", token);
-		localStorage.setItem("user", JSON.stringify(user));
-		localStorage.setItem("username", user.username);
-		localStorage.setItem("role", user.role);
-		localStorage.setItem("user_id", user.id);
+		localStorage.setItem(LOCAL_STORAGE__TOKEN, token);
+		localStorage.setItem(LOCAL_STORAGE__USER, JSON.stringify(user));
+		localStorage.setItem(LOCAL_STORAGE__USERNAME, user.username);
+		localStorage.setItem(LOCAL_STORAGE__ROLE, user.role);
+		localStorage.setItem(LOCAL_STORAGE__USER_ID, user.id);
 		return true;
 	} catch (error: unknown) {
 		console.error("Error logging in:", error);
