@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DistrictExpensesTable from "../../components/Tables/DistrictExpenseTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictFinanceStats } from "../../services/financeServices";
 
 const DistrictsSummary = () => {
@@ -32,7 +31,7 @@ const DistrictsSummary = () => {
 	}, []);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb
 				pageName="District Summary"
 				dashboardPath="/finance/dashboard"
@@ -56,7 +55,7 @@ const DistrictsSummary = () => {
 					}))}
 				/>
 			)}
-		</DefaultLayout>
+		</>
 	);
 };
 

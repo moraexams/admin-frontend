@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import Table from "../../components/Table";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	addTransactionCategory,
 	getAllTransactionCategories,
@@ -51,7 +50,7 @@ export default function TransactionCategories() {
 	};
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb
 				pageName="Transaction Categories"
 				dashboardPath="/finance/dashboard"
@@ -82,6 +81,6 @@ export default function TransactionCategories() {
 					)
 					.map((log) => [log.id, log.name])}
 			/>
-		</DefaultLayout>
+		</>
 	);
 }

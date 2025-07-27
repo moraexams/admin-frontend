@@ -1,7 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import CardDataStats from "../components/CardDataStats";
-import DefaultLayout from "../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../services/districtService";
 import {
 	getStatCounts,
@@ -79,7 +78,7 @@ const Dashboard: React.FC = () => {
 	}
 
 	return (
-		<DefaultLayout>
+		<>
 			{/* <div>
         <h1 className="text-3xl font-semibold text-primary">Dashboard on progress...</h1>
       </div> */}
@@ -362,7 +361,7 @@ const Dashboard: React.FC = () => {
 					</div>
 				</>
 			)}
-		</DefaultLayout>
+		</>
 	);
 };
 

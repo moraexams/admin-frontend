@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import StudentMarksTable from "../../components/Tables/StudentMarksTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import { getStreams } from "../../services/streamServices";
 import { getStudentMarksByCentre } from "../../services/studentService";
@@ -61,7 +60,7 @@ const StudentMarksCentreWise = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Student Marks" />
 			<div className="flex flex-wrap gap-x-4">
 				<div className="mb-5.5">
@@ -153,7 +152,7 @@ const StudentMarksCentreWise = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

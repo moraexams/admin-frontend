@@ -3,7 +3,6 @@ import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import TransactionsTable from "../../components/Tables/TransactionsTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getTransactions } from "../../services/financeServices";
 import type { Transaction } from "../../types/finance";
 
@@ -47,7 +46,7 @@ export default function Transactions() {
 	}
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Transactions" dashboardPath="/finance/dashboard" />
 
 			<div className="mb-5.5 flex justify-between">
@@ -112,6 +111,6 @@ export default function Transactions() {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 }

@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { enterMark, getStudentMarksData } from "../../services/markservices";
 
 const EnterMarks = () => {
@@ -146,7 +145,7 @@ const EnterMarks = () => {
 	// };
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Enter Marks" />
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div>
@@ -335,7 +334,7 @@ const EnterMarks = () => {
 			</div>
 
 			{/* <Snackbar config={snackBarConfig} /> */}
-		</DefaultLayout>
+		</>
 	);
 };
 

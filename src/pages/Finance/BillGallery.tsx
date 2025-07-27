@@ -2,7 +2,6 @@ import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getAllBills } from "../../services/financeServices";
 
 type ImageItem = {
@@ -59,7 +58,7 @@ const Gallery: React.FC = () => {
 	);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Bill Gallery" dashboardPath="/finance/dashboard" />
 			<div className="min-h-screen bg-gray-50 dark:bg-boxdark p-6">
 				<div className="max-w-5xl mx-auto">
@@ -169,7 +168,7 @@ const Gallery: React.FC = () => {
 					</div>
 				</div>
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

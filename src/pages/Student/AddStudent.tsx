@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import { getCenters } from "../../services/examCentreService";
 import { getStreams } from "../../services/streamServices";
@@ -127,7 +126,7 @@ const AddStudent = () => {
 	// 	}, 1000);
 	// };
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Add Student" />
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -337,7 +336,7 @@ const AddStudent = () => {
 			</div>
 
 			{/* <Snackbar config={snackBarConfig} /> */}
-		</DefaultLayout>
+		</>
 	);
 };
 

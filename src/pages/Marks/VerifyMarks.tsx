@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	getStudentVerificationMarksData,
 	verifyMark,
@@ -139,7 +138,7 @@ const VerifyMarks = () => {
 	};
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Verify Marks" />
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div>
@@ -381,7 +380,7 @@ const VerifyMarks = () => {
 			</div>
 
 			{/* <Snackbar config={snackBarConfig} /> */}
-		</DefaultLayout>
+		</>
 	);
 };
 

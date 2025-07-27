@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import ExamPaperDistributionTable from "../../components/Tables/ExamPaperDistributionTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistributions } from "../../services/distributionService";
 import type { District } from "../../types/types";
 
@@ -30,7 +29,7 @@ const ExamPaperDistributionTableView = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Exam Paper Distribution Table View" />
 
 			<div className="flex gap-4">
@@ -70,7 +69,7 @@ const ExamPaperDistributionTableView = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

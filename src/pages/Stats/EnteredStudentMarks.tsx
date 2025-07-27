@@ -1,7 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import {
 	getEnteredMarksStatsByCentre,
@@ -62,7 +61,7 @@ const EnteredStudentMarks: React.FC = () => {
 	}
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Entered Mark Stats" />
 			{loading ? (
 				<div>Loading...</div>
@@ -291,7 +290,7 @@ const EnteredStudentMarks: React.FC = () => {
 					</div>
 				</>
 			)}
-		</DefaultLayout>
+		</>
 	);
 };
 

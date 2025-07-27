@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
-import DefaultLayout from "../../layout/DefaultLayout";
+
 import {
 	getStudentbyIndex,
 	verifyStudent,
@@ -59,7 +59,7 @@ const VerifyStudent = () => {
 	// 	}, 1000);
 	// };
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Verify Student" />
 			<div className="w-full min-h-[75vh] rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div className="flex items-center justify-center gap-4 flex-col md:flex-row">
@@ -168,7 +168,7 @@ const VerifyStudent = () => {
 			</div>
 
 			{/* <Snackbar config={snackBarConfig} /> */}
-		</DefaultLayout>
+		</>
 	);
 };
 

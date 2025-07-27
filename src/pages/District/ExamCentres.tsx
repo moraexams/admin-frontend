@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import ExamCentresTable from "../../components/Tables/ExamCentresTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import type { District } from "../../types/types";
 
@@ -30,7 +29,7 @@ const Districts = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Exam Centres" />
 
 			<div className="flex gap-4">
@@ -70,7 +69,7 @@ const Districts = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

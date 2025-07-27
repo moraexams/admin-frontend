@@ -4,7 +4,6 @@ import ReactPaginate from "react-paginate";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import PaginationPageSizeSelector from "../components/PaginationPageSizeSelector";
 import Table from "../components/Table";
-import DefaultLayout from "../layout/DefaultLayout";
 import { type AuditLogItem, getAuditLogs } from "../services/auditLogService";
 
 export default function AuditLogs() {
@@ -26,7 +25,7 @@ export default function AuditLogs() {
 	}, [currentPage, pageSize]);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Audit Logs" />
 
 			<div className="mb-5.5 flex justify-between">
@@ -81,6 +80,6 @@ export default function AuditLogs() {
 					log.entity_id,
 				])}
 			/>
-		</DefaultLayout>
+		</>
 	);
 }

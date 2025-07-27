@@ -3,7 +3,6 @@ import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import UsersTable from "../components/Tables/UsersTable";
-import DefaultLayout from "../layout/DefaultLayout";
 import { getUsers } from "../services/userService";
 import type { User } from "../types/types";
 
@@ -47,7 +46,7 @@ const Users = () => {
 	}
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Users" />
 
 			<div className="mb-5.5 flex justify-between">
@@ -112,7 +111,7 @@ const Users = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

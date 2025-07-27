@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getStudents } from "../../services/studentService";
 import type { Student } from "../../types/types";
-
 import ReactPaginate from "react-paginate";
 import StudentTable from "../../components/Tables/StudentTable";
 
@@ -40,7 +38,7 @@ const Students = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Students" />
 			<div className="flex gap-4 mb-3 items-center">
 				<select
@@ -108,7 +106,7 @@ const Students = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

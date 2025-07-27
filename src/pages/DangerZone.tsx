@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../layout/DefaultLayout";
 import {
 	downloadAttendanceSheets,
 	generateAttendanceSheetPDFs,
@@ -35,7 +34,7 @@ const DangerZone = () => {
 	}, []);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Danger Zone" />
 			<p className="font-bold text-lg">
 				This page includes actions that are irreversible.
@@ -251,7 +250,7 @@ const DangerZone = () => {
 					Finalize
 				</button>
 			</section>
-		</DefaultLayout>
+		</>
 	);
 };
 

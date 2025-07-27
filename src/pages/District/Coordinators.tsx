@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CoordinatorsTable from "../../components/Tables/CoordinatorsTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCoordinators } from "../../services/districtService";
 import type { District } from "../../types/types";
 
@@ -32,7 +31,7 @@ const Coordinators = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Coordinators" />
 
 			<div className="flex gap-4">
@@ -72,7 +71,7 @@ const Coordinators = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

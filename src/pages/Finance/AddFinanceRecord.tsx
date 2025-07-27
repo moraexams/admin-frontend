@@ -8,7 +8,6 @@ import { capitalize } from "../../common/utils";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	addTransaction,
 	getAllTransactionCategories,
@@ -116,7 +115,7 @@ const AddFinanceRecord: React.FC = () => {
 	}, []);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb
 				pageName="Add Transaction"
 				dashboardPath="/finance/dashboard"
@@ -291,7 +290,7 @@ const AddFinanceRecord: React.FC = () => {
 					</div>
 				</form>
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

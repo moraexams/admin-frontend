@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import ExamPaperDistributionCard from "../../components/Cards/ExamPaperDistributionCard";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistributions } from "../../services/distributionService";
 import type { District } from "../../types/types";
 
@@ -34,7 +33,7 @@ const ExamPaperDistributionCardView = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Exam Paper Distribution Card View" />
 			<div className="flex flex-wrap gap-x-4">
 				<div className="mb-5.5">
@@ -84,7 +83,7 @@ const ExamPaperDistributionCardView = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

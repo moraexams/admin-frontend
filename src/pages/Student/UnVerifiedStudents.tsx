@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import UnVerifiedStudentTable from "../../components/Tables/UnVerifiedStudentTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getUnVerifiedStudents } from "../../services/studentService";
 import { getUsers } from "../../services/userService";
 import type { Student, User } from "../../types/types";
@@ -53,7 +52,7 @@ const UnVerifiedStudents = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Students" />
 			<div className="flex gap-4">
 				<div className="mb-5.5">
@@ -111,7 +110,7 @@ const UnVerifiedStudents = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

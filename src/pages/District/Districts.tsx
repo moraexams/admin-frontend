@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DistrictsTable from "../../components/Tables/DistrictsTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistricts } from "../../services/districtService";
 import type { District } from "../../types/types";
 
@@ -29,7 +28,7 @@ const Districts = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Districts" />
 
 			<div className="mb-5.5">
@@ -56,7 +55,7 @@ const Districts = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

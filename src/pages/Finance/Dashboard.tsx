@@ -12,7 +12,6 @@ import {
 	Tooltip,
 } from "recharts";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getFinanceStats } from "../../services/financeServices";
 import type { FinanceStats } from "../../types/finance";
 import { getDistrictNameById } from "./mockData";
@@ -49,7 +48,7 @@ const FinanceDashboard: React.FC = () => {
 	console.log(financeStats);
 	if (financeStats == null) {
 		return (
-			<DefaultLayout>
+			<>
 				<div className="py-6">
 					{/* Header */}
 					<div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
@@ -70,12 +69,12 @@ const FinanceDashboard: React.FC = () => {
 						</div>
 					</div>
 				</div>
-			</DefaultLayout>
+			</>
 		);
 	}
 
 	return (
-		<DefaultLayout>
+		<>
 			<div className="py-6">
 				{/* Header */}
 				<div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
@@ -276,7 +275,7 @@ const FinanceDashboard: React.FC = () => {
 					</div>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

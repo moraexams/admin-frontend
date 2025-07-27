@@ -9,7 +9,6 @@ import { type FileWithPath, useDropzone } from "react-dropzone";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	addBillToTransaction,
 	getTransaction,
@@ -57,19 +56,19 @@ export default function AddBill() {
 
 	if (transaction === undefined) {
 		return (
-			<DefaultLayout>
+			<>
 				<Breadcrumb pageName="Add Bill" />
 				<div>Loading...</div>
-			</DefaultLayout>
+			</>
 		);
 	}
 
 	if (transaction == null) {
 		return (
-			<DefaultLayout>
+			<>
 				<Breadcrumb pageName="Add Bill" />
 				<div>Invalid transaction id.</div>
-			</DefaultLayout>
+			</>
 		);
 	}
 
@@ -114,7 +113,7 @@ export default function AddBill() {
 	};
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Add Bill" dashboardPath="/finance/dashboard" />
 			<Toaster position="top-right" />
 			<p>You are adding a bill relating to the below transaction.</p>
@@ -216,6 +215,6 @@ export default function AddBill() {
 					</button>
 				</div>
 			</form>
-		</DefaultLayout>
+		</>
 	);
 }
