@@ -141,12 +141,6 @@ export const templates: Template[] = [
 	},
 ];
 
-export const getRecentTransactions = (limit = 5): Transaction[] => {
-	return [...transactions]
-		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-		.slice(0, limit);
-};
-
 export const getDistrictNameById = (districtId: string): string => {
 	const district = districts.find((d) => d.id === districtId);
 	return district ? district.name : "Unknown District";
