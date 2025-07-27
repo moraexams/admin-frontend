@@ -68,11 +68,11 @@ const VerifyStudent = () => {
 						value={indexNo}
 						onChange={(e) => setIndexNo(Number(e.target.value))}
 						placeholder="Enter Index No"
-						className="rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+						className="rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 					/>
 					<button
 						onClick={searchStudent}
-						className="block rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+						className="block rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 					>
 						Search Student
 					</button>
@@ -152,7 +152,7 @@ const VerifyStudent = () => {
 								<div className="flex items-center justify-center gap-4 flex-col md:flex-row">
 									<button
 										onClick={handleVerifyStudent}
-										className="block rounded border border-success bg-success p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+										className="block rounded-sm border border-success bg-success p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 									>
 										Verify Student
 									</button>

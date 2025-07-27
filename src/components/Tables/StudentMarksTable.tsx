@@ -73,7 +73,7 @@ const StudentMarksTable = ({
 	};
 
 	return (
-		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+		<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
 					<thead>
@@ -244,7 +244,7 @@ const StudentMarksTable = ({
 						previousLabel="<"
 						renderOnZeroPageCount={null}
 						containerClassName={
-							"isolate inline-flex -space-x-px rounded-md shadow-sm"
+							"isolate inline-flex -space-x-px rounded-md shadow-xs"
 						}
 						pageLinkClassName={
 							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -253,7 +253,7 @@ const StudentMarksTable = ({
 							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						activeLinkClassName={
-							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 						}
 						previousLinkClassName={
 							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -273,13 +273,13 @@ const StudentMarksTable = ({
 					<h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
 						View Student Marks
 					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary"></span>
+					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary"></span>
 					<div className="mb-4">
 						{studentMark && (
 							<>
 								<div className="sm:hidden mb-5.5">
 									<select
-										className="w-full rounded-lg border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+										className="w-full rounded-lg border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 										name="selectStream"
 										id="selectStream"
 										value={viewSection}
@@ -644,7 +644,7 @@ const StudentMarksTable = ({
 						<div className="w-full px-3 2xsm:w-1/2">
 							<button
 								onClick={() => setModalOpen(false)}
-								className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+								className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 							>
 								Close
 							</button>
@@ -652,7 +652,7 @@ const StudentMarksTable = ({
 						<div className="w-full px-3 2xsm:w-1/2">
 							<button
 								onClick={() => studentMark && handleEdit(studentMark?.index_no)}
-								className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+								className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 							>
 								Edit
 							</button>

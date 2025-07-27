@@ -134,7 +134,7 @@ const UsersTable = ({
 							</label>
 							<p>Controls how much the user can do.</p>
 							<select
-								className="rounded border border-stroke bg-white py-2 px-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary cursor-pointer col-start-2 row-start-1 row-span-2"
+								className="rounded border border-stroke bg-white py-2 px-3 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary cursor-pointer col-start-2 row-start-1 row-span-2"
 								id="select-role"
 								value={selectedUser.role}
 								onChange={(e) => {
@@ -170,7 +170,7 @@ const UsersTable = ({
 					</>
 				)}
 			</dialog>
-			<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+			<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 				<div className="max-w-full overflow-x-auto">
 					<table className="w-full table-auto">
 						<thead>

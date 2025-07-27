@@ -132,7 +132,7 @@ const FinanceDashboard: React.FC = () => {
 
 					{/* Donut Chart */}
 					{expenseData.length === 0 ? null : (
-						<div className="bg-white p-6 rounded-lg shadow dark:bg-boxdark">
+						<div className="bg-white p-6 rounded-lg shadow-sm dark:bg-boxdark">
 							<h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
 								Expense Breakdown
 							</h2>
@@ -178,7 +178,7 @@ const FinanceDashboard: React.FC = () => {
 				{/* Last 5 Transactions */}
 				{financeStats.recent_transactions === null ||
 				financeStats.recent_transactions.length === 0 ? null : (
-					<div className="bg-white p-6 rounded-lg shadow mt-10 dark:bg-boxdark dark:text-white">
+					<div className="bg-white p-6 rounded-lg shadow-sm mt-10 dark:bg-boxdark dark:text-white">
 						<h2 className="text-xl font-bold mb-4 text-gray-800">
 							Last 5 Transactions
 						</h2>

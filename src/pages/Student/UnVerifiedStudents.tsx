@@ -58,7 +58,7 @@ const UnVerifiedStudents = () => {
 			<div className="flex gap-4">
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectItemsPerPage"
 						id="selectItemsPerPage"
 						value={itemsPerPage}
@@ -73,7 +73,7 @@ const UnVerifiedStudents = () => {
 
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectDistrict"
 						id="selectDistrict"
 						value={user.toString()}
@@ -95,7 +95,7 @@ const UnVerifiedStudents = () => {
 						value={searchKey}
 						onChange={(e) => setSearchKey(e.target.value)}
 						placeholder="Search..."
-						className="w-full rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+						className="w-full rounded-sm border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 					/>
 				</div>
 			</div>

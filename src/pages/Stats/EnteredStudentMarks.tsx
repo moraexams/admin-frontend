@@ -68,7 +68,7 @@ const EnteredStudentMarks: React.FC = () => {
 				<div>Loading...</div>
 			) : (
 				<>
-					<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-4 xl:mt-6 2xl:mt-7.5">
+					<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-4 xl:mt-6 2xl:mt-7.5">
 						<div>
 							<div className="mb-6">
 								<h2 className="text-xl font-semibold text-black dark:text-white">
@@ -158,7 +158,7 @@ const EnteredStudentMarks: React.FC = () => {
 							</div>
 						</div>
 					</div>
-					<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-4 xl:mt-6 2xl:mt-7.5 mb-6">
+					<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-4 xl:mt-6 2xl:mt-7.5 mb-6">
 						<div>
 							<div className="mb-6">
 								<h2 className="text-xl font-semibold text-black dark:text-white">
@@ -168,7 +168,7 @@ const EnteredStudentMarks: React.FC = () => {
 							<div className="flex flex-wrap gap-x-4">
 								<div className="mb-5.5">
 									<select
-										className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+										className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 										name="selectDistrict"
 										id="selectDistrict"
 										value={district.toString()}
@@ -187,7 +187,7 @@ const EnteredStudentMarks: React.FC = () => {
 								</div>
 								<div className="mb-5.5">
 									<select
-										className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+										className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 										name="selectCentre"
 										id="selectCentre"
 										value={centre.toString()}

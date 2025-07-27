@@ -8,7 +8,7 @@ import type {
 
 const CoordinatorCard = ({ coordinator }: { coordinator: Coordinator }) => {
 	return (
-		<div className="min-w-40 rounded-sm border border-stroke bg-white dark:bg-boxdark p-4 shadow-default transition duration-300 ease-in-out">
+		<div className="min-w-40 rounded-xs border border-stroke bg-white dark:bg-boxdark p-4 shadow-default transition duration-300 ease-in-out">
 			<h3 className="text-lg font-bold text-black dark:text-white">
 				{coordinator.name}
 			</h3>

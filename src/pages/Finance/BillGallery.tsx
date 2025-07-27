@@ -67,7 +67,7 @@ const Gallery: React.FC = () => {
 						<select
 							value={category}
 							onChange={(e) => setCategory(e.target.value)}
-							className="w-full md:w-1/3 rounded border border-stroke bg-white py-2 px-4 text-black focus:border-primary focus:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
+							className="w-full md:w-1/3 rounded-sm border border-stroke bg-white py-2 px-4 text-black focus:border-primary focus:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white"
 						>
 							{categories.map((cat) => (
 								<option key={cat} value={cat}>
@@ -81,13 +81,13 @@ const Gallery: React.FC = () => {
 							placeholder="Search by description..."
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
-							className="w-full md:flex-1 rounded border border-stroke bg-white py-2 px-4 text-black focus:border-primary focus:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white"
+							className="w-full md:flex-1 rounded-sm border border-stroke bg-white py-2 px-4 text-black focus:border-primary focus:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white"
 						/>
 					</div>
 
 					<div className="mb-5.5 flex justify-between">
 						<select
-							className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+							className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 							name="selectDoctor"
 							id="selectDoctor"
 							value={itemsPerPage}
@@ -114,7 +114,7 @@ const Gallery: React.FC = () => {
 							previousLabel="<"
 							renderOnZeroPageCount={null}
 							containerClassName={
-								"isolate inline-flex -space-x-px rounded-md shadow-sm"
+								"isolate inline-flex -space-x-px rounded-md shadow-xs"
 							}
 							pageLinkClassName={
 								"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -123,7 +123,7 @@ const Gallery: React.FC = () => {
 								"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 							}
 							activeLinkClassName={
-								"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+								"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 							}
 							previousLinkClassName={
 								"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"

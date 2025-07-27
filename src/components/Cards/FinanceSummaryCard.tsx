@@ -8,7 +8,7 @@ interface SummaryCardProps {
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ title, value }) => {
 	return (
-		<div className="bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-md dark:bg-boxdark dark:text-white">
+		<div className="bg-white rounded-xl shadow-xs p-6 transition-all hover:shadow-md dark:bg-boxdark dark:text-white">
 			<div className="flex justify-between items-start">
 				<div>
 					<h3 className="text-gray-500 text-sm font-medium mb-5">{title}</h3>

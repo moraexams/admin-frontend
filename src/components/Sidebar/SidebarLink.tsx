@@ -15,7 +15,7 @@ export default function SidebarLink(props: PropsWithChildren<Props>) {
 	return (
 		<NavLink
 			to={to}
-			className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
+			className={`group relative flex items-center gap-2.5 rounded-xs py-2 px-4 font-medium duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
 				isActive ? "bg-graydark text-white dark:bg-meta-4" : ""
 			}`}
 			{...otherProps}

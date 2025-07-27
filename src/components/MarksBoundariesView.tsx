@@ -121,7 +121,7 @@ export const MarksBoundariesView = () => {
 									<td>
 										<input
 											type="number"
-											className="border border-gray-300 rounded px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
+											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
 											value={boundary.forA}
 											onChange={updateBoundary.bind(
 												null,
@@ -133,7 +133,7 @@ export const MarksBoundariesView = () => {
 									<td>
 										<input
 											type="number"
-											className="border border-gray-300 rounded px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
+											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
 											value={boundary.forB}
 											onChange={updateBoundary.bind(
 												null,
@@ -145,7 +145,7 @@ export const MarksBoundariesView = () => {
 									<td>
 										<input
 											type="number"
-											className="border border-gray-300 rounded px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
+											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
 											value={boundary.forC}
 											onChange={updateBoundary.bind(
 												null,
@@ -157,7 +157,7 @@ export const MarksBoundariesView = () => {
 									<td>
 										<input
 											type="number"
-											className="border border-gray-300 rounded px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
+											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
 											value={boundary.forS}
 											onChange={updateBoundary.bind(
 												null,
@@ -171,7 +171,7 @@ export const MarksBoundariesView = () => {
 						</tbody>
 					</table>
 					<button
-						className="block w-fit ml-auto mt-5 rounded border border-primary bg-primary hover:bg-primary/90 py-2 px-3 text-center font-medium text-white transition disabled:opacity-50"
+						className="block w-fit ml-auto mt-5 rounded-sm border border-primary bg-primary hover:bg-primary/90 py-2 px-3 text-center font-medium text-white transition disabled:opacity-50"
 						type="button"
 						onClick={syncBoundaryValues}
 						disabled={!canUpdate}

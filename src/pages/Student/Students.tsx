@@ -44,7 +44,7 @@ const Students = () => {
 			<Breadcrumb pageName="Students" />
 			<div className="flex gap-4 mb-3 items-center">
 				<select
-					className="rounded border border-stroke h-full bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+					className="rounded border border-stroke h-full bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 					name="selectItemsPerPage"
 					id="selectItemsPerPage"
 					value={itemsPerPage}
@@ -60,7 +60,7 @@ const Students = () => {
 					value={searchKey}
 					onChange={(e) => setSearchKey(e.target.value)}
 					placeholder="Search..."
-					className="mr-auto w-full max-w-96 rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+					className="mr-auto w-full max-w-96 rounded-sm border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 				/>
 				<ReactPaginate
 					breakLabel="..."
@@ -74,7 +74,7 @@ const Students = () => {
 					previousLabel="<"
 					renderOnZeroPageCount={null}
 					containerClassName={
-						"isolate inline-flex -space-x-px rounded-md shadow-sm"
+						"isolate inline-flex -space-x-px rounded-md shadow-xs"
 					}
 					pageLinkClassName={
 						"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -83,7 +83,7 @@ const Students = () => {
 						"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 					}
 					activeLinkClassName={
-						"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+						"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 					}
 					previousLinkClassName={
 						"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"

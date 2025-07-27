@@ -9,7 +9,7 @@ export default function PaginationPageSizeSelector(props: Props) {
 
 	return (
 		<select
-			className="cursor-pointer rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+			className="cursor-pointer rounded-sm border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 			name={id}
 			id={id}
 			value={props.value}
