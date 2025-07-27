@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import StudentTable from "../../components/Tables/StudentTable";
 import { getStudents } from "../../services/studentService";
 import type { Student } from "../../types/types";
-import ReactPaginate from "react-paginate";
-import StudentTable from "../../components/Tables/StudentTable";
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);

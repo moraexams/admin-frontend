@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import { getStudentsByCentre } from "../../services/studentService";
-import type { District, Student } from "../../types/types";
 import StudentTable from "../../components/Tables/StudentTable";
 import { getDistrictsWithCentres } from "../../services/districtService";
+import { getStudentsByCentre } from "../../services/studentService";
+import type { District, Student } from "../../types/types";
 
 const StudentsCentreWise = () => {
 	const [students, setStudents] = useState<Student[]>([]);

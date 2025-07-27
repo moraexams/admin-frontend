@@ -13,9 +13,9 @@ import {
 } from "recharts";
 import SummaryCard from "../../components/Cards/FinanceSummaryCard";
 import { getFinanceStats } from "../../services/financeServices";
+import { CurrencyFormatter } from "../../services/utils";
 import type { FinanceStats } from "../../types/finance";
 import { getDistrictNameById } from "./mockData";
-import { CurrencyFormatter } from "../../services/utils";
 
 const FinanceDashboard: React.FC = () => {
 	const [financeStats, setFinanceStats] = useState<

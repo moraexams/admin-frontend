@@ -2,8 +2,8 @@ import { ReceiptText } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { deleteTransaction } from "../../services/financeServices";
-import type { Transaction } from "../../types/finance";
 import { CurrencyFormatter } from "../../services/utils";
+import type { Transaction } from "../../types/finance";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
