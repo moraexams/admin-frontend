@@ -16,6 +16,7 @@ import { getFinanceStats } from "../../services/financeServices";
 import { CurrencyFormatter } from "../../services/utils";
 import type { FinanceStats } from "../../types/finance";
 import { getDistrictNameById } from "./mockData";
+import { Card } from "@/components/ui/card";
 
 const FinanceDashboard: React.FC = () => {
 	const [financeStats, setFinanceStats] = useState<
@@ -75,12 +76,11 @@ const FinanceDashboard: React.FC = () => {
 
 	return (
 		<>
-			<div className="py-6">
 				{/* Header */}
 				<div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
 					<div>
-						<h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-						<p className="text-gray-600 mt-1">
+						<h1 className="text-2xl font-bold">Dashboard</h1>
+						<p className="mt-1">
 							Welcome back to your financial overview
 						</p>
 					</div>
@@ -177,15 +177,15 @@ const FinanceDashboard: React.FC = () => {
 				{/* Last 5 Transactions */}
 				{financeStats.recent_transactions === null ||
 				financeStats.recent_transactions.length === 0 ? null : (
-					<div className="bg-white p-6 rounded-lg shadow-sm mt-10 dark:bg-boxdark dark:text-white">
-						<h2 className="text-xl font-bold mb-4 text-gray-800">
+					<Card className="p-6 rounded-lg shadow-sm">
+						<h2 className="text-xl font-bold mb-4">
 							Last 5 Transactions
 						</h2>
 						<ul className="space-y-4">
 							{financeStats.recent_transactions.map((txn) => (
 								<li
 									key={txn.id}
-									className="py-3 px-4 rounded-md bg-white hover:shadow-md hover:bg-blue-50 transition duration-150 ease-in-out cursor-pointer dark:bg-boxdark dark:hover:bg-meta-4 dark:text-white"
+									className="py-3 px-4 rounded-md hover:shadow-md transition duration-150 ease-in-out cursor-pointer bg-accent hover:bg-accent/80"
 								>
 									{/* Desktop layout */}
 									<div
@@ -193,7 +193,7 @@ const FinanceDashboard: React.FC = () => {
 										style={{ gridTemplateColumns: "auto 1fr auto auto" }}
 									>
 										{/* Date with Dot */}
-										<div className="flex items-center space-x-2 text-sm text-gray-500">
+										<div className="flex items-center space-x-2 text-sm">
 											<span
 												className={`w-2 h-2 rounded-full ${
 													txn.type === "income" ? "bg-green-500" : "bg-red-500"
@@ -208,12 +208,12 @@ const FinanceDashboard: React.FC = () => {
 										</div>
 
 										{/* Description */}
-										<div className="truncate font-semibold text-gray-700">
+										<div className="truncate font-semibold">
 											{txn.description}
 										</div>
 
 										{/* District */}
-										<div className="text-sm text-gray-600">
+										<div className="text-sm">
 											{getDistrictNameById(txn.districtId)}
 										</div>
 
@@ -272,9 +272,8 @@ const FinanceDashboard: React.FC = () => {
 								</li>
 							))}
 						</ul>
-					</div>
+					</Card>
 				)}
-			</div>
 		</>
 	);
 };
