@@ -325,7 +325,7 @@ export function AppSidebar() {
 
 				{items.map((item) =>
 					item.type !== "group" || item.hideIf?.(role) ? null : (
-						<SidebarGroup>
+						<SidebarGroup key={item.title}>
 							<SidebarMenu>
 								<Collapsible className="group/collapsible">
 									<SidebarMenuItem>

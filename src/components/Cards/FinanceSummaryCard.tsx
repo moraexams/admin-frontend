@@ -1,6 +1,6 @@
+import { Card } from "@/components/ui/card";
 import type React from "react";
 import { CurrencyFormatter } from "../../services/utils";
-import { Card } from "@/components/ui/card";
 
 interface SummaryCardProps {
 	title: string;
