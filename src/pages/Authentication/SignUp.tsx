@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo.png";
 import { signup } from "../../services/authServices";
+import { Button } from "@/components/ui/button";
 
 const SignUp: React.FC = () => {
 	const navigate = useNavigate();
@@ -225,19 +226,19 @@ const SignUp: React.FC = () => {
 					)}
 					{/* Alert */}
 
-					<div className="my-5">
-						<input
+						<Button
 							type="submit"
-							value="Create account"
-							className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+							size="lg"
 							onClick={handleSignUp}
-						/>
-					</div>
+							className="w-full"
+						>
+							Create account
+							</Button>
 
 					<div className="mt-6 text-center">
 						<p>
 							Already have an account?{" "}
-							<Link to="/auth/signin" className="text-primary">
+							<Link to="/auth/signin" className="text-primary underline">
 								Sign in
 							</Link>
 						</p>

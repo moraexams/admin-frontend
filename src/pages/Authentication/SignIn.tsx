@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo.png";
 import { login } from "../../services/authServices";
+import { Button } from "@/components/ui/button";
 
 const SignIn: React.FC = () => {
 	const navigate = useNavigate();
@@ -147,20 +148,20 @@ const SignIn: React.FC = () => {
 					{/* Alert */}
 
 					<div className="my-5">
-						<button
+						<Button
 							type="button"
-							className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90${loading ? " cursor-progress bg-opacity-90" : ""}`}
 							onClick={handleSignIn}
+							className="w-full"
 							disabled={loading}
 						>
 							{loading ? "Signing In..." : "Sign In"}
-						</button>
+						</Button>
 					</div>
 
 					<div className="mt-6 text-center">
 						<p>
 							Don't have any account?{" "}
-							<Link to="/auth/signup" className="text-primary">
+							<Link to="/auth/signup" className="text-primary underline">
 								Sign Up
 							</Link>
 						</p>
