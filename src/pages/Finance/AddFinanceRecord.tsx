@@ -8,7 +8,6 @@ import { capitalize } from "../../common/utils";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import FinanceAccountSelectorItem from "../../components/FinanceAccountSelectorItem";
 import FinanceTransactionTypeSelectorItem from "../../components/FinanceTransactionTypeSelectorItem";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	addTransaction,
 	getAllTransactionCategories,
@@ -116,7 +115,7 @@ const AddFinanceRecord: React.FC = () => {
 	}, []);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb
 				pageName="Add Transaction"
 				dashboardPath="/finance/dashboard"
@@ -151,7 +150,7 @@ const AddFinanceRecord: React.FC = () => {
 						<select
 							{...register("category")}
 							id="category"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						>
 							<option value="">Select category</option>
 							{categories.map((category) => (
@@ -190,7 +189,7 @@ const AddFinanceRecord: React.FC = () => {
 									setAmountInput(newVal);
 								}
 							}}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						{dirtyFields.amount && errors.amount ? (
 							<span className="text-red-500 text-sm">
@@ -207,7 +206,7 @@ const AddFinanceRecord: React.FC = () => {
 						<select
 							{...register("district")}
 							id="district"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						>
 							<option value={0}>None</option>
 							{districts.map((district) => (
@@ -232,7 +231,7 @@ const AddFinanceRecord: React.FC = () => {
 							type="datetime-local"
 							id="createdAt"
 							{...register("createdAt")}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-4 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						{errors.createdAt && (
 							<span className="text-red-500 text-sm">
@@ -249,7 +248,7 @@ const AddFinanceRecord: React.FC = () => {
 						<textarea
 							id="description"
 							{...register("description")}
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary resize-none"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary resize-none"
 							placeholder="Write a short description"
 						/>
 					</div>
@@ -291,7 +290,7 @@ const AddFinanceRecord: React.FC = () => {
 					</div>
 				</form>
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

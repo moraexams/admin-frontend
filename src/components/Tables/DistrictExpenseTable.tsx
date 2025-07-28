@@ -43,9 +43,9 @@ const DistrictExpensesTable = ({ data }: DistrictExpensesTableProps) => {
 	};
 
 	return (
-		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+		<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 			<div className="flex flex-col">
-				<div className="grid grid-cols-4 rounded-sm bg-gray-2 dark:bg-meta-4">
+				<div className="grid grid-cols-4 rounded-xs bg-gray-2 dark:bg-meta-4">
 					<div
 						className="p-2.5 xl:p-5 cursor-pointer select-none"
 						onClick={() => handleSort("id")}

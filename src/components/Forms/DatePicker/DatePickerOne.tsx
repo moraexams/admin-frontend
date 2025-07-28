@@ -30,7 +30,7 @@ const DatePickerOne = (props: Props) => {
 			</label>
 			<div className="relative">
 				<input
-					className="form-datepicker w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+					className="form-datepicker w-full rounded-sm border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
 					placeholder="mm/dd/yyyy"
 					data-class="flatpickr-right"
 					id={props.id}

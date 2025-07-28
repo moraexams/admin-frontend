@@ -350,7 +350,7 @@ const UnVerifiedStudentTable = ({
 	};
 
 	return (
-		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+		<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
 					<thead>
@@ -565,7 +565,7 @@ const UnVerifiedStudentTable = ({
 						previousLabel="<"
 						renderOnZeroPageCount={null}
 						containerClassName={
-							"isolate inline-flex -space-x-px rounded-md shadow-sm"
+							"isolate inline-flex -space-x-px rounded-md shadow-xs"
 						}
 						pageLinkClassName={
 							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -574,7 +574,7 @@ const UnVerifiedStudentTable = ({
 							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						activeLinkClassName={
-							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 						}
 						previousLinkClassName={
 							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -601,7 +601,7 @@ const UnVerifiedStudentTable = ({
 							}[action]
 						}
 					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded bg-primary" />
+					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary" />
 					{action === "View" && (
 						<>
 							<div className="flex justify-around pb-8">
@@ -815,7 +815,7 @@ const UnVerifiedStudentTable = ({
 									<button
 										type="button"
 										onClick={() => setModalOpen(false)}
-										className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+										className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 									>
 										Close
 									</button>
@@ -826,7 +826,7 @@ const UnVerifiedStudentTable = ({
 										onClick={() => {
 											handleEditModalOpen(indexNo);
 										}}
-										className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+										className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 									>
 										Edit
 									</button>
@@ -844,7 +844,7 @@ const UnVerifiedStudentTable = ({
 									<button
 										type="button"
 										onClick={() => setModalOpen(false)}
-										className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+										className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 									>
 										Cancel
 									</button>
@@ -853,7 +853,7 @@ const UnVerifiedStudentTable = ({
 									<button
 										type="button"
 										onClick={handleModalSubmit}
-										className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+										className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 									>
 										{action} Student
 									</button>
@@ -879,7 +879,7 @@ const UnVerifiedStudentTable = ({
 											value={indexNo}
 											onChange={(e) => setIndexNo(Number(e.target.value))}
 											placeholder="Enter Index No"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 									<div className="mb-4.5">
@@ -895,7 +895,7 @@ const UnVerifiedStudentTable = ({
 											value={name}
 											onChange={(e) => setName(e.target.value)}
 											placeholder="Enter Student Name"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 									<div className="mb-4.5">
@@ -911,7 +911,7 @@ const UnVerifiedStudentTable = ({
 											value={school}
 											onChange={(e) => setSchool(e.target.value)}
 											placeholder="Enter Student's School"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 									<div className="mb-4.5">
@@ -927,7 +927,7 @@ const UnVerifiedStudentTable = ({
 											value={nic}
 											onChange={(e) => setNic(e.target.value)}
 											placeholder="Enter NIC"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 									<div className="mb-4.5">
@@ -941,7 +941,7 @@ const UnVerifiedStudentTable = ({
 											id="student-gender"
 											value={gender}
 											onChange={(e) => setGender(e.target.value)}
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										>
 											<option value="" disabled>
 												Select Gender
@@ -963,7 +963,7 @@ const UnVerifiedStudentTable = ({
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
 											placeholder="Enter Email Address"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 									<div className="mb-4.5">
@@ -979,7 +979,7 @@ const UnVerifiedStudentTable = ({
 											value={address}
 											onChange={(e) => setAddress(e.target.value)}
 											placeholder="Enter Address"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 								</div>
@@ -995,7 +995,7 @@ const UnVerifiedStudentTable = ({
 											id="student-stream"
 											value={streamId}
 											onChange={(e) => setStreamId(Number(e.target.value))}
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										>
 											<option value="" disabled>
 												Select stream
@@ -1018,7 +1018,7 @@ const UnVerifiedStudentTable = ({
 											id="student-medium"
 											value={medium}
 											onChange={(e) => setMedium(e.target.value)}
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										>
 											<option value="" disabled>
 												Select Medium
@@ -1044,7 +1044,7 @@ const UnVerifiedStudentTable = ({
 											onChange={(e) =>
 												setRankDistrictId(Number(e.target.value))
 											}
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										>
 											<option value="" disabled>
 												Select Rank District
@@ -1069,7 +1069,7 @@ const UnVerifiedStudentTable = ({
 											onChange={(e) =>
 												setExamDistrictId(Number(e.target.value))
 											}
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										>
 											<option value="" disabled>
 												Select Exam District
@@ -1095,7 +1095,7 @@ const UnVerifiedStudentTable = ({
 												setCentreId(Number(e.target.value));
 												console.log("ID: ", e.target.value);
 											}}
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										>
 											<option value="" disabled>
 												Select Exam Center
@@ -1121,7 +1121,7 @@ const UnVerifiedStudentTable = ({
 											value={phone}
 											onChange={(e) => setPhone(e.target.value)}
 											placeholder="Enter Contact Number"
-											className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+											className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 										/>
 									</div>
 								</div>
@@ -1131,7 +1131,7 @@ const UnVerifiedStudentTable = ({
 									<button
 										type="button"
 										onClick={() => setModalOpen(false)}
-										className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+										className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 									>
 										Cancel
 									</button>
@@ -1140,7 +1140,7 @@ const UnVerifiedStudentTable = ({
 									<button
 										type="button"
 										onClick={handleModalSubmit}
-										className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+										className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 									>
 										{action} Student
 									</button>

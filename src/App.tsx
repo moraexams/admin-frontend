@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Loader from "./components/Loader";
 import PageTitle from "./components/PageTitle";
 
+import DefaultLayout from "./layout/DefaultLayout";
 import AuditLogs from "./pages/AuditLogs";
 import SignIn from "./pages/Authentication/SignIn";
 import SignUp from "./pages/Authentication/SignUp";
@@ -44,6 +45,15 @@ function App() {
 
 	useEffect(() => {
 		setTimeout(() => setLoading(false), 1000);
+		document.documentElement.classList.toggle(
+			"dark",
+			window.matchMedia("(prefers-color-scheme: dark)").matches,
+		);
+		window
+			.matchMedia("(prefers-color-scheme: dark)")
+			.addEventListener("change", (e) => {
+				document.documentElement.classList.toggle("dark", e.matches);
+			});
 	}, []);
 
 	return loading ? (
@@ -69,240 +79,242 @@ function App() {
 						</>
 					}
 				/>
-				<Route
-					index
-					element={
-						<>
-							<PageTitle title="Dashboard | Mora Exams" />
-							<Dashboard />
-						</>
-					}
-				/>
-				<Route
-					path="/users"
-					element={
-						<>
-							<PageTitle title="Users | Mora Exams" />
-							<Users />
-						</>
-					}
-				/>
-				<Route
-					path="/danger-zone"
-					element={
-						<>
-							<PageTitle title="Danger Zone | Mora Exams" />
-							<DangerZone />
-						</>
-					}
-				/>
-				<Route
-					path="/districts"
-					element={
-						<>
-							<PageTitle title="Districts | MoraExams" />
-							<Districts />
-						</>
-					}
-				/>
-				<Route
-					path="/district/centres"
-					element={
-						<>
-							<PageTitle title="Exam Centres | Mora Exams" />
-							<ExamCentres />
-						</>
-					}
-				/>
-				<Route
-					path="/district/coordinators"
-					element={
-						<>
-							<PageTitle title="Coordinators | Mora Exams" />
-							<Coordinators />
-						</>
-					}
-				/>
-				<Route
-					path="/distribution/table"
-					element={
-						<>
-							<PageTitle title="Exam Paper Distribution Table| Mora Exams" />
-							<ExamPaperDistributionTableView />
-						</>
-					}
-				/>
-				<Route
-					path="/distribution/card"
-					element={
-						<>
-							<PageTitle title="Exam Paper Distribution Card | Mora Exams" />
-							<ExamPaperDistributionCardView />
-						</>
-					}
-				/>
-				<Route
-					path="/students/all"
-					element={
-						<>
-							<PageTitle title="Students | Mora Exams" />
-							<Students />
-						</>
-					}
-				/>
-				<Route
-					path="/students/add"
-					element={
-						<>
-							<PageTitle title="Add Student | Mora Exams" />
-							<AddStudent />
-						</>
-					}
-				/>
-				<Route
-					path="/students/centre"
-					element={
-						<>
-							<PageTitle title="Students | Mora Exams" />
-							<StudentsCentreWise />
-						</>
-					}
-				/>
-				<Route
-					path="/students/verify"
-					element={
-						<>
-							<PageTitle title="Students | Mora Exams" />
-							<VerifyStudent />
-						</>
-					}
-				/>
-				<Route
-					path="/students/unverified"
-					element={
-						<>
-							<PageTitle title="Students | Mora Exams" />
-							<UnVerifiedStudents />
-						</>
-					}
-				/>
-				<Route
-					path="/marks"
-					element={
-						<>
-							<PageTitle title="Marks | Mora Exams" />
-							<Marks />
-						</>
-					}
-				/>
-				<Route
-					path="/marks/enter"
-					element={
-						<>
-							<PageTitle title="Enter Marks | Mora Exams" />
-							<EnterMarks />
-						</>
-					}
-				/>
-				<Route
-					path="/marks/verify"
-					element={
-						<>
-							<PageTitle title="Verify Marks | Mora Exams" />
-							<VerifyMarks />
-						</>
-					}
-				/>
-				<Route
-					path="/studentmarks"
-					element={
-						<>
-							<PageTitle title="Student Marks | Mora Exams" />
-							<StudentMarksCentreWise />
-						</>
-					}
-				/>
-				<Route
-					path="/stats/enteredmarks"
-					element={
-						<>
-							<PageTitle title="Entered Marks | Mora Exams" />
-							<EnteredStudentMarks />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/dashboard"
-					element={
-						<>
-							<PageTitle title="Finance Dashboard | MoraExams" />
-							<FinanceDashboard />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/districts"
-					element={
-						<>
-							<PageTitle title="Districts Summary | MoraExams" />
-							<DistrictsSummary />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/billgallery"
-					element={
-						<>
-							<PageTitle title="Bills | MoraExams" />
-							<BillGallery />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/add-transaction"
-					element={
-						<>
-							<PageTitle title="Add Transaction | Mora Exams" />
-							<AddFinanceRecord />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/transactions"
-					element={
-						<>
-							<PageTitle title="Transactions | Mora Exams" />
-							<AllTransactions />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/add-bill/:transaction-id"
-					element={
-						<>
-							<PageTitle title="Add Bill | Mora Exams" />
-							<AddBill />
-						</>
-					}
-				/>
-				<Route
-					path="/finance/transaction-categories"
-					element={
-						<>
-							<PageTitle title="Transaction Categories | Mora Exams" />
-							<TransactionCategories />
-						</>
-					}
-				/>
-				<Route
-					path="/audit-logs"
-					element={
-						<>
-							<PageTitle title="Audit Logs | Mora Exams" />
-							<AuditLogs />
-						</>
-					}
-				/>
+				<Route element={<DefaultLayout />}>
+					<Route
+						index
+						element={
+							<>
+								<PageTitle title="Dashboard | Mora Exams" />
+								<Dashboard />
+							</>
+						}
+					/>
+					<Route
+						path="/users"
+						element={
+							<>
+								<PageTitle title="Users | Mora Exams" />
+								<Users />
+							</>
+						}
+					/>
+					<Route
+						path="/danger-zone"
+						element={
+							<>
+								<PageTitle title="Danger Zone | Mora Exams" />
+								<DangerZone />
+							</>
+						}
+					/>
+					<Route
+						path="/districts"
+						element={
+							<>
+								<PageTitle title="Districts | MoraExams" />
+								<Districts />
+							</>
+						}
+					/>
+					<Route
+						path="/district/centres"
+						element={
+							<>
+								<PageTitle title="Exam Centres | Mora Exams" />
+								<ExamCentres />
+							</>
+						}
+					/>
+					<Route
+						path="/district/coordinators"
+						element={
+							<>
+								<PageTitle title="Coordinators | Mora Exams" />
+								<Coordinators />
+							</>
+						}
+					/>
+					<Route
+						path="/distribution/table"
+						element={
+							<>
+								<PageTitle title="Exam Paper Distribution Table| Mora Exams" />
+								<ExamPaperDistributionTableView />
+							</>
+						}
+					/>
+					<Route
+						path="/distribution/card"
+						element={
+							<>
+								<PageTitle title="Exam Paper Distribution Card | Mora Exams" />
+								<ExamPaperDistributionCardView />
+							</>
+						}
+					/>
+					<Route
+						path="/students/all"
+						element={
+							<>
+								<PageTitle title="Students | Mora Exams" />
+								<Students />
+							</>
+						}
+					/>
+					<Route
+						path="/students/add"
+						element={
+							<>
+								<PageTitle title="Add Student | Mora Exams" />
+								<AddStudent />
+							</>
+						}
+					/>
+					<Route
+						path="/students/centre"
+						element={
+							<>
+								<PageTitle title="Students | Mora Exams" />
+								<StudentsCentreWise />
+							</>
+						}
+					/>
+					<Route
+						path="/students/verify"
+						element={
+							<>
+								<PageTitle title="Students | Mora Exams" />
+								<VerifyStudent />
+							</>
+						}
+					/>
+					<Route
+						path="/students/unverified"
+						element={
+							<>
+								<PageTitle title="Students | Mora Exams" />
+								<UnVerifiedStudents />
+							</>
+						}
+					/>
+					<Route
+						path="/marks"
+						element={
+							<>
+								<PageTitle title="Marks | Mora Exams" />
+								<Marks />
+							</>
+						}
+					/>
+					<Route
+						path="/marks/enter"
+						element={
+							<>
+								<PageTitle title="Enter Marks | Mora Exams" />
+								<EnterMarks />
+							</>
+						}
+					/>
+					<Route
+						path="/marks/verify"
+						element={
+							<>
+								<PageTitle title="Verify Marks | Mora Exams" />
+								<VerifyMarks />
+							</>
+						}
+					/>
+					<Route
+						path="/studentmarks"
+						element={
+							<>
+								<PageTitle title="Student Marks | Mora Exams" />
+								<StudentMarksCentreWise />
+							</>
+						}
+					/>
+					<Route
+						path="/stats/enteredmarks"
+						element={
+							<>
+								<PageTitle title="Entered Marks | Mora Exams" />
+								<EnteredStudentMarks />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/dashboard"
+						element={
+							<>
+								<PageTitle title="Finance Dashboard | MoraExams" />
+								<FinanceDashboard />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/districts"
+						element={
+							<>
+								<PageTitle title="Districts Summary | MoraExams" />
+								<DistrictsSummary />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/billgallery"
+						element={
+							<>
+								<PageTitle title="Bills | MoraExams" />
+								<BillGallery />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/add-transaction"
+						element={
+							<>
+								<PageTitle title="Add Transaction | Mora Exams" />
+								<AddFinanceRecord />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/transactions"
+						element={
+							<>
+								<PageTitle title="Transactions | Mora Exams" />
+								<AllTransactions />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/add-bill/:transaction-id"
+						element={
+							<>
+								<PageTitle title="Add Bill | Mora Exams" />
+								<AddBill />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/transaction-categories"
+						element={
+							<>
+								<PageTitle title="Transaction Categories | Mora Exams" />
+								<TransactionCategories />
+							</>
+						}
+					/>
+					<Route
+						path="/audit-logs"
+						element={
+							<>
+								<PageTitle title="Audit Logs | Mora Exams" />
+								<AuditLogs />
+							</>
+						}
+					/>
+				</Route>
 			</Routes>
 		</>
 	);

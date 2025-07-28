@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import { getCenters } from "../../services/examCentreService";
 import { getStreams } from "../../services/streamServices";
@@ -127,7 +126,7 @@ const AddStudent = () => {
 	// 	}, 1000);
 	// };
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Add Student" />
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -141,7 +140,7 @@ const AddStudent = () => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="Enter Student Name"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 						</div>
 						<div className="mb-4.5">
@@ -151,7 +150,7 @@ const AddStudent = () => {
 							<select
 								value={streamId}
 								onChange={(e) => setStreamId(Number(e.target.value))}
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							>
 								<option value="" disabled>
 									Select stream
@@ -170,7 +169,7 @@ const AddStudent = () => {
 							<select
 								value={medium}
 								onChange={(e) => setMedium(e.target.value)}
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							>
 								<option value="" disabled>
 									Select Medium
@@ -190,7 +189,7 @@ const AddStudent = () => {
 							<select
 								value={rankDistrictId}
 								onChange={(e) => setRankDistrictId(Number(e.target.value))}
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							>
 								<option value="" disabled>
 									Select Rank District
@@ -209,7 +208,7 @@ const AddStudent = () => {
 							<select
 								value={examDistrictId}
 								onChange={(e) => setExamDistrictId(Number(e.target.value))}
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							>
 								<option value="" disabled>
 									Select Exam District
@@ -231,7 +230,7 @@ const AddStudent = () => {
 									setCentreId(Number(e.target.value));
 									console.log("ID: ", e.target.value);
 								}}
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							>
 								<option value="" disabled>
 									Select Exam Center
@@ -256,7 +255,7 @@ const AddStudent = () => {
 									onChange={(e) => setNic(e.target.value)}
 									placeholder="Enter NIC"
 									inputMode="numeric"
-									className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+									className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 								/>
 							</div>
 							<div className="mb-4.5">
@@ -266,7 +265,7 @@ const AddStudent = () => {
 								<select
 									value={gender}
 									onChange={(e) => setGender(e.target.value)}
-									className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+									className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 								>
 									<option value="" disabled>
 										Select Gender
@@ -283,7 +282,7 @@ const AddStudent = () => {
 								value={school}
 								onChange={(e) => setSchool(e.target.value)}
 								placeholder="Enter Student's School"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 						</div>
 
@@ -296,7 +295,7 @@ const AddStudent = () => {
 								value={address}
 								onChange={(e) => setAddress(e.target.value)}
 								placeholder="Enter Address"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 						</div>
 						<div className="mb-4.5">
@@ -308,7 +307,7 @@ const AddStudent = () => {
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 								placeholder="Enter Email Address"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 						</div>
 						<div className="mb-4.5">
@@ -321,7 +320,7 @@ const AddStudent = () => {
 								onChange={(e) => setPhone(e.target.value)}
 								placeholder="Enter Contact Number"
 								inputMode="numeric"
-								className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 						</div>
 					</div>
@@ -329,7 +328,7 @@ const AddStudent = () => {
 				<div className="w-full px-3 pt-4">
 					<button
 						onClick={handleSubmit}
-						className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+						className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 					>
 						Add Student
 					</button>
@@ -337,7 +336,7 @@ const AddStudent = () => {
 			</div>
 
 			{/* <Snackbar config={snackBarConfig} /> */}
-		</DefaultLayout>
+		</>
 	);
 };
 

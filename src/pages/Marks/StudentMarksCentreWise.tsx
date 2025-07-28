@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import StudentMarksTable from "../../components/Tables/StudentMarksTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistrictsWithCentres } from "../../services/districtService";
 import { getStreams } from "../../services/streamServices";
 import { getStudentMarksByCentre } from "../../services/studentService";
@@ -61,12 +60,12 @@ const StudentMarksCentreWise = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Student Marks" />
 			<div className="flex flex-wrap gap-x-4">
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectItemsPerPage"
 						id="selectItemsPerPage"
 						value={itemsPerPage}
@@ -80,7 +79,7 @@ const StudentMarksCentreWise = () => {
 				</div>
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectDistrict"
 						id="selectDistrict"
 						value={district.toString()}
@@ -97,7 +96,7 @@ const StudentMarksCentreWise = () => {
 				</div>
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectCentre"
 						id="selectCentre"
 						value={centre.toString()}
@@ -116,7 +115,7 @@ const StudentMarksCentreWise = () => {
 				</div>
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectStream"
 						id="selectStream"
 						value={stream}
@@ -138,7 +137,7 @@ const StudentMarksCentreWise = () => {
 						value={searchKey}
 						onChange={(e) => setSearchKey(e.target.value)}
 						placeholder="Search..."
-						className="w-full rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+						className="w-full rounded-sm border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 					/>
 				</div>
 			</div>
@@ -153,7 +152,7 @@ const StudentMarksCentreWise = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

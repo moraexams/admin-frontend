@@ -4,7 +4,6 @@ import ReactPaginate from "react-paginate";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import PaginationPageSizeSelector from "../components/PaginationPageSizeSelector";
 import Table from "../components/Table";
-import DefaultLayout from "../layout/DefaultLayout";
 import { type AuditLogItem, getAuditLogs } from "../services/auditLogService";
 
 export default function AuditLogs() {
@@ -26,7 +25,7 @@ export default function AuditLogs() {
 	}, [currentPage, pageSize]);
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Audit Logs" />
 
 			<div className="mb-5.5 flex justify-between">
@@ -50,7 +49,7 @@ export default function AuditLogs() {
 					previousLabel="<"
 					renderOnZeroPageCount={null}
 					containerClassName={
-						"isolate inline-flex -space-x-px rounded-md shadow-sm"
+						"isolate inline-flex -space-x-px rounded-md shadow-xs"
 					}
 					pageLinkClassName={
 						"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -59,7 +58,7 @@ export default function AuditLogs() {
 						"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 					}
 					activeLinkClassName={
-						"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+						"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 					}
 					previousLinkClassName={
 						"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -81,6 +80,6 @@ export default function AuditLogs() {
 					log.entity_id,
 				])}
 			/>
-		</DefaultLayout>
+		</>
 	);
 }

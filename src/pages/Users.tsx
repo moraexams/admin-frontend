@@ -3,7 +3,6 @@ import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import UsersTable from "../components/Tables/UsersTable";
-import DefaultLayout from "../layout/DefaultLayout";
 import { getUsers } from "../services/userService";
 import type { User } from "../types/types";
 
@@ -47,12 +46,12 @@ const Users = () => {
 	}
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Users" />
 
 			<div className="mb-5.5 flex justify-between">
 				<select
-					className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+					className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 					name="selectDoctor"
 					id="selectDoctor"
 					value={itemsPerPage}
@@ -79,7 +78,7 @@ const Users = () => {
 					previousLabel="<"
 					renderOnZeroPageCount={null}
 					containerClassName={
-						"isolate inline-flex -space-x-px rounded-md shadow-sm"
+						"isolate inline-flex -space-x-px rounded-md shadow-xs"
 					}
 					pageLinkClassName={
 						"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -88,7 +87,7 @@ const Users = () => {
 						"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 					}
 					activeLinkClassName={
-						"z-10 bg-secondary text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+						"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 					}
 					previousLinkClassName={
 						"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -112,7 +111,7 @@ const Users = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DistrictsTable from "../../components/Tables/DistrictsTable";
-import DefaultLayout from "../../layout/DefaultLayout";
 import { getDistricts } from "../../services/districtService";
 import type { District } from "../../types/types";
 
@@ -29,12 +28,12 @@ const Districts = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Districts" />
 
 			<div className="mb-5.5">
 				<select
-					className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+					className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 					name="selectItemsPerPage"
 					id="selectItemsPerPage"
 					value={itemsPerPage}
@@ -56,7 +55,7 @@ const Districts = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

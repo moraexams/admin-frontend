@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo.png";
 import { signup } from "../../services/authServices";
+import { Button } from "@/components/ui/button";
 
 const SignUp: React.FC = () => {
 	const navigate = useNavigate();
@@ -69,7 +70,7 @@ const SignUp: React.FC = () => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="Enter your full name"
-								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-hidden focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 
 							<span className="absolute right-4 top-4">
@@ -110,7 +111,7 @@ const SignUp: React.FC = () => {
 								value={username}
 								onChange={(e) => setUsername(e.target.value)}
 								placeholder="Enter your username"
-								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-hidden focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 
 							<span className="absolute right-4 top-4">
@@ -147,7 +148,7 @@ const SignUp: React.FC = () => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								placeholder="Enter your password"
-								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-hidden focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 
 							<span className="absolute right-4 top-4">
@@ -188,7 +189,7 @@ const SignUp: React.FC = () => {
 								value={passwordR}
 								onChange={(e) => setPasswordR(e.target.value)}
 								placeholder="Re-enter your password"
-								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-hidden focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 							/>
 
 							<span className="absolute right-4 top-4">
@@ -225,19 +226,19 @@ const SignUp: React.FC = () => {
 					)}
 					{/* Alert */}
 
-					<div className="my-5">
-						<input
+						<Button
 							type="submit"
-							value="Create account"
-							className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+							size="lg"
 							onClick={handleSignUp}
-						/>
-					</div>
+							className="w-full"
+						>
+							Create account
+							</Button>
 
 					<div className="mt-6 text-center">
 						<p>
 							Already have an account?{" "}
-							<Link to="/auth/signin" className="text-primary">
+							<Link to="/auth/signin" className="text-primary underline">
 								Sign in
 							</Link>
 						</p>

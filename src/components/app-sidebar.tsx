@@ -1,0 +1,384 @@
+import {
+	ROLE_DISTRICTS_COORDINATOR,
+	ROLE_FINANCE_TEAM_MEMBER,
+	ROLE_TECH_COORDINATOR,
+	ROLE_TREASURER,
+} from "@/common/roles";
+import { snakeCaseToNormalCase } from "@/common/utils";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarGroup,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
+	useSidebar,
+} from "@/components/ui/sidebar";
+import {
+	LOCAL_STORAGE__ROLE,
+	LOCAL_STORAGE__TOKEN,
+	LOCAL_STORAGE__USER,
+	LOCAL_STORAGE__USERNAME,
+	LOCAL_STORAGE__USER_ID,
+} from "@/services/authServices";
+import {
+	AlertTriangle,
+	BarChart2,
+	BookOpen,
+	ChevronRight,
+	ClipboardList,
+	FileText,
+	Home,
+	LogOut,
+	type LucideIcon,
+	Map,
+	PanelLeftIcon,
+	User,
+	UserCheck,
+	UserPlus,
+	UserX,
+	Users,
+	Wallet,
+} from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+interface SidebarItemLink {
+	type: "link";
+	url: string;
+	title: string;
+	icon: LucideIcon;
+	hideIf?: (role: string) => boolean;
+}
+
+interface SidebarItemGroup {
+	type: "group";
+	title: string;
+	icon: LucideIcon;
+	links: Array<SidebarItemLink>;
+	hideIf?: (role: string) => boolean;
+}
+
+const items: Array<SidebarItemLink | SidebarItemGroup> = [
+	{
+		type: "link",
+		title: "Dashboard",
+		url: "/",
+		icon: Home,
+	},
+	{
+		type: "group",
+		title: "Finance",
+		icon: Wallet,
+		hideIf: (role) =>
+			typeof role !== "string" ||
+			![
+				ROLE_TECH_COORDINATOR,
+				ROLE_TREASURER,
+				ROLE_FINANCE_TEAM_MEMBER,
+			].includes(role),
+		links: [
+			{
+				type: "link",
+				title: "Dashboard",
+				url: "/finance/dashboard",
+				icon: Home,
+			},
+			{
+				type: "link",
+				title: "Transaction Categories",
+				url: "/finance/transaction-categories",
+				icon: ClipboardList,
+			},
+			{
+				type: "link",
+				title: "Add Transaction",
+				url: "/finance/add-transaction",
+				icon: Wallet,
+			},
+			{
+				type: "link",
+				title: "All Transactions",
+				url: "/finance/transactions",
+				icon: FileText,
+			},
+			{
+				type: "link",
+				title: "District Expenses",
+				url: "/finance/districts",
+				icon: Map,
+			},
+			{
+				type: "link",
+				title: "Bill Gallery",
+				url: "/finance/billgallery",
+				icon: FileText,
+			},
+		],
+	},
+	{
+		type: "group",
+		title: "Stats",
+		icon: BarChart2,
+		links: [
+			{
+				type: "link",
+				title: "Entered Marks",
+				url: "/stats/enteredmarks",
+				icon: BookOpen,
+			},
+		],
+	},
+	{
+		type: "group",
+		title: "Districts",
+		icon: Map,
+		hideIf: (role) =>
+			typeof role !== "string" ||
+			![ROLE_TECH_COORDINATOR, ROLE_DISTRICTS_COORDINATOR].includes(role),
+		links: [
+			{
+				type: "link",
+				title: "Districts",
+				url: "/districts",
+				icon: Map,
+			},
+			{
+				type: "link",
+				title: "Exam Centres",
+				url: "/district/centres",
+				icon: Home,
+			},
+			{
+				type: "link",
+				title: "Coordinators",
+				url: "/district/coordinators",
+				icon: Users,
+			},
+		],
+	},
+	{
+		type: "group",
+		title: "Paper Distribution",
+		icon: FileText,
+		links: [
+			{
+				type: "link",
+				title: "Table View",
+				url: "/distribution/table",
+				icon: FileText,
+			},
+			{
+				type: "link",
+				title: "Details View",
+				url: "/distribution/card",
+				icon: FileText,
+			},
+		],
+	},
+	{
+		type: "group",
+		title: "Students",
+		icon: Users,
+		links: [
+			{
+				type: "link",
+				title: "Add Student",
+				url: "/students/add",
+				icon: UserPlus,
+			},
+			{
+				type: "link",
+				title: "Verify Student",
+				url: "/students/verify",
+				icon: UserCheck,
+			},
+			{
+				type: "link",
+				title: "Unverified Students",
+				url: "/students/unverified",
+				icon: UserX,
+			},
+			{
+				type: "link",
+				title: "Centre Wise",
+				url: "/students/centre",
+				icon: Map,
+			},
+			{
+				type: "link",
+				title: "All Students",
+				url: "/students/all",
+				icon: Users,
+			},
+		],
+	},
+	{
+		type: "link",
+		title: "Marks",
+		url: "/marks",
+		icon: BookOpen,
+	},
+	{
+		type: "link",
+		title: "Student Marks",
+		url: "/studentmarks",
+		icon: BookOpen,
+	},
+	{
+		type: "link",
+		title: "Users",
+		url: "/users",
+		icon: Users,
+		hideIf: (role) =>
+			typeof role !== "string" || ROLE_TECH_COORDINATOR !== role,
+	},
+	{
+		type: "link",
+		title: "Audit Logs",
+		url: "/audit-logs",
+		icon: FileText,
+		hideIf: (role) =>
+			typeof role !== "string" || ROLE_TECH_COORDINATOR !== role,
+	},
+	{
+		type: "link",
+		title: "Danger Zone",
+		url: "/danger-zone",
+		icon: AlertTriangle,
+		hideIf: (role) =>
+			typeof role !== "string" || ROLE_TECH_COORDINATOR !== role,
+	},
+];
+
+interface User {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	deleted_at: null;
+	name: string;
+	role: string;
+	username: string;
+	approved: boolean;
+}
+
+export function AppSidebar() {
+	const { toggleSidebar } = useSidebar();
+	const navigate = useNavigate();
+	const userStringified = localStorage.getItem(LOCAL_STORAGE__USER);
+	const user: User | null = userStringified
+		? JSON.parse(userStringified)
+		: null;
+	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
+
+	const logout = () => {
+		localStorage.removeItem(LOCAL_STORAGE__TOKEN);
+		localStorage.removeItem(LOCAL_STORAGE__USER);
+		localStorage.removeItem(LOCAL_STORAGE__USERNAME);
+		localStorage.removeItem(LOCAL_STORAGE__USER_ID);
+		localStorage.removeItem(LOCAL_STORAGE__ROLE);
+		navigate("/auth/signin");
+	};
+
+	return (
+		<Sidebar collapsible="icon">
+			<SidebarContent className="gap-0">
+				<SidebarGroup>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							<SidebarMenuButton className="border cursor-default hover:bg-inherit mb-2 h-fit">
+								{user ? (
+									<>
+										<User />
+										<div className="flex flex-col">
+											<span className="font-medium">{user.username}</span>
+											<span className="text-xs">
+												{snakeCaseToNormalCase(user.role)}
+											</span>
+										</div>
+									</>
+								) : null}
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+						{items.map((item) =>
+							item.type !== "link" || item.hideIf?.(role) ? null : (
+								<SidebarMenuItem key={item.title}>
+									<SidebarMenuButton asChild>
+										<NavLink to={item.url}>
+											<item.icon size={25} className="size-40" />
+											<span>{item.title}</span>
+										</NavLink>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+							),
+						)}
+					</SidebarMenu>
+				</SidebarGroup>
+
+				{items.map((item) =>
+					item.type !== "group" || item.hideIf?.(role) ? null : (
+						<SidebarGroup key={item.title}>
+							<SidebarMenu>
+								<Collapsible className="group/collapsible">
+									<SidebarMenuItem>
+										<CollapsibleTrigger asChild>
+											<SidebarMenuButton>
+												<item.icon size={25} className="size-40" />
+												{item.title}
+												<ChevronRight className="ml-auto duration-200 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+											</SidebarMenuButton>
+										</CollapsibleTrigger>
+										<CollapsibleContent>
+											<SidebarMenuSub>
+												{item.links.map((link) => (
+													<SidebarMenuSubItem key={link.title}>
+														<SidebarMenuSubButton asChild>
+															<NavLink to={link.url}>
+																<link.icon size={25} className="size-40" />
+																<span>{link.title}</span>
+															</NavLink>
+														</SidebarMenuSubButton>
+													</SidebarMenuSubItem>
+												))}
+											</SidebarMenuSub>
+										</CollapsibleContent>
+									</SidebarMenuItem>
+								</Collapsible>
+							</SidebarMenu>
+						</SidebarGroup>
+					),
+				)}
+			</SidebarContent>
+			<SidebarFooter>
+				<SidebarMenu>
+					<SidebarMenuItem>
+						<SidebarMenuButton
+							className="text-destructive hover:text-destructive"
+							onClick={logout}
+						>
+							<LogOut />
+							<span>Log Out</span>
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+					<SidebarMenuItem>
+						<SidebarMenuButton
+							className="cursor-pointer"
+							onClick={toggleSidebar}
+						>
+							<PanelLeftIcon />
+							<span>Hide</span>
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+				</SidebarMenu>
+			</SidebarFooter>
+		</Sidebar>
+	);
+}

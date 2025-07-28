@@ -1,4 +1,6 @@
 import { exec } from "node:child_process";
+import path from "path";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
@@ -24,7 +26,12 @@ export default defineConfig(async () => {
 	const commitHash = await getLatestCommit();
 
 	return {
-		plugins: [react()],
+		plugins: [react(), tailwindcss()],
+		resolve: {
+			alias: {
+				"@": path.resolve(__dirname, "./src"),
+			},
+		},
 		define: {
 			"import.meta.env.BUILD_TIME": JSON.stringify(buildTime),
 			"import.meta.env.LATEST_GIT_COMMIT": JSON.stringify(commitHash),

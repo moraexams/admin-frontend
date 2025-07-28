@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
-import { getStudentsByCentre } from "../../services/studentService";
-import type { District, Student } from "../../types/types";
-
 import StudentTable from "../../components/Tables/StudentTable";
 import { getDistrictsWithCentres } from "../../services/districtService";
+import { getStudentsByCentre } from "../../services/studentService";
+import type { District, Student } from "../../types/types";
 
 const StudentsCentreWise = () => {
 	const [students, setStudents] = useState<Student[]>([]);
@@ -57,12 +55,12 @@ const StudentsCentreWise = () => {
 		return <div>{error}</div>;
 	}
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Students" />
 			<div className="flex flex-wrap gap-x-4">
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectItemsPerPage"
 						id="selectItemsPerPage"
 						value={itemsPerPage}
@@ -76,7 +74,7 @@ const StudentsCentreWise = () => {
 				</div>
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectDistrict"
 						id="selectDistrict"
 						value={district.toString()}
@@ -93,7 +91,7 @@ const StudentsCentreWise = () => {
 				</div>
 				<div className="mb-5.5">
 					<select
-						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+						className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 						name="selectCentre"
 						id="selectCentre"
 						value={centre.toString()}
@@ -116,7 +114,7 @@ const StudentsCentreWise = () => {
 						value={searchKey}
 						onChange={(e) => setSearchKey(e.target.value)}
 						placeholder="Search..."
-						className="w-full rounded border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+						className="w-full rounded-sm border-[1.5px] border-stroke bg-white py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 					/>
 				</div>
 			</div>
@@ -131,7 +129,7 @@ const StudentsCentreWise = () => {
 					/>
 				)}
 			</div>
-		</DefaultLayout>
+		</>
 	);
 };
 

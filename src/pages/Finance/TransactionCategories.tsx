@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import Table from "../../components/Table";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	addTransactionCategory,
 	getAllTransactionCategories,
@@ -51,7 +50,7 @@ export default function TransactionCategories() {
 	};
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb
 				pageName="Transaction Categories"
 				dashboardPath="/finance/dashboard"
@@ -65,11 +64,11 @@ export default function TransactionCategories() {
 					value={category}
 					onChange={(e) => setCategory(e.target.value)}
 					placeholder="Enter category name"
-					className="w-full md:w-1/2 rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+					className="w-full md:w-1/2 rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 				/>
 				<button
 					type="submit"
-					className="w-full md:w-1/2 rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90 mb-5"
+					className="w-full md:w-1/2 rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90 mb-5"
 				>
 					Add Category
 				</button>
@@ -82,6 +81,6 @@ export default function TransactionCategories() {
 					)
 					.map((log) => [log.id, log.name])}
 			/>
-		</DefaultLayout>
+		</>
 	);
 }

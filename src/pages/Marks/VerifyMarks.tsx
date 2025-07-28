@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import Snackbar from "../../components/Snackbar";
-import DefaultLayout from "../../layout/DefaultLayout";
 import {
 	getStudentVerificationMarksData,
 	verifyMark,
@@ -139,14 +138,14 @@ const VerifyMarks = () => {
 	};
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Verify Marks" />
 			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
 				<div>
 					<div className="flex flex-wrap gap-x-4">
 						<div className="mb-5.5">
 							<select
-								className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+								className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 								name="subject"
 								value={subject}
 								onChange={handleSubjectChange}
@@ -159,7 +158,7 @@ const VerifyMarks = () => {
 						</div>
 						<div className="mb-5.5">
 							<select
-								className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+								className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 								name="part"
 								value={part}
 								onChange={handlePartChange}
@@ -173,7 +172,7 @@ const VerifyMarks = () => {
 						<div className="mb-6">
 							<button
 								onClick={() => setSelectDisabled(!selectDisabled)}
-								className="block rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+								className="block rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
 							>
 								{selectDisabled ? (
 									<svg
@@ -219,7 +218,7 @@ const VerifyMarks = () => {
 							onChange={(e) => setIndexNo(Number(e.target.value))}
 							placeholder="Enter Index No"
 							inputMode="numeric"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 					</div>
 
@@ -235,7 +234,7 @@ const VerifyMarks = () => {
 										: "Not Found"
 							}
 							placeholder="Student Name"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						<input
 							disabled
@@ -248,7 +247,7 @@ const VerifyMarks = () => {
 										: "Not Found"
 							}
 							placeholder="Student Name"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 						<input
 							disabled
@@ -261,7 +260,7 @@ const VerifyMarks = () => {
 										: "Not Found"
 							}
 							placeholder="Student Name"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 					</div>
 					<div className="mb-4.5">
@@ -295,7 +294,7 @@ const VerifyMarks = () => {
 							}
 							placeholder="Enter Index No"
 							inputMode="numeric"
-							className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black font-bold outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black font-bold outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
 						/>
 					</div>
 
@@ -317,7 +316,7 @@ const VerifyMarks = () => {
 					<div className="px-3 2xsm:w-1/4">
 						<button
 							onClick={() => setIndexNo(indexNo - 1)}
-							className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
+							className="block w-full rounded-sm border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
 						>
 							<svg
 								className="w-6 h-6 text-gray-800 dark:text-white"
@@ -341,7 +340,7 @@ const VerifyMarks = () => {
 					<div className="px-3 2xsm:w-1/4">
 						<button
 							onClick={() => setIndexNo(indexNo + 1)}
-							className="block w-full rounded border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
+							className="block w-full rounded-sm border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
 						>
 							<svg
 								className="w-6 h-6 text-gray-800 dark:text-white"
@@ -367,7 +366,7 @@ const VerifyMarks = () => {
 							disabled={submitDisabled}
 							onClick={handleSubmit}
 							className={
-								"block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition " +
+								"block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition " +
 								(submitDisabled
 									? "bg-opacity-70 hover:bg-opacity-70"
 									: "hover:bg-opacity-90")
@@ -381,7 +380,7 @@ const VerifyMarks = () => {
 			</div>
 
 			{/* <Snackbar config={snackBarConfig} /> */}
-		</DefaultLayout>
+		</>
 	);
 };
 

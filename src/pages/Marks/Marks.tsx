@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import { MarksBoundariesView } from "../../components/MarksBoundariesView";
-import DefaultLayout from "../../layout/DefaultLayout";
 
 const PERMISSION__MARKS_BOUNDARY_VIEW = ["PRESIDENT", "TECH_COORDINATOR"];
 
@@ -18,7 +17,7 @@ const Marks = () => {
 	};
 
 	return (
-		<DefaultLayout>
+		<>
 			<Breadcrumb pageName="Marks" />
 			<div className="rounded-xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 				<div className="max-w-full overflow-x-auto">
@@ -361,7 +360,7 @@ const Marks = () => {
 			PERMISSION__MARKS_BOUNDARY_VIEW.includes(role) ? (
 				<MarksBoundariesView />
 			) : null}
-		</DefaultLayout>
+		</>
 	);
 };
 
