@@ -1,3 +1,6 @@
+import { ROLE_TECH_COORDINATOR } from "@/common/roles";
+import PageTitle from "@/components/PageTitle";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import {
 	Dialog,
 	DialogContent,
@@ -6,6 +9,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -23,15 +27,16 @@ type Student = {
 	fee: number;
 };
 
+const STREAM_FEES = [
+	{ label: "Maths", fee: 600 },
+	{ label: "Science", fee: 600 },
+	{ label: "ICT", fee: 200 },
+	{ label: "Maths and ICT", fee: 600 },
+];
+
 export default function ManualAdmissions() {
 	const [students, setStudents] = useState<Student[]>([]);
 	const [open, setOpen] = useState(false);
-	const streamOptions = [
-		{ label: "Maths", fee: 600 },
-		{ label: "Science", fee: 600 },
-		{ label: "ICT", fee: 200 },
-		{ label: "Maths and ICT", fee: 600 },
-	];
 	const [form, setForm] = useState<Omit<Student, "id" | "fee">>({
 		name: "",
 		nic: "",
@@ -56,7 +61,7 @@ export default function ManualAdmissions() {
 	};
 
 	const getFee = (stream: string) => {
-		const match = streamOptions.find((opt) => opt.label === stream);
+		const match = STREAM_FEES.find((opt) => opt.label === stream);
 		return match ? match.fee : 0;
 	};
 
@@ -100,6 +105,31 @@ export default function ManualAdmissions() {
 		setErrors({});
 		setOpen(false);
 	};
+
+	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
+
+	return (
+		<>
+			{role === ROLE_TECH_COORDINATOR ? (
+				<Alert variant="warning" className="mb-4">
+					<AlertTitle className="text-lg font-normal">
+						This page is intended to be used by District Coordinators only. Tech
+						Coordinator is allowed here only for testing purposes.
+					</AlertTitle>
+				</Alert>
+			) : null}
+
+			<PageTitle title="Admissions | Mora Exams" />
+
+			<h2 className="text-title-md2 font-semibold text-black dark:text-white">
+				Admissions
+			</h2>
+			<p>
+				You can register students in bulk for the Mora Exams below. If you face
+				any issues, please contact us immediately.
+			</p>
+		</>
+	);
 
 	return (
 		<div className="p-6">
