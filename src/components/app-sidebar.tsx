@@ -35,6 +35,7 @@ import {
 	BarChart2,
 	BookOpen,
 	ChevronRight,
+	CirclePlus,
 	ClipboardList,
 	FileText,
 	Home,
@@ -232,6 +233,14 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		title: "Student Marks",
 		url: "/studentmarks",
 		icon: BookOpen,
+	},
+	{
+		type: "link",
+		title: "Manual Admissions",
+		url: "/admissions",
+		icon: CirclePlus,
+		hideIf: (role) =>
+			typeof role !== "string" || ROLE_TECH_COORDINATOR !== role,
 	},
 	{
 		type: "link",
