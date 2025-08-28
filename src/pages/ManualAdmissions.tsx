@@ -9,9 +9,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { CurrencyFormatter } from "../services/utils";
+import { Button } from "@/components/ui/button";
 
 type Student = {
 	id: number;
@@ -107,11 +110,14 @@ export default function ManualAdmissions() {
 	};
 
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
+  const totalFee = useMemo(() => {
+    return CurrencyFormatter.format(students.reduce((sum, s) => sum + s.fee, 0));
+  }, [students]);
 
 	return (
 		<>
 			{role === ROLE_TECH_COORDINATOR ? (
-				<Alert variant="warning" className="mb-4">
+				<Alert variant="warning" className="mb-6">
 					<AlertTitle className="text-lg font-normal">
 						This page is intended to be used by District Coordinators only. Tech
 						Coordinator is allowed here only for testing purposes.
@@ -120,47 +126,48 @@ export default function ManualAdmissions() {
 			) : null}
 
 			<PageTitle title="Admissions | Mora Exams" />
+      <div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto]">
 
-			<h2 className="text-title-md2 font-semibold text-black dark:text-white">
-				Admissions
-			</h2>
-			<p>
+			<h2 className="col-start-1 row-start-1 text-title-md2 font-semibold">Admissions</h2>
+			<p className="max-w-prose col-start-1 col-span-2 row-start-2">
 				You can register students in bulk for the Mora Exams below. If you face
 				any issues, please contact us immediately.
 			</p>
-		</>
-	);
 
-	return (
-		<div className="p-6">
-			{/* Add Student Button */}
-			<button
+			<Button
 				onClick={() => setOpen(true)}
-				className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700"
+				className="col-start-3 row-start-1 row-span-full flex items-center gap-2 rounded bg-blue-600 px-4 py-3 text-white font-semibold hover:bg-blue-700 my-auto"
 			>
 				<PlusCircle size={18} />
 				Add Student
-			</button>
+			</Button>
+      </div>
 
-			{students.length > 0 && (
-				<>
-					<table className="mt-6 w-full table-auto border border-gray-300">
-						<thead className="bg-gray-100">
-							<tr>
-								<th className="border px-2 py-1 text-left">ID</th>
-								<th className="border px-2 py-1 text-left">Name</th>
-								<th className="border px-2 py-1 text-left">NIC</th>
-								<th className="border px-2 py-1 text-left">School</th>
-								<th className="border px-2 py-1 text-left">Phone</th>
-								<th className="border px-2 py-1 text-left">Email</th>
-								<th className="border px-2 py-1 text-left">Stream</th>
-								<th className="border px-2 py-1 text-left">Ranking District</th>
-								<th className="border px-2 py-1 text-left">Exam District</th>
-								<th className="border px-2 py-1 text-left">Exam Center</th>
-								<th className="border px-2 py-1 text-left">Fee</th>
-							</tr>
-						</thead>
-						<tbody>
+			<table className="mt-6 w-full table-auto border">
+				<thead className="">
+					<tr>
+						<th className="border px-2 py-1 text-left">#</th>
+						<th className="border px-2 py-1 text-left">Name</th>
+						<th className="border px-2 py-1 text-left">NIC</th>
+						<th className="border px-2 py-1 text-left">School</th>
+						<th className="border px-2 py-1 text-left">Phone</th>
+						<th className="border px-2 py-1 text-left">Email</th>
+						<th className="border px-2 py-1 text-left">Stream</th>
+						<th className="border px-2 py-1 text-left">Ranking District</th>
+						<th className="border px-2 py-1 text-left">Exam District</th>
+						<th className="border px-2 py-1 text-left">Exam Center</th>
+						<th className="border px-2 py-1 text-left">Fee</th>
+					</tr>
+				</thead>
+				<tbody>
+					{students.length === 0 ? (
+						<tr>
+							<td colSpan={11} className="text-center p-4">
+								No students added yet.
+							</td>
+						</tr>
+					) : (
+						<>
 							{students.map((student) => (
 								<tr key={student.id} className="border-t">
 									<td className="border px-2 py-1">{student.id}</td>
@@ -178,13 +185,26 @@ export default function ManualAdmissions() {
 									<td className="border px-2 py-1">{student.fee}</td>
 								</tr>
 							))}
-						</tbody>
-					</table>
-					<div className="mt-4 text-right font-bold text-blue-700">
-						Total Collected: Rs. {students.reduce((sum, s) => sum + s.fee, 0)}
-					</div>
-				</>
-			)}
+						</>
+					)}
+				</tbody>
+			</table>
+      <div className="my-4">
+        <Label className="text-base">
+          Total Fee
+        </Label>
+        <div className="text-2xl">
+          {totalFee}
+
+        </div>
+
+      </div>
+
+		</>
+	);
+
+	return (
+		<div className="p-6">
 
 			{/* Centered Popup */}
 			<Dialog open={open} onOpenChange={setOpen}>
