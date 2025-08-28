@@ -4,7 +4,12 @@ import PageTitle from "@/components/PageTitle";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
-import { useMemo, useState } from "react";
+import {
+	type StudentRegistrationDetails,
+	getStudentRegistrationDetails,
+} from "@/services/manualAdmissionService";
+import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { CurrencyFormatter } from "../services/utils";
 
 type Student = {
@@ -29,6 +34,11 @@ const STREAM_FEES = [
 ];
 
 export default function ManualAdmissions() {
+	const [studentRegistrationDetails, setStudentRegistrationDetails] =
+		useState<StudentRegistrationDetails>({
+			districts: [],
+		});
+
 	const [students, setStudents] = useState<Student[]>([]);
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
 	const [form, setForm] = useState<Omit<Student, "id" | "fee">>({
@@ -107,6 +117,18 @@ export default function ManualAdmissions() {
 		);
 	}, [students]);
 
+	useEffect(() => {
+		getStudentRegistrationDetails()
+			.then((data) => {
+				setStudentRegistrationDetails(data);
+			})
+			.catch((error) => {
+				toast.error(
+					error.message || "Failed to fetch student registration details",
+				);
+			});
+	}, []);
+
 	return (
 		<>
 			{role === ROLE_TECH_COORDINATOR ? (
@@ -131,6 +153,7 @@ export default function ManualAdmissions() {
 				<AddStudent
 					open={addStudentDialogOpen}
 					setOpen={setAddStudentDialogOpen}
+					additionalDetails={studentRegistrationDetails}
 				/>
 			</div>
 

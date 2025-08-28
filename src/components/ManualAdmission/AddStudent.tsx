@@ -24,14 +24,17 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import type { StudentRegistrationDetails } from "@/services/manualAdmissionService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface Props {
 	open: boolean;
 	setOpen: (open: boolean) => void;
+	additionalDetails: StudentRegistrationDetails;
 }
 
 const STREAM_OPTIONS: Array<{
@@ -92,6 +95,15 @@ export default function AddStudent(props: Props) {
 	function onSubmit(values: z.infer<typeof AddStudentSchema>) {
 		console.log(values);
 	}
+
+	const selectedExamSittingDistrict = form.watch("examDistrict");
+	const availableExamCenters = useMemo(
+		() =>
+			props.additionalDetails.districts.find(
+				(d) => d.id === Number(selectedExamSittingDistrict),
+			)?.exam_centres,
+		[selectedExamSittingDistrict, props.additionalDetails.districts],
+	);
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
@@ -202,7 +214,6 @@ export default function AddStudent(props: Props) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Gender</FormLabel>
-
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
@@ -227,20 +238,20 @@ export default function AddStudent(props: Props) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Medium</FormLabel>
-									<FormControl>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value}
-										>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
 											<SelectTrigger>
 												<SelectValue placeholder="Select" />
 											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="tamil">TAMIL</SelectItem>
-												<SelectItem value="english">ENGLISH</SelectItem>
-											</SelectContent>
-										</Select>
-									</FormControl>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="tamil">TAMIL</SelectItem>
+											<SelectItem value="english">ENGLISH</SelectItem>
+										</SelectContent>
+									</Select>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -251,23 +262,23 @@ export default function AddStudent(props: Props) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Stream</FormLabel>
-									<FormControl>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value}
-										>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
 											<SelectTrigger>
 												<SelectValue placeholder="Select" />
 											</SelectTrigger>
-											<SelectContent>
-												{STREAM_OPTIONS.map((option) => (
-													<SelectItem key={option.value} value={option.value}>
-														{option.label}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</FormControl>
+										</FormControl>
+										<SelectContent>
+											{STREAM_OPTIONS.map((option) => (
+												<SelectItem key={option.value} value={option.value}>
+													{option.label}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -278,9 +289,26 @@ export default function AddStudent(props: Props) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>District for Ranking</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value?.toString()}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Select" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{props.additionalDetails.districts.map((option) => (
+												<SelectItem
+													key={option.id}
+													value={option.id.toString()}
+												>
+													{option.district_name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -291,9 +319,26 @@ export default function AddStudent(props: Props) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>District for Exam Sitting</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value?.toString()}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Select" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{props.additionalDetails.districts.map((option) => (
+												<SelectItem
+													key={option.id}
+													value={option.id.toString()}
+												>
+													{option.district_name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -301,19 +346,44 @@ export default function AddStudent(props: Props) {
 						<FormField
 							control={form.control}
 							name="examCentre"
+							disabled={availableExamCenters === undefined}
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Exam Centre</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value?.toString()}
+										disabled={availableExamCenters === undefined}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Select" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{availableExamCenters === undefined
+												? null
+												: availableExamCenters.map((option) => (
+														<SelectItem
+															key={option.id}
+															value={option.id.toString()}
+														>
+															{option.name}
+														</SelectItem>
+													))}
+										</SelectContent>
+									</Select>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 
 						<div className="mt-6 flex justify-end space-x-3 col-start-2">
-							<Button variant="outline" onClick={() => props.setOpen(false)}>
+							<Button
+								variant="outline"
+								onClick={() => props.setOpen(false)}
+								type="button"
+							>
 								Cancel
 							</Button>
 							<Button
