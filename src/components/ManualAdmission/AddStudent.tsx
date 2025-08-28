@@ -7,14 +7,92 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Textarea } from "../ui/textarea";
 
 interface Props {
 	open: boolean;
 	setOpen: (open: boolean) => void;
 }
 
+const STREAM_OPTIONS: Array<{
+	label: string;
+	value: string;
+}> = [
+	{
+		value: "2",
+		label: "Physical Science (Maths, Physics, Chemistry)",
+	},
+	{
+		value: "4",
+		label: "Biological Science (Biology, Physics, Chemistry)",
+	},
+	{
+		value: "3",
+		label: "Other (Maths, Physics, ICT)",
+	},
+	{
+		value: "1",
+		label: "ICT Only",
+	},
+] as const;
+
+const AddStudentSchema = z.object({
+	name: z.string().min(1, "Name is required"),
+	nic: z.string().length(12, "NIC must be 12 digits"),
+	school: z.string(),
+	phone: z
+		.string()
+		.min(1, "Phone is required")
+		.length(10, "Phone must be 10 digits"),
+	email: z.string().min(1, "Email is required").email("Invalid email address"),
+	stream: z.enum(
+		STREAM_OPTIONS.map((opt) => opt.value) as [string, ...string[]],
+		{
+			message: "Stream is required",
+		},
+	),
+	address: z.string().min(1, "Address is required"),
+	gender: z.enum(["male", "female"], {
+		message: "Gender is required",
+	}),
+	medium: z.enum(["Tamil", "English"], {
+		message: "Medium is required",
+	}),
+	examDistrict: z.number().min(1, "Exam District is required"),
+	rankingDistrict: z.number().min(1, "Ranking District is required"),
+	examCentre: z.number().min(1, "Exam Centre is required"),
+});
+
 export default function AddStudent(props: Props) {
+	const form = useForm<z.infer<typeof AddStudentSchema>>({
+		resolver: zodResolver(AddStudentSchema),
+		defaultValues: {},
+	});
+
+	function onSubmit(values: z.infer<typeof AddStudentSchema>) {
+		console.log(values);
+	}
+
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
 			<DialogTrigger asChild>
@@ -34,6 +112,217 @@ export default function AddStudent(props: Props) {
 						Exams.
 					</DialogDescription>
 				</DialogHeader>
+
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Full Name</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="nic"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>NIC</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="school"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>School</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="address"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Permanent Address</FormLabel>
+									<FormControl>
+										<Textarea {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="phone"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Phone</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="gender"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Gender</FormLabel>
+
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Select" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="male">MALE</SelectItem>
+											<SelectItem value="female">FEMALE</SelectItem>
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="medium"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Medium</FormLabel>
+									<FormControl>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<SelectTrigger>
+												<SelectValue placeholder="Select" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="tamil">Tamil</SelectItem>
+												<SelectItem value="english">English</SelectItem>
+											</SelectContent>
+										</Select>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="stream"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Stream</FormLabel>
+									<FormControl>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<SelectTrigger>
+												<SelectValue placeholder="Select" />
+											</SelectTrigger>
+											<SelectContent>
+												{STREAM_OPTIONS.map((option) => (
+													<SelectItem key={option.value} value={option.value}>
+														{option.label}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="rankingDistrict"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>District for Ranking</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="examDistrict"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>District for Exam Sitting</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="examCentre"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Exam Centre</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<div className="mt-6 flex justify-end space-x-3">
+							<Button variant="outline" onClick={() => props.setOpen(false)}>
+								Cancel
+							</Button>
+							<Button
+								// TODO
+								// onClick={handleAddStudent}
+								className="bg-blue-600 text-white hover:bg-blue-700"
+							>
+								Register
+							</Button>
+						</div>
+					</form>
+				</Form>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
 					{[
@@ -86,21 +375,7 @@ export default function AddStudent(props: Props) {
 				</div>
 
 				{/* Actions */}
-				<div className="mt-6 flex justify-end space-x-3">
-					<button
-						onClick={() => props.setOpen(false)}
-						className="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100"
-					>
-						Cancel
-					</button>
-					<button
-						// TODO
-						// onClick={handleAddStudent}
-						className="px-4 py-2 bg-blue-600 rounded text-white hover:bg-blue-700"
-					>
-						Register
-					</button>
-				</div>
+				<div className="mt-6 flex justify-end space-x-3"></div>
 			</DialogContent>
 		</Dialog>
 	);
