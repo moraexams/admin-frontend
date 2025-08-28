@@ -23,11 +23,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Textarea } from "../ui/textarea";
 
 interface Props {
 	open: boolean;
@@ -104,7 +104,7 @@ export default function AddStudent(props: Props) {
 					Add Student
 				</Button>
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent className="w-full !max-w-3xl">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold">Add Student</DialogTitle>
 					<DialogDescription className="max-w-prose">
@@ -114,12 +114,15 @@ export default function AddStudent(props: Props) {
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="gap-y-3 gap-x-3 grid grid-cols-2"
+					>
 						<FormField
 							control={form.control}
 							name="name"
 							render={({ field }) => (
-								<FormItem>
+								<FormItem className="col-span-full">
 									<FormLabel>Full Name</FormLabel>
 									<FormControl>
 										<Input {...field} />
@@ -158,7 +161,7 @@ export default function AddStudent(props: Props) {
 							control={form.control}
 							name="address"
 							render={({ field }) => (
-								<FormItem>
+								<FormItem className="col-span-full">
 									<FormLabel>Permanent Address</FormLabel>
 									<FormControl>
 										<Textarea {...field} />
@@ -174,7 +177,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>Phone</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input type="tel" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -233,8 +236,8 @@ export default function AddStudent(props: Props) {
 												<SelectValue placeholder="Select" />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value="tamil">Tamil</SelectItem>
-												<SelectItem value="english">English</SelectItem>
+												<SelectItem value="tamil">TAMIL</SelectItem>
+												<SelectItem value="english">ENGLISH</SelectItem>
 											</SelectContent>
 										</Select>
 									</FormControl>
@@ -309,7 +312,7 @@ export default function AddStudent(props: Props) {
 							)}
 						/>
 
-						<div className="mt-6 flex justify-end space-x-3">
+						<div className="mt-6 flex justify-end space-x-3 col-start-2">
 							<Button variant="outline" onClick={() => props.setOpen(false)}>
 								Cancel
 							</Button>
@@ -323,59 +326,6 @@ export default function AddStudent(props: Props) {
 						</div>
 					</form>
 				</Form>
-
-				<div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-					{[
-						{ name: "name", label: "Name" },
-						{ name: "nic", label: "NIC" },
-						{ name: "school", label: "School" },
-						{ name: "phone", label: "Phone Number" },
-						{ name: "email", label: "Email" },
-						{ name: "stream", label: "Stream" },
-						{ name: "rankingDistrict", label: "Ranking District" },
-						{ name: "examDistrict", label: "Exam District" },
-						{ name: "examCenter", label: "Exam Center" },
-					].map((field) => (
-						<div key={field.name} className="flex flex-col">
-							<label className="text-sm font-medium text-gray-700 dark:text-white">
-								{field.label}
-							</label>
-							<input
-								type={
-									field.name === "phone" || field.name === "nic"
-										? "tel"
-										: "text"
-								}
-								name={field.name}
-								// TODO
-								value=""
-								// value={(form as any)[field.name]}
-								// onChange={handleChange}
-								maxLength={
-									field.name === "phone"
-										? 10
-										: field.name === "nic"
-											? 12
-											: undefined
-								}
-								// TODO
-								// className={`mt-1 w-full rounded border px-3 py-2 dark:bg-meta-4 dark:text-white ${
-								// 	errors[field.name] ? "border-red-500" : "border-stroke"
-								// }`}
-								required
-							/>
-							{/* TODO */}
-							{/* {errors[field.name] && (
-										<span className="text-xs text-red-500 mt-1">
-											{errors[field.name]}
-										</span>
-									)} */}
-						</div>
-					))}
-				</div>
-
-				{/* Actions */}
-				<div className="mt-6 flex justify-end space-x-3"></div>
 			</DialogContent>
 		</Dialog>
 	);
