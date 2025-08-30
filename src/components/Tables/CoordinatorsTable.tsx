@@ -21,10 +21,11 @@ import { filterIt } from "../../services/utils";
 // import type { SnackBarConfig } from "../../types/snackbar";
 import type { District } from "../../types/types";
 
-const DistrictsTable = ({
+const CoordinatorsTable = ({
 	districtData,
 	searchKey,
 	itemsPerPage,
+	setRefreshKey,
 }: {
 	districtData: District[];
 	searchKey: string;
@@ -37,7 +38,6 @@ const DistrictsTable = ({
 	const [itemOffset, setItemOffset] = useState(0);
 
 	const endOffset = itemOffset + itemsPerPage;
-	console.log(`Loading items from ${itemOffset} to ${endOffset}`);
 	const currentItems = items.slice(itemOffset, endOffset);
 	const pageCount = Math.ceil(itemsLength / itemsPerPage);
 
@@ -81,7 +81,7 @@ const DistrictsTable = ({
 				handleDeleteCoordinator();
 				break;
 			default:
-				break;
+				return;
 		}
 	};
 
@@ -93,7 +93,7 @@ const DistrictsTable = ({
 
 					setModalOpen(false);
 					toast.success("Successfully added");
-					setTimeout(() => window.location.reload(), 400);
+					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
 				})
 				.catch((error) => {
 					alert(error);
@@ -112,7 +112,7 @@ const DistrictsTable = ({
 					// showSnackBar(true, "Successfully Updated");
 					setModalOpen(false);
 					toast.success("Successfully Updated");
-					setTimeout(() => window.location.reload(), 400);
+					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
 				})
 				.catch((error) => {
 					alert(error);
@@ -132,7 +132,7 @@ const DistrictsTable = ({
 					// showSnackBar(true, "Successfully Deleted");
 					setModalOpen(false);
 					toast.success("Successfully Deleted");
-					setTimeout(() => window.location.reload(), 400);
+					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
 				})
 				.catch((error) => {
 					alert(error);
@@ -507,4 +507,4 @@ const DistrictsTable = ({
 	);
 };
 
-export default DistrictsTable;
+export default CoordinatorsTable;

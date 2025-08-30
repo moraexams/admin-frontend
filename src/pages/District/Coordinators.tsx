@@ -13,18 +13,18 @@ const Coordinators = () => {
 
 	const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
 
-	useEffect(() => {
-		const fetchDistricts = async () => {
-			try {
-				const districts = await getDistrictsWithCoordinators();
-				setDistricts(districts);
-			} catch (error) {
-				setError("Failed to fetch districts");
-			} finally {
-				setLoading(false);
-			}
-		};
+	const fetchDistricts = async () => {
+		try {
+			const districts = await getDistrictsWithCoordinators();
+			setDistricts(districts);
+		} catch (error) {
+			setError("Failed to fetch districts");
+		} finally {
+			setLoading(false);
+		}
+	};
 
+	useEffect(() => {
 		fetchDistricts();
 	}, [refreshKey]);
 	if (error) {
