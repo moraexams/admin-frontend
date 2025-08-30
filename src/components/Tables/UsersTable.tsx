@@ -94,7 +94,7 @@ const UsersTable = ({
 		<>
 			<dialog
 				ref={dialogElementRef}
-				className="px-10 py-6 rounded-md bg-slate-300 shadow-md border border-white/20 dark:bg-slate-800 dark:text-white min-w-[640px] max-w-[92vw]"
+				className="px-10 py-6 rounded-md bg-slate-300 shadow-md border border-white/20 dark:bg-slate-800 dark:text-white min-w-[640px] max-w-[92vw] mx-auto my-auto"
 			>
 				{selectedUser == null ? (
 					<span>No user selected</span>
