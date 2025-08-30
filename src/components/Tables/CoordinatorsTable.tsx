@@ -1,4 +1,14 @@
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { useMemo, useState } from "react";
 // import Snackbar from "../Snackbar";
 import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
@@ -177,8 +187,75 @@ const DistrictsTable = ({
 		}
 	};
 
+	const actionTitle = useMemo(() => {
+		if (action === "Update") return "Update Coordinator";
+		if (action === "Delete") return "Delete Coordinator";
+		if (action === "Add")
+			return `Add Coordinator to ${districtData.find((x) => x.id === districtID)?.name}`;
+		return undefined;
+	}, [districtData, districtID, action]);
+
 	return (
 		<>
+			<Dialog open={modalOpen} onOpenChange={setModalOpen}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>{actionTitle}</DialogTitle>
+						{action === "Delete" ? (
+							<DialogDescription>
+								This action is irreversible.
+							</DialogDescription>
+						) : null}
+					</DialogHeader>
+
+					{action === "Delete" ? (
+						<div className="mb-4.5">
+							Confirm to delete coordinator: {name} with id: {coordinatorID}
+						</div>
+					) : (
+						<>
+							<div className="">
+								<Label htmlFor="coordinator-name" className="mb-2">
+									Coordinator Name <span className="text-meta-1">*</span>
+								</Label>
+								<Input
+									type="text"
+									id="coordinator-name"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									placeholder="Enter Coordinator Name"
+								/>
+							</div>
+
+							<div className="">
+								<Label htmlFor="phone-number" className="mb-2">
+									Phone Number
+								</Label>
+								<Input
+									id="phone-number"
+									type="text"
+									value={telephone_no}
+									onChange={(e) => setTelephone_No(e.target.value)}
+									placeholder="Enter Phone Number"
+								/>
+							</div>
+						</>
+					)}
+
+					<div className="flex justify-end gap-x-2">
+						<Button
+							type="button"
+							onClick={() => setModalOpen(false)}
+							variant="destructive"
+						>
+							Cancel
+						</Button>
+						<Button type="button" onClick={handleModalSubmit}>
+							{action} Coordinator
+						</Button>
+					</div>
+				</DialogContent>
+			</Dialog>
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
 					<thead>
@@ -423,89 +500,6 @@ const DistrictsTable = ({
 						}
 						disabledLinkClassName={"text-black-100"}
 					/>
-				</div>
-			</div>
-			<div
-				className={`fixed left-0 top-0 z-99999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${
-					!modalOpen && "hidden"
-				}`}
-			>
-				<div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15">
-					<h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
-						{
-							{
-								Add: `Add Coordinator to ${
-									districtData.find((x) => x.id === districtID)?.name
-								}`,
-								Update: "Update Coordinator",
-								Delete: "Delete Coordinator",
-							}[action]
-						}
-					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary" />
-
-					{action === "Delete" ? (
-						<div className="mb-4.5">
-							Confirm to delete coordinator: {name} with id: {coordinatorID}
-						</div>
-					) : (
-						<>
-							<div className="mb-4.5">
-								<label
-									htmlFor="coordinator-name"
-									className="mb-2.5 block text-black dark:text-white"
-								>
-									Coordinator Name <span className="text-meta-1">*</span>
-								</label>
-								<input
-									type="text"
-									id="coordinator-name"
-									value={name}
-									onChange={(e) => setName(e.target.value)}
-									placeholder="Enter Coordinator Name"
-									className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-								/>
-							</div>
-
-							<div className="mb-4.5">
-								<label
-									htmlFor="phone-number"
-									className="mb-2.5 block text-black dark:text-white"
-								>
-									Phone Number
-								</label>
-								<input
-									id="phone-number"
-									type="text"
-									value={telephone_no}
-									onChange={(e) => setTelephone_No(e.target.value)}
-									placeholder="Enter Phone Number"
-									className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-								/>
-							</div>
-						</>
-					)}
-
-					<div className="-mx-3 flex flex-wrap gap-y-4">
-						<div className="w-full px-3 2xsm:w-1/2">
-							<button
-								type="button"
-								onClick={() => setModalOpen(false)}
-								className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
-							>
-								Cancel
-							</button>
-						</div>
-						<div className="w-full px-3 2xsm:w-1/2">
-							<button
-								type="button"
-								onClick={handleModalSubmit}
-								className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
-							>
-								{action} Coordinator
-							</button>
-						</div>
-					</div>
 				</div>
 			</div>
 			{/* <Snackbar config={snackBarConfig} /> */}
