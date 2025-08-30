@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
 	ROLE_DISTRICTS_COORDINATOR,
+	ROLE_DISTRICT_ORGANIZER,
 	ROLE_EXAM_COORDINATOR,
 	ROLE_FINANCE_TEAM_MEMBER,
 	ROLE_MARKETING_COORDINATOR,
@@ -45,6 +46,7 @@ const AVAILABLE_ROLES_FOR_SETTING = [
 	ROLE_MARKETING_COORDINATOR,
 	ROLE_FINANCE_TEAM_MEMBER,
 	ROLE_USER,
+	ROLE_DISTRICT_ORGANIZER,
 ] as const;
 
 const UsersTable = ({

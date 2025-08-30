@@ -1,15 +1,27 @@
+import { log } from "console";
 import { ROLE_TECH_COORDINATOR } from "@/common/roles";
+import { snakeCaseToNormalCase } from "@/common/utils";
 import AddStudent from "@/components/ManualAdmission/AddStudent";
 import PageTitle from "@/components/PageTitle";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
+import {
+	LOCAL_STORAGE__ROLE,
+	LOCAL_STORAGE__TOKEN,
+	LOCAL_STORAGE__USER,
+	LOCAL_STORAGE__USERNAME,
+	LOCAL_STORAGE__USER_ID,
+} from "@/services/authServices";
 import {
 	type StudentRegistrationDetails,
 	getStudentRegistrationDetails,
 } from "@/services/manualAdmissionService";
+import type { LocalStorage_User } from "@/types/types";
+import { LogOut, User } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { CurrencyFormatter } from "../services/utils";
 
 type Student = {
@@ -52,6 +64,7 @@ export default function ManualAdmissions() {
 		examDistrict: "",
 		examCenter: "",
 	});
+	const navigate = useNavigate();
 
 	const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -129,8 +142,28 @@ export default function ManualAdmissions() {
 			});
 	}, []);
 
+	const userStringified = localStorage.getItem(LOCAL_STORAGE__USER);
+	const user: LocalStorage_User | null = userStringified
+		? JSON.parse(userStringified)
+		: null;
+
+	const logOut = () => {
+		localStorage.removeItem(LOCAL_STORAGE__TOKEN);
+		localStorage.removeItem(LOCAL_STORAGE__USER);
+		localStorage.removeItem(LOCAL_STORAGE__USERNAME);
+		localStorage.removeItem(LOCAL_STORAGE__USER_ID);
+		localStorage.removeItem(LOCAL_STORAGE__ROLE);
+		navigate("/auth/signin");
+	};
+
+	useEffect(() => {
+		if (user === null) {
+			logOut();
+		}
+	}, []);
+
 	return (
-		<>
+		<div className="px-6 py-4">
 			{role === ROLE_TECH_COORDINATOR ? (
 				<Alert variant="warning" className="mb-6">
 					<AlertTitle className="text-lg font-normal">
@@ -138,7 +171,22 @@ export default function ManualAdmissions() {
 						Coordinator is allowed here only for testing purposes.
 					</AlertTitle>
 				</Alert>
-			) : null}
+			) : user === null ? null : (
+				<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 mb-6">
+					<div className="rounded-md p-2 border w-fit row-span-full h-full">
+						<User />
+					</div>
+					<span className="font-medium">{user.username}</span>
+					<span className="text-sm col-start-2">
+						{snakeCaseToNormalCase(user.role)}
+					</span>
+
+					<Button variant="destructive" size="sm" onClick={logOut}>
+						<LogOut />
+						<span>Log Out</span>
+					</Button>
+				</div>
+			)}
 
 			<PageTitle title="Admissions | Mora Exams" />
 			<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto]">
@@ -207,6 +255,6 @@ export default function ManualAdmissions() {
 				<Label className="text-base">Total Fee</Label>
 				<div className="text-2xl">{totalFee}</div>
 			</div>
-		</>
+		</div>
 	);
 }

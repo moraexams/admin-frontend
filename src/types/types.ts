@@ -144,3 +144,14 @@ export interface MarksBoundaries {
 	forC: number;
 	forS: number;
 }
+
+export interface LocalStorage_User {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	deleted_at: null;
+	name: string;
+	role: string;
+	username: string;
+	approved: boolean;
+}

@@ -30,6 +30,7 @@ import {
 	LOCAL_STORAGE__USERNAME,
 	LOCAL_STORAGE__USER_ID,
 } from "@/services/authServices";
+import type { LocalStorage_User } from "@/types/types";
 import {
 	AlertTriangle,
 	BarChart2,
@@ -268,22 +269,11 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 	},
 ];
 
-interface User {
-	id: number;
-	created_at: string;
-	updated_at: string;
-	deleted_at: null;
-	name: string;
-	role: string;
-	username: string;
-	approved: boolean;
-}
-
 export function AppSidebar() {
 	const { toggleSidebar } = useSidebar();
 	const navigate = useNavigate();
 	const userStringified = localStorage.getItem(LOCAL_STORAGE__USER);
-	const user: User | null = userStringified
+	const user: LocalStorage_User | null = userStringified
 		? JSON.parse(userStringified)
 		: null;
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";

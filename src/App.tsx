@@ -315,16 +315,16 @@ function App() {
 							</>
 						}
 					/>
-					<Route
-						path="/admissions"
-						element={
-							<>
-								<PageTitle title="Admissions | Mora Exams" />
-								<ManualAdmissions />
-							</>
-						}
-					/>
 				</Route>
+				<Route
+					path="/admissions"
+					element={
+						<>
+							<PageTitle title="Admissions | Mora Exams" />
+							<ManualAdmissions />
+						</>
+					}
+				/>
 			</Routes>
 		</>
 	);
