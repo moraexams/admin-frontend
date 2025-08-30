@@ -15,7 +15,9 @@ import {
 import {
 	type StudentRegistrationDetails,
 	getStudentRegistrationDetails,
+	getStudentsByCoordinator,
 } from "@/services/manualAdmissionService";
+import type { TemporaryStudent } from "@/types/manual-admissions";
 import type { LocalStorage_User } from "@/types/types";
 import { LogOut, User } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -23,39 +25,29 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CurrencyFormatter } from "../services/utils";
 
-type Student = {
-	id: number;
-	name: string;
-	nic: string;
-	school: string;
-	phone: string;
-	email: string;
-	stream: string;
-	rankingDistrict: string;
-	examDistrict: string;
-	examCenter: string;
-	fee: number;
-};
-
 const STREAM_FEES = [
-	{ label: "Maths", fee: 600 },
-	{ label: "Science", fee: 600 },
-	{ label: "ICT", fee: 200 },
-	{ label: "Maths and ICT", fee: 600 },
-];
+	{ label: "Physical Science", fee: 600 },
+	{ label: "Biological Science", fee: 600 },
+	{ label: "ICT Only", fee: 200 },
+	{ label: "Physical Science (ICT)", fee: 600 },
+] as const;
+
+const STREAM_FEES_MAP = Object.fromEntries(
+	STREAM_FEES.map((item) => [item.label, item.fee]),
+);
 
 export default function ManualAdmissions() {
 	const [studentRegistrationDetails, setStudentRegistrationDetails] =
 		useState<StudentRegistrationDetails | null>(null);
 
-	const [students, setStudents] = useState<Student[]>([]);
+	const [students, setStudents] = useState<TemporaryStudent[]>([]);
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
 
 	const navigate = useNavigate();
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
 	const totalFee = useMemo(() => {
 		return CurrencyFormatter.format(
-			students.reduce((sum, s) => sum + s.fee, 0),
+			students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0),
 		);
 	}, [students]);
 
@@ -89,6 +81,18 @@ export default function ManualAdmissions() {
 		if (user === null) {
 			logOut();
 		}
+	}, []);
+
+	const fetchStudents = () => {
+		getStudentsByCoordinator()
+			.then((data) => {
+				setStudents(data);
+			})
+			.catch(console.error);
+	};
+
+	useEffect(() => {
+		fetchStudents();
 	}, []);
 
 	return (
@@ -136,6 +140,7 @@ export default function ManualAdmissions() {
 					open={addStudentDialogOpen}
 					setOpen={setAddStudentDialogOpen}
 					additionalDetails={studentRegistrationDetails}
+					onStudentAdded={fetchStudents}
 				/>
 			</div>
 
@@ -164,21 +169,21 @@ export default function ManualAdmissions() {
 						</tr>
 					) : (
 						<>
-							{students.map((student) => (
-								<tr key={student.id} className="border-t">
-									<td className="border px-2 py-1">{student.id}</td>
-									<td className="border px-2 py-1">{student.name}</td>
+							{students.map((student, index) => (
+								<tr key={student.nic} className="border-t">
+									<td className="border px-2 py-1">{index + 1}</td>
+									<td className="border px-2 py-1">{student.full_name}</td>
 									<td className="border px-2 py-1">{student.nic}</td>
 									<td className="border px-2 py-1">{student.school}</td>
-									<td className="border px-2 py-1">{student.phone}</td>
+									<td className="border px-2 py-1">{student.telephone_no}</td>
 									<td className="border px-2 py-1">{student.email}</td>
 									<td className="border px-2 py-1">{student.stream}</td>
+									<td className="border px-2 py-1">{student.rank_district}</td>
+									<td className="border px-2 py-1">{student.exam_district}</td>
+									<td className="border px-2 py-1">{student.exam_centre}</td>
 									<td className="border px-2 py-1">
-										{student.rankingDistrict}
+										{STREAM_FEES_MAP[student.stream]}
 									</td>
-									<td className="border px-2 py-1">{student.examDistrict}</td>
-									<td className="border px-2 py-1">{student.examCenter}</td>
-									<td className="border px-2 py-1">{student.fee}</td>
 								</tr>
 							))}
 						</>

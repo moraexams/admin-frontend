@@ -1,7 +1,11 @@
-import type { ManualStudentRegistrationFormSchema } from "@/types/manual-admissions";
+import type {
+	ManualStudentRegistrationFormSchema,
+	TemporaryStudent,
+} from "@/types/manual-admissions";
 import { AxiosError } from "axios";
 import type z from "zod";
 import axiosInstance from "../axiosConfig";
+import { LOCAL_STORAGE__USER_ID } from "./authServices";
 
 interface DistrictDetail {
 	id: number;
@@ -40,7 +44,7 @@ export const addStudentManually = async (
 			nic: studentData.nic,
 			full_name: studentData.name,
 			school: studentData.school,
-			phone: studentData.phone,
+			telephone_no: studentData.phone,
 			address: studentData.address,
 			email: studentData.email,
 			gender: studentData.gender,
@@ -59,5 +63,27 @@ export const addStudentManually = async (
 			}
 		}
 		throw "Error adding student";
+	}
+};
+
+export const getStudentsByCoordinator = async () => {
+	const coordinatorId = localStorage.getItem(LOCAL_STORAGE__USER_ID);
+	if (!coordinatorId) {
+		return [];
+	}
+
+	try {
+		const response = await axiosInstance.get<Array<TemporaryStudent>>(
+			`/coordinator/${coordinatorId}/students`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		if (error instanceof AxiosError) {
+			if (error.response?.data) {
+				throw new Error(error.response?.data.message);
+			}
+		}
+		throw "Error fetching students";
 	}
 };

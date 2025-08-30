@@ -45,6 +45,7 @@ interface Props {
 	open: boolean;
 	setOpen: (open: boolean) => void;
 	additionalDetails: StudentRegistrationDetails | null;
+	onStudentAdded?: () => void;
 }
 
 const defaultValues: z.infer<typeof ManualStudentRegistrationFormSchema> = {
@@ -76,6 +77,7 @@ export default function AddStudent(props: Props) {
 				props.setOpen(false);
 				toast.success("Student added successfully");
 				form.reset();
+				props.onStudentAdded?.();
 			})
 			.catch((err) => {
 				console.error(err);

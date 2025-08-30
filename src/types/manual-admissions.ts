@@ -47,3 +47,18 @@ export const ManualStudentRegistrationFormSchema = z.object({
 	rankingDistrict: z.number().min(1, "Ranking District is required"),
 	examCentre: z.number().min(1, "Exam Centre is required"),
 });
+
+export interface TemporaryStudent {
+	nic: string;
+	full_name: string;
+	school: string;
+	address: string;
+	email: string;
+	telephone_no: string;
+	gender: string;
+	medium: string;
+	stream: string;
+	rank_district: string;
+	exam_district: string;
+	exam_centre: string;
+}
