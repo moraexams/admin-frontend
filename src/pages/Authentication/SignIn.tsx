@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo.png";
 import { login } from "../../services/authServices";
-import { Button } from "@/components/ui/button";
 
 const SignIn: React.FC = () => {
 	const navigate = useNavigate();

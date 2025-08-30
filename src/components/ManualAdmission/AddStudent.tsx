@@ -24,12 +24,22 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import type { StudentRegistrationDetails } from "@/services/manualAdmissionService";
+import {
+	type StudentRegistrationDetails,
+	addStudentManually,
+} from "@/services/manualAdmissionService";
+import {
+	ManualStudentRegistrationFormSchema,
+	STREAM_OPTIONS,
+} from "@/types/manual-admissions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-const RequiredField = () => (<span className="text-red-500">*</span>);
+import toast from "react-hot-toast";
+import type z from "zod";
+
+const RequiredField = () => <span className="text-red-500">*</span>;
 
 interface Props {
 	open: boolean;
@@ -37,63 +47,40 @@ interface Props {
 	additionalDetails: StudentRegistrationDetails;
 }
 
-const STREAM_OPTIONS: Array<{
-	label: string;
-	value: string;
-}> = [
-	{
-		value: "2",
-		label: "Physical Science (Maths, Physics, Chemistry)",
-	},
-	{
-		value: "4",
-		label: "Biological Science (Biology, Physics, Chemistry)",
-	},
-	{
-		value: "3",
-		label: "Other (Maths, Physics, ICT)",
-	},
-	{
-		value: "1",
-		label: "ICT Only",
-	},
-] as const;
-
-const AddStudentSchema = z.object({
-	name: z.string().min(1, "Name is required"),
-	nic: z.string().length(12, "NIC must be 12 digits"),
-	school: z.string(),
-	phone: z
-		.string()
-		.min(1, "Phone is required")
-		.length(10, "Phone must be 10 digits"),
-	email: z.string().min(1, "Email is required").email("Invalid email address"),
-	stream: z.enum(
-		STREAM_OPTIONS.map((opt) => opt.value) as [string, ...string[]],
-		{
-			message: "Stream is required",
-		},
-	),
-	address: z.string().min(1, "Address is required"),
-	gender: z.enum(["male", "female"], {
-		message: "Gender is required",
-	}),
-	medium: z.enum(["Tamil", "English"], {
-		message: "Medium is required",
-	}),
-	examDistrict: z.number().min(1, "Exam District is required"),
-	rankingDistrict: z.number().min(1, "Ranking District is required"),
-	examCentre: z.number().min(1, "Exam Centre is required"),
-});
+const defaultValues: z.infer<typeof ManualStudentRegistrationFormSchema> = {
+	name: "Sahithyan Kandathasan",
+	nic: "200402710173",
+	school: "J/Hartley College",
+	phone: "0771234567",
+	email: "sahithyan@example.com",
+	stream: "2",
+	address: "123 Main St, Colombo",
+	gender: "Male",
+	medium: "Tamil",
+	examDistrict: 9,
+	rankingDistrict: 9,
+	examCentre: 38,
+};
 
 export default function AddStudent(props: Props) {
-	const form = useForm<z.infer<typeof AddStudentSchema>>({
-		resolver: zodResolver(AddStudentSchema),
-		defaultValues: {},
+	const form = useForm<z.infer<typeof ManualStudentRegistrationFormSchema>>({
+		resolver: zodResolver(ManualStudentRegistrationFormSchema),
+		defaultValues,
 	});
 
-	function onSubmit(values: z.infer<typeof AddStudentSchema>) {
-		console.log(values);
+	function onSubmit(
+		values: z.infer<typeof ManualStudentRegistrationFormSchema>,
+	) {
+		addStudentManually(values)
+			.then(() => {
+				props.setOpen(false);
+				toast.success("Student added successfully");
+				form.reset();
+			})
+			.catch((err) => {
+				console.error(err);
+				// toast.error(err);
+			});
 	}
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");
@@ -107,14 +94,12 @@ export default function AddStudent(props: Props) {
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
-			<DialogTrigger asChild>
-				<Button
-					onClick={() => props.setOpen(true)}
-					className="col-start-3 row-start-1 row-span-full flex items-center gap-2 rounded bg-blue-600 px-4 py-3 text-white font-semibold hover:bg-blue-700 my-auto"
-				>
-					<PlusCircle size={18} />
-					Add Student
-				</Button>
+			<DialogTrigger
+				onClick={() => props.setOpen(true)}
+				className="col-start-3 row-start-1 row-span-full flex items-center gap-2 rounded bg-blue-600 px-3 py-2 h-fit text-white font-semibold hover:bg-blue-700 my-auto text-sm"
+			>
+				<PlusCircle size={18} />
+				Add Student
 			</DialogTrigger>
 			<DialogContent className="w-full !max-w-3xl">
 				<DialogHeader>
