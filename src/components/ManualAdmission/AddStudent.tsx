@@ -29,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+const RequiredField = () => (<span className="text-red-500">*</span>);
 
 interface Props {
 	open: boolean;
@@ -135,7 +135,10 @@ export default function AddStudent(props: Props) {
 							name="name"
 							render={({ field }) => (
 								<FormItem className="col-span-full">
-									<FormLabel>Full Name</FormLabel>
+									<FormLabel>
+										Full Name
+										<RequiredField />
+									</FormLabel>
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
@@ -148,7 +151,10 @@ export default function AddStudent(props: Props) {
 							name="nic"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>NIC</FormLabel>
+									<FormLabel>
+										NIC
+										<RequiredField />
+									</FormLabel>
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
@@ -174,7 +180,10 @@ export default function AddStudent(props: Props) {
 							name="address"
 							render={({ field }) => (
 								<FormItem className="col-span-full">
-									<FormLabel>Permanent Address</FormLabel>
+									<FormLabel>
+										Permanent Address
+										<RequiredField />
+									</FormLabel>
 									<FormControl>
 										<Textarea {...field} />
 									</FormControl>
@@ -187,7 +196,10 @@ export default function AddStudent(props: Props) {
 							name="phone"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Phone</FormLabel>
+									<FormLabel>
+										Phone No.
+										<RequiredField />
+									</FormLabel>
 									<FormControl>
 										<Input type="tel" {...field} />
 									</FormControl>
@@ -200,7 +212,10 @@ export default function AddStudent(props: Props) {
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel>
+										Email
+										<RequiredField />
+									</FormLabel>
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
@@ -213,7 +228,10 @@ export default function AddStudent(props: Props) {
 							name="gender"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Gender</FormLabel>
+									<FormLabel>
+										Gender
+										<RequiredField />
+									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
@@ -224,8 +242,8 @@ export default function AddStudent(props: Props) {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="male">MALE</SelectItem>
-											<SelectItem value="female">FEMALE</SelectItem>
+											<SelectItem value="Male">MALE</SelectItem>
+											<SelectItem value="Female">FEMALE</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormMessage />
@@ -237,7 +255,10 @@ export default function AddStudent(props: Props) {
 							name="medium"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Medium</FormLabel>
+									<FormLabel>
+										Medium
+										<RequiredField />
+									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
@@ -248,8 +269,8 @@ export default function AddStudent(props: Props) {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="tamil">TAMIL</SelectItem>
-											<SelectItem value="english">ENGLISH</SelectItem>
+											<SelectItem value="Tamil">TAMIL</SelectItem>
+											<SelectItem value="English">ENGLISH</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormMessage />
@@ -261,7 +282,10 @@ export default function AddStudent(props: Props) {
 							name="stream"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Stream</FormLabel>
+									<FormLabel>
+										Stream
+										<RequiredField />
+									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
@@ -288,7 +312,10 @@ export default function AddStudent(props: Props) {
 							name="rankingDistrict"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>District for Ranking</FormLabel>
+									<FormLabel>
+										District for Ranking
+										<RequiredField />
+									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value?.toString()}
@@ -318,7 +345,10 @@ export default function AddStudent(props: Props) {
 							name="examDistrict"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>District for Exam Sitting</FormLabel>
+									<FormLabel>
+										District for Exam Sitting
+										<RequiredField />
+									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value?.toString()}
@@ -349,7 +379,10 @@ export default function AddStudent(props: Props) {
 							disabled={availableExamCenters === undefined}
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Exam Centre</FormLabel>
+									<FormLabel>
+										Exam Centre
+										<RequiredField />
+									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value?.toString()}
