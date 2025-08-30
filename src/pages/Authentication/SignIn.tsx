@@ -24,7 +24,12 @@ const SignIn: React.FC = () => {
 		if (username !== "" && password !== "") {
 			await login(username, password)
 				.then(() => {
-					navigate("/");
+					const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
+					if (role === ROLE_DISTRICT_ORGANIZER) {
+						navigate("/admissions");
+					} else {
+						navigate("/");
+					}
 				})
 				.catch((error) => {
 					setError(error);

@@ -1,4 +1,3 @@
-import { log } from "console";
 import { ROLE_TECH_COORDINATOR } from "@/common/roles";
 import { snakeCaseToNormalCase } from "@/common/utils";
 import AddStudent from "@/components/ManualAdmission/AddStudent";
@@ -47,9 +46,7 @@ const STREAM_FEES = [
 
 export default function ManualAdmissions() {
 	const [studentRegistrationDetails, setStudentRegistrationDetails] =
-		useState<StudentRegistrationDetails>({
-			districts: [],
-		});
+		useState<StudentRegistrationDetails | null>(null);
 
 	const [students, setStudents] = useState<Student[]>([]);
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
@@ -172,8 +169,8 @@ export default function ManualAdmissions() {
 					</AlertTitle>
 				</Alert>
 			) : user === null ? null : (
-				<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 mb-6">
-					<div className="rounded-md p-2 border w-fit row-span-full h-full">
+				<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
+					<div className="rounded-md p-2 border w-fit row-span-full">
 						<User />
 					</div>
 					<span className="font-medium">{user.username}</span>
@@ -181,7 +178,12 @@ export default function ManualAdmissions() {
 						{snakeCaseToNormalCase(user.role)}
 					</span>
 
-					<Button variant="destructive" size="sm" onClick={logOut}>
+					<Button
+						variant="destructive"
+						size="sm"
+						onClick={logOut}
+						className="row-span-full col-start-3"
+					>
 						<LogOut />
 						<span>Log Out</span>
 					</Button>

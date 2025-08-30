@@ -44,7 +44,7 @@ const RequiredField = () => <span className="text-red-500">*</span>;
 interface Props {
 	open: boolean;
 	setOpen: (open: boolean) => void;
-	additionalDetails: StudentRegistrationDetails;
+	additionalDetails: StudentRegistrationDetails | null;
 }
 
 const defaultValues: z.infer<typeof ManualStudentRegistrationFormSchema> = {
@@ -86,17 +86,18 @@ export default function AddStudent(props: Props) {
 	const selectedExamSittingDistrict = form.watch("examDistrict");
 	const availableExamCenters = useMemo(
 		() =>
-			props.additionalDetails.districts.find(
+			props.additionalDetails?.districts.find(
 				(d) => d.id === Number(selectedExamSittingDistrict),
 			)?.exam_centres,
-		[selectedExamSittingDistrict, props.additionalDetails.districts],
+		[selectedExamSittingDistrict, props.additionalDetails],
 	);
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
 			<DialogTrigger
+				disabled={props.additionalDetails === null}
 				onClick={() => props.setOpen(true)}
-				className="col-start-3 row-start-1 row-span-full flex items-center gap-2 rounded bg-blue-600 px-3 py-2 h-fit text-white font-semibold hover:bg-blue-700 my-auto text-sm"
+				className="col-start-3 row-start-1 row-span-full flex items-center gap-2 rounded bg-blue-600 px-3 py-2 h-fit text-white font-semibold hover:bg-blue-700 my-auto text-sm disabled:opacity-50 disabled:pointer-events-none"
 			>
 				<PlusCircle size={18} />
 				Add Student
@@ -311,7 +312,7 @@ export default function AddStudent(props: Props) {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											{props.additionalDetails.districts.map((option) => (
+											{props.additionalDetails?.districts.map((option) => (
 												<SelectItem
 													key={option.id}
 													value={option.id.toString()}
@@ -344,7 +345,7 @@ export default function AddStudent(props: Props) {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											{props.additionalDetails.districts.map((option) => (
+											{props.additionalDetails?.districts.map((option) => (
 												<SelectItem
 													key={option.id}
 													value={option.id.toString()}
