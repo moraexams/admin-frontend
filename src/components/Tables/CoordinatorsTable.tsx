@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useMemo, useState } from "react";
-// import Snackbar from "../Snackbar";
 import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
 import {
@@ -18,7 +17,6 @@ import {
 	updateCoordinator,
 } from "../../services/coordinatorsService";
 import { filterIt } from "../../services/utils";
-// import type { SnackBarConfig } from "../../types/snackbar";
 import type { District } from "../../types/types";
 
 const CoordinatorsTable = ({
@@ -46,19 +44,6 @@ const CoordinatorsTable = ({
 		const newOffset = (event.selected * itemsPerPage) % itemsLength;
 		setItemOffset(newOffset);
 	};
-
-	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-	// 	message: "",
-	// 	type: false,
-	// 	show: false,
-	// });
-
-	// const showSnackBar = (type: boolean, message: string) => {
-	// setSnackBarConfig({ message: message, type: type, show: true });
-	// 	setTimeout(() => {
-	// 		// setSnackBarConfig((prev) => ({ ...prev, show: false }));
-	// 	}, 1000);
-	// };
 
 	const [modalOpen, setModalOpen] = useState(false);
 
@@ -89,8 +74,6 @@ const CoordinatorsTable = ({
 		if (name !== "" && telephone_no !== "" && districtID) {
 			addCoordinator(name, districtID, telephone_no)
 				.then(() => {
-					// showSnackBar(true, "Successfully Added");
-
 					setModalOpen(false);
 					toast.success("Successfully added");
 					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
@@ -99,7 +82,6 @@ const CoordinatorsTable = ({
 					alert(error);
 				});
 		} else {
-			// showSnackBar(false, "Fill All Fields");
 			setModalOpen(false);
 			toast.error("Fill All Fields");
 		}
@@ -109,7 +91,6 @@ const CoordinatorsTable = ({
 		if (name !== "" && telephone_no !== "" && coordinatorID) {
 			updateCoordinator(coordinatorID, name, telephone_no)
 				.then(() => {
-					// showSnackBar(true, "Successfully Updated");
 					setModalOpen(false);
 					toast.success("Successfully Updated");
 					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
@@ -129,7 +110,6 @@ const CoordinatorsTable = ({
 			console.log(coordinatorID);
 			deleteCoordinator(coordinatorID)
 				.then(() => {
-					// showSnackBar(true, "Successfully Deleted");
 					setModalOpen(false);
 					toast.success("Successfully Deleted");
 					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
@@ -138,7 +118,6 @@ const CoordinatorsTable = ({
 					alert(error);
 				});
 		} else {
-			// showSnackBar(false, "No Coordinator Selected");
 			setModalOpen(false);
 			toast.error("No Coordinator Selected");
 		}
@@ -502,7 +481,6 @@ const CoordinatorsTable = ({
 					/>
 				</div>
 			</div>
-			{/* <Snackbar config={snackBarConfig} /> */}
 		</>
 	);
 };
