@@ -50,76 +50,8 @@ export default function ManualAdmissions() {
 
 	const [students, setStudents] = useState<Student[]>([]);
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
-	const [form, setForm] = useState<Omit<Student, "id" | "fee">>({
-		name: "",
-		nic: "",
-		school: "",
-		phone: "",
-		email: "",
-		stream: "",
-		rankingDistrict: "",
-		examDistrict: "",
-		examCenter: "",
-	});
+
 	const navigate = useNavigate();
-
-	const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-
-		// Limit input to numbers only for NIC and phone
-		if ((name === "nic" || name === "phone") && !/^\d*$/.test(value)) return;
-
-		setForm({ ...form, [name]: value });
-	};
-
-	const getFee = (stream: string) => {
-		const match = STREAM_FEES.find((opt) => opt.label === stream);
-		return match ? match.fee : 0;
-	};
-
-	const handleAddStudent = () => {
-		const newErrors: { [key: string]: string } = {};
-
-		if (!form.name.trim()) newErrors.name = "Name is required";
-		if (form.nic.trim().length !== 12) newErrors.nic = "NIC must be 12 digits";
-		if (!form.school.trim()) newErrors.school = "School is required";
-		if (!form.phone.trim()) newErrors.phone = "Phone number is required";
-		else if (form.phone.trim().length !== 10)
-			newErrors.phone = "Phone must be 10 digits";
-		if (!form.email.trim()) newErrors.email = "Email is required";
-		if (!form.stream.trim()) newErrors.stream = "Stream is required";
-		if (!form.rankingDistrict.trim())
-			newErrors.rankingDistrict = "Ranking district is required";
-		if (!form.examDistrict.trim())
-			newErrors.examDistrict = "Exam district is required";
-		if (!form.examCenter.trim())
-			newErrors.examCenter = "Exam center is required";
-
-		if (Object.keys(newErrors).length > 0) {
-			setErrors(newErrors);
-			return;
-		}
-		const fee = getFee(form.stream);
-
-		setStudents([...students, { id: students.length + 1, ...form, fee }]);
-
-		setForm({
-			name: "",
-			nic: "",
-			school: "",
-			phone: "",
-			email: "",
-			stream: "",
-			rankingDistrict: "",
-			examDistrict: "",
-			examCenter: "",
-		});
-		setErrors({});
-		setAddStudentDialogOpen(false);
-	};
-
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
 	const totalFee = useMemo(() => {
 		return CurrencyFormatter.format(
