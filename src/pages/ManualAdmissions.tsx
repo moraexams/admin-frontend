@@ -47,7 +47,9 @@ export default function ManualAdmissions() {
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
 	const totalFee = useMemo(() => {
 		return CurrencyFormatter.format(
-			students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0),
+			!Array.isArray(students)
+				? 0
+				: students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0),
 		);
 	}, [students]);
 
@@ -161,7 +163,13 @@ export default function ManualAdmissions() {
 					</tr>
 				</thead>
 				<tbody>
-					{students.length === 0 ? (
+					{!Array.isArray(students) ? (
+						<tr>
+							<td colSpan={11} className="text-center p-4">
+								Loading...
+							</td>
+						</tr>
+					) : students.length === 0 ? (
 						<tr>
 							<td colSpan={11} className="text-center p-4">
 								No students added yet.
