@@ -43,3 +43,25 @@ export const editUser = async (user: User) => {
 		throw error;
 	}
 };
+
+export interface UnassignedCoordinator {
+	id: string;
+	username: string;
+}
+
+export const getUnassignedCoordinators = async () => {
+	try {
+		const response = await axiosInstance.get<Array<UnassignedCoordinator>>(
+			"/user/unassigned-coordinators",
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching unassigned coordinators:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have permission to view unassigned coordinators.";
+			}
+		}
+		throw error;
+	}
+};

@@ -1,7 +1,12 @@
+import { getDistrictsWithCoordinators } from "@/services/districtService";
+import {
+	type UnassignedCoordinator,
+	getUnassignedCoordinators,
+} from "@/services/userService";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CoordinatorsTable from "../../components/Tables/CoordinatorsTable";
-import { getDistrictsWithCoordinators } from "../../services/districtService";
 import type { District } from "../../types/types";
 
 const Coordinators = () => {
@@ -10,8 +15,10 @@ const Coordinators = () => {
 	const [error, setError] = useState<string | null>(null);
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 	const [searchKey, setSearchKey] = useState<string>("");
-
 	const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
+	const [unassignedCoordinators, setUnassignedCoordinators] = useState<
+		Array<UnassignedCoordinator>
+	>([]);
 
 	const fetchDistricts = async () => {
 		try {
@@ -27,6 +34,21 @@ const Coordinators = () => {
 	useEffect(() => {
 		fetchDistricts();
 	}, [refreshKey]);
+
+	useEffect(() => {
+		getUnassignedCoordinators()
+			.then((data) => {
+				setUnassignedCoordinators(data);
+			})
+			.catch((err) => {
+				toast.error(
+					err instanceof Error
+						? err.message
+						: "Failed to fetch unassigned coordinators",
+				);
+			});
+	}, []);
+
 	if (error) {
 		return <div>{error}</div>;
 	}
@@ -64,6 +86,7 @@ const Coordinators = () => {
 					<div>Loading...</div>
 				) : (
 					<CoordinatorsTable
+						unassignedCoordinators={unassignedCoordinators}
 						districtData={districts}
 						searchKey={searchKey}
 						itemsPerPage={itemsPerPage}

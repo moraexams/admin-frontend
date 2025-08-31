@@ -7,29 +7,41 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DialogDescription } from "@radix-ui/react-dialog";
-import { useMemo, useState } from "react";
-import toast from "react-hot-toast";
-import ReactPaginate from "react-paginate";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import {
 	addCoordinator,
 	deleteCoordinator,
 	updateCoordinator,
-} from "../../services/coordinatorsService";
-import { filterIt } from "../../services/utils";
+} from "@/services/coordinatorsService";
+import type { UnassignedCoordinator } from "@/services/userService";
+import { filterIt } from "@/services/utils";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import ReactPaginate from "react-paginate";
 import type { District } from "../../types/types";
+
+interface Props {
+	districtData: District[];
+	searchKey: string;
+	itemsPerPage: number;
+	setRefreshKey: any;
+	unassignedCoordinators: Array<UnassignedCoordinator>;
+}
 
 const CoordinatorsTable = ({
 	districtData,
 	searchKey,
 	itemsPerPage,
 	setRefreshKey,
-}: {
-	districtData: District[];
-	searchKey: string;
-	itemsPerPage: number;
-	setRefreshKey: any;
-}) => {
+	unassignedCoordinators,
+}: Props) => {
 	const items: District[] =
 		searchKey !== "" ? filterIt(districtData, searchKey) : districtData;
 	const itemsLength = items.length;
@@ -218,6 +230,25 @@ const CoordinatorsTable = ({
 									placeholder="Enter Phone Number"
 								/>
 							</div>
+
+							{action === "Edit" ? null : (
+								<div>
+									<Label className="mb-2">Associated User</Label>
+									<Select>
+										<SelectTrigger>
+											<SelectValue placeholder="Select User" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="NONE">None</SelectItem>
+											{unassignedCoordinators.map((user) => (
+												<SelectItem key={user.id} value={user.id}>
+													{user.id} - {user.username}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</div>
+							)}
 						</>
 					)}
 
