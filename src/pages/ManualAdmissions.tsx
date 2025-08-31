@@ -1,8 +1,6 @@
-import { ROLE_TECH_COORDINATOR } from "@/common/roles";
 import { snakeCaseToNormalCase } from "@/common/utils";
 import AddStudent from "@/components/ManualAdmission/AddStudent";
 import PageTitle from "@/components/PageTitle";
-import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -44,7 +42,6 @@ export default function ManualAdmissions() {
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
 
 	const navigate = useNavigate();
-	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
 	const totalFee = useMemo(() => {
 		return CurrencyFormatter.format(
 			!Array.isArray(students)
@@ -99,14 +96,7 @@ export default function ManualAdmissions() {
 
 	return (
 		<div className="px-6 py-4">
-			{role === ROLE_TECH_COORDINATOR ? (
-				<Alert variant="warning" className="mb-6">
-					<AlertTitle className="text-lg font-normal">
-						This page is intended to be used by District Coordinators only. Tech
-						Coordinator is allowed here only for testing purposes.
-					</AlertTitle>
-				</Alert>
-			) : user === null ? null : (
+			{user === null ? null : (
 				<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
 					<div className="rounded-md p-2 border w-fit row-span-full">
 						<User />

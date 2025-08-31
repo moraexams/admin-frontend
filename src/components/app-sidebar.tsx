@@ -237,14 +237,6 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 	},
 	{
 		type: "link",
-		title: "Manual Admissions",
-		url: "/admissions",
-		icon: CirclePlus,
-		hideIf: (role) =>
-			typeof role !== "string" || ROLE_TECH_COORDINATOR !== role,
-	},
-	{
-		type: "link",
 		title: "Users",
 		url: "/users",
 		icon: Users,
