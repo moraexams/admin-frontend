@@ -35,6 +35,13 @@ interface Props {
 	unassignedCoordinators: Array<UnassignedCoordinator>;
 }
 
+interface Coordinator {
+	id: number;
+	name: string;
+	telephoneNo: string;
+	associatedUserId: number;
+}
+
 const CoordinatorsTable = ({
 	districtData,
 	searchKey,
@@ -46,7 +53,6 @@ const CoordinatorsTable = ({
 		searchKey !== "" ? filterIt(districtData, searchKey) : districtData;
 	const itemsLength = items.length;
 	const [itemOffset, setItemOffset] = useState(0);
-
 	const endOffset = itemOffset + itemsPerPage;
 	const currentItems = items.slice(itemOffset, endOffset);
 	const pageCount = Math.ceil(itemsLength / itemsPerPage);
@@ -57,12 +63,10 @@ const CoordinatorsTable = ({
 		setItemOffset(newOffset);
 	};
 
-	const [modalOpen, setModalOpen] = useState(false);
+	const [selectedCoordinator, setSelectedCoordinator] =
+		useState<Coordinator | null>(null);
 
-	const [coordinatorID, setCoordinatirID] = useState<number>(1);
-	const [name, setName] = useState<string>("");
 	const [districtID, setDistrictID] = useState<number>(1);
-	const [telephone_no, setTelephone_No] = useState<string>("Male");
 
 	const [action, setAction] = useState<string>("Add");
 
@@ -83,64 +87,87 @@ const CoordinatorsTable = ({
 	};
 
 	const handleAddCoordinator = () => {
-		if (name !== "" && telephone_no !== "" && districtID) {
-			addCoordinator(name, districtID, telephone_no)
-				.then(() => {
-					setModalOpen(false);
-					toast.success("Successfully added");
-					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
-				})
-				.catch((error) => {
-					alert(error);
-				});
-		} else {
-			setModalOpen(false);
-			toast.error("Fill All Fields");
+		if (!selectedCoordinator) {
+			return;
 		}
+		if (
+			selectedCoordinator.name == "" ||
+			selectedCoordinator.telephoneNo == ""
+		) {
+			toast.error("Fill all fields");
+			return;
+		}
+
+		addCoordinator(
+			selectedCoordinator.name,
+			districtID,
+			selectedCoordinator.telephoneNo,
+		)
+			.then(() => {
+				setSelectedCoordinator(null);
+				toast.success("Successfully added");
+				setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
+			})
+			.catch((error) => {
+				alert(error);
+			});
 	};
 
 	const handleUpdateCoordinator = () => {
-		if (name !== "" && telephone_no !== "" && coordinatorID) {
-			updateCoordinator(coordinatorID, name, telephone_no)
-				.then(() => {
-					setModalOpen(false);
-					toast.success("Successfully Updated");
-					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
-				})
-				.catch((error) => {
-					alert(error);
-				});
-		} else {
-			// showSnackBar(false, "Fill All Fields");
-			setModalOpen(false);
-			toast.error("Fill All Fields");
+		if (!selectedCoordinator || selectedCoordinator.id == 0) {
+			toast.error("No coordinator selected");
+			return;
 		}
+		if (
+			selectedCoordinator.name == "" ||
+			selectedCoordinator.telephoneNo == ""
+		) {
+			toast.error("Fill all fields");
+			return;
+		}
+
+		updateCoordinator(
+			selectedCoordinator.id,
+			selectedCoordinator.name,
+			selectedCoordinator.telephoneNo,
+		)
+			.then(() => {
+				setSelectedCoordinator(null);
+				toast.success("Successfully Updated");
+				setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
+			})
+			.catch((error) => {
+				alert(error);
+			});
 	};
 
 	const handleDeleteCoordinator = () => {
-		if (coordinatorID) {
-			console.log(coordinatorID);
-			deleteCoordinator(coordinatorID)
-				.then(() => {
-					setModalOpen(false);
-					toast.success("Successfully Deleted");
-					setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
-				})
-				.catch((error) => {
-					alert(error);
-				});
-		} else {
-			setModalOpen(false);
-			toast.error("No Coordinator Selected");
+		if (!selectedCoordinator) {
+			toast.error("No coordinator selected");
+			return;
 		}
+
+		console.log(selectedCoordinator.id);
+		deleteCoordinator(selectedCoordinator.id)
+			.then(() => {
+				setSelectedCoordinator(null);
+				toast.success("Successfully deleted");
+				setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
+			})
+			.catch((error) => {
+				toast.error(error);
+			});
 	};
 
 	const handleAddModalOpen = (id: number | undefined) => {
 		setAction("Add");
-		setName("");
 		setDistrictID(id || 1);
-		setTelephone_No("");
-		setModalOpen(true);
+		setSelectedCoordinator({
+			associatedUserId: 0,
+			id: 0,
+			name: "",
+			telephoneNo: "",
+		});
 	};
 
 	const handleEditModalOpen = (
@@ -152,30 +179,39 @@ const CoordinatorsTable = ({
 		const coordinators = districtData.find(
 			(x) => x.id === district_id,
 		)?.coordinators;
-		if (coordinators) {
-			const coordinator = coordinators.find((x) => x.id === coordinatorID);
-			if (coordinator?.id) {
-				setCoordinatirID(coordinator.id);
-				setName(coordinator.name);
-				setTelephone_No(coordinator.telephone_no);
-				setModalOpen(true);
-			} else {
-				alert("Coordinator not found");
-			}
-		} else {
-			alert("District not found");
+
+		if (!coordinators) {
+			toast.error("No coordinators found for this district");
+			return;
 		}
+
+		const coordinator = coordinators.find((x) => x.id === coordinatorID);
+		if (!coordinator?.id) {
+			toast.error("Coordinator not found");
+			return;
+		}
+
+		setSelectedCoordinator({
+			id: coordinator.id,
+			name: coordinator.name,
+			telephoneNo: coordinator.telephone_no || "",
+			associatedUserId: 0,
+		});
 	};
 
 	const handleDeleteModalOpen = (id: number | undefined, name: string) => {
-		if (id) {
-			setAction("Delete");
-			setCoordinatirID(id);
-			setName(name);
-			setModalOpen(true);
-		} else {
-			alert("No coordinator selected");
+		if (!id) {
+			toast.error("No coordinator selected");
+			return;
 		}
+
+		setAction("Delete");
+		setSelectedCoordinator({
+			associatedUserId: 0,
+			id,
+			name,
+			telephoneNo: "",
+		});
 	};
 
 	const actionTitle = useMemo(() => {
@@ -188,83 +224,101 @@ const CoordinatorsTable = ({
 
 	return (
 		<>
-			<Dialog open={modalOpen} onOpenChange={setModalOpen}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>{actionTitle}</DialogTitle>
+			<Dialog
+				open={selectedCoordinator !== null}
+				onOpenChange={(c) => {
+					if (!c) setSelectedCoordinator(null);
+				}}
+			>
+				{selectedCoordinator === null ? null : (
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>{actionTitle}</DialogTitle>
+							{action === "Delete" ? (
+								<DialogDescription>
+									This action is irreversible.
+								</DialogDescription>
+							) : null}
+						</DialogHeader>
+
 						{action === "Delete" ? (
-							<DialogDescription>
-								This action is irreversible.
-							</DialogDescription>
-						) : null}
-					</DialogHeader>
-
-					{action === "Delete" ? (
-						<div className="mb-4.5">
-							Confirm to delete coordinator: {name} with id: {coordinatorID}
-						</div>
-					) : (
-						<>
-							<div className="">
-								<Label htmlFor="coordinator-name" className="mb-2">
-									Coordinator Name <span className="text-meta-1">*</span>
-								</Label>
-								<Input
-									type="text"
-									id="coordinator-name"
-									value={name}
-									onChange={(e) => setName(e.target.value)}
-									placeholder="Enter Coordinator Name"
-								/>
+							<div className="mb-4.5">
+								Confirm to delete coordinator: {selectedCoordinator.name} with
+								id: {selectedCoordinator.id}
 							</div>
-
-							<div className="">
-								<Label htmlFor="phone-number" className="mb-2">
-									Phone Number
-								</Label>
-								<Input
-									id="phone-number"
-									type="text"
-									value={telephone_no}
-									onChange={(e) => setTelephone_No(e.target.value)}
-									placeholder="Enter Phone Number"
-								/>
-							</div>
-
-							{action === "Edit" ? null : (
-								<div>
-									<Label className="mb-2">Associated User</Label>
-									<Select>
-										<SelectTrigger>
-											<SelectValue placeholder="Select User" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectItem value="NONE">None</SelectItem>
-											{unassignedCoordinators.map((user) => (
-												<SelectItem key={user.id} value={user.id}>
-													{user.id} - {user.username}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
+						) : (
+							<>
+								<div className="">
+									<Label htmlFor="coordinator-name" className="mb-2">
+										Coordinator Name <span className="text-meta-1">*</span>
+									</Label>
+									<Input
+										type="text"
+										id="coordinator-name"
+										value={selectedCoordinator.name}
+										onChange={(e) =>
+											setSelectedCoordinator({
+												...selectedCoordinator,
+												name: e.target.value,
+											})
+										}
+										placeholder="Enter Coordinator Name"
+									/>
 								</div>
-							)}
-						</>
-					)}
 
-					<div className="flex justify-end gap-x-2">
-						<Button
-							type="button"
-							onClick={() => setModalOpen(false)}
-							variant="destructive"
-						>
-							Cancel
-						</Button>
-						<Button type="button" onClick={handleModalSubmit}>
-							{action} Coordinator
-						</Button>
-					</div>
-				</DialogContent>
+								<div className="">
+									<Label htmlFor="phone-number" className="mb-2">
+										Phone Number
+									</Label>
+									<Input
+										id="phone-number"
+										type="text"
+										value={selectedCoordinator.telephoneNo}
+										onChange={(e) =>
+											setSelectedCoordinator({
+												...selectedCoordinator,
+												telephoneNo: e.target.value,
+											})
+										}
+										placeholder="Enter Phone Number"
+									/>
+								</div>
+
+								{action === "Edit" ? null : (
+									<div>
+										<Label className="mb-2">Associated User</Label>
+										<Select>
+											<SelectTrigger>
+												<SelectValue placeholder="Select User" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="NONE">None</SelectItem>
+												{unassignedCoordinators.map((user) => (
+													<SelectItem key={user.id} value={user.id}>
+														{user.id} - {user.username}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+								)}
+							</>
+						)}
+
+						<div className="flex justify-end gap-x-2">
+							<Button
+								type="button"
+								onClick={() => setSelectedCoordinator(null)}
+								variant="destructive"
+							>
+								Cancel
+							</Button>
+							<Button type="button" onClick={handleModalSubmit}>
+								{action} Coordinator
+							</Button>
+						</div>
+					</DialogContent>
+				)}
 			</Dialog>
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
