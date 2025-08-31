@@ -1,4 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import {
 	ROLE_DISTRICTS_COORDINATOR,
@@ -57,7 +75,6 @@ const UsersTable = ({
 	refetch,
 }: UsersTableProps) => {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const dialogElementRef = useRef<HTMLDialogElement | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentUserId] = useLocalStorage<string>(LOCAL_STORAGE__USER_ID, "");
 
@@ -83,95 +100,96 @@ const UsersTable = ({
 	const start = itemsPerPage * (page - 1) + 1;
 	const end = start - 1 + userData.length;
 
-	useEffect(() => {
-		if (!dialogElementRef.current) return;
-		if (selectedUser) {
-			dialogElementRef.current.showModal();
-		} else {
-			dialogElementRef.current.close();
-		}
-	}, [selectedUser]);
-
 	return (
 		<>
-			<dialog
-				ref={dialogElementRef}
-				className="px-10 py-6 rounded-md bg-slate-300 shadow-md border border-white/20 dark:bg-slate-800 dark:text-white min-w-[640px] max-w-[92vw] mx-auto my-auto"
+			<Dialog
+				open={!!selectedUser}
+				onOpenChange={() =>
+					selectedUser === null ? null : setSelectedUser(null)
+				}
 			>
-				{selectedUser == null ? (
-					<span>No user selected</span>
-				) : (
-					<>
-						<h3 className="text-2xl mb-2 font-medium">Edit User</h3>
-						<p className="mb-5">
-							You are editing the user: <b>{selectedUser.username}</b>.<br />{" "}
-							You cannot edit their username or name.
-						</p>
+				<DialogTrigger />
+				<DialogContent className="sm:max-w-2xl w-full">
+					<DialogHeader>
+						<DialogTitle>Edit User</DialogTitle>
+						{selectedUser === null ? null : (
+							<DialogDescription className="mb-5">
+								You are editing the user: <b>{selectedUser.username}</b>.<br />{" "}
+								You cannot edit their username or name.
+							</DialogDescription>
+						)}
+					</DialogHeader>
 
-						<div className="grid grid-cols-[1fr_auto] items-center mb-4">
-							<label
-								htmlFor="approved-status"
-								className="cursor-pointer font-semibold"
-							>
-								Approved
-							</label>
-							<p>Only approved members can login.</p>
-							<input
-								type="checkbox"
-								id="approved-status"
-								className="size-5 cursor-pointer col-start-2 row-start-1 row-span-2"
-								checked={selectedUser.approved}
-								onChange={(e) => {
-									setSelectedUser({
-										...selectedUser,
-										approved: e.target.checked,
-									});
-								}}
-							/>
-						</div>
+					{selectedUser == null ? (
+						<span>No user selected</span>
+					) : (
+						<>
+							<div className="grid grid-cols-[1fr_auto] items-center mb-4">
+								<Label
+									htmlFor="approved-status"
+									className="cursor-pointer font-semibold"
+								>
+									Approved
+								</Label>
+								<p>Only approved members can login.</p>
+								<Checkbox
+									id="approved-status"
+									className="size-5 cursor-pointer col-start-2 row-start-1 row-span-2"
+									checked={selectedUser.approved}
+									onCheckedChange={(checked) => {
+										setSelectedUser({
+											...selectedUser,
+											approved: checked === true,
+										});
+									}}
+								/>
+							</div>
+							<div className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center mb-4">
+								<Label htmlFor="select-role" className="font-semibold">
+									Role
+								</Label>
+								<p>Controls how much the user can do.</p>
 
-						<div className="grid grid-cols-[1fr_auto] items-center mb-4">
-							<label htmlFor="select-role" className="font-semibold">
-								Role
-							</label>
-							<p>Controls how much the user can do.</p>
-							<select
-								className="rounded border border-stroke bg-white py-2 px-3 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary cursor-pointer col-start-2 row-start-1 row-span-2"
-								id="select-role"
-								value={selectedUser.role}
-								onChange={(e) => {
-									setSelectedUser({ ...selectedUser, role: e.target.value });
-								}}
-							>
-								{AVAILABLE_ROLES_FOR_SETTING.map((role) => (
-									<option key={role} value={role}>
-										{role}
-									</option>
-								))}
-							</select>
-						</div>
-						<div className="flex gap-3">
-							<span className="mr-auto">{isLoading ? "Loading..." : null}</span>
-							<button
-								type="button"
-								className="px-4 py-1.5 rounded-md bg-red-500 hover:bg-red-600"
-								onClick={() => {
-									setSelectedUser(null);
-								}}
-							>
-								Cancel
-							</button>
-							<button
-								type="button"
-								className="rounded-md hover:bg-gray transition-colors hover:text-black px-4 py-1.5 border"
-								onClick={updateUser}
-							>
-								Save
-							</button>
-						</div>
-					</>
-				)}
-			</dialog>
+								<Select
+									value={selectedUser.role}
+									onValueChange={(value) => {
+										setSelectedUser({ ...selectedUser, role: value });
+									}}
+								>
+									<SelectTrigger className="col-start-2 row-start-1 row-span-full">
+										<SelectValue placeholder="Role" />
+									</SelectTrigger>
+									<SelectContent>
+										{AVAILABLE_ROLES_FOR_SETTING.map((role) => (
+											<SelectItem key={role} value={role}>
+												{role}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+							<div className="flex gap-3">
+								<span className="mr-auto">
+									{isLoading ? "Loading..." : null}
+								</span>
+								<Button
+									variant="destructive"
+									type="button"
+									onClick={() => {
+										setSelectedUser(null);
+									}}
+								>
+									Cancel
+								</Button>
+								<Button type="button" onClick={updateUser}>
+									Save
+								</Button>
+							</div>
+						</>
+					)}
+				</DialogContent>
+			</Dialog>
+
 			<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 				<div className="max-w-full overflow-x-auto">
 					<table className="w-full table-auto">
@@ -242,7 +260,7 @@ const UsersTable = ({
 													onClick={() => {
 														setSelectedUser(user);
 													}}
-													className="hover:text-primary"
+													className="hover:text-primary cursor-pointer"
 													title="Edit user"
 												>
 													<svg
@@ -261,7 +279,10 @@ const UsersTable = ({
 														<path d="M13.5 6.5l4 4" />
 													</svg>
 												</button>
-												<button type="button" className="hover:text-primary">
+												<button
+													type="button"
+													className="hover:text-primary cursor-pointer"
+												>
 													<svg
 														className="fill-current"
 														width="18"
