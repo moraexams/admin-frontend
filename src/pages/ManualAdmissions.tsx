@@ -106,6 +106,8 @@ export default function ManualAdmissions() {
 		fetchStudents();
 	}, []);
 
+	const numberOfStudents = studentRegistrationDetails?.number_of_students || 0;
+
 	return (
 		<div className="px-3 md:px-5 pt-4 pb-28">
 			{user === null ? null : (
@@ -140,13 +142,13 @@ export default function ManualAdmissions() {
 							</CardHeader>
 							<CardContent className="px-3">
 								<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
-									{(studentRegistrationDetails?.number_of_students || 0)
-										.toString()
-										.padStart(2, "0")}
+									{numberOfStudents == 0
+										? "0"
+										: numberOfStudents.toString().padStart(2, "0")}
 								</div>
 							</CardContent>
 							<CardFooter className="w-fit px-3 text-pretty">
-								Number of students registered through you.
+								Number of students you registered.
 							</CardFooter>
 						</Card>
 					)}

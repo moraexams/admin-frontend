@@ -56,7 +56,6 @@ export default function DeleteStudent(props: Props) {
 						</Button>
 						<Button
 							variant="destructive"
-							className="bg-blue-600 text-white hover:bg-blue-700"
 							onClick={() => {
 								deleteStudent(props.student.nic)
 									.then(() => {
