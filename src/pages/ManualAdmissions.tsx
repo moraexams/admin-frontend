@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
+	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
@@ -102,7 +103,7 @@ export default function ManualAdmissions() {
 	}, []);
 
 	return (
-		<div className="px-3 md:px-5 py-4">
+		<div className="px-3 md:px-5 pt-4 pb-20">
 			{user === null ? null : (
 				<>
 					<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
@@ -167,7 +168,50 @@ export default function ManualAdmissions() {
 				/>
 			</div>
 
-			<div className="overflow-x-scroll lg:overflow-x-hidden">
+			<div className="block lg:hidden space-y-2 mt-6">
+				{students.length === 0 ? (
+					<div className="grid place-items-center min-h-[120px]">
+						No pending admissions.
+					</div>
+				) : (
+					students.map((student, index) => (
+						<Card key={student.nic} className="py-4 gap-3">
+							<CardHeader className="gap-0 px-4">
+								<CardTitle className="text-lg font-semibold">
+									#{index + 1} {student.full_name}
+								</CardTitle>
+								<CardDescription>
+									{student.telephone_no} | {student.email}
+								</CardDescription>
+							</CardHeader>
+							<CardContent className="px-4">
+								<table className="w-full">
+									<tbody>
+										<tr>
+											<td>NIC</td>
+											<td className="text-right">{student.nic}</td>
+										</tr>
+										<tr>
+											<td>Stream</td>{" "}
+											<td className="text-right">{student.stream}</td>
+										</tr>
+										<tr>
+											<td>Ranking District</td>{" "}
+											<td className="text-right">{student.rank_district}</td>
+										</tr>
+										<tr>
+											<td>Exam Center</td>{" "}
+											<td className="text-right">{student.exam_centre}</td>
+										</tr>
+									</tbody>
+								</table>
+							</CardContent>
+						</Card>
+					))
+				)}
+			</div>
+
+			<div className="hidden lg:block">
 				<table className="mt-6 w-[200vw] xl:w-full table-auto border">
 					<thead className="">
 						<tr>
@@ -217,7 +261,7 @@ export default function ManualAdmissions() {
 					</tbody>
 				</table>
 			</div>
-			<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] my-6">
+			<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] mt-6 bg-secondary py-3 fixed bottom-0 left-0 right-0 px-3">
 				<Label className="text-base col-start-1 row-start-1">Total Fee</Label>
 				<div className="text-2xl col-start-1 row-start-2">
 					{CurrencyFormatter.format(totalAmount)}
