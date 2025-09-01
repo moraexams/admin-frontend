@@ -5,7 +5,6 @@ import type {
 import { AxiosError } from "axios";
 import type z from "zod";
 import axiosInstance from "../axiosConfig";
-import { LOCAL_STORAGE__USER_ID } from "./authServices";
 
 interface DistrictDetail {
 	id: number;
@@ -67,14 +66,9 @@ export const addStudentManually = async (
 };
 
 export const getStudentsByCoordinator = async () => {
-	const coordinatorId = localStorage.getItem(LOCAL_STORAGE__USER_ID);
-	if (!coordinatorId) {
-		return [];
-	}
-
 	try {
 		const response = await axiosInstance.get<Array<TemporaryStudent>>(
-			`/coordinator/${coordinatorId}/students`,
+			"/coordinator/students",
 		);
 		return response.data;
 	} catch (error) {
