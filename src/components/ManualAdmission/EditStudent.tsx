@@ -135,7 +135,7 @@ export default function EditStudent(props: Props) {
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
-			<DialogContent className="w-full !max-w-3xl p-3">
+			<DialogContent className="w-[min(720px,98%)] !max-w-3xl p-2 md:p-6">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold">Edit Student</DialogTitle>
 					<DialogDescription className="max-w-prose">

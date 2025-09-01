@@ -24,7 +24,7 @@ interface Props {
 export default function DeleteStudent(props: Props) {
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
-			<DialogContent className="w-full !max-w-3xl p-3">
+			<DialogContent className="p-3 md:p-6">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold">
 						Remove Student

@@ -128,7 +128,7 @@ export default function AddStudent(props: Props) {
 				<PlusCircle size={18} />
 				Add Student
 			</DialogTrigger>
-			<DialogContent className="w-full !max-w-3xl">
+			<DialogContent className="w-[min(720px,98%)] !max-w-3xl p-3 md:p-6">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold">Add Student</DialogTitle>
 					<DialogDescription className="max-w-prose">

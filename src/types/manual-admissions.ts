@@ -43,9 +43,9 @@ export const ManualStudentRegistrationFormSchema = z.object({
 	medium: z.enum(["Tamil", "English"], {
 		message: "Medium is required",
 	}),
-	examDistrict: z.number().min(1, "Exam District is required"),
-	rankingDistrict: z.number().min(1, "Ranking District is required"),
-	examCentre: z.number().min(1, "Exam Centre is required"),
+	examDistrict: z.coerce.number().min(1, "Exam District is required"),
+	rankingDistrict: z.coerce.number().min(1, "Ranking District is required"),
+	examCentre: z.coerce.number().min(1, "Exam Centre is required"),
 });
 
 export interface TemporaryStudent {

@@ -107,7 +107,7 @@ export default function ManualAdmissions() {
 	}, []);
 
 	return (
-		<div className="px-3 md:px-5 pt-4 pb-20">
+		<div className="px-3 md:px-5 pt-4 pb-28">
 			{user === null ? null : (
 				<>
 					<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
@@ -266,6 +266,7 @@ export default function ManualAdmissions() {
 							<th className="border px-2 py-1 text-left">Stream</th>
 							<th className="border px-2 py-1 text-left">Ranking District</th>
 							<th className="border px-2 py-1 text-left">Exam Center</th>
+							<th className="border px-2 py-1 text-left">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -296,6 +297,27 @@ export default function ManualAdmissions() {
 											{student.rank_district}
 										</td>
 										<td className="border px-2 py-1">{student.exam_centre}</td>
+										<td className="space-x-3 py-2 px-2">
+											<Button
+												variant="destructive"
+												size="icon"
+												onClick={() => {
+													setAction("delete");
+													setSelectedStudent(student);
+												}}
+											>
+												<Trash />
+											</Button>
+											<Button
+												size="icon"
+												onClick={() => {
+													setAction("edit");
+													setSelectedStudent(student);
+												}}
+											>
+												<Pen />
+											</Button>
+										</td>
 									</tr>
 								))}
 							</>
