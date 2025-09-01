@@ -41,6 +41,7 @@ export interface Coordinator {
 	id?: number;
 	name: string;
 	district_id: number;
+	associated_user_id?: number;
 	telephone_no: string;
 }
 

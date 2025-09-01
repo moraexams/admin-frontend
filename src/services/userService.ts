@@ -45,7 +45,7 @@ export const editUser = async (user: User) => {
 };
 
 export interface UnassignedCoordinator {
-	id: string;
+	id: number;
 	username: string;
 }
 

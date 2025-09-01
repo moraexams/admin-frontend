@@ -32,22 +32,14 @@ export const updateCoordinator = async (
 	id: number,
 	name: string,
 	telephone_no: string,
+	associated_user_id?: number,
 ) => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.put(
-			"/coordinator/" + id,
-			{
-				name,
-				telephone_no,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
-		console.log("response", response);
+		await axiosInstance.put(`/coordinator/${id}`, {
+			name,
+			telephone_no,
+			associated_user_id,
+		});
 		return true;
 	} catch (error: any) {
 		console.error("Error Updating Coordinator:", error);

@@ -39,7 +39,7 @@ interface Coordinator {
 	id: number;
 	name: string;
 	telephoneNo: string;
-	associatedUserId: number;
+	associatedUserId?: number;
 }
 
 const CoordinatorsTable = ({
@@ -130,6 +130,7 @@ const CoordinatorsTable = ({
 			selectedCoordinator.id,
 			selectedCoordinator.name,
 			selectedCoordinator.telephoneNo,
+			selectedCoordinator.associatedUserId,
 		)
 			.then(() => {
 				setSelectedCoordinator(null);
@@ -163,7 +164,7 @@ const CoordinatorsTable = ({
 		setAction("Add");
 		setDistrictID(id || 1);
 		setSelectedCoordinator({
-			associatedUserId: 0,
+			associatedUserId: undefined,
 			id: 0,
 			name: "",
 			telephoneNo: "",
@@ -195,7 +196,7 @@ const CoordinatorsTable = ({
 			id: coordinator.id,
 			name: coordinator.name,
 			telephoneNo: coordinator.telephone_no || "",
-			associatedUserId: 0,
+			associatedUserId: coordinator.associated_user_id || undefined,
 		});
 	};
 
@@ -287,14 +288,32 @@ const CoordinatorsTable = ({
 								{action === "Edit" ? null : (
 									<div>
 										<Label className="mb-2">Associated User</Label>
-										<Select>
+										<Select
+											value={
+												selectedCoordinator.associatedUserId === undefined
+													? "undefined"
+													: selectedCoordinator.associatedUserId.toString()
+											}
+											onValueChange={(value) => {
+												setSelectedCoordinator({
+													...selectedCoordinator,
+													associatedUserId:
+														value === "undefined"
+															? undefined
+															: Number.parseInt(value),
+												});
+											}}
+										>
 											<SelectTrigger>
-												<SelectValue placeholder="Select User" />
+												<SelectValue
+													placeholder="Select User"
+													defaultValue="undefined"
+												/>
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value="NONE">None</SelectItem>
+												<SelectItem value="undefined">None</SelectItem>
 												{unassignedCoordinators.map((user) => (
-													<SelectItem key={user.id} value={user.id}>
+													<SelectItem key={user.id} value={user.id.toString()}>
 														{user.id} - {user.username}
 													</SelectItem>
 												))}
