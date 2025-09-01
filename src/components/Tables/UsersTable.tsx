@@ -242,7 +242,7 @@ const UsersTable = ({
 										{user.approved ? "Yes" : "No"}
 									</p>
 								</td>
-								<td>
+								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 									<span className="text-black dark:text-white">
 										{capitalize(user.role).replaceAll("_", " ")}
 									</span>
