@@ -1,5 +1,6 @@
 import { snakeCaseToNormalCase } from "@/common/utils";
 import AddStudent from "@/components/ManualAdmission/AddStudent";
+import PayNow from "@/components/ManualAdmission/PayNow";
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -43,12 +44,10 @@ export default function ManualAdmissions() {
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
 
 	const navigate = useNavigate();
-	const totalFee = useMemo(() => {
-		return CurrencyFormatter.format(
-			!Array.isArray(students)
-				? 0
-				: students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0),
-		);
+	const totalAmount = useMemo(() => {
+		return !Array.isArray(students)
+			? 0
+			: students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0);
 	}, [students]);
 
 	useEffect(() => {
@@ -192,9 +191,13 @@ export default function ManualAdmissions() {
 					</tbody>
 				</table>
 			</div>
-			<div className="my-4">
-				<Label className="text-base">Total Fee</Label>
-				<div className="text-2xl">{totalFee}</div>
+			<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] my-6">
+				<Label className="text-base col-start-1 row-start-1">Total Fee</Label>
+				<div className="text-2xl col-start-1 row-start-2">
+					{CurrencyFormatter.format(totalAmount)}
+				</div>
+
+				<PayNow amount={totalAmount} onPaid={fetchStudents} />
 			</div>
 		</div>
 	);

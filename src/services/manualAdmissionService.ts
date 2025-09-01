@@ -81,3 +81,26 @@ export const getStudentsByCoordinator = async () => {
 		throw "Error fetching students";
 	}
 };
+
+export const payFees = async (amount: number, paymentReceipt: File) => {
+	try {
+		const f = new FormData();
+		f.set("amount", amount.toString());
+		f.set("payment_receipt", paymentReceipt);
+
+		const response = await axiosInstance.post("/coordinator/payment", f, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		if (error instanceof AxiosError) {
+			if (error.response?.data) {
+				throw new Error(error.response?.data.message);
+			}
+		}
+		throw "Error paying fees";
+	}
+};
