@@ -55,10 +55,14 @@ export interface TemporaryStudent {
 	address: string;
 	email: string;
 	telephone_no: string;
-	gender: string;
-	medium: string;
+	gender: "Male" | "Female";
+	medium: "Tamil" | "English";
 	stream: string;
+	stream_id: string;
 	rank_district: string;
+	rank_district_id: number;
 	exam_district: string;
+	exam_district_id: number;
 	exam_centre: string;
+	exam_centre_id: number;
 }

@@ -1,5 +1,7 @@
 import { snakeCaseToNormalCase } from "@/common/utils";
 import AddStudent from "@/components/ManualAdmission/AddStudent";
+import DeleteStudent from "@/components/ManualAdmission/DeleteStudent";
+import EditStudent from "@/components/ManualAdmission/EditStudent";
 import PayNow from "@/components/ManualAdmission/PayNow";
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
@@ -25,13 +27,13 @@ import {
 	getStudentRegistrationDetails,
 	getStudentsByCoordinator,
 } from "@/services/manualAdmissionService";
+import { CurrencyFormatter } from "@/services/utils";
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import type { LocalStorage_User } from "@/types/types";
-import { LogOut, User } from "lucide-react";
+import { LogOut, Pen, Trash, User } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { CurrencyFormatter } from "../services/utils";
 
 const STREAM_FEES = [
 	{ label: "Physical Science", fee: 600 },
@@ -47,9 +49,11 @@ const STREAM_FEES_MAP = Object.fromEntries(
 export default function ManualAdmissions() {
 	const [studentRegistrationDetails, setStudentRegistrationDetails] =
 		useState<StudentRegistrationDetails | null>(null);
-
 	const [students, setStudents] = useState<TemporaryStudent[]>([]);
 	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
+	const [action, setAction] = useState<"add" | "edit" | "delete" | null>(null);
+	const [selectedStudent, setSelectedStudent] =
+		useState<TemporaryStudent | null>(null);
 
 	const navigate = useNavigate();
 	const totalAmount = useMemo(() => {
@@ -168,6 +172,23 @@ export default function ManualAdmissions() {
 				/>
 			</div>
 
+			<EditStudent
+				open={action === "edit" && selectedStudent !== null}
+				selectedStudent={selectedStudent}
+				setOpen={(c) => (c ? null : setSelectedStudent(null))}
+				additionalDetails={studentRegistrationDetails}
+				onStudentEdited={fetchStudents}
+			/>
+			<DeleteStudent
+				open={action === "delete" && selectedStudent !== null}
+				student={{
+					nic: selectedStudent?.nic || "",
+					full_name: selectedStudent?.full_name || "",
+				}}
+				setOpen={(c) => (c ? null : setSelectedStudent(null))}
+				onStudentDeleted={fetchStudents}
+			/>
+
 			<div className="block lg:hidden space-y-2 mt-6">
 				{students.length === 0 ? (
 					<div className="grid place-items-center min-h-[120px]">
@@ -206,6 +227,27 @@ export default function ManualAdmissions() {
 									</tbody>
 								</table>
 							</CardContent>
+							<CardFooter className="flex gap-2 justify-end">
+								<Button
+									variant="destructive"
+									size="icon"
+									onClick={() => {
+										setAction("delete");
+										setSelectedStudent(student);
+									}}
+								>
+									<Trash />
+								</Button>
+								<Button
+									size="icon"
+									onClick={() => {
+										setAction("edit");
+										setSelectedStudent(student);
+									}}
+								>
+									<Pen />
+								</Button>
+							</CardFooter>
 						</Card>
 					))
 				)}

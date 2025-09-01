@@ -5,7 +5,6 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
 	Form,
@@ -27,14 +26,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { LOCAL_STORAGE_ASSOCIATED_DISTRICT } from "@/services/authServices";
 import {
 	type StudentRegistrationDetails,
-	addStudent,
+	editStudent,
 } from "@/services/manualAdmissionService";
 import {
 	ManualStudentRegistrationFormSchema,
 	STREAM_OPTIONS,
+	type TemporaryStudent,
 } from "@/types/manual-admissions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusCircle } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -44,41 +43,57 @@ const RequiredField = () => <span className="text-red-500">*</span>;
 
 interface Props {
 	open: boolean;
+	selectedStudent: TemporaryStudent | null;
 	setOpen: (open: boolean) => void;
 	additionalDetails: StudentRegistrationDetails | null;
-	onStudentAdded?: () => void;
+	onStudentEdited?: () => void;
 }
 
-const defaultValues: z.infer<typeof ManualStudentRegistrationFormSchema> = {
-	name: "Sahithyan Kandathasan",
-	nic: "200402710173",
-	school: "J/Hartley College",
-	phone: "0771234567",
-	email: "sahithyan@example.com",
-	stream: "2",
-	address: "123 Main St, Colombo",
-	gender: "Male",
-	medium: "Tamil",
-	examDistrict: 9,
-	rankingDistrict: 9,
-	examCentre: 38,
-};
-
-export default function AddStudent(props: Props) {
+export default function EditStudent(props: Props) {
 	const form = useForm<z.infer<typeof ManualStudentRegistrationFormSchema>>({
 		resolver: zodResolver(ManualStudentRegistrationFormSchema),
-		defaultValues,
+		defaultValues: {
+			name: props.selectedStudent?.full_name ?? "",
+			nic: props.selectedStudent?.nic ?? "",
+			school: props.selectedStudent?.school ?? "",
+			phone: props.selectedStudent?.telephone_no ?? "",
+			address: props.selectedStudent?.address ?? "",
+			email: props.selectedStudent?.email ?? "",
+			stream: props.selectedStudent?.stream ?? "",
+			rankingDistrict: props.selectedStudent?.rank_district_id ?? 0,
+			examDistrict: props.selectedStudent?.exam_district_id ?? 0,
+			examCentre: props.selectedStudent?.exam_centre_id ?? 0,
+			gender: props.selectedStudent?.gender ?? "Male",
+			medium: props.selectedStudent?.medium ?? "Tamil",
+		},
 	});
+
+	useEffect(() => {
+		form.reset({
+			name: props.selectedStudent?.full_name ?? "",
+			nic: props.selectedStudent?.nic ?? "",
+			school: props.selectedStudent?.school ?? "",
+			phone: props.selectedStudent?.telephone_no ?? "",
+			address: props.selectedStudent?.address ?? "",
+			email: props.selectedStudent?.email ?? "",
+			stream: props.selectedStudent?.stream_id ?? "",
+			rankingDistrict: props.selectedStudent?.rank_district_id ?? 0,
+			examDistrict: props.selectedStudent?.exam_district_id ?? 0,
+			examCentre: props.selectedStudent?.exam_centre_id ?? 0,
+			gender: props.selectedStudent?.gender ?? "Male",
+			medium: props.selectedStudent?.medium ?? "Tamil",
+		});
+	}, [props.selectedStudent]);
 
 	function onSubmit(
 		values: z.infer<typeof ManualStudentRegistrationFormSchema>,
 	) {
-		addStudent(values)
+		editStudent(values)
 			.then(() => {
 				props.setOpen(false);
-				toast.success("Student added successfully");
+				toast.success("Student edited successfully");
 				form.reset();
-				props.onStudentAdded?.();
+				props.onStudentEdited?.();
 			})
 			.catch((err) => {
 				toast.error(err);
@@ -97,17 +112,17 @@ export default function AddStudent(props: Props) {
 		const district = props.additionalDetails.districts.find(
 			(d) => d.district_name === associatedDistrict,
 		);
+		console.log(district);
 		if (!district) {
 			return;
 		}
 
-		form.setValue("rankingDistrict", district.id);
 		form.setValue("examDistrict", district.id);
 
 		if (district.exam_centres.length > 0) {
 			form.setValue("examCentre", district.exam_centres[0].id);
 		}
-	}, [props.additionalDetails]);
+	}, [props.additionalDetails, props.selectedStudent]);
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");
 	const availableExamCenters = useMemo(
@@ -120,20 +135,11 @@ export default function AddStudent(props: Props) {
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
-			<DialogTrigger
-				disabled={props.additionalDetails === null}
-				onClick={() => props.setOpen(true)}
-				className="col-start-1 md:col-start-3 row-start-3 md:row-start-1 mt-2 md:row-span-full flex items-center gap-2 rounded bg-blue-600 px-3 py-2 h-fit text-white font-semibold hover:bg-blue-700 my-auto text-sm disabled:opacity-50 disabled:pointer-events-none"
-			>
-				<PlusCircle size={18} />
-				Add Student
-			</DialogTrigger>
-			<DialogContent className="w-full !max-w-3xl">
+			<DialogContent className="w-full !max-w-3xl p-3">
 				<DialogHeader>
-					<DialogTitle className="text-2xl font-bold">Add Student</DialogTitle>
+					<DialogTitle className="text-2xl font-bold">Edit Student</DialogTitle>
 					<DialogDescription className="max-w-prose">
-						Fill in the details below to register a new student for the Mora
-						Exams.
+						Here you can edit a student's details except the NIC number.
 					</DialogDescription>
 				</DialogHeader>
 
@@ -168,7 +174,7 @@ export default function AddStudent(props: Props) {
 										<RequiredField />
 									</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input disabled {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -433,7 +439,7 @@ export default function AddStudent(props: Props) {
 								Cancel
 							</Button>
 							<Button className="bg-blue-600 text-white hover:bg-blue-700">
-								Register
+								Save
 							</Button>
 						</div>
 					</form>
