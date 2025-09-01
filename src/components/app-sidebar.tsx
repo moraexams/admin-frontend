@@ -24,6 +24,7 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import {
+	LOCAL_STORAGE_ASSOCIATED_DISTRICT,
 	LOCAL_STORAGE__ROLE,
 	LOCAL_STORAGE__TOKEN,
 	LOCAL_STORAGE__USER,
@@ -276,6 +277,7 @@ export function AppSidebar() {
 		localStorage.removeItem(LOCAL_STORAGE__USERNAME);
 		localStorage.removeItem(LOCAL_STORAGE__USER_ID);
 		localStorage.removeItem(LOCAL_STORAGE__ROLE);
+		localStorage.removeItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT);
 		navigate("/auth/signin");
 	};
 

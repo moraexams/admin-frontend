@@ -4,6 +4,7 @@ import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
+	LOCAL_STORAGE_ASSOCIATED_DISTRICT,
 	LOCAL_STORAGE__ROLE,
 	LOCAL_STORAGE__TOKEN,
 	LOCAL_STORAGE__USER,
@@ -103,7 +104,7 @@ export default function ManualAdmissions() {
 					</div>
 					<span className="font-medium">{user.username}</span>
 					<span className="text-sm col-start-2">
-						{snakeCaseToNormalCase(user.role)}
+						{snakeCaseToNormalCase(user.role)} - {localStorage.getItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT)}
 					</span>
 
 					<Button
