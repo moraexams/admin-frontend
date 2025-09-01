@@ -56,11 +56,8 @@ export const addStudentManually = async (
 		});
 		return response.data;
 	} catch (error) {
-		console.error(error);
-		if (error instanceof AxiosError) {
-			if (error.response?.data) {
-				throw new Error(error.response?.data.message);
-			}
+		if (error instanceof AxiosError && error.response?.data?.message) {
+			throw error.response?.data.message;
 		}
 		throw "Error adding student";
 	}

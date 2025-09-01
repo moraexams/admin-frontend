@@ -81,8 +81,7 @@ export default function AddStudent(props: Props) {
 				props.onStudentAdded?.();
 			})
 			.catch((err) => {
-				console.error(err);
-				// toast.error(err);
+				toast.error(err);
 			});
 	}
 

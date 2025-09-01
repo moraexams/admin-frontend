@@ -28,7 +28,7 @@ import type { TemporaryStudent } from "@/types/manual-admissions";
 import type { LocalStorage_User } from "@/types/types";
 import { LogOut, User } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CurrencyFormatter } from "../services/utils";
 
@@ -102,7 +102,7 @@ export default function ManualAdmissions() {
 	}, []);
 
 	return (
-		<div className="px-6 py-4">
+		<div className="px-3 md:px-5 py-4">
 			{user === null ? null : (
 				<>
 					<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
@@ -147,6 +147,7 @@ export default function ManualAdmissions() {
 					)}
 				</>
 			)}
+			<Toaster position="top-right" />
 
 			<PageTitle title="Admissions | Mora Exams" />
 			<div className="mt-6 grid grid-cols-1 md:grid-cols-[auto_1fr_auto] grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto]">
@@ -179,7 +180,6 @@ export default function ManualAdmissions() {
 							<th className="border px-2 py-1 text-left">Stream</th>
 							<th className="border px-2 py-1 text-left">Ranking District</th>
 							<th className="border px-2 py-1 text-left">Exam Center</th>
-							<th className="border px-2 py-1 text-left">Fee</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -210,9 +210,6 @@ export default function ManualAdmissions() {
 											{student.rank_district}
 										</td>
 										<td className="border px-2 py-1">{student.exam_centre}</td>
-										<td className="border px-2 py-1">
-											{STREAM_FEES_MAP[student.stream]}
-										</td>
 									</tr>
 								))}
 							</>
