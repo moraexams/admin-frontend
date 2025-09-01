@@ -49,25 +49,23 @@ interface Props {
 	onStudentAdded?: () => void;
 }
 
-const defaultValues: z.infer<typeof ManualStudentRegistrationFormSchema> = {
-	name: "Sahithyan Kandathasan",
-	nic: "200402710173",
-	school: "J/Hartley College",
-	phone: "0771234567",
-	email: "sahithyan@example.com",
-	stream: "2",
-	address: "123 Main St, Colombo",
-	gender: "Male",
-	medium: "Tamil",
-	examDistrict: 9,
-	rankingDistrict: 9,
-	examCentre: 38,
-};
-
 export default function AddStudent(props: Props) {
 	const form = useForm<z.infer<typeof ManualStudentRegistrationFormSchema>>({
 		resolver: zodResolver(ManualStudentRegistrationFormSchema),
-		defaultValues,
+		defaultValues: {
+			name: "",
+			nic: "",
+			school: "",
+			phone: "",
+			email: "",
+			stream: "",
+			address: "",
+			gender: "Male",
+			medium: "Tamil",
+			examDistrict: 0,
+			rankingDistrict: 0,
+			examCentre: 0,
+		},
 	});
 
 	function onSubmit(
