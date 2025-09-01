@@ -61,7 +61,7 @@ export default function ManualAdmissions() {
 			? 0
 			: students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0);
 	}, [students]);
-	
+
 	const fetchStudentRegistrationDetails = () => {
 		getStudentRegistrationDetails()
 			.then((data) => {
@@ -72,7 +72,7 @@ export default function ManualAdmissions() {
 					error.message || "Failed to fetch student registration details",
 				);
 			});
-	}
+	};
 
 	const userStringified = localStorage.getItem(LOCAL_STORAGE__USER);
 	const user: LocalStorage_User | null = userStringified
@@ -300,7 +300,7 @@ export default function ManualAdmissions() {
 											{student.rank_district}
 										</td>
 										<td className="border px-2 py-1">{student.exam_centre}</td>
-										<td className="space-x-3 py-2 px-2">
+										<td className="space-x-3 space-y-2 py-2 px-2">
 											<Button
 												variant="destructive"
 												size="icon"
@@ -334,10 +334,13 @@ export default function ManualAdmissions() {
 					{CurrencyFormatter.format(totalAmount)}
 				</div>
 
-				<PayNow amount={totalAmount} onPaid={() => {
-					fetchStudents() 
-					fetchStudentRegistrationDetails();
-				}} />
+				<PayNow
+					amount={totalAmount}
+					onPaid={() => {
+						fetchStudents();
+						fetchStudentRegistrationDetails();
+					}}
+				/>
 			</div>
 		</div>
 	);

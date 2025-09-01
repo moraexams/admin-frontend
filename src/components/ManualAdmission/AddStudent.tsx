@@ -35,7 +35,7 @@ import {
 } from "@/types/manual-admissions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type z from "zod";
@@ -75,7 +75,14 @@ export default function AddStudent(props: Props) {
 			.then(() => {
 				props.setOpen(false);
 				toast.success("Student added successfully");
-				form.reset();
+
+				form.resetField("name");
+				form.resetField("nic");
+				form.resetField("school");
+				form.resetField("phone");
+				form.resetField("email");
+				form.resetField("address");
+
 				props.onStudentAdded?.();
 			})
 			.catch((err) => {
@@ -108,13 +115,9 @@ export default function AddStudent(props: Props) {
 	}, [props.additionalDetails]);
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");
-	const availableExamCenters = useMemo(
-		() =>
-			props.additionalDetails?.districts.find(
-				(d) => d.id === Number(selectedExamSittingDistrict),
-			)?.exam_centres,
-		[selectedExamSittingDistrict, props.additionalDetails],
-	);
+	const availableExamCenters = props.additionalDetails?.districts.find(
+		(d) => d.id === Number(selectedExamSittingDistrict),
+	)?.exam_centres;
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
