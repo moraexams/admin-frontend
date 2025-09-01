@@ -19,7 +19,7 @@ import {
 	deleteCoordinator,
 	updateCoordinator,
 } from "@/services/coordinatorsService";
-import type { UnassignedCoordinator } from "@/services/userService";
+import type { DistrictOrganizer } from "@/services/userService";
 import { filterIt } from "@/services/utils";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useMemo, useState } from "react";
@@ -32,7 +32,7 @@ interface Props {
 	searchKey: string;
 	itemsPerPage: number;
 	setRefreshKey: any;
-	unassignedCoordinators: Array<UnassignedCoordinator>;
+	districtOrganizers: Array<DistrictOrganizer>;
 }
 
 interface Coordinator {
@@ -47,7 +47,7 @@ const CoordinatorsTable = ({
 	searchKey,
 	itemsPerPage,
 	setRefreshKey,
-	unassignedCoordinators,
+	districtOrganizers,
 }: Props) => {
 	const items: District[] =
 		searchKey !== "" ? filterIt(districtData, searchKey) : districtData;
@@ -312,7 +312,7 @@ const CoordinatorsTable = ({
 											</SelectTrigger>
 											<SelectContent>
 												<SelectItem value="undefined">None</SelectItem>
-												{unassignedCoordinators.map((user) => (
+												{districtOrganizers.map((user) => (
 													<SelectItem key={user.id} value={user.id.toString()}>
 														{user.id} - {user.username}
 													</SelectItem>

@@ -44,15 +44,15 @@ export const editUser = async (user: User) => {
 	}
 };
 
-export interface UnassignedCoordinator {
+export interface DistrictOrganizer {
 	id: number;
 	username: string;
 }
 
-export const getUnassignedCoordinators = async () => {
+export const getDistrictOrganizers = async () => {
 	try {
-		const response = await axiosInstance.get<Array<UnassignedCoordinator>>(
-			"/user/unassigned-coordinators",
+		const response = await axiosInstance.get<Array<DistrictOrganizer>>(
+			"/user/district-organizers",
 		);
 		return response.data;
 	} catch (error) {

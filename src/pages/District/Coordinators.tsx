@@ -1,7 +1,7 @@
 import { getDistrictsWithCoordinators } from "@/services/districtService";
 import {
-	type UnassignedCoordinator,
-	getUnassignedCoordinators,
+	type DistrictOrganizer,
+	getDistrictOrganizers,
 } from "@/services/userService";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -16,8 +16,8 @@ const Coordinators = () => {
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 	const [searchKey, setSearchKey] = useState<string>("");
 	const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
-	const [unassignedCoordinators, setUnassignedCoordinators] = useState<
-		Array<UnassignedCoordinator>
+	const [districtOrganizers, setDistrictOrganizers] = useState<
+		Array<DistrictOrganizer>
 	>([]);
 
 	const fetchDistricts = async () => {
@@ -36,15 +36,15 @@ const Coordinators = () => {
 	}, [refreshKey]);
 
 	useEffect(() => {
-		getUnassignedCoordinators()
+		getDistrictOrganizers()
 			.then((data) => {
-				setUnassignedCoordinators(data);
+				setDistrictOrganizers(data);
 			})
 			.catch((err) => {
 				toast.error(
 					err instanceof Error
 						? err.message
-						: "Failed to fetch unassigned coordinators",
+						: "Failed to fetch district organizers",
 				);
 			});
 	}, []);
@@ -86,7 +86,7 @@ const Coordinators = () => {
 					<div>Loading...</div>
 				) : (
 					<CoordinatorsTable
-						unassignedCoordinators={unassignedCoordinators}
+						districtOrganizers={districtOrganizers}
 						districtData={districts}
 						searchKey={searchKey}
 						itemsPerPage={itemsPerPage}
