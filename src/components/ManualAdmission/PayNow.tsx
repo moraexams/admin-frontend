@@ -77,7 +77,9 @@ export default function PayNow(props: Props) {
 				className="col-start-3 row-start-1 row-span-full my-auto"
 				asChild
 			>
-				<Button className="text-base">Pay Now</Button>
+				<Button className="text-base" disabled={form.getValues("amount") === 0}>
+					Pay Now
+				</Button>
 			</DialogTrigger>
 			<DialogContent className="">
 				<DialogHeader>
@@ -129,10 +131,7 @@ export default function PayNow(props: Props) {
 								Close
 							</Button>
 
-							<Button
-								className=""
-								onClick={console.log.bind(null, form.getValues())}
-							>
+							<Button className="" disabled={form.getValues("amount") === 0}>
 								Submit Payment
 							</Button>
 						</div>
