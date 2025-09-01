@@ -4,12 +4,14 @@ export const addCoordinator = async (
 	name: string,
 	district_id: number,
 	telephone_no: string,
+	associated_user_id?: number,
 ) => {
 	try {
 		await axiosInstance.post("/coordinator/add", {
 			name,
 			district_id,
 			telephone_no,
+			associated_user_id,
 		});
 		return true;
 	} catch (error: any) {

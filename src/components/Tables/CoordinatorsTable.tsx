@@ -102,6 +102,7 @@ const CoordinatorsTable = ({
 			selectedCoordinator.name,
 			districtID,
 			selectedCoordinator.telephoneNo,
+			selectedCoordinator.associatedUserId,
 		)
 			.then(() => {
 				setSelectedCoordinator(null);
