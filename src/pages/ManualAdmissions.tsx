@@ -121,11 +121,11 @@ export default function ManualAdmissions() {
 			)}
 
 			<PageTitle title="Admissions | Mora Exams" />
-			<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto]">
+			<div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto]">
 				<h2 className="col-start-1 row-start-1 text-title-md2 font-semibold">
 					Admissions
 				</h2>
-				<p className="max-w-prose col-start-1 col-span-2 row-start-2">
+				<p className="max-w-prose col-start-1 md:col-span-2 row-start-2">
 					You can register students in bulk for the Mora Exams below. If you
 					face any issues, please contact us immediately.
 				</p>
@@ -138,58 +138,60 @@ export default function ManualAdmissions() {
 				/>
 			</div>
 
-			<table className="mt-6 w-full table-auto border">
-				<thead className="">
-					<tr>
-						<th className="border px-2 py-1 text-left">#</th>
-						<th className="border px-2 py-1 text-left">Name</th>
-						<th className="border px-2 py-1 text-left">NIC</th>
-						<th className="border px-2 py-1 text-left">School</th>
-						<th className="border px-2 py-1 text-left">Phone</th>
-						<th className="border px-2 py-1 text-left">Email</th>
-						<th className="border px-2 py-1 text-left">Stream</th>
-						<th className="border px-2 py-1 text-left">Ranking District</th>
-						<th className="border px-2 py-1 text-left">Exam District</th>
-						<th className="border px-2 py-1 text-left">Exam Center</th>
-						<th className="border px-2 py-1 text-left">Fee</th>
-					</tr>
-				</thead>
-				<tbody>
-					{!Array.isArray(students) ? (
+			<div className="overflow-x-scroll lg:overflow-x-hidden">
+				<table className="mt-6 w-[200vw] xl:w-full table-auto border">
+					<thead className="">
 						<tr>
-							<td colSpan={11} className="text-center p-4">
-								Loading...
-							</td>
+							<th className="border px-2 py-1 text-left">#</th>
+							<th className="border px-2 py-1 text-left">Name</th>
+							<th className="border px-2 py-1 text-left">NIC</th>
+							<th className="border px-2 py-1 text-left">School</th>
+							<th className="border px-2 py-1 text-left">Phone</th>
+							<th className="border px-2 py-1 text-left">Email</th>
+							<th className="border px-2 py-1 text-left">Stream</th>
+							<th className="border px-2 py-1 text-left">Ranking District</th>
+							<th className="border px-2 py-1 text-left">Exam Center</th>
+							<th className="border px-2 py-1 text-left">Fee</th>
 						</tr>
-					) : students.length === 0 ? (
-						<tr>
-							<td colSpan={11} className="text-center p-4">
-								No students added yet.
-							</td>
-						</tr>
-					) : (
-						<>
-							{students.map((student, index) => (
-								<tr key={student.nic} className="border-t">
-									<td className="border px-2 py-1">{index + 1}</td>
-									<td className="border px-2 py-1">{student.full_name}</td>
-									<td className="border px-2 py-1">{student.nic}</td>
-									<td className="border px-2 py-1">{student.school}</td>
-									<td className="border px-2 py-1">{student.telephone_no}</td>
-									<td className="border px-2 py-1">{student.email}</td>
-									<td className="border px-2 py-1">{student.stream}</td>
-									<td className="border px-2 py-1">{student.rank_district}</td>
-									<td className="border px-2 py-1">{student.exam_district}</td>
-									<td className="border px-2 py-1">{student.exam_centre}</td>
-									<td className="border px-2 py-1">
-										{STREAM_FEES_MAP[student.stream]}
-									</td>
-								</tr>
-							))}
-						</>
-					)}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{!Array.isArray(students) ? (
+							<tr>
+								<td colSpan={11} className="text-center p-4">
+									Loading...
+								</td>
+							</tr>
+						) : students.length === 0 ? (
+							<tr>
+								<td colSpan={11} className="text-center p-4">
+									No students added yet.
+								</td>
+							</tr>
+						) : (
+							<>
+								{students.map((student, index) => (
+									<tr key={student.nic} className="border-t">
+										<td className="border px-2 py-1">{index + 1}</td>
+										<td className="border px-2 py-1">{student.full_name}</td>
+										<td className="border px-2 py-1">{student.nic}</td>
+										<td className="border px-2 py-1">{student.school}</td>
+										<td className="border px-2 py-1">{student.telephone_no}</td>
+										<td className="border px-2 py-1">{student.email}</td>
+										<td className="border px-2 py-1">{student.stream}</td>
+										<td className="border px-2 py-1">
+											{student.rank_district}
+										</td>
+										<td className="border px-2 py-1">{student.exam_centre}</td>
+										<td className="border px-2 py-1">
+											{STREAM_FEES_MAP[student.stream]}
+										</td>
+									</tr>
+								))}
+							</>
+						)}
+					</tbody>
+				</table>
+			</div>
 			<div className="my-4">
 				<Label className="text-base">Total Fee</Label>
 				<div className="text-2xl">{totalFee}</div>
