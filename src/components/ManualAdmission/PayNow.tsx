@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { payFees } from "@/services/manualAdmissionService";
 import { CurrencyFormatter } from "@/services/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
@@ -29,7 +29,6 @@ import z from "zod";
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "application/pdf"];
 
 const payNowSchema = z.object({
-	amount: z.number().min(1, "Amount must be at least 1"),
 	paymentReceipt: z
 		.instanceof(File, {
 			message: "Payment slip is required",
@@ -49,17 +48,11 @@ export default function PayNow(props: Props) {
 	const [open, setOpen] = useState(false);
 	const form = useForm<z.infer<typeof payNowSchema>>({
 		resolver: zodResolver(payNowSchema),
-		defaultValues: {
-			amount: props.amount,
-		},
+		defaultValues: {},
 	});
 
-	useEffect(() => {
-		form.setValue("amount", props.amount);
-	}, [props.amount]);
-
 	function onSubmit(data: z.infer<typeof payNowSchema>) {
-		payFees(data.amount, data.paymentReceipt)
+		payFees(props.amount, data.paymentReceipt)
 			.then(() => {
 				setOpen(false);
 				form.reset();
@@ -77,7 +70,7 @@ export default function PayNow(props: Props) {
 				className="col-start-3 row-start-1 row-span-full my-auto"
 				asChild
 			>
-				<Button className="text-base" disabled={form.getValues("amount") === 0}>
+				<Button className="text-base" disabled={props.amount === 0}>
 					Pay Now
 				</Button>
 			</DialogTrigger>
@@ -131,7 +124,7 @@ export default function PayNow(props: Props) {
 								Close
 							</Button>
 
-							<Button className="" disabled={form.getValues("amount") === 0}>
+							<Button className="" disabled={props.amount === 0}>
 								Submit Payment
 							</Button>
 						</div>
