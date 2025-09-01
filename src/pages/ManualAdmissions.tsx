@@ -104,7 +104,8 @@ export default function ManualAdmissions() {
 					</div>
 					<span className="font-medium">{user.username}</span>
 					<span className="text-sm col-start-2">
-						{snakeCaseToNormalCase(user.role)} - {localStorage.getItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT)}
+						{snakeCaseToNormalCase(user.role)} -{" "}
+						{localStorage.getItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT)}
 					</span>
 
 					<Button

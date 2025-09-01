@@ -24,6 +24,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { LOCAL_STORAGE_ASSOCIATED_DISTRICT } from "@/services/authServices";
 import {
 	type StudentRegistrationDetails,
 	addStudentManually,
@@ -34,7 +35,7 @@ import {
 } from "@/types/manual-admissions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type z from "zod";
@@ -84,6 +85,30 @@ export default function AddStudent(props: Props) {
 				// toast.error(err);
 			});
 	}
+
+	useEffect(() => {
+		if (!props.additionalDetails) return;
+		const associatedDistrict = localStorage.getItem(
+			LOCAL_STORAGE_ASSOCIATED_DISTRICT,
+		);
+		if (!associatedDistrict) {
+			return;
+		}
+
+		const district = props.additionalDetails.districts.find(
+			(d) => d.district_name === associatedDistrict,
+		);
+		if (!district) {
+			return;
+		}
+
+		form.setValue("rankingDistrict", district.id);
+		form.setValue("examDistrict", district.id);
+
+		if (district.exam_centres.length > 0) {
+			form.setValue("examCentre", district.exam_centres[0].id);
+		}
+	}, [props.additionalDetails]);
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");
 	const availableExamCenters = useMemo(
@@ -340,9 +365,10 @@ export default function AddStudent(props: Props) {
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value?.toString()}
+										disabled={true}
 									>
 										<FormControl>
-											<SelectTrigger>
+											<SelectTrigger className="pointer-events-none">
 												<SelectValue placeholder="Select" />
 											</SelectTrigger>
 										</FormControl>
