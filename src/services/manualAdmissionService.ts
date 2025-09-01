@@ -16,6 +16,7 @@ interface DistrictDetail {
 }
 export interface StudentRegistrationDetails {
 	districts: Array<DistrictDetail>;
+	number_of_students: number;
 }
 
 export const getStudentRegistrationDetails = async () => {

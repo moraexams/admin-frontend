@@ -3,6 +3,13 @@ import AddStudent from "@/components/ManualAdmission/AddStudent";
 import PayNow from "@/components/ManualAdmission/PayNow";
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
 	LOCAL_STORAGE_ASSOCIATED_DISTRICT,
@@ -97,30 +104,52 @@ export default function ManualAdmissions() {
 	return (
 		<div className="px-6 py-4">
 			{user === null ? null : (
-				<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
-					<div className="rounded-md p-2 border w-fit row-span-full">
-						<User />
-					</div>
-					<span className="font-medium">{user.username}</span>
-					<span className="text-sm col-start-2">
-						{snakeCaseToNormalCase(user.role)} -{" "}
-						{localStorage.getItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT)}
-					</span>
+				<>
+					<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
+						<div className="rounded-md p-2 border w-fit row-span-full">
+							<User />
+						</div>
+						<span className="font-medium">{user.username}</span>
+						<span className="text-sm col-start-2">
+							{snakeCaseToNormalCase(user.role)} -{" "}
+							{localStorage.getItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT)}
+						</span>
 
-					<Button
-						variant="destructive"
-						size="sm"
-						onClick={logOut}
-						className="row-span-full col-start-3"
-					>
-						<LogOut />
-						<span>Log Out</span>
-					</Button>
-				</div>
+						<Button
+							variant="destructive"
+							size="sm"
+							onClick={logOut}
+							className="row-span-full col-start-3"
+						>
+							<LogOut />
+							<span>Log Out</span>
+						</Button>
+					</div>
+
+					{studentRegistrationDetails === null ? null : (
+						<Card className="gap-0 w-fit py-3">
+							<CardHeader className="px-3">
+								<CardTitle className="text-muted-foreground text-sm">
+									Total Admissions
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="px-3">
+								<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
+									{(studentRegistrationDetails?.number_of_students || 0)
+										.toString()
+										.padStart(2, "0")}
+								</div>
+							</CardContent>
+							<CardFooter className="w-fit px-3 text-pretty">
+								Number of students registered through you.
+							</CardFooter>
+						</Card>
+					)}
+				</>
 			)}
 
 			<PageTitle title="Admissions | Mora Exams" />
-			<div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto]">
+			<div className="mt-6 grid grid-cols-1 md:grid-cols-[auto_1fr_auto] grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto]">
 				<h2 className="col-start-1 row-start-1 text-title-md2 font-semibold">
 					Admissions
 				</h2>
@@ -163,7 +192,7 @@ export default function ManualAdmissions() {
 						) : students.length === 0 ? (
 							<tr>
 								<td colSpan={11} className="text-center p-4">
-									No students added yet.
+									No pending admissions.
 								</td>
 							</tr>
 						) : (
