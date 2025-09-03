@@ -41,6 +41,7 @@ export interface Coordinator {
 	id?: number;
 	name: string;
 	district_id: number;
+	associated_user_id?: number;
 	telephone_no: string;
 }
 
@@ -143,4 +144,15 @@ export interface MarksBoundaries {
 	forB: number;
 	forC: number;
 	forS: number;
+}
+
+export interface LocalStorage_User {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	deleted_at: null;
+	name: string;
+	role: string;
+	username: string;
+	approved: boolean;
 }

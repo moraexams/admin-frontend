@@ -1,7 +1,12 @@
+import { getDistrictsWithCoordinators } from "@/services/districtService";
+import {
+	type DistrictOrganizer,
+	getDistrictOrganizers,
+} from "@/services/userService";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CoordinatorsTable from "../../components/Tables/CoordinatorsTable";
-import { getDistrictsWithCoordinators } from "../../services/districtService";
 import type { District } from "../../types/types";
 
 const Coordinators = () => {
@@ -10,23 +15,40 @@ const Coordinators = () => {
 	const [error, setError] = useState<string | null>(null);
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 	const [searchKey, setSearchKey] = useState<string>("");
-
 	const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
+	const [districtOrganizers, setDistrictOrganizers] = useState<
+		Array<DistrictOrganizer>
+	>([]);
+
+	const fetchDistricts = async () => {
+		try {
+			const districts = await getDistrictsWithCoordinators();
+			setDistricts(districts);
+		} catch (error) {
+			setError("Failed to fetch districts");
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	useEffect(() => {
-		const fetchDistricts = async () => {
-			try {
-				const districts = await getDistrictsWithCoordinators();
-				setDistricts(districts);
-			} catch (error) {
-				setError("Failed to fetch districts");
-			} finally {
-				setLoading(false);
-			}
-		};
-
 		fetchDistricts();
 	}, [refreshKey]);
+
+	useEffect(() => {
+		getDistrictOrganizers()
+			.then((data) => {
+				setDistrictOrganizers(data);
+			})
+			.catch((err) => {
+				toast.error(
+					err instanceof Error
+						? err.message
+						: "Failed to fetch district organizers",
+				);
+			});
+	}, []);
+
 	if (error) {
 		return <div>{error}</div>;
 	}
@@ -64,6 +86,7 @@ const Coordinators = () => {
 					<div>Loading...</div>
 				) : (
 					<CoordinatorsTable
+						districtOrganizers={districtOrganizers}
 						districtData={districts}
 						searchKey={searchKey}
 						itemsPerPage={itemsPerPage}

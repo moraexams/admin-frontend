@@ -1,33 +1,59 @@
-import { useState } from "react";
-// import Snackbar from "../Snackbar";
-import toast from "react-hot-toast";
-import ReactPaginate from "react-paginate";
+import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import {
 	addCoordinator,
 	deleteCoordinator,
 	updateCoordinator,
-} from "../../services/coordinatorsService";
-import { filterIt } from "../../services/utils";
-// import type { SnackBarConfig } from "../../types/snackbar";
+} from "@/services/coordinatorsService";
+import type { DistrictOrganizer } from "@/services/userService";
+import { filterIt } from "@/services/utils";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import ReactPaginate from "react-paginate";
 import type { District } from "../../types/types";
 
-const DistrictsTable = ({
-	districtData,
-	searchKey,
-	itemsPerPage,
-}: {
+interface Props {
 	districtData: District[];
 	searchKey: string;
 	itemsPerPage: number;
 	setRefreshKey: any;
-}) => {
+	districtOrganizers: Array<DistrictOrganizer>;
+}
+
+interface Coordinator {
+	id: number;
+	name: string;
+	telephoneNo: string;
+	associatedUserId?: number;
+}
+
+const CoordinatorsTable = ({
+	districtData,
+	searchKey,
+	itemsPerPage,
+	setRefreshKey,
+	districtOrganizers,
+}: Props) => {
 	const items: District[] =
 		searchKey !== "" ? filterIt(districtData, searchKey) : districtData;
 	const itemsLength = items.length;
 	const [itemOffset, setItemOffset] = useState(0);
-
 	const endOffset = itemOffset + itemsPerPage;
-	console.log(`Loading items from ${itemOffset} to ${endOffset}`);
 	const currentItems = items.slice(itemOffset, endOffset);
 	const pageCount = Math.ceil(itemsLength / itemsPerPage);
 
@@ -37,25 +63,10 @@ const DistrictsTable = ({
 		setItemOffset(newOffset);
 	};
 
-	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-	// 	message: "",
-	// 	type: false,
-	// 	show: false,
-	// });
+	const [selectedCoordinator, setSelectedCoordinator] =
+		useState<Coordinator | null>(null);
 
-	// const showSnackBar = (type: boolean, message: string) => {
-	// setSnackBarConfig({ message: message, type: type, show: true });
-	// 	setTimeout(() => {
-	// 		// setSnackBarConfig((prev) => ({ ...prev, show: false }));
-	// 	}, 1000);
-	// };
-
-	const [modalOpen, setModalOpen] = useState(false);
-
-	const [coordinatorID, setCoordinatirID] = useState<number>(1);
-	const [name, setName] = useState<string>("");
 	const [districtID, setDistrictID] = useState<number>(1);
-	const [telephone_no, setTelephone_No] = useState<string>("Male");
 
 	const [action, setAction] = useState<string>("Add");
 
@@ -71,75 +82,94 @@ const DistrictsTable = ({
 				handleDeleteCoordinator();
 				break;
 			default:
-				break;
+				return;
 		}
 	};
 
 	const handleAddCoordinator = () => {
-		if (name !== "" && telephone_no !== "" && districtID) {
-			addCoordinator(name, districtID, telephone_no)
-				.then(() => {
-					// showSnackBar(true, "Successfully Added");
-
-					setModalOpen(false);
-					toast.success("Successfully added");
-					setTimeout(() => window.location.reload(), 400);
-				})
-				.catch((error) => {
-					alert(error);
-				});
-		} else {
-			// showSnackBar(false, "Fill All Fields");
-			setModalOpen(false);
-			toast.error("Fill All Fields");
+		if (!selectedCoordinator) {
+			return;
 		}
+		if (
+			selectedCoordinator.name == "" ||
+			selectedCoordinator.telephoneNo == ""
+		) {
+			toast.error("Fill all fields");
+			return;
+		}
+
+		addCoordinator(
+			selectedCoordinator.name,
+			districtID,
+			selectedCoordinator.telephoneNo,
+			selectedCoordinator.associatedUserId,
+		)
+			.then(() => {
+				setSelectedCoordinator(null);
+				toast.success("Successfully added");
+				setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
+			})
+			.catch((error) => {
+				alert(error);
+			});
 	};
 
 	const handleUpdateCoordinator = () => {
-		if (name !== "" && telephone_no !== "" && coordinatorID) {
-			updateCoordinator(coordinatorID, name, telephone_no)
-				.then(() => {
-					// showSnackBar(true, "Successfully Updated");
-					setModalOpen(false);
-					toast.success("Successfully Updated");
-					setTimeout(() => window.location.reload(), 400);
-				})
-				.catch((error) => {
-					alert(error);
-				});
-		} else {
-			// showSnackBar(false, "Fill All Fields");
-			setModalOpen(false);
-			toast.error("Fill All Fields");
+		if (!selectedCoordinator || selectedCoordinator.id == 0) {
+			toast.error("No coordinator selected");
+			return;
 		}
+		if (
+			selectedCoordinator.name == "" ||
+			selectedCoordinator.telephoneNo == ""
+		) {
+			toast.error("Fill all fields");
+			return;
+		}
+
+		updateCoordinator(
+			selectedCoordinator.id,
+			selectedCoordinator.name,
+			selectedCoordinator.telephoneNo,
+			selectedCoordinator.associatedUserId,
+		)
+			.then(() => {
+				setSelectedCoordinator(null);
+				toast.success("Successfully Updated");
+				setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
+			})
+			.catch((error) => {
+				alert(error);
+			});
 	};
 
 	const handleDeleteCoordinator = () => {
-		if (coordinatorID) {
-			console.log(coordinatorID);
-			deleteCoordinator(coordinatorID)
-				.then(() => {
-					// showSnackBar(true, "Successfully Deleted");
-					setModalOpen(false);
-					toast.success("Successfully Deleted");
-					setTimeout(() => window.location.reload(), 400);
-				})
-				.catch((error) => {
-					alert(error);
-				});
-		} else {
-			// showSnackBar(false, "No Coordinator Selected");
-			setModalOpen(false);
-			toast.error("No Coordinator Selected");
+		if (!selectedCoordinator) {
+			toast.error("No coordinator selected");
+			return;
 		}
+
+		console.log(selectedCoordinator.id);
+		deleteCoordinator(selectedCoordinator.id)
+			.then(() => {
+				setSelectedCoordinator(null);
+				toast.success("Successfully deleted");
+				setRefreshKey((prev: number) => (prev == 5 ? 0 : prev + 1));
+			})
+			.catch((error) => {
+				toast.error(error);
+			});
 	};
 
 	const handleAddModalOpen = (id: number | undefined) => {
 		setAction("Add");
-		setName("");
 		setDistrictID(id || 1);
-		setTelephone_No("");
-		setModalOpen(true);
+		setSelectedCoordinator({
+			associatedUserId: undefined,
+			id: 0,
+			name: "",
+			telephoneNo: "",
+		});
 	};
 
 	const handleEditModalOpen = (
@@ -151,34 +181,165 @@ const DistrictsTable = ({
 		const coordinators = districtData.find(
 			(x) => x.id === district_id,
 		)?.coordinators;
-		if (coordinators) {
-			const coordinator = coordinators.find((x) => x.id === coordinatorID);
-			if (coordinator?.id) {
-				setCoordinatirID(coordinator.id);
-				setName(coordinator.name);
-				setTelephone_No(coordinator.telephone_no);
-				setModalOpen(true);
-			} else {
-				alert("Coordinator not found");
-			}
-		} else {
-			alert("District not found");
+
+		if (!coordinators) {
+			toast.error("No coordinators found for this district");
+			return;
 		}
+
+		const coordinator = coordinators.find((x) => x.id === coordinatorID);
+		if (!coordinator?.id) {
+			toast.error("Coordinator not found");
+			return;
+		}
+
+		setSelectedCoordinator({
+			id: coordinator.id,
+			name: coordinator.name,
+			telephoneNo: coordinator.telephone_no || "",
+			associatedUserId: coordinator.associated_user_id || undefined,
+		});
 	};
 
 	const handleDeleteModalOpen = (id: number | undefined, name: string) => {
-		if (id) {
-			setAction("Delete");
-			setCoordinatirID(id);
-			setName(name);
-			setModalOpen(true);
-		} else {
-			alert("No coordinator selected");
+		if (!id) {
+			toast.error("No coordinator selected");
+			return;
 		}
+
+		setAction("Delete");
+		setSelectedCoordinator({
+			associatedUserId: 0,
+			id,
+			name,
+			telephoneNo: "",
+		});
 	};
 
+	const actionTitle = useMemo(() => {
+		if (action === "Update") return "Update Coordinator";
+		if (action === "Delete") return "Delete Coordinator";
+		if (action === "Add")
+			return `Add Coordinator to ${districtData.find((x) => x.id === districtID)?.name}`;
+		return undefined;
+	}, [districtData, districtID, action]);
+
 	return (
-		<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+		<>
+			<Dialog
+				open={selectedCoordinator !== null}
+				onOpenChange={(c) => {
+					if (!c) setSelectedCoordinator(null);
+				}}
+			>
+				{selectedCoordinator === null ? null : (
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>{actionTitle}</DialogTitle>
+							{action === "Delete" ? (
+								<DialogDescription>
+									This action is irreversible.
+								</DialogDescription>
+							) : null}
+						</DialogHeader>
+
+						{action === "Delete" ? (
+							<div className="mb-4.5">
+								Confirm to delete coordinator: {selectedCoordinator.name} with
+								id: {selectedCoordinator.id}
+							</div>
+						) : (
+							<>
+								<div className="">
+									<Label htmlFor="coordinator-name" className="mb-2">
+										Coordinator Name <span className="text-meta-1">*</span>
+									</Label>
+									<Input
+										type="text"
+										id="coordinator-name"
+										value={selectedCoordinator.name}
+										onChange={(e) =>
+											setSelectedCoordinator({
+												...selectedCoordinator,
+												name: e.target.value,
+											})
+										}
+										placeholder="Enter Coordinator Name"
+									/>
+								</div>
+
+								<div className="">
+									<Label htmlFor="phone-number" className="mb-2">
+										Phone Number
+									</Label>
+									<Input
+										id="phone-number"
+										type="text"
+										value={selectedCoordinator.telephoneNo}
+										onChange={(e) =>
+											setSelectedCoordinator({
+												...selectedCoordinator,
+												telephoneNo: e.target.value,
+											})
+										}
+										placeholder="Enter Phone Number"
+									/>
+								</div>
+
+								{action === "Edit" ? null : (
+									<div>
+										<Label className="mb-2">Associated User</Label>
+										<Select
+											value={
+												selectedCoordinator.associatedUserId === undefined
+													? "undefined"
+													: selectedCoordinator.associatedUserId.toString()
+											}
+											onValueChange={(value) => {
+												setSelectedCoordinator({
+													...selectedCoordinator,
+													associatedUserId:
+														value === "undefined"
+															? undefined
+															: Number.parseInt(value),
+												});
+											}}
+										>
+											<SelectTrigger>
+												<SelectValue
+													placeholder="Select User"
+													defaultValue="undefined"
+												/>
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="undefined">None</SelectItem>
+												{districtOrganizers.map((user) => (
+													<SelectItem key={user.id} value={user.id.toString()}>
+														{user.id} - {user.username}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+								)}
+							</>
+						)}
+
+						<div className="flex justify-end gap-x-2">
+							<Button
+								type="button"
+								onClick={() => setSelectedCoordinator(null)}
+								variant="destructive"
+							>
+								Cancel
+							</Button>
+							<Button type="button" onClick={handleModalSubmit}>
+								{action} Coordinator
+							</Button>
+						</div>
+					</DialogContent>
+				)}
+			</Dialog>
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
 					<thead>
@@ -407,110 +568,26 @@ const DistrictsTable = ({
 							"isolate inline-flex -space-x-px rounded-md shadow-xs"
 						}
 						pageLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						breakLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						activeLinkClassName={
-							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+							"z-10 bg-secondary focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 						}
 						previousLinkClassName={
-							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						nextLinkClassName={
-							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-400"
+							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary"
 						}
 						disabledLinkClassName={"text-black-100"}
 					/>
 				</div>
 			</div>
-			<div
-				className={`fixed left-0 top-0 z-99999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${
-					!modalOpen && "hidden"
-				}`}
-			>
-				<div className="w-full max-w-142.5 rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15">
-					<h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
-						{
-							{
-								Add: `Add Coordinator to ${
-									districtData.find((x) => x.id === districtID)?.name
-								}`,
-								Update: "Update Coordinator",
-								Delete: "Delete Coordinator",
-							}[action]
-						}
-					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary" />
-
-					{action === "Delete" ? (
-						<div className="mb-4.5">
-							Confirm to delete coordinator: {name} with id: {coordinatorID}
-						</div>
-					) : (
-						<>
-							<div className="mb-4.5">
-								<label
-									htmlFor="coordinator-name"
-									className="mb-2.5 block text-black dark:text-white"
-								>
-									Coordinator Name <span className="text-meta-1">*</span>
-								</label>
-								<input
-									type="text"
-									id="coordinator-name"
-									value={name}
-									onChange={(e) => setName(e.target.value)}
-									placeholder="Enter Coordinator Name"
-									className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-								/>
-							</div>
-
-							<div className="mb-4.5">
-								<label
-									htmlFor="phone-number"
-									className="mb-2.5 block text-black dark:text-white"
-								>
-									Phone Number
-								</label>
-								<input
-									id="phone-number"
-									type="text"
-									value={telephone_no}
-									onChange={(e) => setTelephone_No(e.target.value)}
-									placeholder="Enter Phone Number"
-									className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-								/>
-							</div>
-						</>
-					)}
-
-					<div className="-mx-3 flex flex-wrap gap-y-4">
-						<div className="w-full px-3 2xsm:w-1/2">
-							<button
-								type="button"
-								onClick={() => setModalOpen(false)}
-								className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
-							>
-								Cancel
-							</button>
-						</div>
-						<div className="w-full px-3 2xsm:w-1/2">
-							<button
-								type="button"
-								onClick={handleModalSubmit}
-								className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
-							>
-								{action} Coordinator
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			{/* <Snackbar config={snackBarConfig} /> */}
-		</div>
+		</>
 	);
 };
 
-export default DistrictsTable;
+export default CoordinatorsTable;

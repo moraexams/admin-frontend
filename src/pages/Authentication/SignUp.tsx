@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo.png";
 import { signup } from "../../services/authServices";
-import { Button } from "@/components/ui/button";
 
 const SignUp: React.FC = () => {
 	const navigate = useNavigate();
@@ -226,14 +226,14 @@ const SignUp: React.FC = () => {
 					)}
 					{/* Alert */}
 
-						<Button
-							type="submit"
-							size="lg"
-							onClick={handleSignUp}
-							className="w-full"
-						>
-							Create account
-							</Button>
+					<Button
+						type="submit"
+						size="lg"
+						onClick={handleSignUp}
+						className="w-full"
+					>
+						Create account
+					</Button>
 
 					<div className="mt-6 text-center">
 						<p>

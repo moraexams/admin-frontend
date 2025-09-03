@@ -4,23 +4,15 @@ export const addCoordinator = async (
 	name: string,
 	district_id: number,
 	telephone_no: string,
+	associated_user_id?: number,
 ) => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.post(
-			"/coordinator/add",
-			{
-				name,
-				district_id,
-				telephone_no,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
-		console.log("response", response);
+		await axiosInstance.post("/coordinator/add", {
+			name,
+			district_id,
+			telephone_no,
+			associated_user_id,
+		});
 		return true;
 	} catch (error: any) {
 		console.error("Error Adding Coordinator:", error);
@@ -32,22 +24,14 @@ export const updateCoordinator = async (
 	id: number,
 	name: string,
 	telephone_no: string,
+	associated_user_id?: number,
 ) => {
 	try {
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.put(
-			"/coordinator/" + id,
-			{
-				name,
-				telephone_no,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
-		console.log("response", response);
+		await axiosInstance.put(`/coordinator/${id}`, {
+			name,
+			telephone_no,
+			associated_user_id,
+		});
 		return true;
 	} catch (error: any) {
 		console.error("Error Updating Coordinator:", error);
@@ -57,14 +41,7 @@ export const updateCoordinator = async (
 
 export const deleteCoordinator = async (id: number) => {
 	try {
-		console.log(id);
-		const token = localStorage.getItem("token");
-		const response = await axiosInstance.delete("/coordinator/" + id, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		console.log("response", response);
+		await axiosInstance.delete("/coordinator/" + id);
 		return true;
 	} catch (error: any) {
 		console.error("Error Deleting Coordinator:", error);

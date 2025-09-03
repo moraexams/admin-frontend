@@ -1,13 +1,18 @@
+import { ROLE_DISTRICT_ORGANIZER } from "@/common/roles";
+import { Button } from "@/components/ui/button";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo.png";
-import { login } from "../../services/authServices";
-import { Button } from "@/components/ui/button";
+import {
+	LOCAL_STORAGE__ROLE,
+	LOCAL_STORAGE__TOKEN,
+	login,
+} from "../../services/authServices";
 
 const SignIn: React.FC = () => {
 	const navigate = useNavigate();
-	const token = localStorage.getItem("token");
+	const token = localStorage.getItem(LOCAL_STORAGE__TOKEN);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState<string | null>(null);
@@ -19,7 +24,12 @@ const SignIn: React.FC = () => {
 		if (username !== "" && password !== "") {
 			await login(username, password)
 				.then(() => {
-					navigate("/");
+					const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
+					if (role === ROLE_DISTRICT_ORGANIZER) {
+						navigate("/admissions");
+					} else {
+						navigate("/");
+					}
 				})
 				.catch((error) => {
 					setError(error);
@@ -32,8 +42,14 @@ const SignIn: React.FC = () => {
 	};
 
 	useEffect(() => {
+		const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
+
 		if (token) {
-			navigate("/");
+			if (role === ROLE_DISTRICT_ORGANIZER) {
+				navigate("/admissions");
+			} else {
+				navigate("/");
+			}
 		}
 	}, [token, navigate]);
 

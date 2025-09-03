@@ -1,235 +1,347 @@
+import { snakeCaseToNormalCase } from "@/common/utils";
+import AddStudent from "@/components/ManualAdmission/AddStudent";
+import DeleteStudent from "@/components/ManualAdmission/DeleteStudent";
+import EditStudent from "@/components/ManualAdmission/EditStudent";
+import PayNow from "@/components/ManualAdmission/PayNow";
+import PageTitle from "@/components/PageTitle";
+import { Button } from "@/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
-import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+	LOCAL_STORAGE_ASSOCIATED_DISTRICT,
+	LOCAL_STORAGE__ROLE,
+	LOCAL_STORAGE__TOKEN,
+	LOCAL_STORAGE__USER,
+	LOCAL_STORAGE__USERNAME,
+	LOCAL_STORAGE__USER_ID,
+} from "@/services/authServices";
+import {
+	type StudentRegistrationDetails,
+	getStudentRegistrationDetails,
+	getStudentsByCoordinator,
+} from "@/services/manualAdmissionService";
+import { CurrencyFormatter } from "@/services/utils";
+import type { TemporaryStudent } from "@/types/manual-admissions";
+import type { LocalStorage_User } from "@/types/types";
+import { LogOut, Pen, Trash, User } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-type Student = {
-	id: number;
-	name: string;
-	nic: string;
-	school: string;
-	phone: string;
-	email: string;
-	stream: string;
-	rankingDistrict: string;
-	examDistrict: string;
-	examCenter: string;
-	fee: number;
-};
+const STREAM_FEES = [
+	{ label: "Physical Science", fee: 600 },
+	{ label: "Biological Science", fee: 600 },
+	{ label: "ICT Only", fee: 200 },
+	{ label: "Physical Science (ICT)", fee: 600 },
+] as const;
+
+const STREAM_FEES_MAP = Object.fromEntries(
+	STREAM_FEES.map((item) => [item.label, item.fee]),
+);
 
 export default function ManualAdmissions() {
-	const [students, setStudents] = useState<Student[]>([]);
-	const [open, setOpen] = useState(false);
-	const streamOptions = [
-		{ label: "Maths", fee: 600 },
-		{ label: "Science", fee: 600 },
-		{ label: "ICT", fee: 200 },
-		{ label: "Maths and ICT", fee: 600 },
-	];
-	const [form, setForm] = useState<Omit<Student, "id" | "fee">>({
-		name: "",
-		nic: "",
-		school: "",
-		phone: "",
-		email: "",
-		stream: "",
-		rankingDistrict: "",
-		examDistrict: "",
-		examCenter: "",
-	});
+	const [studentRegistrationDetails, setStudentRegistrationDetails] =
+		useState<StudentRegistrationDetails | null>(null);
+	const [students, setStudents] = useState<TemporaryStudent[]>([]);
+	const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
+	const [action, setAction] = useState<"add" | "edit" | "delete" | null>(null);
+	const [selectedStudent, setSelectedStudent] =
+		useState<TemporaryStudent | null>(null);
 
-	const [errors, setErrors] = useState<{ [key: string]: string }>({});
+	const navigate = useNavigate();
+	const totalAmount = useMemo(() => {
+		return !Array.isArray(students)
+			? 0
+			: students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0);
+	}, [students]);
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-
-		// Limit input to numbers only for NIC and phone
-		if ((name === "nic" || name === "phone") && !/^\d*$/.test(value)) return;
-
-		setForm({ ...form, [name]: value });
+	const fetchStudentRegistrationDetails = () => {
+		getStudentRegistrationDetails()
+			.then((data) => {
+				setStudentRegistrationDetails(data);
+			})
+			.catch((error) => {
+				toast.error(
+					error.message || "Failed to fetch student registration details",
+				);
+			});
 	};
 
-	const getFee = (stream: string) => {
-		const match = streamOptions.find((opt) => opt.label === stream);
-		return match ? match.fee : 0;
+	const userStringified = localStorage.getItem(LOCAL_STORAGE__USER);
+	const user: LocalStorage_User | null = userStringified
+		? JSON.parse(userStringified)
+		: null;
+
+	const logOut = () => {
+		localStorage.removeItem(LOCAL_STORAGE__TOKEN);
+		localStorage.removeItem(LOCAL_STORAGE__USER);
+		localStorage.removeItem(LOCAL_STORAGE__USERNAME);
+		localStorage.removeItem(LOCAL_STORAGE__USER_ID);
+		localStorage.removeItem(LOCAL_STORAGE__ROLE);
+		navigate("/auth/signin");
 	};
 
-	const handleAddStudent = () => {
-		const newErrors: { [key: string]: string } = {};
-
-		if (!form.name.trim()) newErrors.name = "Name is required";
-		if (form.nic.trim().length !== 12) newErrors.nic = "NIC must be 12 digits";
-		if (!form.school.trim()) newErrors.school = "School is required";
-		if (!form.phone.trim()) newErrors.phone = "Phone number is required";
-		else if (form.phone.trim().length !== 10)
-			newErrors.phone = "Phone must be 10 digits";
-		if (!form.email.trim()) newErrors.email = "Email is required";
-		if (!form.stream.trim()) newErrors.stream = "Stream is required";
-		if (!form.rankingDistrict.trim())
-			newErrors.rankingDistrict = "Ranking district is required";
-		if (!form.examDistrict.trim())
-			newErrors.examDistrict = "Exam district is required";
-		if (!form.examCenter.trim())
-			newErrors.examCenter = "Exam center is required";
-
-		if (Object.keys(newErrors).length > 0) {
-			setErrors(newErrors);
-			return;
+	useEffect(() => {
+		if (user === null) {
+			logOut();
 		}
-		const fee = getFee(form.stream);
+	}, []);
 
-		setStudents([...students, { id: students.length + 1, ...form, fee }]);
-
-		setForm({
-			name: "",
-			nic: "",
-			school: "",
-			phone: "",
-			email: "",
-			stream: "",
-			rankingDistrict: "",
-			examDistrict: "",
-			examCenter: "",
-		});
-		setErrors({});
-		setOpen(false);
+	const fetchStudents = () => {
+		getStudentsByCoordinator()
+			.then((data) => {
+				setStudents(data);
+			})
+			.catch(console.error);
 	};
+
+	useEffect(() => {
+		fetchStudentRegistrationDetails();
+		fetchStudents();
+	}, []);
+
+	const numberOfStudents = studentRegistrationDetails?.number_of_students || 0;
 
 	return (
-		<div className="p-6">
-			{/* Add Student Button */}
-			<button
-				onClick={() => setOpen(true)}
-				className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700"
-			>
-				<PlusCircle size={18} />
-				Add Student
-			</button>
-
-			{students.length > 0 && (
+		<div className="px-3 md:px-5 pt-4 pb-28">
+			{user === null ? null : (
 				<>
-					<table className="mt-6 w-full table-auto border border-gray-300">
-						<thead className="bg-gray-100">
-							<tr>
-								<th className="border px-2 py-1 text-left">ID</th>
-								<th className="border px-2 py-1 text-left">Name</th>
-								<th className="border px-2 py-1 text-left">NIC</th>
-								<th className="border px-2 py-1 text-left">School</th>
-								<th className="border px-2 py-1 text-left">Phone</th>
-								<th className="border px-2 py-1 text-left">Email</th>
-								<th className="border px-2 py-1 text-left">Stream</th>
-								<th className="border px-2 py-1 text-left">Ranking District</th>
-								<th className="border px-2 py-1 text-left">Exam District</th>
-								<th className="border px-2 py-1 text-left">Exam Center</th>
-								<th className="border px-2 py-1 text-left">Fee</th>
-							</tr>
-						</thead>
-						<tbody>
-							{students.map((student) => (
-								<tr key={student.id} className="border-t">
-									<td className="border px-2 py-1">{student.id}</td>
-									<td className="border px-2 py-1">{student.name}</td>
-									<td className="border px-2 py-1">{student.nic}</td>
-									<td className="border px-2 py-1">{student.school}</td>
-									<td className="border px-2 py-1">{student.phone}</td>
-									<td className="border px-2 py-1">{student.email}</td>
-									<td className="border px-2 py-1">{student.stream}</td>
-									<td className="border px-2 py-1">
-										{student.rankingDistrict}
-									</td>
-									<td className="border px-2 py-1">{student.examDistrict}</td>
-									<td className="border px-2 py-1">{student.examCenter}</td>
-									<td className="border px-2 py-1">{student.fee}</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-					<div className="mt-4 text-right font-bold text-blue-700">
-						Total Collected: Rs. {students.reduce((sum, s) => sum + s.fee, 0)}
+					<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] gap-x-2 gap-y-0 mb-6 items-center">
+						<div className="rounded-md p-2 border w-fit row-span-full">
+							<User />
+						</div>
+						<span className="font-medium">{user.username}</span>
+						<span className="text-sm col-start-2">
+							{snakeCaseToNormalCase(user.role)} -{" "}
+							{localStorage.getItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT)}
+						</span>
+
+						<Button
+							variant="destructive"
+							size="sm"
+							onClick={logOut}
+							className="row-span-full col-start-3"
+						>
+							<LogOut />
+							<span>Log Out</span>
+						</Button>
 					</div>
+
+					{studentRegistrationDetails === null ? null : (
+						<Card className="gap-0 w-fit py-3">
+							<CardHeader className="px-3">
+								<CardTitle className="text-muted-foreground text-sm">
+									Total Admissions
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="px-3">
+								<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
+									{numberOfStudents == 0
+										? "0"
+										: numberOfStudents.toString().padStart(2, "0")}
+								</div>
+							</CardContent>
+							<CardFooter className="w-fit px-3 text-pretty">
+								Number of students you registered.
+							</CardFooter>
+						</Card>
+					)}
 				</>
 			)}
+			<Toaster position="top-right" />
 
-			{/* Centered Popup */}
-			<Dialog open={open} onOpenChange={setOpen}>
-				<div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-				<div className="fixed inset-0 flex items-center justify-center p-4">
-					<DialogContent className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-xl dark:bg-boxdark overflow-y-auto">
-						<DialogTitle className="text-2xl font-bold mb-6 text-center">
-							Exam Registration
-						</DialogTitle>
+			<PageTitle title="Admissions | Mora Exams" />
+			<div className="mt-6 grid grid-cols-1 md:grid-cols-[auto_1fr_auto] grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto]">
+				<h2 className="col-start-1 row-start-1 text-title-md2 font-semibold">
+					Admissions
+				</h2>
+				<p className="max-w-prose col-start-1 md:col-span-2 row-start-2">
+					You can register students in bulk for the Mora Exams below. If you
+					face any issues, please contact us immediately.
+				</p>
 
-						{/* Form Fields */}
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-							{[
-								{ name: "name", label: "Name" },
-								{ name: "nic", label: "NIC" },
-								{ name: "school", label: "School" },
-								{ name: "phone", label: "Phone Number" },
-								{ name: "email", label: "Email" },
-								{ name: "stream", label: "Stream" },
-								{ name: "rankingDistrict", label: "Ranking District" },
-								{ name: "examDistrict", label: "Exam District" },
-								{ name: "examCenter", label: "Exam Center" },
-							].map((field) => (
-								<div key={field.name} className="flex flex-col">
-									<label className="text-sm font-medium text-gray-700 dark:text-white">
-										{field.label}
-									</label>
-									<input
-										type={
-											field.name === "phone" || field.name === "nic"
-												? "tel"
-												: "text"
-										}
-										name={field.name}
-										value={(form as any)[field.name]}
-										onChange={handleChange}
-										maxLength={
-											field.name === "phone"
-												? 10
-												: field.name === "nic"
-													? 12
-													: undefined
-										}
-										className={`mt-1 w-full rounded border px-3 py-2 dark:bg-meta-4 dark:text-white ${
-											errors[field.name] ? "border-red-500" : "border-stroke"
-										}`}
-										required
-									/>
-									{errors[field.name] && (
-										<span className="text-xs text-red-500 mt-1">
-											{errors[field.name]}
-										</span>
-									)}
-								</div>
-							))}
-						</div>
+				<AddStudent
+					open={addStudentDialogOpen}
+					setOpen={setAddStudentDialogOpen}
+					additionalDetails={studentRegistrationDetails}
+					onStudentAdded={fetchStudents}
+				/>
+			</div>
 
-						{/* Actions */}
-						<div className="mt-6 flex justify-end space-x-3">
-							<button
-								onClick={() => setOpen(false)}
-								className="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleAddStudent}
-								className="px-4 py-2 bg-blue-600 rounded text-white hover:bg-blue-700"
-							>
-								Register
-							</button>
-						</div>
-					</DialogContent>
+			<EditStudent
+				open={action === "edit" && selectedStudent !== null}
+				selectedStudent={selectedStudent}
+				setOpen={(c) => (c ? null : setSelectedStudent(null))}
+				additionalDetails={studentRegistrationDetails}
+				onStudentEdited={fetchStudents}
+			/>
+			<DeleteStudent
+				open={action === "delete" && selectedStudent !== null}
+				student={{
+					nic: selectedStudent?.nic || "",
+					full_name: selectedStudent?.full_name || "",
+				}}
+				setOpen={(c) => (c ? null : setSelectedStudent(null))}
+				onStudentDeleted={fetchStudents}
+			/>
+
+			<div className="block lg:hidden space-y-2 mt-6">
+				{students.length === 0 ? (
+					<div className="grid place-items-center min-h-[120px]">
+						No pending admissions.
+					</div>
+				) : (
+					students.map((student, index) => (
+						<Card key={student.nic} className="py-4 gap-3">
+							<CardHeader className="gap-0 px-4">
+								<CardTitle className="text-lg font-semibold">
+									#{index + 1} {student.full_name}
+								</CardTitle>
+								<CardDescription>
+									{student.telephone_no} | {student.email}
+								</CardDescription>
+							</CardHeader>
+							<CardContent className="px-4">
+								<table className="w-full">
+									<tbody>
+										<tr>
+											<td>NIC</td>
+											<td className="text-right">{student.nic}</td>
+										</tr>
+										<tr>
+											<td>Stream</td>{" "}
+											<td className="text-right">{student.stream}</td>
+										</tr>
+										<tr>
+											<td>Ranking District</td>{" "}
+											<td className="text-right">{student.rank_district}</td>
+										</tr>
+										<tr>
+											<td>Exam Center</td>{" "}
+											<td className="text-right">{student.exam_centre}</td>
+										</tr>
+									</tbody>
+								</table>
+							</CardContent>
+							<CardFooter className="flex gap-2 justify-end">
+								<Button
+									variant="destructive"
+									size="icon"
+									onClick={() => {
+										setAction("delete");
+										setSelectedStudent(student);
+									}}
+								>
+									<Trash />
+								</Button>
+								<Button
+									size="icon"
+									onClick={() => {
+										setAction("edit");
+										setSelectedStudent(student);
+									}}
+								>
+									<Pen />
+								</Button>
+							</CardFooter>
+						</Card>
+					))
+				)}
+			</div>
+
+			<div className="hidden lg:block">
+				<table className="mt-6 w-[200vw] xl:w-full table-auto border">
+					<thead className="">
+						<tr>
+							<th className="border px-2 py-1 text-left">#</th>
+							<th className="border px-2 py-1 text-left">Name</th>
+							<th className="border px-2 py-1 text-left">NIC</th>
+							<th className="border px-2 py-1 text-left">School</th>
+							<th className="border px-2 py-1 text-left">Phone</th>
+							<th className="border px-2 py-1 text-left">Email</th>
+							<th className="border px-2 py-1 text-left">Stream</th>
+							<th className="border px-2 py-1 text-left">Ranking District</th>
+							<th className="border px-2 py-1 text-left">Exam Center</th>
+							<th className="border px-2 py-1 text-left">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{!Array.isArray(students) ? (
+							<tr>
+								<td colSpan={11} className="text-center p-4">
+									Loading...
+								</td>
+							</tr>
+						) : students.length === 0 ? (
+							<tr>
+								<td colSpan={11} className="text-center p-4">
+									No pending admissions.
+								</td>
+							</tr>
+						) : (
+							<>
+								{students.map((student, index) => (
+									<tr key={student.nic} className="border-t">
+										<td className="border px-2 py-1">{index + 1}</td>
+										<td className="border px-2 py-1">{student.full_name}</td>
+										<td className="border px-2 py-1">{student.nic}</td>
+										<td className="border px-2 py-1">{student.school}</td>
+										<td className="border px-2 py-1">{student.telephone_no}</td>
+										<td className="border px-2 py-1">{student.email}</td>
+										<td className="border px-2 py-1">{student.stream}</td>
+										<td className="border px-2 py-1">
+											{student.rank_district}
+										</td>
+										<td className="border px-2 py-1">{student.exam_centre}</td>
+										<td className="space-x-3 space-y-2 py-2 px-2">
+											<Button
+												variant="destructive"
+												size="icon"
+												onClick={() => {
+													setAction("delete");
+													setSelectedStudent(student);
+												}}
+											>
+												<Trash />
+											</Button>
+											<Button
+												size="icon"
+												onClick={() => {
+													setAction("edit");
+													setSelectedStudent(student);
+												}}
+											>
+												<Pen />
+											</Button>
+										</td>
+									</tr>
+								))}
+							</>
+						)}
+					</tbody>
+				</table>
+			</div>
+			<div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] mt-6 bg-secondary py-3 fixed bottom-0 left-0 right-0 px-3">
+				<Label className="text-base col-start-1 row-start-1">Total Fee</Label>
+				<div className="text-2xl col-start-1 row-start-2">
+					{CurrencyFormatter.format(totalAmount)}
 				</div>
-			</Dialog>
+
+				<PayNow
+					amount={totalAmount}
+					onPaid={() => {
+						fetchStudents();
+						fetchStudentRegistrationDetails();
+					}}
+				/>
+			</div>
 		</div>
 	);
 }

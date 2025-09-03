@@ -22,6 +22,7 @@ import BillGallery from "./pages/Finance/BillGallery";
 import FinanceDashboard from "./pages/Finance/Dashboard";
 import DistrictsSummary from "./pages/Finance/DistrictsSummary";
 import TransactionCategories from "./pages/Finance/TransactionCategories";
+import ManualAdmissions from "./pages/ManualAdmissions";
 import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
@@ -33,7 +34,6 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
-import ManualAdmissions from "./pages/ManualAdmissions";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -315,16 +315,16 @@ function App() {
 							</>
 						}
 					/>
-					<Route
-						path="/admissions"
-						element={
-							<>
-								<PageTitle title="Admissions | Mora Exams" />
-								<ManualAdmissions />
-							</>
-						}
-					/>
 				</Route>
+				<Route
+					path="/admissions"
+					element={
+						<>
+							<PageTitle title="Admissions | Mora Exams" />
+							<ManualAdmissions />
+						</>
+					}
+				/>
 			</Routes>
 		</>
 	);

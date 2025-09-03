@@ -1,5 +1,8 @@
+import { ROLE_DISTRICT_ORGANIZER } from "@/common/roles";
+import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CardDataStats from "../components/CardDataStats";
 import { getDistrictsWithCentres } from "../services/districtService";
 import {
@@ -10,6 +13,7 @@ import {
 import type { District } from "../types/types";
 
 const Dashboard: React.FC = () => {
+	const navigate = useNavigate();
 	const [counts, setCounts] = useState<any>({});
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
@@ -21,6 +25,11 @@ const Dashboard: React.FC = () => {
 	const [streamStats, setStreamStats] = useState<any>({});
 
 	useEffect(() => {
+		const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
+		if (role === ROLE_DISTRICT_ORGANIZER) {
+			navigate("/admissions");
+		}
+
 		const fetchStats = async () => {
 			try {
 				const counts = await getStatCounts();
