@@ -35,6 +35,7 @@ import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
+import CoordinatorTable from "./pages/District/CoordinatorsV2";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -133,7 +134,7 @@ function App() {
 						element={
 							<>
 								<PageTitle title="Coordinators | Mora Exams" />
-								<Coordinators />
+								<CoordinatorTable />
 							</>
 						}
 					/>

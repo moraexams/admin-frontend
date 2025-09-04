@@ -25,9 +25,11 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
-import type { District } from "../../types/types";
+import type { Coordinator, District } from "../../types/types";
+import { Pen } from "lucide-react";
 
 interface Props {
+	coordinators: Array<Coordinator>;
 	districtData: District[];
 	searchKey: string;
 	itemsPerPage: number;
@@ -35,14 +37,8 @@ interface Props {
 	districtOrganizers: Array<DistrictOrganizer>;
 }
 
-interface Coordinator {
-	id: number;
-	name: string;
-	telephoneNo: string;
-	associatedUserId?: number;
-}
-
 const CoordinatorsTable = ({
+	coordinators,
 	districtData,
 	searchKey,
 	itemsPerPage,
@@ -173,8 +169,7 @@ const CoordinatorsTable = ({
 	};
 
 	const handleEditModalOpen = (
-		district_id: number | undefined,
-		coordinatorID: number | undefined,
+		coordinatorId: number | undefined,
 	) => {
 		setAction("Update");
 		setDistrictID(district_id || 1);
@@ -340,30 +335,52 @@ const CoordinatorsTable = ({
 					</DialogContent>
 				)}
 			</Dialog>
+
+			<table className="w-full table-auto">
+				<thead>
+					<tr className="bg-gray-2 text-left dark:bg-meta-4">
+						<th className="min-w-[80px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+							ID
+						</th>
+						<th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+							Name
+						</th>
+						<th className="py-4 px-4 font-medium text-black text-center dark:text-white">
+							Actions
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{coordinators.map((coordinator) => (
+						<tr key={coordinator.id}>
+							<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+								{coordinator.id}
+							</td>
+							<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+								{coordinator.name}
+							</td>
+												<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+													<div className="flex items-center justify-center space-x-3.5">
+														<Button
+															type="button"
+															onClick={() =>
+																handleEditModalOpen(coordinator.id)
+															}
+															variant="outline"
+															size="icon"
+															className="hover:text-primary"
+														>
+															<Pen className="size-4" />
+														</Button>
+														</div>
+														</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
-					<thead>
-						<tr className="bg-gray-2 text-left dark:bg-meta-4">
-							<th className="min-w-[80px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-								District ID
-							</th>
-							<th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-								District Name
-							</th>
-							<th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-								Coordinator Name
-							</th>
-							<th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-								Telephone
-							</th>
-							<th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-								Actions
-							</th>
-							<th className="py-4 px-4 font-medium text-black text-center dark:text-white">
-								District Actions
-							</th>
-						</tr>
-					</thead>
 					<tbody>
 						{currentItems?.map((district) => {
 							const { id, name, coordinators } = district;

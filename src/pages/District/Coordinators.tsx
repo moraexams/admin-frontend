@@ -1,4 +1,4 @@
-import { getDistrictsWithCoordinators } from "@/services/districtService";
+import { getAllCoordinators } from "@/services/coordinatorsService";
 import {
 	type DistrictOrganizer,
 	getDistrictOrganizers,
@@ -7,10 +7,9 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CoordinatorsTable from "../../components/Tables/CoordinatorsTable";
-import type { District } from "../../types/types";
+import type { Coordinator } from "../../types/types";
 
 const Coordinators = () => {
-	const [districts, setDistricts] = useState<District[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
@@ -19,20 +18,22 @@ const Coordinators = () => {
 	const [districtOrganizers, setDistrictOrganizers] = useState<
 		Array<DistrictOrganizer>
 	>([]);
+	const [coordinators, setCoordinators] = useState<Array<Coordinator>>([]);
 
-	const fetchDistricts = async () => {
+	const fetchCoordinators = async () => {
 		try {
-			const districts = await getDistrictsWithCoordinators();
-			setDistricts(districts);
+			const cc = await getAllCoordinators();
+			setCoordinators(cc);
 		} catch (error) {
-			setError("Failed to fetch districts");
+			console.error("Error fetching coordinators:", error);
+			return [];
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	useEffect(() => {
-		fetchDistricts();
+		fetchCoordinators();
 	}, [refreshKey]);
 
 	useEffect(() => {
@@ -86,8 +87,9 @@ const Coordinators = () => {
 					<div>Loading...</div>
 				) : (
 					<CoordinatorsTable
+						coordinators={coordinators}
 						districtOrganizers={districtOrganizers}
-						districtData={districts}
+						districtData={[]}
 						searchKey={searchKey}
 						itemsPerPage={itemsPerPage}
 						setRefreshKey={setRefreshKey}

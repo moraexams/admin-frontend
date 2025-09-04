@@ -1,3 +1,4 @@
+import type { Coordinator } from "@/types/types";
 import axiosInstance from "../axiosConfig";
 
 export const addCoordinator = async (
@@ -45,6 +46,17 @@ export const deleteCoordinator = async (id: number) => {
 		return true;
 	} catch (error: any) {
 		console.error("Error Deleting Coordinator:", error);
+		throw error.response.data.error;
+	}
+};
+
+export const getAllCoordinators = async () => {
+	try {
+		const response =
+			await axiosInstance.get<Array<Coordinator>>("/coordinator/overview");
+		return response.data;
+	} catch (error: any) {
+		console.error("Error fetching coordinators:", error);
 		throw error.response.data.error;
 	}
 };
