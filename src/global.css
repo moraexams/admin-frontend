@@ -599,3 +599,7 @@ span.flatpickr-weekday,
     @apply bg-background text-foreground;
   }
 }
+
+.overview-table span {
+  @apply border px-2 py-1;
+}
