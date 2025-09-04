@@ -15,6 +15,7 @@ import ExamPaperDistributionTableView from "./pages/Distribution/DistributionTab
 import Coordinators from "./pages/District/Coordinators";
 import Districts from "./pages/District/Districts";
 import ExamCentres from "./pages/District/ExamCentres";
+import DistrictsOverview from "./pages/DistrictsOverview";
 import AddBill from "./pages/Finance/AddBill";
 import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
 import AllTransactions from "./pages/Finance/AllTransactions";
@@ -108,6 +109,7 @@ function App() {
 							</>
 						}
 					/>
+					<Route path="/districts/overview" element={<DistrictsOverview />} />
 					<Route
 						path="/districts"
 						element={

@@ -37,7 +37,6 @@ import {
 	BarChart2,
 	BookOpen,
 	ChevronRight,
-	CirclePlus,
 	ClipboardList,
 	FileText,
 	Home,
@@ -76,6 +75,15 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		title: "Dashboard",
 		url: "/",
 		icon: Home,
+	},
+	{
+		type: "link",
+		title: "Districts",
+		url: "/districts/overview",
+		icon: Map,
+		hideIf: (role) =>
+			typeof role !== "string" ||
+			![ROLE_TECH_COORDINATOR, ROLE_DISTRICTS_COORDINATOR].includes(role),
 	},
 	{
 		type: "group",
