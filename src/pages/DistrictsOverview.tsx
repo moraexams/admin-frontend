@@ -13,8 +13,8 @@ interface DistrictItem {
 		name: string;
 		type: string;
 		gender: string;
-		
-	coordinators: Array<{
+
+		coordinators: Array<{
 			id: number;
 			name: string;
 			contact: Array<string>;
@@ -56,9 +56,7 @@ export default function DistrictsOverview() {
 									<h2 key={d.id} className="text-xl font-semibold">
 										{d.name}
 									</h2>
-									-
-									<span>{d.exam_centres.length} Centres</span>
-									-
+									-<span>{d.exam_centres.length} Centres</span>-
 									<span>{d.coordinator_count} Coordinators</span>
 								</div>
 
@@ -66,12 +64,8 @@ export default function DistrictsOverview() {
 									<div className="contents">
 										<span className="font-bold">Id</span>
 										<span className="font-bold">Name</span>
-										<span className="font-bold">
-											Gender
-										</span>
-										<span className="font-bold">
-											Type
-										</span>
+										<span className="font-bold">Gender</span>
+										<span className="font-bold">Type</span>
 										<span className="font-bold">Coordinators</span>
 									</div>
 
@@ -79,26 +73,16 @@ export default function DistrictsOverview() {
 										<div key={centre.id} className="contents">
 											<span className="py-1">{centre.id}</span>
 											<span>{centre.name}</span>
+											<span>{centre.gender}</span>
+											<span>{capitalize(centre.type)}</span>
 											<span>
-												{centre.gender}
-											</span>
-											<span>
-												{capitalize(centre.type)}
-											</span>
-											<span>
-
-											<ul className="pl-0">
-												{centre.coordinators
-													.map(
-														(c) =>
-															<li>
-															{c.name} ({c.contact.join(
-																", ",
-															)})
-															</li>
-													)
-												}
-											</ul>
+												<ul className="pl-0">
+													{centre.coordinators.map((c) => (
+														<li>
+															{c.name} ({c.contact.join(", ")})
+														</li>
+													))}
+												</ul>
 											</span>
 										</div>
 									))}
