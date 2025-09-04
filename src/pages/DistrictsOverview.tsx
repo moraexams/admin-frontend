@@ -1,3 +1,4 @@
+import { capitalize } from "@/common/utils";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { getDistrictsOverview } from "@/services/districtService";
 import { useEffect, useState } from "react";
@@ -9,6 +10,8 @@ interface DistrictItem {
 	exam_centres: Array<{
 		id: number;
 		name: string;
+		type: string;
+		gender: string;
 	}>;
 }
 
@@ -50,16 +53,32 @@ export default function DistrictsOverview() {
 									<span>{d.exam_centres.length} Centres</span>
 								</div>
 
-								<div className="grid grid-cols-[auto_1fr] overview-table">
+								<div className="grid grid-cols-[auto_1fr_auto_auto_1fr] overview-table">
 									<div className="contents">
 										<span className="font-bold">Id</span>
 										<span className="font-bold">Name</span>
+										<span className="font-bold">
+											Gender
+										</span>
+										<span className="font-bold">
+											Type
+										</span>
+										<span className="font-bold">Coordinators</span>
 									</div>
 
 									{d.exam_centres.map((centre) => (
 										<div key={centre.id} className="contents">
 											<span className="py-1">{centre.id}</span>
 											<span>{centre.name}</span>
+											<span>
+												{centre.gender}
+											</span>
+											<span>
+												{capitalize(centre.type)}
+											</span>
+											<span>
+
+											</span>
 										</div>
 									))}
 								</div>
