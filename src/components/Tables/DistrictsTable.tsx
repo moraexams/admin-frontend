@@ -22,7 +22,7 @@ const DistrictsTable = ({
 	};
 
 	return (
-		<div className="rounded-xs border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+		<>
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
 					<thead>
@@ -105,25 +105,25 @@ const DistrictsTable = ({
 							"isolate inline-flex -space-x-px rounded-md shadow-xs"
 						}
 						pageLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary focus:z-20 focus:outline-offset-0 hover:bg-gray-100/70 dark:hover:bg-gray-200/20"
 						}
 						breakLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary focus:z-20 focus:outline-offset-0 hover:bg-gray-100/70 dark:hover:bg-gray-200/20"
 						}
 						activeLinkClassName={
-							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 hover:bg-gray-100/70 dark:hover:bg-gray-200/20"
 						}
 						previousLinkClassName={
-							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-100/70 dark:hover:bg-gray-200/20 focus:z-20 focus:outline-offset-0"
 						}
 						nextLinkClassName={
-							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-400"
+							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-100/70 dark:hover:bg-gray-200/20"
 						}
 						disabledLinkClassName={"text-black-100"}
 					/>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
