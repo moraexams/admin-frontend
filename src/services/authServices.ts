@@ -26,7 +26,7 @@ export const login = async (username: string, password: string) => {
 		if (user.role === ROLE_DISTRICT_ORGANIZER) {
 			localStorage.setItem(
 				LOCAL_STORAGE_ASSOCIATED_DISTRICT,
-				user.associated_district,
+				(user.associated_district as string[]).join(", "),
 			);
 		}
 
