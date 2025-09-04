@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Pen } from "lucide-react"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
 import type { Coordinator } from "@/types/types"
-import { getAllCoordinators } from "@/services/coordinatorsService"
+import { getAllCoordinators, updateCoordinator } from "@/services/coordinatorsService"
 import { getDistrictOrganizers, type DistrictOrganizer } from "@/services/userService"
 import toast from "react-hot-toast"
+import { DialogDescription } from "@radix-ui/react-dialog"
 
 export default function Coordinators() {
   const [editing, setEditing] = useState(null)
@@ -48,12 +48,6 @@ export default function Coordinators() {
 		fetchCoordinators();
 	}, []);
 
-
-  const handleSave = (updated) => {
-    setCoordinators((prev) => prev.map((c) => (c.id === updated.id ? updated : c)))
-    setEditing(null)
-  }
-
   return (
     <>
     <Breadcrumb pageName="Coordinators" />
@@ -86,9 +80,9 @@ export default function Coordinators() {
 
       {editing && (
         <EditDialog
+        onSave={fetchCoordinators}
           coordinator={editing}
           users={districtOrganizers}
-          onSave={handleSave}
           onClose={() => setEditing(null)}
         />
       )}
@@ -96,17 +90,33 @@ export default function Coordinators() {
   )
 }
 
-function EditDialog({ coordinator, users, onSave, onClose }: 
+function EditDialog({ coordinator, users, onClose, onSave }: 
   {
   coordinator: Coordinator,
   users: Array<DistrictOrganizer>,
-  onSave: (updated: Coordinator) => void,
   onClose: () => void
+  onSave: () => void,
 }
 ) {
   const [form, setForm] = useState({ ...coordinator })
+  
+  const save = () => {
+    if (!form.id) return;
+    
+    updateCoordinator(
+      form.id,
+      form.name,
+      form.associated_user_id ?? null
+    ).then(() => {
+      toast.success("Coordinator updated successfully")
+      onClose()
+      onSave();
+    }).catch((err) => {
+      toast.error(err instanceof Error ? err.message : "Failed to update coordinator")
+    });
+  }
 
-  const handleChange = (field, value) => {
+  const handleChange = (field: string, value: string | number | undefined) => {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -115,26 +125,22 @@ function EditDialog({ coordinator, users, onSave, onClose }:
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Edit Coordinator</DialogTitle>
+          <DialogDescription>You are editing the details of {coordinator.name}.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label>Name</Label>
-            <Input value={form.name} onChange={(e) => handleChange("name", e.target.value)} />
-          </div>
-          <div>
-            <Label>Phone</Label>
-            <Input value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} />
-          </div>
-          <div>
-            <Label>Associated User</Label>
-            <Select value={form.userId} onValueChange={(v) => handleChange("userId", v)}>
+            <Label className="mb-1">Associated User</Label>
+            <Select value={form.associated_user_id ? form.associated_user_id.toString() : "undefined"} onValueChange={(v) => handleChange("associated_user_id", v=== "undefined" ? undefined : Number.parseInt(v))}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a user" />
               </SelectTrigger>
               <SelectContent>
+                  <SelectItem value="undefined">
+                    None
+                  </SelectItem>
                 {users.map((u) => (
-                  <SelectItem key={u.id} value={u.id}>
-                    {u.name}
+                  <SelectItem key={u.id} value={u.id.toString()}>
+                    {u.id} - {u.username}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -145,7 +151,7 @@ function EditDialog({ coordinator, users, onSave, onClose }:
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={() => onSave(form)}>Save</Button>
+          <Button onClick={save}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

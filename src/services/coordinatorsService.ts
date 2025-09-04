@@ -24,13 +24,11 @@ export const addCoordinator = async (
 export const updateCoordinator = async (
 	id: number,
 	name: string,
-	telephone_no: string,
-	associated_user_id?: number,
+	associated_user_id: number | null,
 ) => {
 	try {
 		await axiosInstance.put(`/coordinator/${id}`, {
 			name,
-			telephone_no,
 			associated_user_id,
 		});
 		return true;
