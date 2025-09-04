@@ -7,11 +7,18 @@ import toast from "react-hot-toast";
 interface DistrictItem {
 	id: number;
 	name: string;
+	coordinator_count: number;
 	exam_centres: Array<{
 		id: number;
 		name: string;
 		type: string;
 		gender: string;
+		
+	coordinators: Array<{
+			id: number;
+			name: string;
+			contact: Array<string>;
+		}>;
 	}>;
 }
 
@@ -45,12 +52,14 @@ export default function DistrictsOverview() {
 						if (d.exam_centres.length === 0) return null;
 						return (
 							<section className="my-4">
-								<div className="flex gap-2 items-center mb-2">
+								<div className="flex gap-1.5 items-center mb-2">
 									<h2 key={d.id} className="text-xl font-semibold">
 										{d.name}
 									</h2>
-
+									-
 									<span>{d.exam_centres.length} Centres</span>
+									-
+									<span>{d.coordinator_count} Coordinators</span>
 								</div>
 
 								<div className="grid grid-cols-[auto_1fr_auto_auto_1fr] overview-table">
@@ -78,6 +87,18 @@ export default function DistrictsOverview() {
 											</span>
 											<span>
 
+											<ul className="pl-0">
+												{centre.coordinators
+													.map(
+														(c) =>
+															<li>
+															{c.name} ({c.contact.join(
+																", ",
+															)})
+															</li>
+													)
+												}
+											</ul>
 											</span>
 										</div>
 									))}
