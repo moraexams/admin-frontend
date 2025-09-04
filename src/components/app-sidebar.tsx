@@ -148,34 +148,34 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 			},
 		],
 	},
-	{
-		type: "group",
-		title: "Districts",
-		icon: Map,
-		hideIf: (role) =>
-			typeof role !== "string" ||
-			![ROLE_TECH_COORDINATOR, ROLE_DISTRICTS_COORDINATOR].includes(role),
-		links: [
-			{
-				type: "link",
-				title: "Districts",
-				url: "/districts",
-				icon: Map,
-			},
-			{
-				type: "link",
-				title: "Exam Centres",
-				url: "/district/centres",
-				icon: Home,
-			},
-			{
-				type: "link",
-				title: "Coordinators",
-				url: "/district/coordinators",
-				icon: Users,
-			},
-		],
-	},
+	// {
+	// 	type: "group",
+	// 	title: "Districts",
+	// 	icon: Map,
+	// 	hideIf: (role) =>
+	// 		typeof role !== "string" ||
+	// 		![ROLE_TECH_COORDINATOR, ROLE_DISTRICTS_COORDINATOR].includes(role),
+	// 	links: [
+	// 		{
+	// 			type: "link",
+	// 			title: "Districts",
+	// 			url: "/districts",
+	// 			icon: Map,
+	// 		},
+	// 		{
+	// 			type: "link",
+	// 			title: "Exam Centres",
+	// 			url: "/district/centres",
+	// 			icon: Home,
+	// 		},
+	// 		{
+	// 			type: "link",
+	// 			title: "Coordinators",
+	// 			url: "/district/coordinators",
+	// 			icon: Users,
+	// 		},
+	// 	],
+	// },
 	{
 		type: "group",
 		title: "Paper Distribution",
