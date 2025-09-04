@@ -1,4 +1,4 @@
-import { ROLE_DISTRICT_ORGANIZER } from "@/common/roles";
+import { ROLE_COORDINATOR } from "@/common/roles";
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
@@ -23,10 +23,10 @@ export const login = async (username: string, password: string) => {
 		localStorage.setItem(LOCAL_STORAGE__ROLE, user.role);
 		localStorage.setItem(LOCAL_STORAGE__USER_ID, user.id);
 
-		if (user.role === ROLE_DISTRICT_ORGANIZER) {
+		if (user.role === ROLE_COORDINATOR) {
 			localStorage.setItem(
 				LOCAL_STORAGE_ASSOCIATED_DISTRICT,
-				user.associated_district,
+				(user.associated_district as string[]).join(", "),
 			);
 		}
 

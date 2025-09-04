@@ -1,5 +1,15 @@
 import axiosInstance from "../axiosConfig";
 
+export const getDistrictsOverview = async () => {
+	try {
+		const response = await axiosInstance.get("/district/overview");
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching districts overview:", error);
+		return error;
+	}
+};
+
 export const getDistricts = async () => {
 	try {
 		const token = localStorage.getItem("token");

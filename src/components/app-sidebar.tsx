@@ -37,7 +37,6 @@ import {
 	BarChart2,
 	BookOpen,
 	ChevronRight,
-	CirclePlus,
 	ClipboardList,
 	FileText,
 	Home,
@@ -150,16 +149,22 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		links: [
 			{
 				type: "link",
-				title: "Districts",
-				url: "/districts",
+				title: "Overview",
+				url: "/districts/overview",
 				icon: Map,
 			},
-			{
-				type: "link",
-				title: "Exam Centres",
-				url: "/district/centres",
-				icon: Home,
-			},
+			// {
+			// 	type: "link",
+			// 	title: "Districts",
+			// 	url: "/districts",
+			// 	icon: Map,
+			// },
+			// {
+			// 	type: "link",
+			// 	title: "Exam Centres",
+			// 	url: "/district/centres",
+			// 	icon: Home,
+			// },
 			{
 				type: "link",
 				title: "Coordinators",

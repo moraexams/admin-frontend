@@ -257,7 +257,7 @@ export default function ManualAdmissions() {
 			</div>
 
 			<div className="hidden lg:block">
-				<table className="mt-6 w-[200vw] xl:w-full table-auto border">
+				<table className="mt-6 w-full table-auto border">
 					<thead className="">
 						<tr>
 							<th className="border px-2 py-1 text-left">#</th>
