@@ -1,4 +1,4 @@
-import { ROLE_DISTRICT_ORGANIZER } from "@/common/roles";
+import { ROLE_COORDINATOR } from "@/common/roles";
 import { Button } from "@/components/ui/button";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ const SignIn: React.FC = () => {
 			await login(username, password)
 				.then(() => {
 					const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
-					if (role === ROLE_DISTRICT_ORGANIZER) {
+					if (role === ROLE_COORDINATOR) {
 						navigate("/admissions");
 					} else {
 						navigate("/");
@@ -45,7 +45,7 @@ const SignIn: React.FC = () => {
 		const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
 
 		if (token) {
-			if (role === ROLE_DISTRICT_ORGANIZER) {
+			if (role === ROLE_COORDINATOR) {
 				navigate("/admissions");
 			} else {
 				navigate("/");
