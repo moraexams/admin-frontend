@@ -107,17 +107,31 @@ export default function AddStudent(props: Props) {
 		}
 
 		form.setValue("rankingDistrict", district.id);
-		form.setValue("examDistrict", district.id);
+		
+		const sittingDistrict = props.additionalDetails.sitting_districts.find(
+			(d) => d.district_name === associatedDistrict,
+		);
+		if (!sittingDistrict) {
+			return;
+		}
+
+		form.setValue("examDistrict", sittingDistrict.id);
+		console.log("setting exam district to", sittingDistrict.id);
 
 		if (district.exam_centres.length > 0) {
-			form.setValue("examCentre", district.exam_centres[0].id);
+			form.setValue("examCentre", sittingDistrict.exam_centres[0].id);
 		}
 	}, [props.additionalDetails]);
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");
-	const availableExamCenters = props.additionalDetails?.districts.find(
+	const availableExamCenters = props.additionalDetails?.sitting_districts.find(
 		(d) => d.id === Number(selectedExamSittingDistrict),
 	)?.exam_centres;
+	
+	if (availableExamCenters?.length === 1)
+		 {
+		form.setValue("examCentre", availableExamCenters[0].id);
+		 }
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
@@ -365,15 +379,16 @@ export default function AddStudent(props: Props) {
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value?.toString()}
-										disabled={true}
+										disabled={false}
+										// disabled={props.additionalDetails?.sitting_districts.length === 1}
 									>
 										<FormControl>
-											<SelectTrigger className="pointer-events-none">
+											<SelectTrigger>
 												<SelectValue placeholder="Select" />
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											{props.additionalDetails?.districts.map((option) => (
+											{props.additionalDetails?.sitting_districts.map((option) => (
 												<SelectItem
 													key={option.id}
 													value={option.id.toString()}

@@ -16,6 +16,7 @@ interface DistrictDetail {
 }
 export interface StudentRegistrationDetails {
 	districts: Array<DistrictDetail>;
+	sitting_districts: Array<DistrictDetail>;
 	number_of_students: number;
 }
 

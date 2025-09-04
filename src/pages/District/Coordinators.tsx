@@ -13,7 +13,7 @@ import toast from "react-hot-toast"
 import { DialogDescription } from "@radix-ui/react-dialog"
 
 export default function Coordinators() {
-  const [editing, setEditing] = useState(null)
+  const [editing, setEditing] = useState<Coordinator | null>(null)
   const [coordinators, setCoordinators] = useState<Array<Coordinator>>([]);
 	const [districtOrganizers, setDistrictOrganizers] = useState<
 		Array<DistrictOrganizer>
