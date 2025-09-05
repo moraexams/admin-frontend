@@ -44,7 +44,7 @@ export const addStudent = async (
 		const response = await axiosInstance.post("/coordinator/students", {
 			nic: studentData.nic,
 			full_name: studentData.name,
-			school: studentData.school,
+			school: studentData.school || undefined,
 			telephone_no: studentData.phone,
 			address: studentData.address,
 			email: studentData.email,

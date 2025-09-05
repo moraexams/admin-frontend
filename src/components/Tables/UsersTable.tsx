@@ -19,8 +19,8 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import {
-	ROLE_DISTRICTS_COORDINATOR,
 	ROLE_COORDINATOR,
+	ROLE_DISTRICTS_COORDINATOR,
 	ROLE_EXAM_COORDINATOR,
 	ROLE_FINANCE_TEAM_MEMBER,
 	ROLE_MARKETING_COORDINATOR,

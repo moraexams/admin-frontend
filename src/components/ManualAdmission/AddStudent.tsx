@@ -60,8 +60,6 @@ export default function AddStudent(props: Props) {
 			email: "",
 			stream: "",
 			address: "",
-			gender: "Male",
-			medium: "Tamil",
 			examDistrict: 0,
 			rankingDistrict: 0,
 			examCentre: 0,
@@ -107,7 +105,7 @@ export default function AddStudent(props: Props) {
 		}
 
 		form.setValue("rankingDistrict", district.id);
-		
+
 		const sittingDistrict = props.additionalDetails.sitting_districts.find(
 			(d) => d.district_name === associatedDistrict,
 		);
@@ -123,11 +121,10 @@ export default function AddStudent(props: Props) {
 	const availableExamCenters = props.additionalDetails?.sitting_districts.find(
 		(d) => d.id === Number(selectedExamSittingDistrict),
 	)?.exam_centres;
-	
-	if (availableExamCenters?.length === 1)
-		 {
+
+	if (availableExamCenters?.length === 1) {
 		form.setValue("examCentre", availableExamCenters[0].id);
-		 }
+	}
 
 	const selectedGender = form.watch("gender");
 	const selectedStream = form.watch("stream");
@@ -166,7 +163,7 @@ export default function AddStudent(props: Props) {
 										<RequiredField />
 									</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input {...field} className="uppercase" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -195,7 +192,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>School</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input {...field} className="uppercase" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -211,7 +208,7 @@ export default function AddStudent(props: Props) {
 										<RequiredField />
 									</FormLabel>
 									<FormControl>
-										<Textarea {...field} />
+										<Textarea {...field} className="uppercase" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -227,7 +224,7 @@ export default function AddStudent(props: Props) {
 										<RequiredField />
 									</FormLabel>
 									<FormControl>
-										<Input type="tel" {...field} />
+										<Input type="tel" {...field} className="uppercase" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -243,7 +240,7 @@ export default function AddStudent(props: Props) {
 										<RequiredField />
 									</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input {...field} className="uppercase" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

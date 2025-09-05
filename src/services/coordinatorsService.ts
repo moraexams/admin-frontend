@@ -50,8 +50,9 @@ export const deleteCoordinator = async (id: number) => {
 
 export const getAllCoordinators = async () => {
 	try {
-		const response =
-			await axiosInstance.get<Array<Coordinator>>("/coordinator/overview");
+		const response = await axiosInstance.get<Array<Coordinator>>(
+			"/coordinator/overview",
+		);
 		return response.data;
 	} catch (error: any) {
 		console.error("Error fetching coordinators:", error);

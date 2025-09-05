@@ -51,9 +51,8 @@ export interface DistrictOrganizer {
 
 export const getDistrictOrganizers = async () => {
 	try {
-		const response = await axiosInstance.get<Array<DistrictOrganizer>>(
-			"/user/coordinators",
-		);
+		const response =
+			await axiosInstance.get<Array<DistrictOrganizer>>("/user/coordinators");
 		return response.data;
 	} catch (error) {
 		console.error("Error fetching unassigned coordinators:", error);
