@@ -52,7 +52,7 @@ export interface DistrictOrganizer {
 export const getDistrictOrganizers = async () => {
 	try {
 		const response = await axiosInstance.get<Array<DistrictOrganizer>>(
-			"/user/district-organizers",
+			"/user/coordinators",
 		);
 		return response.data;
 	} catch (error) {
