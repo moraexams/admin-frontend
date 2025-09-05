@@ -117,10 +117,6 @@ export default function AddStudent(props: Props) {
 
 		form.setValue("examDistrict", sittingDistrict.id);
 		console.log("setting exam district to", sittingDistrict.id);
-
-		if (district.exam_centres.length > 0) {
-			form.setValue("examCentre", sittingDistrict.exam_centres[0].id);
-		}
 	}, [props.additionalDetails]);
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");
@@ -132,6 +128,9 @@ export default function AddStudent(props: Props) {
 		 {
 		form.setValue("examCentre", availableExamCenters[0].id);
 		 }
+
+	const selectedGender = form.watch("gender");
+	const selectedStream = form.watch("stream");
 
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
@@ -388,14 +387,16 @@ export default function AddStudent(props: Props) {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											{props.additionalDetails?.sitting_districts.map((option) => (
-												<SelectItem
-													key={option.id}
-													value={option.id.toString()}
-												>
-													{option.district_name}
-												</SelectItem>
-											))}
+											{props.additionalDetails?.sitting_districts.map(
+												(option) => (
+													<SelectItem
+														key={option.id}
+														value={option.id.toString()}
+													>
+														{option.district_name}
+													</SelectItem>
+												),
+											)}
 										</SelectContent>
 									</Select>
 									<FormMessage />
@@ -429,6 +430,14 @@ export default function AddStudent(props: Props) {
 														<SelectItem
 															key={option.id}
 															value={option.id.toString()}
+															disabled={
+																(selectedGender !== "Male" &&
+																	option.name.startsWith("(Male Only)")) ||
+																(selectedGender !== "Female" &&
+																	option.name.startsWith("(Female Only)")) ||
+																(selectedStream !== "1" &&
+																	option.name.endsWith("(IT Only)"))
+															}
 														>
 															{option.name}
 														</SelectItem>
