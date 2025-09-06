@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -140,18 +141,15 @@ export const MarksBoundariesView = () => {
 							))}
 						</tbody>
 					</table>
-					<button
-						className="block w-fit ml-auto mt-5 rounded-sm border border-primary bg-primary hover:bg-primary/90 py-2 px-3 text-center font-medium text-white transition disabled:opacity-50"
+
+					<Button
 						type="button"
 						onClick={syncBoundaryValues}
 						disabled={!canUpdate}
+						className="ml-auto block mt-5"
 					>
-						{loading
-							? "Loading..."
-							: areAllFieldsFilled
-								? "Save Changes"
-								: "Fill all the fields"}
-					</button>
+						{loading ? "Loading..." : "Save Changes"}
+					</Button>
 				</>
 			) : loading ? (
 				<p>Loading...</p>
