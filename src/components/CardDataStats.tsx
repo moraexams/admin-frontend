@@ -3,7 +3,7 @@ import type React from "react";
 
 interface CardDataStatsProps {
 	title: string;
-	total: string;
+	total: number;
 }
 
 const CardDataStats: React.FC<CardDataStatsProps> = ({ title, total }) => {

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CardDataStats from "../components/CardDataStats";
 import { getDistrictsWithCentres } from "../services/districtService";
 import {
+	type StatCounts,
 	getStatCounts,
 	getStatsByCentre,
 	getStatsStreamWise,
@@ -14,7 +15,7 @@ import type { District } from "../types/types";
 
 const Dashboard: React.FC = () => {
 	const navigate = useNavigate();
-	const [counts, setCounts] = useState<any>({});
+	const [counts, setCounts] = useState<StatCounts | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -88,22 +89,27 @@ const Dashboard: React.FC = () => {
 
 	return (
 		<>
-			{/* <div>
-        <h1 className="text-3xl font-semibold text-primary">Dashboard on progress...</h1>
-      </div> */}
 			{loading ? (
 				<div>Loading...</div>
 			) : (
 				<>
-					<div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-4 2xl:gap-5">
-						<CardDataStats title="Total Students" total={counts.student} />
-						<CardDataStats title="Total Centers" total={counts.exam_center} />
-						<CardDataStats
-							title="Total Coordinators"
-							total={counts.coordinator}
-						/>
-						<CardDataStats title="Total Users" total={counts.user} />
-					</div>
+					{counts === null ? (
+						<span>Loading...</span>
+					) : (
+						<div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-5 2xl:gap-5">
+							<CardDataStats
+								title="Temporary Students"
+								total={counts.temporary_students}
+							/>
+							<CardDataStats title="Verified Students" total={counts.student} />
+							<CardDataStats title="Total Centers" total={counts.exam_center} />
+							<CardDataStats
+								title="Total Coordinators"
+								total={counts.coordinator}
+							/>
+							<CardDataStats title="Total Users" total={counts.user} />
+						</div>
+					)}
 					<div className="mt-8 mb-5">
 						<h2 className="text-xl font-semibold text-black dark:text-white">
 							Total Stream Wise Stats

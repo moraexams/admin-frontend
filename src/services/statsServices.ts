@@ -1,7 +1,19 @@
 import axiosInstance from "../axiosConfig";
 
+export interface StatCounts {
+	student: number;
+	temporary_students: number;
+	user: number;
+	subject: number;
+	district: number;
+	stream: number;
+	exam_center: number;
+	mark: number;
+	coordinator: number;
+}
+
 export const getStatCounts = async () => {
-	const response = await axiosInstance.get("/stats/count");
+	const response = await axiosInstance.get<StatCounts>("/stats/count");
 	return response.data;
 };
 
