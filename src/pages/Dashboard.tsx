@@ -1,4 +1,11 @@
 import { ROLE_COORDINATOR } from "@/common/roles";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -193,43 +200,57 @@ const Dashboard: React.FC = () => {
 								Centre Wise Stats
 							</h2>
 						</div>
-						<div className="flex flex-wrap gap-x-4">
-							<div className="mb-5.5">
-								<select
-									className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-									name="selectDistrict"
-									id="selectDistrict"
-									value={district.toString()}
-									onChange={(e) => handleDistrictSelect(Number(e.target.value))}
-								>
+						<div className="flex flex-wrap gap-x-4 mb-4">
+							<Select
+								defaultValue={district.toString()}
+								onValueChange={(v) => {
+									handleDistrictSelect(Number.parseInt(v));
+								}}
+								name="selectDistrict"
+							>
+								<SelectTrigger className="w-fit text-base">
+									<SelectValue placeholder="District" />
+								</SelectTrigger>
+								<SelectContent>
 									{districts.map((district) => {
+										if (district.id === undefined) return null;
 										return (
-											<option key={district.id} value={district.id}>
+											<SelectItem
+												key={district.id}
+												value={district.id.toString()}
+											>
 												{district.name}
-											</option>
+											</SelectItem>
 										);
 									})}
-								</select>
-							</div>
-							<div className="mb-5.5">
-								<select
-									className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-									name="selectCentre"
-									id="selectCentre"
-									value={centre.toString()}
-									onChange={(e) => setCentre(Number(e.target.value))}
-								>
+								</SelectContent>
+							</Select>
+
+							<Select
+								name="selectCentre"
+								value={centre.toString()}
+								onValueChange={(v) => setCentre(Number.parseInt(v))}
+							>
+								<SelectTrigger className="w-fit text-base">
+									<SelectValue placeholder="Exam Centre" />
+								</SelectTrigger>
+								<SelectContent>
 									{districts
 										.find((d) => d.id === district)
-										?.exam_centres?.map((centre) => (
-											<option key={centre.id} value={centre.id}>
-												{centre.name.length > 32
-													? `${centre.name.substring(0, 30)}...`
-													: centre.name}
-											</option>
-										))}
-								</select>
-							</div>
+										?.exam_centres?.map((centre) =>
+											centre.id === undefined ? null : (
+												<SelectItem
+													key={centre.id}
+													value={centre.id?.toString()}
+												>
+													{centre.name.length > 40
+														? `${centre.name.substring(0, 40)}...`
+														: centre.name}
+												</SelectItem>
+											),
+										)}
+								</SelectContent>
+							</Select>
 						</div>
 						<div className="max-w-full overflow-x-auto">
 							<table className="w-full table-auto">
