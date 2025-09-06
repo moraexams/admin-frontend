@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { useEffect, useMemo, useState } from "react";
 import {
 	getAllMarksBoundaries,
@@ -118,54 +119,23 @@ export const MarksBoundariesView = () => {
 									<td className="py-5 px-4 text-left font-bold">
 										{boundary.subjectName}
 									</td>
-									<td>
-										<input
-											type="number"
-											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
-											value={boundary.forA}
-											onChange={updateBoundary.bind(
-												null,
-												boundary.subjectId,
-												"forA",
-											)}
-										/>
-									</td>
-									<td>
-										<input
-											type="number"
-											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
-											value={boundary.forB}
-											onChange={updateBoundary.bind(
-												null,
-												boundary.subjectId,
-												"forB",
-											)}
-										/>
-									</td>
-									<td>
-										<input
-											type="number"
-											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
-											value={boundary.forC}
-											onChange={updateBoundary.bind(
-												null,
-												boundary.subjectId,
-												"forC",
-											)}
-										/>
-									</td>
-									<td>
-										<input
-											type="number"
-											className="border border-gray-300 rounded-sm px-2 py-1 bg-transparent w-[50%] min-w-25 max-w-30"
-											value={boundary.forS}
-											onChange={updateBoundary.bind(
-												null,
-												boundary.subjectId,
-												"forS",
-											)}
-										/>
-									</td>
+
+									{Object.entries(boundary).map(([key, value]) =>
+										!key.startsWith("for") ? null : (
+											<td>
+												<Input
+													type="number"
+													className="w-fit min-w-25 max-w-30"
+													value={value}
+													onChange={updateBoundary.bind(
+														null,
+														boundary.subjectId,
+														key,
+													)}
+												/>
+											</td>
+										),
+									)}
 								</tr>
 							))}
 						</tbody>
