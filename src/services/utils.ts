@@ -44,3 +44,11 @@ export const CurrencyFormatter = new Intl.NumberFormat("en-LK", {
 	minimumFractionDigits: 2,
 	maximumFractionDigits: 2,
 });
+
+export function createTimer(ms: number): Promise<void> {
+	return new Promise<void>((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, ms);
+	});
+}

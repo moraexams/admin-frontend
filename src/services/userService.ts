@@ -82,3 +82,23 @@ export const getDistrictOrganizers = async () => {
 		throw error;
 	}
 };
+
+export const requestPasswordReset = async (userId: number) => {
+	try {
+		const response = await axiosInstance.post<{ reset_id: string }>(
+			`/user/${userId}/password-reset`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error requesting password reset:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have permission to request password reset.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+};
