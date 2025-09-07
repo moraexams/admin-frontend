@@ -77,7 +77,7 @@ export default function AuditLogs() {
 					new Date(log.timestamp).toLocaleString("en-GB"),
 					log.action,
 					log.entity_type,
-					log.entity_id,
+					log.performed_by,
 				])}
 			/>
 		</>

@@ -6,6 +6,7 @@ export interface AuditLogItem {
 	action: string;
 	entity_type: string;
 	entity_id: string;
+	performed_by: string;
 }
 
 export function getAuditLogs(page: number, itemsPerPage: number) {
