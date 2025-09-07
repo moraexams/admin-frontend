@@ -123,7 +123,7 @@ export const MarksBoundariesView = () => {
 
 									{Object.entries(boundary).map(([key, value]) =>
 										!key.startsWith("for") ? null : (
-											<td>
+											<td key={boundary.subjectId.concat(key)}>
 												<Input
 													type="number"
 													className="w-fit min-w-25 max-w-30"

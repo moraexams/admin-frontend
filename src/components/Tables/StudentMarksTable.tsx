@@ -111,119 +111,118 @@ const StudentMarksTable = ({
 						</tr>
 					</thead>
 					<tbody>
-						<>
-							{currentItems &&
-								currentItems.map((student, key) => {
-									// const rowSpan = studentData ? studentData.length : 1;
-									return (
-										<tr key={key}>
-											<td
-												rowSpan={1}
-												className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11"
+						{currentItems?.map((student) => {
+							// const rowSpan = studentData ? studentData.length : 1;
+							return (
+								<tr key={student.index_no}>
+									<td
+										rowSpan={1}
+										className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11"
+									>
+										<h5 className="font-medium text-black dark:text-white">
+											<pre>{student.index_no}</pre>
+										</h5>
+									</td>
+									<td
+										rowSpan={1}
+										className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+									>
+										<p className="text-black dark:text-white">{student.name}</p>
+									</td>
+									<td
+										rowSpan={1}
+										className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+									>
+										<p className="text-black dark:text-white">
+											<pre>{student.stream.substring(0, 3)}</pre>
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.s1_p1}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.s1_p2}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.s2_p1}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.s2_p2}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.s3_p1}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<p className="text-black dark:text-white">
+											{student.s3_p2}
+										</p>
+									</td>
+									<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+										<div className="flex items-center justify-center space-x-3.5">
+											<button
+												type="button"
+												onClick={() =>
+													student.index_no
+														? handleViewModalOpen(student.index_no)
+														: undefined
+												}
+												className="hover:text-primary"
 											>
-												<h5 className="font-medium text-black dark:text-white">
-													<pre>{student.index_no}</pre>
-												</h5>
-											</td>
-											<td
-												rowSpan={1}
-												className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="currentColor"
+													className="size-6"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+													/>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+													/>
+												</svg>
+											</button>
+											<button
+												type="button"
+												onClick={() => handleEdit(student.index_no)}
+												className="hover:text-primary"
 											>
-												<p className="text-black dark:text-white">
-													{student.name}
-												</p>
-											</td>
-											<td
-												rowSpan={1}
-												className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
-											>
-												<p className="text-black dark:text-white">
-													<pre>{student.stream.substring(0, 3)}</pre>
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.s1_p1}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.s1_p2}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.s2_p1}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.s2_p2}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.s3_p1}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<p className="text-black dark:text-white">
-													{student.s3_p2}
-												</p>
-											</td>
-											<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-												<div className="flex items-center justify-center space-x-3.5">
-													<button
-														onClick={() =>
-															handleViewModalOpen(student.index_no!)
-														}
-														className="hover:text-primary"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															className="size-6"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-															/>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-															/>
-														</svg>
-													</button>
-													<button
-														onClick={() => handleEdit(student.index_no)}
-														className="hover:text-primary"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															className="size-6"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-															/>
-														</svg>
-													</button>
-												</div>
-											</td>
-										</tr>
-									);
-								})}
-						</>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="currentColor"
+													className="size-6"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+													/>
+												</svg>
+											</button>
+										</div>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>
@@ -273,7 +272,7 @@ const StudentMarksTable = ({
 					<h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
 						View Student Marks
 					</h3>
-					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary"></span>
+					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary" />
 					<div className="mb-4">
 						{studentMark && (
 							<>
@@ -293,8 +292,9 @@ const StudentMarksTable = ({
 								<div className="hidden sm:flex justify-around pb-8">
 									<div className="flex items-center rounded-lg">
 										<button
+											type="button"
 											onClick={() => setViewSection(1)}
-											className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 1 && "border-primary bg-primary text-white"}`}
+											className={`inline-flex items-center gap-2.5 rounded-l-lg border border-primary text-primary px-2 py-1 font-medium hover:border-primary hover:bg-primary hover:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection === 1 ? "border-primary bg-primary text-white" : ""}`}
 										>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -313,8 +313,9 @@ const StudentMarksTable = ({
 											Maths/Bio
 										</button>
 										<button
+											type="button"
 											onClick={() => setViewSection(2)}
-											className={`inline-flex items-center gap-2.5 border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 2 && "border-primary bg-primary text-white"}`}
+											className={`inline-flex items-center gap-2.5 border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection === 2 ? "border-primary bg-primary text-white" : ""}`}
 										>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -334,7 +335,8 @@ const StudentMarksTable = ({
 										</button>
 										<button
 											onClick={() => setViewSection(3)}
-											className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection == 3 && "border-primary bg-primary text-white"}`}
+											className={`inline-flex items-center gap-2.5 rounded-r-lg border border-primary px-2 py-1 font-medium text-primary hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-white dark:hover:border-primary sm:px-6 sm:py-3 ${viewSection === 3 ? "border-primary bg-primary text-white" : ""}`}
+											type="button"
 										>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -381,10 +383,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s1_p1_ent_at &&
-																		studentMark.s1_p1_ent_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s1_p1_ent_at)}
+																	{studentMark.s1_p1_ent_at
+																		? `${studentMark.s1_p1_ent_by?.username} at ${convertUTCToIST(studentMark.s1_p1_ent_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -397,10 +398,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s1_p1_vfd_at &&
-																		studentMark.s1_p1_vfd_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s1_p1_vfd_at)}
+																	{studentMark.s1_p1_vfd_at
+																		? `${studentMark.s1_p1_vfd_by?.username} at ${convertUTCToIST(studentMark.s1_p1_vfd_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -424,10 +424,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s1_p2_ent_at &&
-																		studentMark.s1_p2_ent_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s1_p2_ent_at)}
+																	{studentMark.s1_p2_ent_at
+																		? `${studentMark.s1_p2_ent_by?.username} at ${convertUTCToIST(studentMark.s1_p2_ent_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -440,10 +439,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s1_p2_vfd_at &&
-																		studentMark.s1_p2_vfd_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s1_p2_vfd_at)}
+																	{studentMark.s1_p2_vfd_at
+																		? `${studentMark.s1_p2_vfd_by?.username} at ${convertUTCToIST(studentMark.s1_p2_vfd_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -473,10 +471,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s2_p1_ent_at &&
-																		studentMark.s2_p1_ent_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s2_p1_ent_at)}
+																	{studentMark.s2_p1_ent_at
+																		? `${studentMark.s2_p1_ent_by?.username} at ${convertUTCToIST(studentMark.s2_p1_ent_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -489,10 +486,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s2_p1_vfd_at &&
-																		studentMark.s2_p1_vfd_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s2_p1_vfd_at)}
+																	{studentMark.s2_p1_vfd_at
+																		? `${studentMark.s2_p1_vfd_by?.username} at ${convertUTCToIST(studentMark.s2_p1_vfd_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -516,10 +512,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s2_p2_ent_at &&
-																		studentMark.s2_p2_ent_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s2_p2_ent_at)}
+																	{studentMark.s2_p2_ent_at
+																		? `${studentMark.s2_p2_ent_by?.username} at ${convertUTCToIST(studentMark.s2_p2_ent_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -532,10 +527,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s2_p2_vfd_at &&
-																		studentMark.s2_p2_vfd_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s2_p2_vfd_at)}
+																	{studentMark.s2_p2_vfd_at
+																		? `${studentMark.s2_p2_vfd_by?.username} at ${convertUTCToIST(studentMark.s2_p2_vfd_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -565,10 +559,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s3_p1_ent_at &&
-																		studentMark.s3_p1_ent_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s3_p1_ent_at)}
+																	{studentMark.s3_p1_ent_at
+																		? `${studentMark.s3_p1_ent_by?.username} at ${convertUTCToIST(studentMark.s3_p1_ent_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -581,10 +574,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s3_p1_vfd_at &&
-																		studentMark.s3_p1_vfd_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s3_p1_vfd_at)}
+																	{studentMark.s3_p1_vfd_at
+																		? `${studentMark.s3_p1_vfd_by?.username} at ${convertUTCToIST(studentMark.s3_p1_vfd_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -608,10 +600,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s3_p2_ent_at &&
-																		studentMark.s3_p2_ent_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s3_p2_ent_at)}
+																	{studentMark.s3_p2_ent_at
+																		? `${studentMark.s3_p2_ent_by?.username} at ${convertUTCToIST(studentMark.s3_p2_ent_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -624,10 +615,9 @@ const StudentMarksTable = ({
 															</td>
 															<td className="py-2 px-4 text-black dark:text-white">
 																<strong>
-																	{studentMark.s3_p2_vfd_at &&
-																		studentMark.s3_p2_vfd_by?.username +
-																			" at " +
-																			convertUTCToIST(studentMark.s3_p2_vfd_at)}
+																	{studentMark.s3_p2_vfd_at
+																		? `${studentMark.s3_p2_vfd_by?.username} at ${convertUTCToIST(studentMark.s3_p2_vfd_at)}`
+																		: null}
 																</strong>
 															</td>
 														</tr>
@@ -643,6 +633,7 @@ const StudentMarksTable = ({
 					<div className="-mx-3 flex flex-wrap gap-y-4">
 						<div className="w-full px-3 2xsm:w-1/2">
 							<button
+								type="button"
 								onClick={() => setModalOpen(false)}
 								className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 							>
@@ -653,6 +644,7 @@ const StudentMarksTable = ({
 							<button
 								onClick={() => studentMark && handleEdit(studentMark?.index_no)}
 								className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+								type="button"
 							>
 								Edit
 							</button>

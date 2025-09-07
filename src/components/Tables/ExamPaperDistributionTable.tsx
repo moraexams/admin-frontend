@@ -170,7 +170,10 @@ const ExamPaperDistributionTable = ({
 																	>
 																		{coordinators && coordinators.length > 0 ? (
 																			coordinators?.map((coordinator) => (
-																				<h5 className="font-medium text-black dark:text-white">
+																				<h5
+																					className="font-medium text-black dark:text-white"
+																					key={coordinator.id}
+																				>
 																					<div className="m-1">
 																						{coordinator.name}
 																					</div>

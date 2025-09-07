@@ -42,7 +42,7 @@ import {
 	Home,
 	LogOut,
 	type LucideIcon,
-	Map,
+	Map as MapIcon,
 	PanelLeftIcon,
 	User,
 	UserCheck,
@@ -116,7 +116,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				type: "link",
 				title: "District Expenses",
 				url: "/finance/districts",
-				icon: Map,
+				icon: MapIcon,
 			},
 			{
 				type: "link",
@@ -142,7 +142,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 	{
 		type: "group",
 		title: "Districts",
-		icon: Map,
+		icon: MapIcon,
 		hideIf: (role) =>
 			typeof role !== "string" ||
 			![ROLE_TECH_COORDINATOR, ROLE_DISTRICTS_COORDINATOR].includes(role),
@@ -151,7 +151,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				type: "link",
 				title: "Overview",
 				url: "/districts/overview",
-				icon: Map,
+				icon: MapIcon,
 			},
 			// {
 			// 	type: "link",
@@ -219,7 +219,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				type: "link",
 				title: "Centre Wise",
 				url: "/students/centre",
-				icon: Map,
+				icon: MapIcon,
 			},
 			{
 				type: "link",

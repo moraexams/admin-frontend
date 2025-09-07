@@ -114,7 +114,6 @@ export default function AddStudent(props: Props) {
 		}
 
 		form.setValue("examDistrict", sittingDistrict.id);
-		console.log("setting exam district to", sittingDistrict.id);
 	}, [props.additionalDetails]);
 
 	const selectedExamSittingDistrict = form.watch("examDistrict");

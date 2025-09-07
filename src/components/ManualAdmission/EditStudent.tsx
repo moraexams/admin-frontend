@@ -101,7 +101,7 @@ export default function EditStudent(props: Props) {
 	}
 
 	useEffect(() => {
-		if (!props.additionalDetails) return;
+		if (!props.additionalDetails || !props.selectedStudent) return;
 		const associatedDistrict = localStorage.getItem(
 			LOCAL_STORAGE_ASSOCIATED_DISTRICT,
 		);

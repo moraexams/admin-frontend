@@ -25,9 +25,9 @@ export default function Table(props: Props) {
 		<table className="w-full table-auto">
 			<thead>
 				<tr className="bg-gray-2 dark:bg-meta-4">
-					{props.headers.map((header, index) => (
+					{props.headers.map((header) => (
 						<th
-							key={index}
+							key={header}
 							className="py-5 px-4 text-center font-medium text-black dark:text-white"
 						>
 							{header}
