@@ -1,41 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
-import {
-	ROLE_COORDINATOR,
-	ROLE_DISTRICTS_COORDINATOR,
-	ROLE_EXAM_COORDINATOR,
-	ROLE_FINANCE_TEAM_MEMBER,
-	ROLE_MARKETING_COORDINATOR,
-	ROLE_PRESIDENT,
-	ROLE_SECRETARY,
-	ROLE_TREASURER,
-	ROLE_USER,
-	ROLE_VICE_PRESIDENT,
-	ROLE_VICE_SECRETARY,
-} from "../../common/roles";
 import { capitalize } from "../../common/utils";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { LOCAL_STORAGE__USER_ID } from "../../services/authServices";
-import { editUser } from "../../services/userService";
 import type { User } from "../../types/types";
+import EditUser from "../user.edit";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 	year: "numeric",
@@ -53,20 +21,6 @@ interface UsersTableProps {
 	refetch: () => void;
 }
 
-const AVAILABLE_ROLES_FOR_SETTING = [
-	ROLE_PRESIDENT,
-	ROLE_VICE_PRESIDENT,
-	ROLE_SECRETARY,
-	ROLE_VICE_SECRETARY,
-	ROLE_TREASURER,
-	ROLE_DISTRICTS_COORDINATOR,
-	ROLE_EXAM_COORDINATOR,
-	ROLE_MARKETING_COORDINATOR,
-	ROLE_FINANCE_TEAM_MEMBER,
-	ROLE_USER,
-	ROLE_COORDINATOR,
-] as const;
-
 const UsersTable = ({
 	total,
 	userData,
@@ -75,120 +29,21 @@ const UsersTable = ({
 	refetch,
 }: UsersTableProps) => {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [isLoading, setIsLoading] = useState(false);
 	const [currentUserId] = useLocalStorage<string>(LOCAL_STORAGE__USER_ID, "");
-
-	const updateUser = async () => {
-		if (!selectedUser) return;
-		setIsLoading(true);
-		try {
-			await editUser(selectedUser);
-			refetch();
-		} catch (error) {
-			console.log(error);
-			if (typeof error === "string") {
-				toast.error(error);
-			} else {
-				toast.error("Failed to update user");
-			}
-		} finally {
-			setSelectedUser(null);
-			setIsLoading(false);
-		}
-	};
 
 	const start = itemsPerPage * (page - 1) + 1;
 	const end = start - 1 + userData.length;
 
 	return (
 		<>
-			<Dialog
-				open={!!selectedUser}
-				onOpenChange={() =>
-					selectedUser === null ? null : setSelectedUser(null)
-				}
-			>
-				<DialogTrigger />
-				<DialogContent className="sm:max-w-2xl w-full">
-					<DialogHeader>
-						<DialogTitle>Edit User</DialogTitle>
-						{selectedUser === null ? null : (
-							<DialogDescription className="mb-5">
-								You are editing the user: <b>{selectedUser.username}</b>.<br />{" "}
-								You cannot edit their username or name.
-							</DialogDescription>
-						)}
-					</DialogHeader>
-
-					{selectedUser == null ? (
-						<span>No user selected</span>
-					) : (
-						<>
-							<div className="grid grid-cols-[1fr_auto] items-center mb-4">
-								<Label
-									htmlFor="approved-status"
-									className="cursor-pointer font-semibold"
-								>
-									Approved
-								</Label>
-								<p>Only approved members can login.</p>
-								<Checkbox
-									id="approved-status"
-									className="size-5 cursor-pointer col-start-2 row-start-1 row-span-2"
-									checked={selectedUser.approved}
-									onCheckedChange={(checked) => {
-										setSelectedUser({
-											...selectedUser,
-											approved: checked === true,
-										});
-									}}
-								/>
-							</div>
-							<div className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center mb-4">
-								<Label htmlFor="select-role" className="font-semibold">
-									Role
-								</Label>
-								<p>Controls how much the user can do.</p>
-
-								<Select
-									value={selectedUser.role}
-									onValueChange={(value) => {
-										setSelectedUser({ ...selectedUser, role: value });
-									}}
-								>
-									<SelectTrigger className="col-start-2 row-start-1 row-span-full">
-										<SelectValue placeholder="Role" />
-									</SelectTrigger>
-									<SelectContent>
-										{AVAILABLE_ROLES_FOR_SETTING.map((role) => (
-											<SelectItem key={role} value={role}>
-												{role}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-							</div>
-							<div className="flex gap-3">
-								<span className="mr-auto">
-									{isLoading ? "Loading..." : null}
-								</span>
-								<Button
-									variant="destructive"
-									type="button"
-									onClick={() => {
-										setSelectedUser(null);
-									}}
-								>
-									Cancel
-								</Button>
-								<Button type="button" onClick={updateUser}>
-									Save
-								</Button>
-							</div>
-						</>
-					)}
-				</DialogContent>
-			</Dialog>
+			<EditUser
+				selectedUser={selectedUser}
+				onFinished={() => {
+					refetch();
+					setSelectedUser(null);
+				}}
+				onCancel={() => setSelectedUser(null)}
+			/>
 
 			<div className="max-w-full overflow-x-auto">
 				<table className="w-full table-auto">
