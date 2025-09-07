@@ -6,40 +6,13 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import {
-	type ColumnDef,
-	type SortingState,
-	flexRender,
-	getCoreRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
+import { type Table as Table_, flexRender } from "@tanstack/react-table";
 import { DataTablePagination } from "./data-table-pagination";
 
-interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[];
-	data: TData[];
+interface DataTableProps<TData> {
+	table: Table_<TData>;
 }
-
-export function DataTable<TData, TValue>({
-	columns,
-	data,
-}: DataTableProps<TData, TValue>) {
-	const [sorting, setSorting] = useState<SortingState>([]);
-	const table = useReactTable({
-		data,
-		columns,
-		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		onSortingChange: setSorting,
-		getSortedRowModel: getSortedRowModel(),
-		state: {
-			sorting,
-		},
-	});
-
+export function DataTable<TData>({ table }: DataTableProps<TData>) {
 	return (
 		<>
 			<DataTablePagination table={table} />
@@ -83,7 +56,7 @@ export function DataTable<TData, TValue>({
 						) : (
 							<TableRow>
 								<TableCell
-									colSpan={columns.length}
+									colSpan={table.getAllColumns().length}
 									className="h-24 text-center"
 								>
 									No results.
