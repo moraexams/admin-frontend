@@ -34,33 +34,83 @@ const Users = () => {
 	const columns: Array<ColumnDef<User>> = [
 		{
 			accessorKey: "id",
-			header: "ID",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className="px-0"
+				>
+					Id
+				</Button>
+			),
 		},
 		{
 			accessorKey: "username",
-			header: "Username",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className="px-0"
+				>
+					Username
+				</Button>
+			),
 		},
 		{
 			accessorKey: "name",
-			header: "Name",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Name
+				</Button>
+			),
 		},
 		{
-			header: "Created At",
 			accessorFn: (row) => dateTimeFormatter.format(new Date(row.created_at)),
+			id: "created_at",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Created At
+				</Button>
+			),
 		},
 		{
-			header: "Approved",
+			id: "approved",
 			accessorFn: (row) => (row.approved ? "Yes" : "No"),
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className=" px-0"
+				>
+					Approved
+				</Button>
+			),
 		},
 		{
-			header: "Role",
 			accessorKey: "role",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className=" px-0"
+				>
+					Role
+				</Button>
+			),
 		},
 		{
 			header: "Actions",
 			cell: ({ row }) => {
 				if (row.original.role === ROLE_TECH_COORDINATOR) {
-					return <div className="text-muted-foreground">N/A</div>;
+					return <div className="text-muted-foreground mt-3 h-6">N/A</div>;
 				}
 				return (
 					<div className="flex gap-2">
