@@ -1,3 +1,10 @@
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { useCallback, useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
@@ -50,21 +57,24 @@ const Users = () => {
 			<Breadcrumb pageName="Users" />
 
 			<div className="mb-5.5 flex justify-between">
-				<select
-					className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+				<Select
 					name="selectDoctor"
-					id="selectDoctor"
-					value={itemsPerPage}
-					onChange={(e) => {
+					defaultValue={itemsPerPage.toString()}
+					onValueChange={(v) => {
 						setPage(1);
-						setItemsPerPage(Number(e.target.value));
+						setItemsPerPage(Number.parseInt(v));
 					}}
 				>
-					<option value="5">5</option>
-					<option value="10">10</option>
-					<option value="100">100</option>
-					<option value="500">500</option>
-				</select>
+					<SelectTrigger className="w-fit text-base">
+						<SelectValue placeholder="Count" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="5">5</SelectItem>
+						<SelectItem value="10">10</SelectItem>
+						<SelectItem value="100">100</SelectItem>
+						<SelectItem value="500">500</SelectItem>
+					</SelectContent>
+				</Select>
 
 				<ReactPaginate
 					breakLabel="..."
