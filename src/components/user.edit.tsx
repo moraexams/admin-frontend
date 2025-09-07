@@ -71,6 +71,7 @@ interface Props {
 	selectedUser: User | null;
 	onCancel: () => void;
 	onFinished: () => void;
+	isOpen: boolean;
 }
 
 const schema = z.object({
@@ -79,6 +80,7 @@ const schema = z.object({
 });
 
 export default function EditUser({
+	isOpen,
 	selectedUser,
 	onCancel,
 	onFinished,
@@ -127,7 +129,7 @@ export default function EditUser({
 
 	return (
 		<Dialog
-			open={!!selectedUser}
+			open={isOpen}
 			onOpenChange={() => (selectedUser === null ? null : onCancel())}
 		>
 			<DialogContent className="sm:max-w-2xl w-full">

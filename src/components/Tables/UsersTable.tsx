@@ -37,6 +37,7 @@ const UsersTable = ({
 	return (
 		<>
 			<EditUser
+				isOpen={!!selectedUser}
 				selectedUser={selectedUser}
 				onFinished={() => {
 					refetch();

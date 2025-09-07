@@ -1,3 +1,6 @@
+import { ROLE_TECH_COORDINATOR } from "@/common/roles";
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import {
 	Select,
 	SelectContent,
@@ -5,6 +8,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import EditUser from "@/components/user.edit";
+import { dateTimeFormatter } from "@/lib/utils";
+import type { ColumnDef } from "@tanstack/react-table";
+import { Pen, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { NavLink } from "react-router-dom";
@@ -20,6 +27,60 @@ const Users = () => {
 	const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 	const [page, setPage] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
+	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+	const [action, setAction] = useState<"edit" | "delete" | null>(null);
+
+	const columns: Array<ColumnDef<User>> = [
+		{
+			accessorKey: "id",
+			header: "ID",
+		},
+		{
+			accessorKey: "username",
+			header: "Username",
+		},
+		{
+			accessorKey: "name",
+			header: "Name",
+		},
+		{
+			header: "Created At",
+			accessorFn: (row) => dateTimeFormatter.format(new Date(row.created_at)),
+		},
+		{
+			header: "Approved",
+			accessorFn: (row) => (row.approved ? "Yes" : "No"),
+		},
+		{
+			header: "Role",
+			accessorKey: "role",
+		},
+		{
+			header: "Actions",
+			cell: ({ row }) => {
+				if (row.original.role === ROLE_TECH_COORDINATOR) {
+					return <div className="text-muted-foreground">N/A</div>;
+				}
+				return (
+					<div className="flex gap-2">
+						<Button
+							size="icon"
+							variant="outline"
+							onClick={() => {
+								setSelectedUser(row.original);
+								setAction("edit");
+							}}
+						>
+							<Pen />
+						</Button>
+						<Button size="icon" variant="destructive">
+							<Trash />
+						</Button>
+					</div>
+				);
+			},
+		},
+	];
 
 	const fetchUsers = useCallback(async () => {
 		try {
@@ -55,6 +116,20 @@ const Users = () => {
 	return (
 		<>
 			<Breadcrumb pageName="Users" />
+
+			<EditUser
+				isOpen={action === "edit" && selectedUser !== null}
+				selectedUser={selectedUser}
+				onFinished={() => {
+					// refetch();
+					setSelectedUser(null);
+				}}
+				onCancel={() => setSelectedUser(null)}
+			/>
+
+			<div>
+				<DataTable columns={columns} data={users} />
+			</div>
 
 			<div className="mb-5.5 flex justify-between">
 				<Select
