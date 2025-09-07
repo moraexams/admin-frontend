@@ -50,7 +50,7 @@ export const signup = async (
 	password: string,
 ) => {
 	try {
-		const response = await axiosInstance.post("/sign-up", {
+		const response = await axiosInstance.post("/auth/sign-up", {
 			name,
 			username,
 			password,
