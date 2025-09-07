@@ -64,19 +64,19 @@ function App() {
 		<>
 			<Routes>
 				<Route
-					path="/auth/signin"
+					path="/sign-in"
 					element={
 						<>
-							<PageTitle title="Signin | Mora Exams" />
+							<PageTitle title="Sign In | Mora Exams" />
 							<SignIn />
 						</>
 					}
 				/>
 				<Route
-					path="/auth/signup"
+					path="/sign-up"
 					element={
 						<>
-							<PageTitle title="Signup | Mora Exams" />
+							<PageTitle title="Sign Up | Mora Exams" />
 							<SignUp />
 						</>
 					}

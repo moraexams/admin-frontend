@@ -9,13 +9,13 @@ const Loader = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies: no need
 	useEffect(() => {
 		if (!token) {
-			navigate("/auth/signin");
+			navigate("/sign-in");
 		}
 		validateToken().catch(() => {
 			localStorage.removeItem("token");
 			localStorage.removeItem("user");
 			localStorage.removeItem("username");
-			navigate("/auth/signin");
+			navigate("/sign-in");
 		});
 	}, []);
 

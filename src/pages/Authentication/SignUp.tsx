@@ -21,7 +21,7 @@ const SignUp: React.FC = () => {
 				await signup(name, username, password)
 					.then(() => {
 						alert("User created successfully");
-						navigate("/auth/signin");
+						navigate("/sign-in");
 					})
 					.catch((error) => {
 						setError(error);
@@ -238,7 +238,7 @@ const SignUp: React.FC = () => {
 					<div className="mt-6 text-center">
 						<p>
 							Already have an account?{" "}
-							<Link to="/auth/signin" className="text-primary underline">
+							<Link to="/sign-in" className="text-primary underline">
 								Sign in
 							</Link>
 						</p>

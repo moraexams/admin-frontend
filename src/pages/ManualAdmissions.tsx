@@ -85,7 +85,7 @@ export default function ManualAdmissions() {
 		localStorage.removeItem(LOCAL_STORAGE__USERNAME);
 		localStorage.removeItem(LOCAL_STORAGE__USER_ID);
 		localStorage.removeItem(LOCAL_STORAGE__ROLE);
-		navigate("/auth/signin");
+		navigate("/sign-in");
 	};
 
 	useEffect(() => {

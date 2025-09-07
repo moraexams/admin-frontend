@@ -45,7 +45,7 @@ const DropdownUser = () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
 		localStorage.removeItem("username");
-		window.location.href = "/auth/signin";
+		window.location.href = "/sign-in";
 	};
 	const role = localStorage.getItem("role");
 

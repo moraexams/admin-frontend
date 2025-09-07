@@ -283,7 +283,7 @@ export function AppSidebar() {
 		localStorage.removeItem(LOCAL_STORAGE__USER_ID);
 		localStorage.removeItem(LOCAL_STORAGE__ROLE);
 		localStorage.removeItem(LOCAL_STORAGE_ASSOCIATED_DISTRICT);
-		navigate("/auth/signin");
+		navigate("/sign-in");
 	};
 
 	return (
