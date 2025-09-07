@@ -5,8 +5,7 @@ This repository contains the source code for the admin dashboard of Mora Exams. 
 ## Development guide
 ### Prerequisites
 
-- Node.js (v20 or later)
-- npm (v10 or later)
+- Bun (v1.1.21 or later)
 
 After cloning the repository, create an `.env` file in the root directory. Use `.env.example` for reference. 
 
@@ -14,12 +13,12 @@ After cloning the repository, create an `.env` file in the root directory. Use `
 
 | Command            | Action                                       |
 | ------------------ | -------------------------------------------- |
-| `npm install`      | Installs dependencies                        |
-| `npm run dev`      | Starts local dev server at `localhost:5173`  |
-| `npm run build`    | Build the site for production (to `./dist/`) |
-| `npm run preview`  | Preview your build locally, before deploying |
-| `npm run lint`     | Lints the code                               |
-| `npm run lint-fix` | Fixes linting issues                         |
+| `bun install`      | Installs dependencies                        |
+| `bun run dev`      | Starts local dev server at `localhost:5173`  |
+| `bun run build`    | Build the site for production (to `./dist/`) |
+| `bun run preview`  | Preview your build locally, before deploying |
+| `bun run lint`     | Lints the code                               |
+| `bun run lint-fix` | Fixes linting issues                         |
 
 ### Deployment
 
