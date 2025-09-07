@@ -8,6 +8,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import DeleteUser from "@/components/user.delete";
 import EditUser from "@/components/user.edit";
 import { dateTimeFormatter } from "@/lib/utils";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -73,7 +74,14 @@ const Users = () => {
 						>
 							<Pen />
 						</Button>
-						<Button size="icon" variant="destructive">
+						<Button
+							size="icon"
+							variant="destructive"
+							onClick={() => {
+								setSelectedUser(row.original);
+								setAction("delete");
+							}}
+						>
 							<Trash />
 						</Button>
 					</div>
@@ -120,11 +128,14 @@ const Users = () => {
 			<EditUser
 				isOpen={action === "edit" && selectedUser !== null}
 				selectedUser={selectedUser}
-				onFinished={() => {
-					// refetch();
-					setSelectedUser(null);
-				}}
-				onCancel={() => setSelectedUser(null)}
+				onFinished={fetchUsers}
+				onClose={() => setSelectedUser(null)}
+			/>
+			<DeleteUser
+				isOpen={action === "delete" && selectedUser !== null}
+				selectedUser={selectedUser}
+				onFinished={fetchUsers}
+				onClose={() => setSelectedUser(null)}
 			/>
 
 			<div>

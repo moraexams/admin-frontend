@@ -69,8 +69,8 @@ function isAvailableRole(
 
 interface Props {
 	selectedUser: User | null;
-	onCancel: () => void;
-	onFinished: () => void;
+	onClose: () => void;
+	onFinished?: () => void;
 	isOpen: boolean;
 }
 
@@ -82,7 +82,7 @@ const schema = z.object({
 export default function EditUser({
 	isOpen,
 	selectedUser,
-	onCancel,
+	onClose,
 	onFinished,
 }: Props) {
 	const form = useForm<z.infer<typeof schema>>({
@@ -114,7 +114,9 @@ export default function EditUser({
 				...selectedUser,
 				...values,
 			});
-			onFinished();
+			onFinished?.();
+			onClose();
+			toast.success("User updated successfully");
 		} catch (error) {
 			console.log(error);
 			if (typeof error === "string") {
@@ -130,7 +132,7 @@ export default function EditUser({
 	return (
 		<Dialog
 			open={isOpen}
-			onOpenChange={() => (selectedUser === null ? null : onCancel())}
+			onOpenChange={() => (selectedUser === null ? null : onClose())}
 		>
 			<DialogContent className="sm:max-w-2xl w-full">
 				<DialogHeader>
@@ -204,7 +206,7 @@ export default function EditUser({
 							<Button
 								variant="destructive"
 								type="button"
-								onClick={onCancel}
+								onClick={onClose}
 								className="ml-auto"
 								disabled={isLoading}
 							>

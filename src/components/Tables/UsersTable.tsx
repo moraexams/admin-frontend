@@ -43,7 +43,7 @@ const UsersTable = ({
 					refetch();
 					setSelectedUser(null);
 				}}
-				onCancel={() => setSelectedUser(null)}
+				onClose={() => setSelectedUser(null)}
 			/>
 
 			<div className="max-w-full overflow-x-auto">

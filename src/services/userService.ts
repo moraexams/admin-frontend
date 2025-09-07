@@ -44,6 +44,24 @@ export const editUser = async (user: User) => {
 	}
 };
 
+export const deleteUser = async (userId: number) => {
+	try {
+		const response = await axiosInstance.delete(`/user/${userId}`);
+		return response.data;
+	} catch (error) {
+		console.error("Error deleting user:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "Only tech coordinator can delete users.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+};
+
 export interface DistrictOrganizer {
 	id: number;
 	username: string;
