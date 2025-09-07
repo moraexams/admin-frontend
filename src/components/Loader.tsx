@@ -8,14 +8,21 @@ const Loader = () => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: no need
 	useEffect(() => {
-		if (!token) {
+		const path = window.location.pathname;
+		const isAuthPath =
+			path == "/reset-password" || path == "/sign-in" || path === "/sign-up";
+		if (!token && !isAuthPath) {
 			navigate("/sign-in");
+			return;
 		}
 		validateToken().catch(() => {
 			localStorage.removeItem("token");
 			localStorage.removeItem("user");
 			localStorage.removeItem("username");
-			navigate("/sign-in");
+
+			if (!isAuthPath) {
+				navigate("/sign-in");
+			}
 		});
 	}, []);
 
