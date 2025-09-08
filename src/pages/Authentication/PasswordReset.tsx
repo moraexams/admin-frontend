@@ -70,11 +70,11 @@ const PasswordReset: React.FC = () => {
 			toast.error("The password reset link is invalid.");
 			return;
 		}
-		let timer;
+		let timer: number;
 		getPasswordResetDetails(resetId)
 			.then((data) => {
 				setPasswordResetDetails(data);
-				setInterval(() => {
+				timer = window.setInterval(() => {
 					updateTimeRemaining();
 				}, 60000);
 				form.reset({ username: data.username });
@@ -84,7 +84,7 @@ const PasswordReset: React.FC = () => {
 			});
 
 		return () => {
-			clearInterval(timer);
+			window.clearInterval(timer);
 		};
 	}, []);
 
