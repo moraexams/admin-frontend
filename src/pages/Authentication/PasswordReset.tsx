@@ -107,7 +107,11 @@ const PasswordReset: React.FC = () => {
 				}
 				toast.success("Password reset successfully. You can now log in.");
 				form.reset();
-				navigate("/sign-in");
+				createTimer(500).then(() => {
+					requestAnimationFrame(() => {
+						navigate("/sign-in");
+					});
+				});
 			})
 			.catch((error) => {
 				toast.dismiss();
