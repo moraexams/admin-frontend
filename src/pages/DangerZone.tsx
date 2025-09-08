@@ -61,7 +61,7 @@ const DangerZone = () => {
 						minute: "2-digit",
 					})}
 				</time>
-				{constants?.latest_git_commit ? (
+				{constants?.latest_git_commit && constants?.latest_git_commit != "unknown" ? (
 					<>
 						{" "}
 						connected to{" "}
@@ -71,7 +71,7 @@ const DangerZone = () => {
 							target="_blank"
 							rel="noreferrer"
 						>
-							backend @{constants.latest_git_commit.slice(0, 6)}
+							backend @{constants.latest_git_commit.slice(0, 7)}
 						</a>
 						{constants?.build_time ? (
 							<>
