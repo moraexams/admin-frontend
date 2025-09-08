@@ -23,7 +23,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import z from "zod";
 import Logo from "../../images/logo/logo.png";
 
@@ -52,8 +52,8 @@ const PasswordReset: React.FC = () => {
 			confirmPassword: "",
 		},
 	});
-
-	const resetId = new URLSearchParams(window.location.search).get("reset_id");
+	const [searchParams] = useSearchParams();
+	const resetId = searchParams.get("reset_id");
 
 	function updateTimeRemaining() {
 		setPasswordResetDetails((prev) => {
@@ -85,7 +85,9 @@ const PasswordReset: React.FC = () => {
 			});
 
 		return () => {
-			window.clearInterval(timer);
+			if (typeof timer === "number") {
+				window.clearInterval(timer);
+			}
 		};
 	}, []);
 
