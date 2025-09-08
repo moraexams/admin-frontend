@@ -133,6 +133,11 @@ const Users = () => {
 										return;
 									}
 									const resetId = data[0].value?.reset_id;
+									if (!resetId) {
+										toast.error("Failed to generate reset link: missing reset ID.");
+										toast.dismiss();
+										return;
+									}
 									const link = `${window.location.origin}/reset-password?reset_id=${encodeURIComponent(resetId)}`;
 									navigator.clipboard.writeText(link);
 									toast.dismiss();
