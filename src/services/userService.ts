@@ -102,3 +102,29 @@ export const requestPasswordReset = async (userId: number) => {
 		throw error;
 	}
 };
+
+export interface PasswordResetDetails {
+	id: number;
+	username: string;
+	time_remaining: number; // in seconds
+} 
+
+export const getPasswordResetDetails = async (resetId: string) => {
+	try {
+		const response = await axiosInstance.get<PasswordResetDetails>(
+			`/password-reset/${resetId}`
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching password reset details:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have permission to view password reset details.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+}
