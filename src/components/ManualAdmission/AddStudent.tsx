@@ -14,6 +14,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
+	FormRequiredField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -39,8 +40,6 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type z from "zod";
-
-const RequiredField = () => <span className="text-red-500">*</span>;
 
 interface Props {
 	open: boolean;
@@ -159,7 +158,7 @@ export default function AddStudent(props: Props) {
 								<FormItem className="col-span-full">
 									<FormLabel>
 										Full Name
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<FormControl>
 										<Input {...field} className="uppercase" />
@@ -175,7 +174,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										NIC
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<FormControl>
 										<Input {...field} />
@@ -204,7 +203,7 @@ export default function AddStudent(props: Props) {
 								<FormItem className="col-span-full">
 									<FormLabel>
 										Permanent Address
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<FormControl>
 										<Textarea {...field} className="uppercase" />
@@ -220,7 +219,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										Phone No.
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<FormControl>
 										<Input type="tel" {...field} className="uppercase" />
@@ -236,7 +235,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										Email
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<FormControl>
 										<Input {...field} className="uppercase" />
@@ -252,7 +251,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										Gender
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
@@ -279,7 +278,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										Medium
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
@@ -306,7 +305,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										Stream
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
@@ -336,7 +335,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										District for Ranking
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
@@ -369,7 +368,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										District for Exam Sitting
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<Select
 										onValueChange={field.onChange}
@@ -407,7 +406,7 @@ export default function AddStudent(props: Props) {
 								<FormItem>
 									<FormLabel>
 										Exam Centre
-										<RequiredField />
+										<FormRequiredField />
 									</FormLabel>
 									<Select
 										onValueChange={field.onChange}

@@ -156,6 +156,10 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 	);
 }
 
+function FormRequiredField() {
+	return <span className="text-red-500">*</span>;
+}
+
 export {
 	useFormField,
 	Form,
@@ -165,4 +169,5 @@ export {
 	FormDescription,
 	FormMessage,
 	FormField,
+	FormRequiredField,
 };
