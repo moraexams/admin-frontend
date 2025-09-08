@@ -92,6 +92,7 @@ const PasswordReset: React.FC = () => {
 		setLoading(true);
 		if (!resetId) {
 			toast.error("The password reset link is invalid.");
+			setLoading(false);
 			return;
 		}
 		toast.loading("Resetting password...");
