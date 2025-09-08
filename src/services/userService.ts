@@ -112,7 +112,7 @@ export interface PasswordResetDetails {
 export const getPasswordResetDetails = async (resetId: string) => {
 	try {
 		const response = await axiosInstance.get<PasswordResetDetails>(
-			`/password-reset/${resetId}`,
+			`/password-reset/details/${resetId}`,
 		);
 		return response.data;
 	} catch (error) {
