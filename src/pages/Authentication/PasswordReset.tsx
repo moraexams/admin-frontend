@@ -1,84 +1,72 @@
-import { ROLE_COORDINATOR } from "@/common/roles";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { humanReadableTimeRemaining } from "@/lib/utils";
+import {
+	type PasswordResetDetails,
+	getPasswordResetDetails,
+} from "@/services/userService";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TriangleAlert } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../images/logo/logo.png";
-import {
-	LOCAL_STORAGE__ROLE,
-	LOCAL_STORAGE__TOKEN,
-	login,
-} from "../../services/authServices";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { TriangleAlert } from "lucide-react";
-import { getPasswordResetDetails, type PasswordResetDetails } from "@/services/userService";
-import toast from "react-hot-toast";
-import { humanReadableTimeRemaining } from "@/lib/utils";
-import z from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import z from "zod";
+import Logo from "../../images/logo/logo.png";
 
-const schema = z.object({
-	password: z.string().min(8, "Password must be at least 8 characters long"),
-	confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-	message: "Passwords don't match",
-});
+const schema = z
+	.object({
+		username: z.string().min(1, "Username is required"),
+		password: z.string().min(8, "Password must be at least 8 characters long"),
+		confirmPassword: z.string(),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: "Passwords don't match",
+	});
 
 const PasswordReset: React.FC = () => {
-	const navigate = useNavigate();
-	const token = localStorage.getItem(LOCAL_STORAGE__TOKEN);
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [passwordResetDetails, setPasswordResetDetails] = useState<PasswordResetDetails | null>(null);
-	
+	const [passwordResetDetails, setPasswordResetDetails] =
+		useState<PasswordResetDetails | null>(null);
+
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
 		defaultValues: {
+			username: passwordResetDetails?.username ?? "",
 			password: "",
 			confirmPassword: "",
-		}
+		},
 	});
 
-	const handleSignIn = async (e: { preventDefault: () => void }) => {
-		e.preventDefault();
-		setLoading(true);
-		if (username !== "" && password !== "") {
-			await login(username, password)
-				.then(() => {
-					const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
-					if (role === ROLE_COORDINATOR) {
-						navigate("/admissions");
-					} else {
-						navigate("/");
-					}
-				})
-				.catch((error) => {
-					setError(error);
-					setLoading(false);
-				});
-		} else if (username === "" || password === "") {
-			setError("Please enter your username and password");
-			setLoading(false);
-		}
-	};
 	const resetId = new URLSearchParams(window.location.search).get("reset_id");
-	
+
 	useEffect(() => {
 		if (!resetId) {
 			toast.error("The password reset link is invalid.");
 			return;
-		};
-		getPasswordResetDetails(resetId).then((data) => {
-			setPasswordResetDetails(data);
-			console.log(data);
-		}).catch((error) => {
-			toast.error(error);
-		});
-
+		}
+		getPasswordResetDetails(resetId)
+			.then((data) => {
+				setPasswordResetDetails(data);
+				form.reset({ username: data.username });
+			})
+			.catch((error) => {
+				toast.error(error);
+			});
 	}, []);
+
+	function onSubmit(data: z.infer<typeof schema>) {
+		console.log(data);
+	}
 
 	return (
 		<main className="mx-auto h-screen grid grid-cols-1 grid-rows-[auto_1fr] lg:grid-cols-2 lg:grid-rows-1 lg:items-center max-w-[min(80vw,1400px)] gap-y-8">
@@ -94,141 +82,82 @@ const PasswordReset: React.FC = () => {
 
 			<div className="w-full mx-auto max-w-[500px]">
 				<h2 className="mb-2 text-2xl font-bold text-center xl:text-left sm:text-title-xl2">
-					{ passwordResetDetails ? `Reset Password for ${passwordResetDetails.username}` :
-					"Loading..."}
+					{passwordResetDetails ? "Reset Password" : "Loading..."}
 				</h2>
 				<Alert variant={resetId === null ? "destructive" : "default"}>
 					<TriangleAlert />
-  <AlertTitle className="text-base">
-		{
-			resetId === null ? "Error!" : "Heads up!"
-		}
-		</AlertTitle>
-  <AlertDescription>
-		{
-			resetId === null ?
-			
-		"The link you have seems to be invalid."
-		:
-		passwordResetDetails === null ? "Loading..." :
-		`Using this link, you can only reset your password once. The reset link is valid for another ${humanReadableTimeRemaining(passwordResetDetails.time_remaining)}.`
-		}
-  </AlertDescription>
-</Alert>
+					<AlertTitle className="text-base">
+						{resetId === null ? "Error!" : "Heads up!"}
+					</AlertTitle>
+					<AlertDescription>
+						{resetId === null
+							? "The link you have seems to be invalid."
+							: passwordResetDetails === null
+								? "Loading..."
+								: `Using this link, you can only reset your password once. The reset link is valid for another ${humanReadableTimeRemaining(passwordResetDetails.time_remaining)}.`}
+					</AlertDescription>
+				</Alert>
 
-				<form className="mt-4">
-					<div className="mb-6">
-						<label
-							className="mb-2.5 block font-medium"
-							htmlFor="password"
-						>
-							Password
-						</label>
-						<div className="relative">
-							<input
-								id="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								type="password"
-								placeholder="Enter your password"
-								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-hidden focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							/>
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="space-y-3 mt-4"
+					>
+						<FormField
+							control={form.control}
+							name="username"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Username</FormLabel>
+									<FormControl>
+										<Input disabled {...field} className="h-12" />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-							<span className="absolute right-4 top-4">
-								<svg
-									className="fill-current"
-									width="22"
-									height="22"
-									viewBox="0 0 22 22"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<g opacity="0.5">
-										<path
-											d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
-											fill=""
-										/>
-										<path
-											d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
-											fill=""
-										/>
-									</g>
-								</svg>
-							</span>
+						<FormField
+							control={form.control}
+							name="password"
+							disabled={!passwordResetDetails}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input {...field} className="h-12" />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="confirmPassword"
+							disabled={!passwordResetDetails}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Confirm Password</FormLabel>
+									<FormControl>
+										<Input {...field} className="h-12" />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<div className="my-5">
+							<Button
+								type="submit"
+								className="w-full text-base"
+								disabled={loading}
+							>
+								Reset
+							</Button>
 						</div>
-					</div>
-
-					<div className="mb-6">
-						<label
-							className="mb-2.5 block font-medium"
-							htmlFor="password"
-						>
-							Confirm Password
-						</label>
-						<div className="relative">
-							<input
-								id="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								type="password"
-								placeholder="Enter your password again"
-								className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-hidden focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-							/>
-
-							<span className="absolute right-4 top-4">
-								<svg
-									className="fill-current"
-									width="22"
-									height="22"
-									viewBox="0 0 22 22"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<g opacity="0.5">
-										<path
-											d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
-											fill=""
-										/>
-										<path
-											d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
-											fill=""
-										/>
-									</g>
-								</svg>
-							</span>
-						</div>
-					</div>
-
-					{/* Alert */}
-					{error && (
-						<div className="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-4 py-4 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-4">
-							<div className="w-full">
-								<h5 className="font-semibold text-[#B45454]">{error}</h5>
-							</div>
-						</div>
-					)}
-					{/* Alert */}
-
-					<div className="my-5">
-						<Button
-							type="button"
-							onClick={handleSignIn}
-							className="w-full"
-							disabled={loading}
-						>
-							{loading ? "Signing In..." : "Sign In"}
-						</Button>
-					</div>
-
-					<div className="mt-6 text-center">
-						<p>
-							Don't have any account?{" "}
-							<Link to="/sign-up" className="text-primary underline">
-								Sign Up
-							</Link>
-						</p>
-					</div>
-				</form>
+					</form>
+				</Form>
 			</div>
 		</main>
 	);

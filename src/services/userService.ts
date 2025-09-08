@@ -107,12 +107,12 @@ export interface PasswordResetDetails {
 	id: number;
 	username: string;
 	time_remaining: number; // in seconds
-} 
+}
 
 export const getPasswordResetDetails = async (resetId: string) => {
 	try {
 		const response = await axiosInstance.get<PasswordResetDetails>(
-			`/password-reset/${resetId}`
+			`/password-reset/${resetId}`,
 		);
 		return response.data;
 	} catch (error) {
@@ -127,4 +127,4 @@ export const getPasswordResetDetails = async (resetId: string) => {
 		}
 		throw error;
 	}
-}
+};
