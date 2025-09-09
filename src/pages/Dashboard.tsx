@@ -118,8 +118,9 @@ const Dashboard: React.FC = () => {
 					) : (
 						<div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-5 2xl:gap-5">
 							<CardDataStats
-								title="Temporary Students"
+								title="Unverified Students"
 								total={counts.temporary_students}
+								link="/students/unverified"
 							/>
 							<CardDataStats title="Verified Students" total={counts.student} />
 							<CardDataStats title="Total Centers" total={counts.exam_center} />
