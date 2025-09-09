@@ -101,7 +101,6 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				title: "Transaction Categories",
 				url: "/finance/transaction-categories",
 				icon: ClipboardList,
-
 			},
 			{
 				type: "link",
@@ -316,8 +315,10 @@ export function AppSidebar() {
 						{items.map((item) =>
 							item.type !== "link" || item.hideIf?.(role) ? null : (
 								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild isActive={item.url === window.location.pathname}
-								>
+									<SidebarMenuButton
+										asChild
+										isActive={item.url === window.location.pathname}
+									>
 										<NavLink to={item.url}>
 											<item.icon size={25} className="size-40" />
 											<span>{item.title}</span>
@@ -333,7 +334,12 @@ export function AppSidebar() {
 					item.type !== "group" || item.hideIf?.(role) ? null : (
 						<SidebarGroup key={item.title}>
 							<SidebarMenu>
-								<Collapsible className="group/collapsible" defaultOpen={window.location.pathname.startsWith(item.activePrefix)}>
+								<Collapsible
+									className="group/collapsible"
+									defaultOpen={window.location.pathname.startsWith(
+										item.activePrefix,
+									)}
+								>
 									<SidebarMenuItem>
 										<CollapsibleTrigger asChild>
 											<SidebarMenuButton>
@@ -346,7 +352,10 @@ export function AppSidebar() {
 											<SidebarMenuSub>
 												{item.links.map((link) => (
 													<SidebarMenuSubItem key={link.title}>
-														<SidebarMenuSubButton asChild isActive={link.url === window.location.pathname}>
+														<SidebarMenuSubButton
+															asChild
+															isActive={link.url === window.location.pathname}
+														>
 															<NavLink to={link.url}>
 																<link.icon size={25} className="size-40" />
 																<span>{link.title}</span>

@@ -107,9 +107,11 @@ const Dashboard: React.FC = () => {
 						<AlertTitle>CAUTION</AlertTitle>
 						<AlertDescription>
 							<p className="max-w-prose">
-								This is not a finished product. There will be{" "}
-								<b>issues</b>, and <b>missing features</b>. Please report any
-								issues you find, and <b><i>BE PATIENT!</i></b>
+								This is not a finished product. There will be <b>issues</b>, and{" "}
+								<b>missing features</b>. Please report any issues you find, and{" "}
+								<b>
+									<i>BE PATIENT!</i>
+								</b>
 							</p>
 						</AlertDescription>
 					</Alert>
