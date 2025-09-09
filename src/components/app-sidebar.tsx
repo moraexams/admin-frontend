@@ -67,6 +67,7 @@ interface SidebarItemGroup {
 	icon: LucideIcon;
 	links: Array<SidebarItemLink>;
 	hideIf?: (role: string) => boolean;
+	activePrefix: string;
 }
 
 const items: Array<SidebarItemLink | SidebarItemGroup> = [
@@ -80,6 +81,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		type: "group",
 		title: "Finance",
 		icon: Wallet,
+		activePrefix: "/finance",
 		hideIf: (role) =>
 			typeof role !== "string" ||
 			![
@@ -99,6 +101,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				title: "Transaction Categories",
 				url: "/finance/transaction-categories",
 				icon: ClipboardList,
+
 			},
 			{
 				type: "link",
@@ -130,6 +133,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		type: "group",
 		title: "Stats",
 		icon: BarChart2,
+		activePrefix: "/stats",
 		links: [
 			{
 				type: "link",
@@ -143,6 +147,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		type: "group",
 		title: "Districts",
 		icon: MapIcon,
+		activePrefix: "/districts",
 		hideIf: (role) =>
 			typeof role !== "string" ||
 			![ROLE_TECH_COORDINATOR, ROLE_DISTRICTS_COORDINATOR].includes(role),
@@ -177,6 +182,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		type: "group",
 		title: "Paper Distribution",
 		icon: FileText,
+		activePrefix: "/distribution",
 		links: [
 			{
 				type: "link",
@@ -196,6 +202,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		type: "group",
 		title: "Students",
 		icon: Users,
+		activePrefix: "/students",
 		links: [
 			{
 				type: "link",
@@ -309,7 +316,8 @@ export function AppSidebar() {
 						{items.map((item) =>
 							item.type !== "link" || item.hideIf?.(role) ? null : (
 								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild>
+									<SidebarMenuButton asChild isActive={item.url === window.location.pathname}
+								>
 										<NavLink to={item.url}>
 											<item.icon size={25} className="size-40" />
 											<span>{item.title}</span>
@@ -325,7 +333,7 @@ export function AppSidebar() {
 					item.type !== "group" || item.hideIf?.(role) ? null : (
 						<SidebarGroup key={item.title}>
 							<SidebarMenu>
-								<Collapsible className="group/collapsible">
+								<Collapsible className="group/collapsible" defaultOpen={window.location.pathname.startsWith(item.activePrefix)}>
 									<SidebarMenuItem>
 										<CollapsibleTrigger asChild>
 											<SidebarMenuButton>
@@ -338,7 +346,7 @@ export function AppSidebar() {
 											<SidebarMenuSub>
 												{item.links.map((link) => (
 													<SidebarMenuSubItem key={link.title}>
-														<SidebarMenuSubButton asChild>
+														<SidebarMenuSubButton asChild isActive={link.url === window.location.pathname}>
 															<NavLink to={link.url}>
 																<link.icon size={25} className="size-40" />
 																<span>{link.title}</span>
