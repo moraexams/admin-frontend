@@ -145,11 +145,9 @@ const UnverifiedStudents = () => {
 		{
 			header: "Actions",
 			cell: ({ row }) => {
-				// TODO
-				return null;
 				return (
 					<div className="flex gap-2">
-						<Button
+						{/* <Button
 							size="icon"
 							variant="outline"
 							onClick={() => {
@@ -158,16 +156,16 @@ const UnverifiedStudents = () => {
 							}}
 						>
 							<Pen />
-						</Button>
+						</Button> */}
 						<Button
-							size="icon"
+							size="icon_sm"
 							variant="destructive"
 							onClick={() => {
 								setSelectedUnverifiedStudent(row.original);
 								setAction("delete");
 							}}
 						>
-							<Trash />
+							<Trash className="size-4" />
 						</Button>
 					</div>
 				);
@@ -217,6 +215,15 @@ const UnverifiedStudents = () => {
 			<Breadcrumb pageName="Unverified Students" />
 			<PageTitle title="Unverified Students | Mora Exams" />
 			<DataTable table={table} />
+			<DeleteTempStudent
+				isOpen={action === "delete" && selectedUnverifiedStudent !== null}
+				selectedTempStudent={selectedUnverifiedStudent}
+				onFinished={fetchUnverifiedStudents}
+				onClose={() => {
+					setAction(null);
+					setSelectedUnverifiedStudent(null);
+				}}
+			/>
 		</>
 	);
 };
