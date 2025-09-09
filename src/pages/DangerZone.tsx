@@ -61,7 +61,8 @@ const DangerZone = () => {
 						minute: "2-digit",
 					})}
 				</time>
-				{constants?.latest_git_commit && constants?.latest_git_commit != "unknown" ? (
+				{constants?.latest_git_commit &&
+				constants?.latest_git_commit != "unknown" ? (
 					<>
 						{" "}
 						connected to{" "}

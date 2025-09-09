@@ -134,7 +134,9 @@ const Users = () => {
 									}
 									const resetId = data[0].value?.reset_id;
 									if (!resetId) {
-										toast.error("Failed to generate reset link: missing reset ID.");
+										toast.error(
+											"Failed to generate reset link: missing reset ID.",
+										);
 										toast.dismiss();
 										return;
 									}

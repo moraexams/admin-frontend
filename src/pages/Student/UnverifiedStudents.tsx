@@ -1,6 +1,12 @@
+import { ROLE_TECH_COORDINATOR } from "@/common/roles";
+import PageTitle from "@/components/PageTitle";
+import DeleteTempStudent from "@/components/temp-student.delete";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { dateTimeFormatter } from "@/lib/utils";
+import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
+import { getUnverifiedStudents } from "@/services/studentService";
+import type { TemporaryStudent } from "@/types/manual-admissions";
 import {
 	type ColumnDef,
 	type SortingState,
@@ -13,15 +19,13 @@ import { Pen, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import type { TemporaryStudent } from "@/types/manual-admissions";
-import { getUnverifiedStudents } from "@/services/studentService";
-import PageTitle from "@/components/PageTitle";
-import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
-import { ROLE_TECH_COORDINATOR } from "@/common/roles";
 
 const UnverifiedStudents = () => {
-	const [unverifiedStudents, setUnverifiedStudents] = useState<TemporaryStudent[]>([]);
-	const [selectedUnverifiedStudent, setSelectedUnverifiedStudent] = useState<TemporaryStudent | null>(null);
+	const [unverifiedStudents, setUnverifiedStudents] = useState<
+		TemporaryStudent[]
+	>([]);
+	const [selectedUnverifiedStudent, setSelectedUnverifiedStudent] =
+		useState<TemporaryStudent | null>(null);
 	const [action, setAction] = useState<"edit" | "delete" | null>(null);
 
 	const columns: Array<ColumnDef<TemporaryStudent>> = [
@@ -125,7 +129,7 @@ const UnverifiedStudents = () => {
 		{
 			id: "created_at",
 			accessorFn: (row) => {
-				return dateTimeFormatter.format(new Date(row.created_at))
+				return dateTimeFormatter.format(new Date(row.created_at));
 			},
 			header: ({ column }) => (
 				<Button
@@ -138,11 +142,10 @@ const UnverifiedStudents = () => {
 			),
 		},
 	];
-	
+
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
 	if (role === ROLE_TECH_COORDINATOR) {
-		columns.push(
-		{
+		columns.push({
 			header: "Actions",
 			cell: ({ row }) => {
 				return (
@@ -172,7 +175,6 @@ const UnverifiedStudents = () => {
 			},
 		});
 	}
-	
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
