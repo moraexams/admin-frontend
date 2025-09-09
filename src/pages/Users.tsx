@@ -4,6 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 import DeleteUser from "@/components/user.delete";
 import EditUser from "@/components/user.edit";
 import { dateTimeFormatter } from "@/lib/utils";
+import { createTimer } from "@/services/utils";
 import {
 	type ColumnDef,
 	type SortingState,
@@ -12,11 +13,11 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { Pen, Trash } from "lucide-react";
+import { Pen, RotateCcwKey, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
-import { getUsers } from "../services/userService";
+import { getUsers, requestPasswordReset } from "../services/userService";
 import type { User } from "../types/types";
 
 const Users = () => {
@@ -107,6 +108,45 @@ const Users = () => {
 				}
 				return (
 					<div className="flex gap-2">
+						<Button
+							size="icon"
+							variant="outline"
+							disabled={!row.original.id}
+							onClick={() => {
+								if (!row.original.id || !row.original.username) {
+									toast.error("User has no username");
+									return;
+								}
+								toast.loading(
+									`Generating password reset link for "${row.original.username}"`,
+								);
+								Promise.allSettled([
+									requestPasswordReset(row.original.id),
+									createTimer(1000),
+								]).then((data) => {
+									if (data[0].status === "rejected") {
+										if (typeof data[0].reason === "string") {
+											toast.error(data[0].reason);
+											return;
+										}
+										toast.error("Failed to generate reset link");
+										return;
+									}
+									const resetId = data[0].value?.reset_id;
+									if (!resetId) {
+										toast.error("Failed to generate reset link: missing reset ID.");
+										toast.dismiss();
+										return;
+									}
+									const link = `${window.location.origin}/reset-password?reset_id=${encodeURIComponent(resetId)}`;
+									navigator.clipboard.writeText(link);
+									toast.dismiss();
+									toast.success("Reset link copied.");
+								});
+							}}
+						>
+							<RotateCcwKey />
+						</Button>
 						<Button
 							size="icon"
 							variant="outline"

@@ -82,3 +82,68 @@ export const getDistrictOrganizers = async () => {
 		throw error;
 	}
 };
+
+export const requestPasswordReset = async (userId: number) => {
+	try {
+		const response = await axiosInstance.post<{ reset_id: string }>(
+			`/user/${userId}/password-reset`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error requesting password reset:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have permission to request password reset.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+};
+
+export interface PasswordResetDetails {
+	id: number;
+	username: string;
+}
+
+export const getPasswordResetDetails = async (resetId: string) => {
+	try {
+		const response = await axiosInstance.get<PasswordResetDetails>(
+			`/password-reset/details/${resetId}`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching password reset details:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have permission to view password reset details.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+};
+
+export const resetPassword = async (resetId: string, newPassword: string) => {
+	try {
+		const response = await axiosInstance.post(`/password-reset/${resetId}`, {
+			new_password: newPassword,
+		});
+		return response.data;
+	} catch (error) {
+		console.error("Error resetting password:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have permission to reset the password.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+};

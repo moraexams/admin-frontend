@@ -6,6 +6,7 @@ import PageTitle from "./components/PageTitle";
 
 import DefaultLayout from "./layout/DefaultLayout";
 import AuditLogs from "./pages/AuditLogs";
+import PasswordReset from "./pages/Authentication/PasswordReset";
 import SignIn from "./pages/Authentication/SignIn";
 import SignUp from "./pages/Authentication/SignUp";
 import DangerZone from "./pages/DangerZone";
@@ -63,6 +64,15 @@ function App() {
 	) : (
 		<>
 			<Routes>
+				<Route
+					path="/reset-password"
+					element={
+						<>
+							<PageTitle title="Reset Password | Mora Exams" />
+							<PasswordReset />
+						</>
+					}
+				/>
 				<Route
 					path="/sign-in"
 					element={
