@@ -1,4 +1,5 @@
 import { ROLE_COORDINATOR } from "@/common/roles";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
 	Select,
 	SelectContent,
@@ -7,6 +8,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
+import { CircleAlert } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -100,6 +102,17 @@ const Dashboard: React.FC = () => {
 				<div>Loading...</div>
 			) : (
 				<>
+					<Alert variant="default" className="mb-4">
+						<CircleAlert />
+						<AlertTitle>CAUTION</AlertTitle>
+						<AlertDescription>
+							<p className="max-w-prose">
+								This is not a finished product. There will be{" "}
+								<b>issues</b>, and <b>missing features</b>. Please report any
+								issues you find, and <b><i>BE PATIENT!</i></b>
+							</p>
+						</AlertDescription>
+					</Alert>
 					{counts === null ? (
 						<span>Loading...</span>
 					) : (
