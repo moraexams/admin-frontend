@@ -33,7 +33,7 @@ import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
 import AddStudent from "./pages/Student/AddStudent";
 import Students from "./pages/Student/Students";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
-import UnVerifiedStudents from "./pages/Student/UnVerifiedStudents";
+import UnverifiedStudents from "./pages/Student/UnverifiedStudents";
 import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
 
@@ -206,7 +206,7 @@ function App() {
 						element={
 							<>
 								<PageTitle title="Students | Mora Exams" />
-								<UnVerifiedStudents />
+								<UnverifiedStudents />
 							</>
 						}
 					/>

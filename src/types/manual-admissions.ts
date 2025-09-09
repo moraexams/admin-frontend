@@ -65,4 +65,5 @@ export interface TemporaryStudent {
 	exam_district_id: number;
 	exam_centre: string;
 	exam_centre_id: number;
+	created_at: string;
 }

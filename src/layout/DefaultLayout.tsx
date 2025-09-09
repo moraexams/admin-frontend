@@ -8,7 +8,7 @@ export default function DefaultLayout() {
 		<SidebarProvider>
 			<Toaster position="top-right" />
 			<AppSidebar />
-			<main className="flex-1 p-4 md:p-6 2xl:p-10">
+			<main className="flex-[1_0_0] overflow-auto p-4 md:p-6 2xl:p-10">
 				<Outlet />
 			</main>
 		</SidebarProvider>
