@@ -106,10 +106,6 @@ export const requestPasswordReset = async (userId: number) => {
 export interface PasswordResetDetails {
 	id: number;
 	username: string;
-	/**
-	 * in seconds
-	 */
-	time_remaining: number;
 }
 
 export const getPasswordResetDetails = async (resetId: string) => {

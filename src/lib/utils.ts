@@ -12,8 +12,3 @@ export const dateTimeFormatter = new Intl.DateTimeFormat("en-GB", {
 	hour: "2-digit",
 	minute: "2-digit",
 });
-
-export function humanReadableTimeRemaining(seconds: number): string {
-	if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
-	return `${Math.floor(seconds / 3600)} hours and ${Math.floor((seconds % 3600) / 60)} minutes`;
-}

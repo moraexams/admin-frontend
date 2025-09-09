@@ -10,7 +10,6 @@ import {
 	FormRequiredField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { humanReadableTimeRemaining } from "@/lib/utils";
 import {
 	type PasswordResetDetails,
 	getPasswordResetDetails,
@@ -55,40 +54,19 @@ const PasswordReset: React.FC = () => {
 	const [searchParams] = useSearchParams();
 	const resetId = searchParams.get("reset_id");
 
-	function updateTimeRemaining() {
-		setPasswordResetDetails((prev) => {
-			if (!prev) return prev;
-			if (prev.time_remaining <= 60) {
-				toast.error("The password reset link has expired.");
-				return null;
-			}
-			return { ...prev, time_remaining: prev.time_remaining - 60 };
-		});
-	}
-
 	useEffect(() => {
 		if (!resetId) {
 			toast.error("The password reset link is invalid.");
 			return;
 		}
-		let timer: number;
 		getPasswordResetDetails(resetId)
 			.then((data) => {
 				setPasswordResetDetails(data);
-				timer = window.setInterval(() => {
-					updateTimeRemaining();
-				}, 60000);
 				form.reset({ username: data.username });
 			})
 			.catch((error) => {
 				toast.error(error);
 			});
-
-		return () => {
-			if (typeof timer === "number") {
-				window.clearInterval(timer);
-			}
-		};
 	}, []);
 
 	function onSubmit(data: z.infer<typeof schema>) {
@@ -152,18 +130,14 @@ const PasswordReset: React.FC = () => {
 							? "Error!"
 							: passwordResetDetails === null
 								? "Loading..."
-								: passwordResetDetails.time_remaining <= 0
-									? "Expired"
-									: "Heads up!"}
+								: "Heads up!"}
 					</AlertTitle>
 					<AlertDescription>
 						{resetId === null
 							? "The link you have seems to be invalid."
 							: passwordResetDetails === null
 								? "Loading..."
-								: passwordResetDetails.time_remaining <= 0
-									? "The password reset link has expired."
-									: `Using this link, you can only reset your password once. The reset link is valid for another ${humanReadableTimeRemaining(passwordResetDetails.time_remaining)}.`}
+								: `Using this link, you can only reset your password once.`}
 					</AlertDescription>
 				</Alert>
 
@@ -223,7 +197,11 @@ const PasswordReset: React.FC = () => {
 						/>
 
 						<div className="my-5 space-y-2">
-							<Button type="submit" className="w-full" disabled={loading}>
+							<Button
+								type="submit"
+								className="w-full"
+								disabled={loading || passwordResetDetails == null}
+							>
 								Reset
 							</Button>
 							<NavLink to="/sign-in">
