@@ -174,6 +174,11 @@ const Users = () => {
 			},
 		},
 	];
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10,
+	});
+	const [pageCount, setPageCount] = useState<number>(-1); // total pages
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
 		data: users,
@@ -182,9 +187,13 @@ const Users = () => {
 		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
+		pageCount,
 		state: {
 			sorting,
+			pagination,
 		},
+		manualPagination: true,
+		onPaginationChange: setPagination
 	});
 
 	const fetchUsers = useCallback(async () => {
@@ -195,6 +204,7 @@ const Users = () => {
 		try {
 			const data = await getUsers(page, itemsPerPage);
 			setUsers(data.users);
+			setPageCount(data.count);
 			toast.dismiss();
 		} catch (error) {
 			toast.dismiss();

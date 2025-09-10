@@ -7,6 +7,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { dateTimeFormatter } from "@/lib/utils";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import { getUnverifiedStudents } from "@/services/studentService";
+import { createTimer } from "@/services/utils";
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import {
 	type ColumnDef,
@@ -154,25 +155,28 @@ const UnverifiedStudents = () => {
 						>
 							<Pen />
 						</Button> */}
-						{
-							role === ROLE_TECH_COORDINATOR ? (
-								<Button
-									size="icon_sm"
-									variant="destructive"
-									onClick={() => {
-										setSelectedUnverifiedStudent(row.original);
-										setAction("delete");
-									}}
-								>
-									<Trash className="size-4" />
-								</Button>
-							) : null
-						}
+						{role === ROLE_TECH_COORDINATOR ? (
+							<Button
+								size="icon_sm"
+								variant="destructive"
+								onClick={() => {
+									setSelectedUnverifiedStudent(row.original);
+									setAction("delete");
+								}}
+							>
+								<Trash className="size-4" />
+							</Button>
+						) : null}
 					</div>
 				);
 			},
-		}
+		},
 	];
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10,
+	});
+	const [pageCount, setPageCount] = useState<number>(-1); // total pages
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
@@ -182,28 +186,46 @@ const UnverifiedStudents = () => {
 		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
+		pageCount,
 		state: {
 			sorting,
+			pagination,
 		},
+		manualPagination: true,
+		onPaginationChange: setPagination,
 	});
+
+	useEffect(() => {
+		fetchUnverifiedStudents();
+	}, [pagination]);
 
 	const fetchUnverifiedStudents = useCallback(async () => {
 		const tableState = table.getState();
 		const page = tableState.pagination.pageIndex + 1;
 		const itemsPerPage = tableState.pagination.pageSize;
-		toast.loading("Fetching unverified students...");
-		try {
-			const data = await getUnverifiedStudents(page, itemsPerPage);
-			setUnverifiedStudents(data.unverified_students);
-			toast.dismiss();
-		} catch (error) {
-			toast.dismiss();
-			if (typeof error === "string") {
-				toast.error(error);
-			} else {
-				toast.error("Failed to fetch unverified students");
-			}
-		}
+		toast.loading("Loading...");
+
+		return Promise.allSettled([
+			getUnverifiedStudents(page, itemsPerPage),
+			createTimer(500),
+		])
+			.then((hu) => {
+				if (hu[0].status === "rejected") {
+					throw hu[0].reason;
+				}
+				setUnverifiedStudents(hu[0].value.unverified_students);
+				setPageCount(Math.ceil(hu[0].value.count / itemsPerPage));
+			})
+			.catch((error) => {
+				if (typeof error === "string") {
+					toast.error(error);
+				} else {
+					toast.error("Failed to fetch unverified students");
+				}
+			})
+			.finally(() => {
+				toast.dismiss();
+			});
 	}, [table]);
 
 	useEffect(() => {
