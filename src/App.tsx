@@ -34,7 +34,6 @@ import AddStudent from "./pages/Student/AddStudent";
 import Students from "./pages/Student/Students";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnverifiedStudents from "./pages/Student/UnverifiedStudents";
-import VerifyStudent from "./pages/Student/VerifyStudent";
 import Users from "./pages/Users";
 
 function App() {
@@ -189,15 +188,6 @@ function App() {
 							<>
 								<PageTitle title="Students | Mora Exams" />
 								<StudentsCentreWise />
-							</>
-						}
-					/>
-					<Route
-						path="/students/verify"
-						element={
-							<>
-								<PageTitle title="Students | Mora Exams" />
-								<VerifyStudent />
 							</>
 						}
 					/>

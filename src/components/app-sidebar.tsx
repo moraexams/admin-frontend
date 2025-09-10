@@ -205,18 +205,6 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		links: [
 			{
 				type: "link",
-				title: "Add Student",
-				url: "/students/add",
-				icon: UserPlus,
-			},
-			{
-				type: "link",
-				title: "Verify Student",
-				url: "/students/verify",
-				icon: UserCheck,
-			},
-			{
-				type: "link",
 				title: "Unverified Students",
 				url: "/students/unverified",
 				icon: UserX,
