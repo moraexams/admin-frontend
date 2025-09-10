@@ -5,13 +5,13 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 import { deleteTempStudent } from "@/services/tempStudent.service";
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import toast from "react-hot-toast";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Button } from "./ui/button";
 
 interface Props {
 	isOpen: boolean;
@@ -98,7 +98,8 @@ export default function ViewTempStudent({
 					</div>
 					<div className="flex">
 						<p className="max-w-[48ch] text-muted-foreground">
-							Once you click "Verify", you will be the sole responsibility for the details and payment of this student.
+							Once you click "Verify", you will be the sole responsibility for
+							the details and payment of this student.
 						</p>
 						<Button className="ml-auto" disabled>
 							Verify
