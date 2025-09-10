@@ -29,6 +29,7 @@ const UnverifiedStudents = () => {
 		useState<TemporaryStudent | null>(null);
 	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
 
+	const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
 	const columns: Array<ColumnDef<TemporaryStudent>> = [
 		{
 			accessorKey: "nic",
@@ -129,11 +130,7 @@ const UnverifiedStudents = () => {
 				</Button>
 			),
 		},
-	];
-
-	const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
-	if (role === ROLE_TECH_COORDINATOR) {
-		columns.push({
+		{
 			header: "Actions",
 			cell: ({ row }) => {
 				return (
@@ -157,21 +154,25 @@ const UnverifiedStudents = () => {
 						>
 							<Pen />
 						</Button> */}
-						<Button
-							size="icon_sm"
-							variant="destructive"
-							onClick={() => {
-								setSelectedUnverifiedStudent(row.original);
-								setAction("delete");
-							}}
-						>
-							<Trash className="size-4" />
-						</Button>
+						{
+							role === ROLE_TECH_COORDINATOR ? (
+								<Button
+									size="icon_sm"
+									variant="destructive"
+									onClick={() => {
+										setSelectedUnverifiedStudent(row.original);
+										setAction("delete");
+									}}
+								>
+									<Trash className="size-4" />
+								</Button>
+							) : null
+						}
 					</div>
 				);
 			},
-		});
-	}
+		}
+	];
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
