@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -5,12 +6,13 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import type { TemporaryStudent } from "@/types/manual-admissions";
-import { ExternalLink } from "lucide-react";
-import PreviewPaymentLink from "./preview-payment-link";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { verifyTempStudent } from "@/services/tempStudent.service";
+import type { TemporaryStudent } from "@/types/manual-admissions";
+import { ExternalLink } from "lucide-react";
+import toast from "react-hot-toast";
+import PreviewPaymentLink from "./preview-payment-link";
 
 interface Props {
 	isOpen: boolean;
@@ -22,8 +24,24 @@ interface Props {
 export default function ViewTempStudent({
 	isOpen,
 	selectedTempStudent,
+	onFinished,
 	onClose,
 }: Props) {
+	function onVerify() {
+		if (!selectedTempStudent?.nic) return;
+		verifyTempStudent(selectedTempStudent.nic)
+			.then(() => {
+				onFinished?.();
+				onClose();
+			})
+			.catch((error) => {
+				console.error("Error verifying student:", error);
+				toast.error(
+					typeof error === "string" ? error : "Failed to verify student.",
+				);
+			});
+	}
+
 	return (
 		<Dialog open={isOpen} onOpenChange={(v) => (v ? null : onClose())}>
 			{selectedTempStudent === null ? (
@@ -98,7 +116,7 @@ export default function ViewTempStudent({
 							Once you click "Verify", you will be the sole responsibility for
 							the details and payment of this student.
 						</p>
-						<Button className="ml-auto" disabled>
+						<Button className="ml-auto" onClick={onVerify}>
 							Verify
 						</Button>
 					</div>
