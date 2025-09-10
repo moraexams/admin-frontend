@@ -5,13 +5,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
-import { deleteTempStudent } from "@/services/tempStudent.service";
 import type { TemporaryStudent } from "@/types/manual-admissions";
-import toast from "react-hot-toast";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { ExternalLink } from "lucide-react";
+import PreviewPaymentLink from "./preview-payment-link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Props {
 	isOpen: boolean;
@@ -23,24 +22,8 @@ interface Props {
 export default function ViewTempStudent({
 	isOpen,
 	selectedTempStudent,
-	onFinished,
 	onClose,
 }: Props) {
-	function onConfirm() {
-		if (!selectedTempStudent?.nic) return;
-		deleteTempStudent(selectedTempStudent.nic)
-			.then(() => {
-				onFinished?.();
-				onClose();
-			})
-			.catch((error) => {
-				console.error("Error deleting temp student:", error);
-				toast.error(
-					typeof error === "string" ? error : "Failed to delete temp student.",
-				);
-			});
-	}
-
 	return (
 		<Dialog open={isOpen} onOpenChange={(v) => (v ? null : onClose())}>
 			{selectedTempStudent === null ? (
@@ -60,8 +43,22 @@ export default function ViewTempStudent({
 					</DialogHeader>
 
 					<div className="gap-y-3 gap-x-3 grid grid-cols-[1fr_1fr_2fr] grid-rows-[repeat(6,auto)]">
-						<div className="col-start-3 row-start-1 row-span-full">
-							<Skeleton className="h-full w-full rounded-lg" />
+						<div className="col-start-3 row-start-1 row-span-full flex flex-col">
+							<PreviewPaymentLink link={selectedTempStudent.payment_link} />
+
+							<a
+								href={import.meta.env.VITE_BACKEND_URL.concat(
+									selectedTempStudent.payment_link,
+								)}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Button className="mt-2 w-full">
+									Open in New Tab
+									<ExternalLink />
+								</Button>
+							</a>
+							{/* <Skeleton className="h-full w-full rounded-lg" /> */}
 						</div>
 						<div className="col-span-2">
 							<Label className="mb-1">Full Name</Label>
