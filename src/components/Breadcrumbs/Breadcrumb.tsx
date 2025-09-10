@@ -12,7 +12,7 @@ const Breadcrumb = ({ pageName, dashboardPath = "/" }: BreadcrumbProps) => {
 				{pageName}
 			</h2>
 			<nav>
-				<ol className="flex items-center gap-2">
+				<ol className="flex items-center gap-2 text-xs sm:text-sm lg:text-base">
 					<li>
 						<Link className="font-medium" to={dashboardPath}>
 							Dashboard /
