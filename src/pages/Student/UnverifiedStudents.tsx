@@ -1,6 +1,7 @@
 import { ROLE_TECH_COORDINATOR } from "@/common/roles";
 import PageTitle from "@/components/PageTitle";
 import DeleteTempStudent from "@/components/temp-student.delete";
+import ViewTempStudent from "@/components/temp-student.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { dateTimeFormatter } from "@/lib/utils";
@@ -15,7 +16,7 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { Pen, Trash } from "lucide-react";
+import { Eye, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -26,7 +27,7 @@ const UnverifiedStudents = () => {
 	>([]);
 	const [selectedUnverifiedStudent, setSelectedUnverifiedStudent] =
 		useState<TemporaryStudent | null>(null);
-	const [action, setAction] = useState<"edit" | "delete" | null>(null);
+	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
 
 	const columns: Array<ColumnDef<TemporaryStudent>> = [
 		{
@@ -50,19 +51,6 @@ const UnverifiedStudents = () => {
 					className="px-0"
 				>
 					Full Name
-				</Button>
-			),
-		},
-		{
-			id: "email",
-			accessorFn: (row) => row.email.toLowerCase(),
-			header: ({ column }) => (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-				>
-					Email
 				</Button>
 			),
 		},
@@ -150,6 +138,15 @@ const UnverifiedStudents = () => {
 			cell: ({ row }) => {
 				return (
 					<div className="flex gap-2">
+						<Button
+							size="icon_sm"
+							onClick={() => {
+								setSelectedUnverifiedStudent(row.original);
+								setAction("view");
+							}}
+						>
+							<Eye />
+						</Button>
 						{/* <Button
 							size="icon"
 							variant="outline"
@@ -217,6 +214,14 @@ const UnverifiedStudents = () => {
 			<Breadcrumb pageName="Unverified Students" />
 			<PageTitle title="Unverified Students | Mora Exams" />
 			<DataTable table={table} />
+			<ViewTempStudent
+				isOpen={action === "view" && selectedUnverifiedStudent !== null}
+				selectedTempStudent={selectedUnverifiedStudent}
+				onClose={() => {
+					setAction(null);
+					setSelectedUnverifiedStudent(null);
+				}}
+			/>
 			<DeleteTempStudent
 				isOpen={action === "delete" && selectedUnverifiedStudent !== null}
 				selectedTempStudent={selectedUnverifiedStudent}
