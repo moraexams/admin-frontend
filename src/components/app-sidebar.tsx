@@ -215,6 +215,12 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 			},
 			{
 				type: "link",
+				title: "Rejected Students",
+				url: "/students/rejected",
+				icon: Users,
+			},
+			{
+				type: "link",
 				title: "Centre Wise",
 				url: "/students/centre",
 				icon: MapIcon,

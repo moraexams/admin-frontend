@@ -31,6 +31,7 @@ import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
 import VerifyMarks from "./pages/Marks/VerifyMarks";
 import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
 import AddStudent from "./pages/Student/AddStudent";
+import RejectedStudents from "./pages/Student/RejectedStudents";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnverifiedStudents from "./pages/Student/UnverifiedStudents";
 import VerifiedStudents from "./pages/Student/VerifiedStudents";
@@ -195,6 +196,14 @@ function App() {
 						element={
 							<>
 								<VerifiedStudents />
+							</>
+						}
+					/>
+					<Route
+						path="/students/rejected"
+						element={
+							<>
+								<RejectedStudents />
 							</>
 						}
 					/>
