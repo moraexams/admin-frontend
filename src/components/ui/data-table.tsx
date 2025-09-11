@@ -24,6 +24,7 @@ export function DataTable<TData>({ table }: DataTableProps<TData>) {
 								{headerGroup.headers.map((header) => {
 									return (
 										<TableHead
+											key={header.id}
 											className="cursor-pointer select-none"
 											onClick={(event) =>
 												header.column.getToggleSortingHandler()?.(event)

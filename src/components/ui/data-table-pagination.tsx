@@ -97,7 +97,7 @@ export function DataTablePagination<TData>({
 						onChange={(e) => {
 							const asNumber = Number.parseInt(e.target.value, 10);
 							if (
-								!isNaN(asNumber) &&
+								!Number.isNaN(asNumber) &&
 								asNumber > 0 &&
 								asNumber <= table.getPageCount()
 							) {

@@ -35,7 +35,9 @@ export default function ResetTempStudent({
 			.catch((error) => {
 				console.error("Error resetting temp student status:", error);
 				toast.error(
-					typeof error === "string" ? error : "Failed to reset temp student status.",
+					typeof error === "string"
+						? error
+						: "Failed to reset temp student status.",
 				);
 			});
 	}
@@ -48,7 +50,16 @@ export default function ResetTempStudent({
 					<AlertDialogDescription>
 						This action is <b>irreversible</b>.<br />
 						<br /> Student <b>{selectedTempStudent?.full_name}</b> with NIC no.{" "}
-						<b>{selectedTempStudent?.nic}</b> will be changed to being <b>not {selectedTempStudent?.checked_by !== null ? `checked ${selectedTempStudent?.checked_by}` : selectedTempStudent?.rejected_by !== null ? `rejected ${selectedTempStudent.rejected_by}` : "UNKNOWN"}</b>.
+						<b>{selectedTempStudent?.nic}</b> will be changed to being{" "}
+						<b>
+							not{" "}
+							{selectedTempStudent?.checked_by !== null
+								? `checked ${selectedTempStudent?.checked_by}`
+								: selectedTempStudent?.rejected_by !== null
+									? `rejected ${selectedTempStudent.rejected_by}`
+									: "UNKNOWN"}
+						</b>
+						.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>

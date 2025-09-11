@@ -10,7 +10,7 @@ export default function PreviewPaymentLink(props: Props) {
 	if (!props.link) {
 		return <span>No Payment Link Available</span>;
 	}
-	let content;
+	let content: React.ReactNode = <></>;
 
 	if (props.link.endsWith(".pdf")) {
 		content = (
@@ -20,7 +20,8 @@ export default function PreviewPaymentLink(props: Props) {
 				onLoad={() => {
 					setLoading(false);
 				}}
-			></iframe>
+				title={"Payment proof"}
+			/>
 		);
 	}
 	if (

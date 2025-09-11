@@ -168,7 +168,7 @@ export default function ViewTempStudent({
 											: `Once you click "Verify", you will be the sole responsibility for the details and payment of this student.`
 								}`,
 							}}
-						></p>
+						/>
 						<Button
 							className="ml-auto"
 							variant="destructive"
