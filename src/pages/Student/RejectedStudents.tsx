@@ -90,6 +90,18 @@ export default function RejectedStudents() {
 				</Button>
 			),
 		},
+		{
+			accessorKey: "rejected_by",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className=" px-0"
+				>
+					Rejected By
+				</Button>
+			),
+		}
 		// {
 		// 	accessorKey: "rank_district",
 		// 	header: ({ column }) => (
