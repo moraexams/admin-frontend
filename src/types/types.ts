@@ -46,7 +46,7 @@ export interface Coordinator {
 }
 
 export interface Student {
-	index_no?: number;
+	index_no: number;
 	name: string;
 	stream_id: number;
 	stream?: Stream;
@@ -64,7 +64,7 @@ export interface Student {
 	school: string;
 	address: string;
 	//not sure about these attributes
-	registered_by_id: number;
+	registered_by_id: number | null;
 	registered_by?: User;
 	reg_date: string;
 	checked_by_id: number;

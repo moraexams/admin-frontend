@@ -1,6 +1,7 @@
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
+import type { Student } from "@/types/types";
 
 export const addStudent = async (
 	name: string,
@@ -232,7 +233,23 @@ export const getStudentMarksByCentre = async (
 		);
 		return response.data;
 	} catch (error) {
-		console.log("Error fetching Students: ");
+		console.log("Error fetching students: ");
 		return error;
+	}
+};
+
+export const getVerifiedStudents = async (
+	page: number,
+	itemsPerPage: number,
+) => {
+	try {
+		const response = await axiosInstance.get<{
+			count: number;
+			students: Array<Student>;
+		}>(`/student?page=${page}&pageSize=${itemsPerPage}`);
+		return response.data;
+	} catch (error) {
+		console.log("Error fetching students: ");
+		throw error;
 	}
 };
