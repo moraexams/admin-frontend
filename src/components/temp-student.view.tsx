@@ -8,9 +8,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { verifyTempStudent } from "@/services/tempStudent.service";
+import { Textarea } from "@/components/ui/textarea";
+import {
+	rejectTempStudent,
+	verifyTempStudent,
+} from "@/services/tempStudent.service";
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import { ExternalLink } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import PreviewPaymentLink from "./preview-payment-link";
 
@@ -27,12 +32,31 @@ export default function ViewTempStudent({
 	onFinished,
 	onClose,
 }: Props) {
+	const [rejectionReason, setRejectionReason] = useState<string>("");
+
+	function onReject() {
+		if (!selectedTempStudent?.nic) return;
+		rejectTempStudent(selectedTempStudent.nic, rejectionReason)
+			.then(() => {
+				onFinished?.();
+				onClose();
+				setRejectionReason("");
+			})
+			.catch((error) => {
+				console.error("Error verifying student:", error);
+				toast.error(
+					typeof error === "string" ? error : "Failed to verify student.",
+				);
+			});
+	}
+
 	function onVerify() {
 		if (!selectedTempStudent?.nic) return;
 		verifyTempStudent(selectedTempStudent.nic)
 			.then(() => {
 				onFinished?.();
 				onClose();
+				setRejectionReason("");
 			})
 			.catch((error) => {
 				console.error("Error verifying student:", error);
@@ -43,7 +67,16 @@ export default function ViewTempStudent({
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={(v) => (v ? null : onClose())}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={(v) => {
+				if (v) {
+					return null;
+				}
+				setRejectionReason("");
+				onClose();
+			}}
+		>
 			{selectedTempStudent === null ? (
 				<DialogContent>
 					<DialogHeader>
@@ -110,18 +143,52 @@ export default function ViewTempStudent({
 							<Label className="mb-1">Exam Centre</Label>
 							<Input readOnly value={selectedTempStudent.exam_centre} />
 						</div>
+
+						{selectedTempStudent.rejected_by === null &&
+						selectedTempStudent.checked_by === null ? (
+							<div className="col-span-2 mt-5">
+								<Label className="mb-1">Rejection Reason</Label>
+								<Textarea
+									onChange={(v) => {
+										setRejectionReason(v.target.value.trim());
+									}}
+								/>
+							</div>
+						) : null}
 					</div>
 					<div className="flex">
-						<p className="max-w-[48ch] text-muted-foreground">
-							{selectedTempStudent.checked_by !== null
-								? `Already verified by ${selectedTempStudent.checked_by}.`
-								: `Once you click "Verify", you will be the sole responsibility for
-							the details and payment of this student.`}
-						</p>
+						<p
+							className="max-w-[48ch] text-muted-foreground"
+							dangerouslySetInnerHTML={{
+								__html: `${
+									selectedTempStudent.checked_by !== null
+										? `Already verified by ${selectedTempStudent.checked_by}.`
+										: selectedTempStudent.rejected_by !== null
+											? `Already rejected by ${selectedTempStudent.rejected_by} because:<br/><b><i>${selectedTempStudent.rejection_reason}</i></b>`
+											: `Once you click "Verify", you will be the sole responsibility for the details and payment of this student.`
+								}`,
+							}}
+						></p>
 						<Button
 							className="ml-auto"
+							variant="destructive"
+							disabled={
+								selectedTempStudent.checked_by !== null ||
+								selectedTempStudent.rejected_by !== null ||
+								rejectionReason.trim() === ""
+							}
+							onClick={onReject}
+						>
+							Reject
+						</Button>
+						<Button
+							className="ml-2"
 							onClick={onVerify}
-							disabled={selectedTempStudent.checked_by !== null}
+							disabled={
+								selectedTempStudent.checked_by !== null ||
+								selectedTempStudent.rejected_by !== null ||
+								rejectionReason.trim() !== ""
+							}
 						>
 							Verify
 						</Button>

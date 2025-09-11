@@ -37,8 +37,12 @@ const UnverifiedStudents = () => {
 			cell: ({ row }) => (
 				<div
 					className={cn(
-						"w-1 h-8",
-						row.original.checked_by ? "bg-green-500" : "bg-red-500",
+						"w-3 h-8",
+						row.original.checked_by
+							? "bg-green-500"
+							: row.original.rejected_by
+								? "bg-red-500"
+								: "",
 					)}
 				/>
 			),
@@ -248,9 +252,11 @@ const UnverifiedStudents = () => {
 			<Breadcrumb pageName="Unverified Students" />
 			<p className="mb-4 max-w-prose">
 				In the below table, you can view and manage unverified student records.
-				For the sake of usability, the table shows verified students as well,
-				with a <span className="text-green-500 font-bold">green</span> left
-				border.
+			</p>
+			<p className="mb-4 max-w-prose">
+				The table shows verified students as well, with a{" "}
+				<span className="text-green-500 font-bold">green</span> box and rejected
+				students with a <span className="text-red-500 font-bold">red</span> box.
 			</p>
 			<PageTitle title="Unverified Students | Mora Exams" />
 			<DataTable table={table} />

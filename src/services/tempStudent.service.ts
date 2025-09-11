@@ -36,3 +36,20 @@ export const verifyTempStudent = async (nic: string) => {
 		throw error;
 	}
 };
+
+export const rejectTempStudent = async (nic: string, reason: string) => {
+	try {
+		const response = await axiosInstance.post(`/temp-student/${nic}/reject`, {
+			reason,
+		});
+		return response.data;
+	} catch (error) {
+		console.error("Error rejecting temp student:", error);
+		if (error instanceof AxiosError) {
+			if (error.response) {
+				throw error.response.data.message;
+			}
+		}
+		throw error;
+	}
+};

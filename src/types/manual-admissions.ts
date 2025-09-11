@@ -67,5 +67,7 @@ export interface TemporaryStudent {
 	exam_centre_id: number;
 	created_at: string;
 	payment_link: string;
-	checked_by: string;
+	checked_by: string | null;
+	rejected_by: string | null;
+	rejection_reason: string | null;
 }
