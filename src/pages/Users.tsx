@@ -218,7 +218,7 @@ const Users = () => {
 
 	useEffect(() => {
 		fetchUsers();
-	}, [fetchUsers]);
+	}, [fetchUsers, pagination]);
 
 	return (
 		<>
