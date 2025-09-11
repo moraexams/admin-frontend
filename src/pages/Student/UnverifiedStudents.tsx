@@ -4,7 +4,7 @@ import DeleteTempStudent from "@/components/temp-student.delete";
 import ViewTempStudent from "@/components/temp-student.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { dateTimeFormatter } from "@/lib/utils";
+import { cn, dateTimeFormatter } from "@/lib/utils";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import { getUnverifiedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
@@ -32,6 +32,17 @@ const UnverifiedStudents = () => {
 
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
 	const columns: Array<ColumnDef<TemporaryStudent>> = [
+		{
+			id: "-",
+			cell: ({ row }) => (
+				<div
+					className={cn(
+						"w-1 h-8",
+						row.original.checked_by ? "bg-green-500" : "bg-red-500",
+					)}
+				/>
+			),
+		},
 		{
 			accessorKey: "nic",
 			header: ({ column }) => (
@@ -235,11 +246,18 @@ const UnverifiedStudents = () => {
 	return (
 		<>
 			<Breadcrumb pageName="Unverified Students" />
+			<p className="mb-4 max-w-prose">
+				In the below table, you can view and manage unverified student records.
+				For the sake of usability, the table shows verified students as well,
+				with a <span className="text-green-500 font-bold">green</span> left
+				border.
+			</p>
 			<PageTitle title="Unverified Students | Mora Exams" />
 			<DataTable table={table} />
 			<ViewTempStudent
 				isOpen={action === "view" && selectedUnverifiedStudent !== null}
 				selectedTempStudent={selectedUnverifiedStudent}
+				onFinished={fetchUnverifiedStudents}
 				onClose={() => {
 					setAction(null);
 					setSelectedUnverifiedStudent(null);

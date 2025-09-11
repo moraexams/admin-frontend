@@ -113,10 +113,16 @@ export default function ViewTempStudent({
 					</div>
 					<div className="flex">
 						<p className="max-w-[48ch] text-muted-foreground">
-							Once you click "Verify", you will be the sole responsibility for
-							the details and payment of this student.
+							{selectedTempStudent.checked_by !== null
+								? `Already verified by ${selectedTempStudent.checked_by}.`
+								: `Once you click "Verify", you will be the sole responsibility for
+							the details and payment of this student.`}
 						</p>
-						<Button className="ml-auto" onClick={onVerify}>
+						<Button
+							className="ml-auto"
+							onClick={onVerify}
+							disabled={selectedTempStudent.checked_by !== null}
+						>
 							Verify
 						</Button>
 					</div>

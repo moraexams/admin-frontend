@@ -193,7 +193,7 @@ const Users = () => {
 			pagination,
 		},
 		manualPagination: true,
-		onPaginationChange: setPagination
+		onPaginationChange: setPagination,
 	});
 
 	const fetchUsers = useCallback(async () => {
