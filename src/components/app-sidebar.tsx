@@ -138,6 +138,12 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				url: "/stats/enteredmarks",
 				icon: BookOpen,
 			},
+			{
+				type: "link",
+				title: "District Wise Registrations",
+				url: "/stats/student-registrations/district-wise",
+				icon: MapIcon,
+			},
 		],
 	},
 	{

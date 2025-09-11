@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
 export interface StatCounts {
@@ -44,4 +45,25 @@ export const getEnteredMarksStatsByCentre = async (centreId: number) => {
 		`/stats/entered/marks/stream?exam_centre_id=${centreId}`,
 	);
 	return response.data;
+};
+
+export interface DistrictWiseTempStudentCount {
+	id: number;
+	name: string;
+	student_count: number;
+}
+
+export const getDistrictWiseTempStudentCounts = async () => {
+	try {
+		const response = await axiosInstance.get<{
+			districts: Array<DistrictWiseTempStudentCount>;
+		}>("/stats/student-registrations/district-wise");
+		return response.data;
+	} catch (error) {
+		console.error("Error getting district wise temp student counts:", error);
+		if (error instanceof AxiosError && error.response) {
+			throw error.response.data.message;
+		}
+		throw error;
+	}
 };

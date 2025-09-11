@@ -30,6 +30,7 @@ import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
 import VerifyMarks from "./pages/Marks/VerifyMarks";
 import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
+import StudentRegistrationsCountDistrictWise from "./pages/Stats/StudentRegistrationsDistrictWise";
 import AddStudent from "./pages/Student/AddStudent";
 import RejectedStudents from "./pages/Student/RejectedStudents";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
@@ -249,6 +250,14 @@ function App() {
 							<>
 								<PageTitle title="Entered Marks | Mora Exams" />
 								<EnteredStudentMarks />
+							</>
+						}
+					/>
+					<Route
+						path="/stats/student-registrations/district-wise"
+						element={
+							<>
+								<StudentRegistrationsCountDistrictWise />
 							</>
 						}
 					/>
