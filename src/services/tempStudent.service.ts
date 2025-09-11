@@ -19,6 +19,25 @@ export const deleteTempStudent = async (nic: string) => {
 	}
 };
 
+export const resetTempStudentStatus = async (nic: string) => {
+	try {
+		const response = await axiosInstance.post(`/temp-student/${nic}/reset`);
+		return response.data;
+	} catch (error) {
+		console.error("Error resetting temp student status:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "Only tech coordinator can reset temp student status.";
+			}
+			if (error.response) {
+				throw error.response.data.message;
+			}
+		}
+		throw error;
+	}
+};
+
+
 export const verifyTempStudent = async (nic: string) => {
 	try {
 		const response = await axiosInstance.post(`/temp-student/${nic}/verify`);

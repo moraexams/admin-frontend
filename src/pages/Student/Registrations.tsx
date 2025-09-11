@@ -1,6 +1,7 @@
 import { ROLE_TECH_COORDINATOR } from "@/common/roles";
 import PageTitle from "@/components/PageTitle";
 import DeleteTempStudent from "@/components/temp-student.delete";
+import ResetTempStudent from "@/components/temp-student.reset-status";
 import ViewTempStudent from "@/components/temp-student.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
@@ -17,7 +18,7 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { Eye, Trash } from "lucide-react";
+import { Eye, RotateCcw, Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -28,23 +29,29 @@ export default function StudentRegistrations() {
 	>([]);
 	const [selectedUnverifiedStudent, setSelectedUnverifiedStudent] =
 		useState<TemporaryStudent | null>(null);
-	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
+	const [action, setAction] = useState<
+		"edit" | "delete" | "view" | "reset_status" | null
+	>(null);
 
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
 	const columns: Array<ColumnDef<TemporaryStudent>> = [
 		{
 			id: "-",
 			cell: ({ row }) => (
-				<div
-					className={cn(
-						"w-3 h-8",
-						row.original.checked_by
-							? "bg-green-500"
-							: row.original.rejected_by
-								? "bg-red-500"
-								: "",
-					)}
-				/>
+				<>
+					<div
+						className={cn(
+							"w-3 h-8",
+							row.original.checked_by ? "bg-green-500" : "hidden",
+						)}
+					/>
+					<div
+						className={cn(
+							"w-3 h-8",
+							row.original.rejected_by ? "bg-red-500" : "hidden",
+						)}
+					/>
+				</>
 			),
 		},
 		{
@@ -171,16 +178,31 @@ export default function StudentRegistrations() {
 							<Pen />
 						</Button> */}
 						{role === ROLE_TECH_COORDINATOR ? (
-							<Button
-								size="icon_sm"
-								variant="destructive"
-								onClick={() => {
-									setSelectedUnverifiedStudent(row.original);
-									setAction("delete");
-								}}
-							>
-								<Trash className="size-4" />
-							</Button>
+							<>
+								<Button
+									size="icon_sm"
+									disabled={
+										row.original.checked_by === null &&
+										row.original.rejected_by === null
+									}
+									onClick={() => {
+										setSelectedUnverifiedStudent(row.original);
+										setAction("reset_status");
+									}}
+								>
+									<RotateCcw className="size-4" />
+								</Button>
+								<Button
+									size="icon_sm"
+									variant="destructive"
+									onClick={() => {
+										setSelectedUnverifiedStudent(row.original);
+										setAction("delete");
+									}}
+								>
+									<Trash className="size-4" />
+								</Button>
+							</>
 						) : null}
 					</div>
 				);
@@ -251,7 +273,8 @@ export default function StudentRegistrations() {
 		<>
 			<Breadcrumb pageName="Student Registrations" />
 			<p className="mb-4 max-w-prose">
-				In the below table, you can view and manage student registration records.
+				In the below table, you can view and manage student registration
+				records.
 			</p>
 			<p className="mb-4 max-w-prose">
 				The table shows verified students as well, with a{" "}
@@ -278,6 +301,15 @@ export default function StudentRegistrations() {
 					setSelectedUnverifiedStudent(null);
 				}}
 			/>
+			<ResetTempStudent
+				isOpen={action === "reset_status" && selectedUnverifiedStudent !== null}
+				selectedTempStudent={selectedUnverifiedStudent}
+				onFinished={fetchUnverifiedStudents}
+				onClose={() => {
+					setAction(null);
+					setSelectedUnverifiedStudent(null);
+				}}
+			/>
 		</>
 	);
-};
+}
