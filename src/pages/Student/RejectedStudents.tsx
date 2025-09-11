@@ -101,7 +101,7 @@ export default function RejectedStudents() {
 					Rejected By
 				</Button>
 			),
-		}
+		},
 		// {
 		// 	accessorKey: "rank_district",
 		// 	header: ({ column }) => (

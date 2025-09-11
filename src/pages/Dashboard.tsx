@@ -124,9 +124,18 @@ const Dashboard: React.FC = () => {
 								total={counts.total_student_registrations}
 								link="/students/unverified"
 							/>
-							<CardDataStats title="Verified Students" total={counts.checked_students} />
-							<CardDataStats title="Rejected Students" total={counts.rejected_students} />
-							<CardDataStats title="Unchecked Students" total={counts.unprocessed_students} />
+							<CardDataStats
+								title="Verified Students"
+								total={counts.checked_students}
+							/>
+							<CardDataStats
+								title="Rejected Students"
+								total={counts.rejected_students}
+							/>
+							<CardDataStats
+								title="Unchecked Students"
+								total={counts.unprocessed_students}
+							/>
 							<CardDataStats title="Total Centers" total={counts.exam_center} />
 							<CardDataStats
 								title="Total Coordinators"

@@ -33,9 +33,9 @@ import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
 import StudentRegistrationsCountCentreWise from "./pages/Stats/StudentRegistrationsCentreWise";
 import StudentRegistrationsCountDistrictWise from "./pages/Stats/StudentRegistrationsDistrictWise";
 import AddStudent from "./pages/Student/AddStudent";
+import UnverifiedStudents from "./pages/Student/Registrations";
 import RejectedStudents from "./pages/Student/RejectedStudents";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
-import UnverifiedStudents from "./pages/Student/Registrations";
 import VerifiedStudents from "./pages/Student/VerifiedStudents";
 import Users from "./pages/Users";
 
