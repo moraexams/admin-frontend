@@ -598,6 +598,11 @@ span.flatpickr-weekday,
   body {
     @apply bg-background text-foreground;
   }
+  input[type=number].no-step::-webkit-inner-spin-button, 
+input[type=number].no-step::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 }
 
 .overview-table span {

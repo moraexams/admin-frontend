@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
 	Select,
 	SelectContent,
@@ -13,6 +14,8 @@ import {
 	ChevronsLeft,
 	ChevronsRight,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
@@ -21,6 +24,23 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
 	table,
 }: DataTablePaginationProps<TData>) {
+	const [inputValue, setInputValue] = useState(
+		table.getState().pagination.pageIndex + 1,
+	);
+
+	useEffect(() => {
+		const handler = setTimeout(() => {
+			const page = inputValue - 1;
+			if (page >= 0 && page < table.getPageCount()) {
+				table.setPageIndex(page);
+			}
+		}, 300); // 300ms debounce
+
+		return () => {
+			clearTimeout(handler);
+		};
+	}, [inputValue, table]);
+
 	return (
 		<div className="flex items-center px-2 mb-4 w-full justify-between">
 			<div className="flex items-center space-x-2">
@@ -48,7 +68,7 @@ export function DataTablePagination<TData>({
 					variant="outline"
 					size="icon"
 					className="hidden size-8 lg:flex"
-					onClick={() => table.setPageIndex(0)}
+					onClick={() => setInputValue(1)}
 					disabled={!table.getCanPreviousPage()}
 				>
 					<span className="sr-only">Go to first page</span>
@@ -58,23 +78,47 @@ export function DataTablePagination<TData>({
 					variant="outline"
 					size="icon"
 					className="size-8"
-					onClick={() => table.previousPage()}
+					onClick={() => {
+						setInputValue(table.getState().pagination.pageIndex);
+					}}
 					disabled={!table.getCanPreviousPage()}
 				>
 					<span className="sr-only">Go to previous page</span>
 					<ChevronLeft />
 				</Button>
 
-				<div className="flex w-[100px] items-center justify-center text-sm font-medium">
-					Page {table.getState().pagination.pageIndex + 1} of{" "}
-					{table.getPageCount()}
+				<div className="flex items-center space-x-2">
+					<span className="text-sm font-medium">Page</span>
+					<Input
+						type="number"
+						min={1}
+						max={table.getPageCount()}
+						value={inputValue}
+						onChange={(e) => {
+							const asNumber = Number.parseInt(e.target.value, 10);
+							if (
+								!isNaN(asNumber) &&
+								asNumber > 0 &&
+								asNumber <= table.getPageCount()
+							) {
+								setInputValue(asNumber);
+							} else {
+								toast.error("You cannot go to that page.");
+								setInputValue(table.getState().pagination.pageIndex + 1);
+							}
+						}}
+						className="w-16 text-center border rounded-md text-sm no-step"
+					/>
+					<span className="text-sm font-medium">of {table.getPageCount()}</span>
 				</div>
 
 				<Button
 					variant="outline"
 					size="icon"
 					className="size-8"
-					onClick={() => table.nextPage()}
+					onClick={() => {
+						setInputValue(table.getState().pagination.pageIndex + 2);
+					}}
 					disabled={!table.getCanNextPage()}
 				>
 					<span className="sr-only">Go to next page</span>
@@ -84,7 +128,9 @@ export function DataTablePagination<TData>({
 					variant="outline"
 					size="icon"
 					className="hidden size-8 lg:flex"
-					onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+					onClick={() => {
+						setInputValue(table.getPageCount());
+					}}
 					disabled={!table.getCanNextPage()}
 				>
 					<span className="sr-only">Go to last page</span>
