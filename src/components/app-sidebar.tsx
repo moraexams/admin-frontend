@@ -215,8 +215,8 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		links: [
 			{
 				type: "link",
-				title: "Unverified Students",
-				url: "/students/unverified",
+				title: "Registrations",
+				url: "/students/registrations",
 				icon: UserX,
 			},
 			{

@@ -22,7 +22,7 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 
-const UnverifiedStudents = () => {
+export default function StudentRegistrations() {
 	const [unverifiedStudents, setUnverifiedStudents] = useState<
 		TemporaryStudent[]
 	>([]);
@@ -249,16 +249,16 @@ const UnverifiedStudents = () => {
 
 	return (
 		<>
-			<Breadcrumb pageName="Unverified Students" />
+			<Breadcrumb pageName="Student Registrations" />
 			<p className="mb-4 max-w-prose">
-				In the below table, you can view and manage unverified student records.
+				In the below table, you can view and manage student registration records.
 			</p>
 			<p className="mb-4 max-w-prose">
 				The table shows verified students as well, with a{" "}
 				<span className="text-green-500 font-bold">green</span> box and rejected
 				students with a <span className="text-red-500 font-bold">red</span> box.
 			</p>
-			<PageTitle title="Unverified Students | Mora Exams" />
+			<PageTitle title="Student Registrations | Mora Exams" />
 			<DataTable table={table} />
 			<ViewTempStudent
 				isOpen={action === "view" && selectedUnverifiedStudent !== null}
@@ -281,5 +281,3 @@ const UnverifiedStudents = () => {
 		</>
 	);
 };
-
-export default UnverifiedStudents;

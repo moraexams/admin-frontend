@@ -35,7 +35,7 @@ import StudentRegistrationsCountDistrictWise from "./pages/Stats/StudentRegistra
 import AddStudent from "./pages/Student/AddStudent";
 import RejectedStudents from "./pages/Student/RejectedStudents";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
-import UnverifiedStudents from "./pages/Student/UnverifiedStudents";
+import UnverifiedStudents from "./pages/Student/Registrations";
 import VerifiedStudents from "./pages/Student/VerifiedStudents";
 import Users from "./pages/Users";
 
@@ -186,7 +186,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="/students/unverified"
+						path="/students/registrations"
 						element={
 							<>
 								<UnverifiedStudents />
