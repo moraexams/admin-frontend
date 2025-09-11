@@ -4,6 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import { getVerifiedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
+import type { Student } from "@/types/types";
 import {
 	type ColumnDef,
 	type SortingState,
@@ -15,12 +16,9 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import type { Student } from "@/types/types";
 
 export default function VerifiedStudents() {
-	const [verifiedStudents, setVerifiedStudents] = useState<
-		Array<Student>
-	>([]);
+	const [verifiedStudents, setVerifiedStudents] = useState<Array<Student>>([]);
 	const [selectedVerifiedStudent, setSelectedVerifiedStudent] =
 		useState<Student | null>(null);
 	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
@@ -251,4 +249,4 @@ export default function VerifiedStudents() {
 			/> */}
 		</>
 	);
-};
+}

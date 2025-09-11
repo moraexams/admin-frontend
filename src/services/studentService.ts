@@ -1,7 +1,7 @@
 import type { TemporaryStudent } from "@/types/manual-admissions";
+import type { Student } from "@/types/types";
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
-import type { Student } from "@/types/types";
 
 export const addStudent = async (
 	name: string,

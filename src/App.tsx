@@ -33,8 +33,8 @@ import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
 import AddStudent from "./pages/Student/AddStudent";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import UnverifiedStudents from "./pages/Student/UnverifiedStudents";
-import Users from "./pages/Users";
 import VerifiedStudents from "./pages/Student/VerifiedStudents";
+import Users from "./pages/Users";
 
 function App() {
 	const [loading, setLoading] = useState<boolean>(true);
