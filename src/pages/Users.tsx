@@ -204,7 +204,7 @@ const Users = () => {
 		try {
 			const data = await getUsers(page, itemsPerPage);
 			setUsers(data.users);
-			setPageCount(data.count);
+			setPageCount(Math.ceil(data.count / itemsPerPage));
 			toast.dismiss();
 		} catch (error) {
 			toast.dismiss();
