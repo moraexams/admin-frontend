@@ -23,13 +23,20 @@ export function DataTable<TData>({ table }: DataTableProps<TData>) {
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
 									return (
-										<TableHead key={header.id}>
-											{header.isPlaceholder
-												? null
-												: flexRender(
-														header.column.columnDef.header,
-														header.getContext(),
-													)}
+										<TableHead
+											className="cursor-pointer select-none"
+											onClick={(event) =>
+												header.column.getToggleSortingHandler()?.(event)
+											}
+										>
+											{flexRender(
+												header.column.columnDef.header,
+												header.getContext(),
+											)}
+											{{
+												asc: " ↑",
+												desc: " ↓",
+											}[header.column.getIsSorted() as string] ?? null}
 										</TableHead>
 									);
 								})}

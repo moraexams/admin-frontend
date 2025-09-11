@@ -37,7 +37,6 @@ export const resetTempStudentStatus = async (nic: string) => {
 	}
 };
 
-
 export const verifyTempStudent = async (nic: string) => {
 	try {
 		const response = await axiosInstance.post(`/temp-student/${nic}/verify`);

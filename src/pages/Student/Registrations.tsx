@@ -229,21 +229,21 @@ export default function StudentRegistrations() {
 			pagination,
 		},
 		manualPagination: true,
+		manualSorting: true,
 		onPaginationChange: setPagination,
 	});
 
-	useEffect(() => {
-		fetchUnverifiedStudents();
-	}, [pagination]);
-
 	const fetchUnverifiedStudents = useCallback(async () => {
+		toast.loading("Loading...");
 		const tableState = table.getState();
 		const page = tableState.pagination.pageIndex + 1;
 		const itemsPerPage = tableState.pagination.pageSize;
-		toast.loading("Loading...");
+		const sortParam = tableState.sorting[0]
+			? `&sort=${tableState.sorting[0].desc ? "-" : ""}${tableState.sorting[0].id}`
+			: "";
 
 		return Promise.allSettled([
-			getUnverifiedStudents(page, itemsPerPage),
+			getUnverifiedStudents(page, itemsPerPage, sortParam),
 			createTimer(500),
 		])
 			.then((hu) => {
@@ -267,7 +267,7 @@ export default function StudentRegistrations() {
 
 	useEffect(() => {
 		fetchUnverifiedStudents();
-	}, [fetchUnverifiedStudents]);
+	}, [fetchUnverifiedStudents, pagination, sorting]);
 
 	return (
 		<>
