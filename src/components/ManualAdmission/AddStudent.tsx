@@ -238,7 +238,7 @@ export default function AddStudent(props: Props) {
 										<FormRequiredField />
 									</FormLabel>
 									<FormControl>
-										<Input {...field} className="uppercase" />
+										<Input {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
