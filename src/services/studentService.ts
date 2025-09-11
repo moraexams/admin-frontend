@@ -151,12 +151,15 @@ export const getUnverifiedStudents = async (
 	page: number,
 	itemsPerPage: number,
 	sortParam = "",
+	searchParam = "",
 ) => {
 	try {
 		const response = await axiosInstance.get<{
 			count: number;
 			unverified_students: Array<TemporaryStudent>;
-		}>(`/student/unverified?page=${page}&pageSize=${itemsPerPage}${sortParam}`);
+		}>(
+			`/student/unverified?page=${page}&pageSize=${itemsPerPage}${sortParam}${searchParam}`,
+		);
 		return response.data;
 	} catch (error) {
 		console.log("Error fetching Students: ");

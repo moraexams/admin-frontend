@@ -5,6 +5,7 @@ import ResetTempStudent from "@/components/temp-student.reset-status";
 import ViewTempStudent from "@/components/temp-student.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
 import { cn, dateTimeFormatter } from "@/lib/utils";
 import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import { getUnverifiedStudents } from "@/services/studentService";
@@ -214,8 +215,8 @@ export default function StudentRegistrations() {
 		pageSize: 10,
 	});
 	const [pageCount, setPageCount] = useState<number>(-1); // total pages
-
 	const [sorting, setSorting] = useState<SortingState>([]);
+	const [search, setSearch] = useState("");
 	const table = useReactTable({
 		data: unverifiedStudents,
 		columns,
@@ -230,8 +231,10 @@ export default function StudentRegistrations() {
 		},
 		manualPagination: true,
 		manualSorting: true,
+		manualFiltering: true,
 		onPaginationChange: setPagination,
 	});
+	const [searchInput, setSearchInput] = useState<string>("");
 
 	const fetchUnverifiedStudents = useCallback(async () => {
 		toast.loading("Loading...");
@@ -241,9 +244,10 @@ export default function StudentRegistrations() {
 		const sortParam = tableState.sorting[0]
 			? `&sort=${tableState.sorting[0].desc ? "-" : ""}${tableState.sorting[0].id}`
 			: "";
+		const searchParam = search ? `&search=nic:${search}` : "";
 
 		return Promise.allSettled([
-			getUnverifiedStudents(page, itemsPerPage, sortParam),
+			getUnverifiedStudents(page, itemsPerPage, sortParam, searchParam),
 			createTimer(500),
 		])
 			.then((hu) => {
@@ -263,24 +267,45 @@ export default function StudentRegistrations() {
 			.finally(() => {
 				toast.dismiss();
 			});
-	}, [table]);
+	}, [table, search]);
 
 	useEffect(() => {
 		fetchUnverifiedStudents();
-	}, [fetchUnverifiedStudents, pagination, sorting]);
+	}, [fetchUnverifiedStudents, pagination, sorting, search]);
+
+	useEffect(() => {
+		const handler = setTimeout(() => {
+			setSearch(searchInput);
+			setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+		}, 500);
+		return () => clearTimeout(handler);
+	}, [searchInput]);
 
 	return (
 		<>
 			<Breadcrumb pageName="Student Registrations" />
-			<p className="mb-4 max-w-prose">
-				In the below table, you can view and manage student registration
-				records.
-			</p>
-			<p className="mb-4 max-w-prose">
-				The table shows verified students as well, with a{" "}
-				<span className="text-green-500 font-bold">green</span> box and rejected
-				students with a <span className="text-red-500 font-bold">red</span> box.
-			</p>
+			<div className="grid grid-cols-2 grid-rows-2 gap-x-4">
+				<p className="mb-4 max-w-prose">
+					In the below table, you can view and manage student registration
+					records. You can search students by NIC.
+				</p>
+				<p className="mb-4 max-w-prose">
+					The table shows verified students as well, with a{" "}
+					<span className="text-green-500 font-bold">green</span> box and
+					rejected students with a{" "}
+					<span className="text-red-500 font-bold">red</span> box.
+				</p>
+				<div className="col-start-2 row-start-1 row-span-full">
+					<h2 className="text-xl font-medium mb-2">Search by NIC</h2>
+					<Input
+						type="text"
+						placeholder="Search..."
+						className="max-w-[320px] border p-2 rounded"
+						value={searchInput}
+						onChange={(e) => setSearchInput(e.target.value)}
+					/>
+				</div>
+			</div>
 			<PageTitle title="Student Registrations | Mora Exams" />
 			<DataTable table={table} />
 			<ViewTempStudent
