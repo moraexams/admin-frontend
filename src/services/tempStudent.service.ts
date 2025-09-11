@@ -30,7 +30,7 @@ export const verifyTempStudent = async (nic: string) => {
 				throw "Only tech coordinator can verify temp students.";
 			}
 			if (error.response) {
-				throw error.response.data.error;
+				throw error.response.data.message;
 			}
 		}
 		throw error;
