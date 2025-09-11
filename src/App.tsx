@@ -30,6 +30,7 @@ import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
 import VerifyMarks from "./pages/Marks/VerifyMarks";
 import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
+import StudentRegistrationsCountCentreWise from "./pages/Stats/StudentRegistrationsCentreWise";
 import StudentRegistrationsCountDistrictWise from "./pages/Stats/StudentRegistrationsDistrictWise";
 import AddStudent from "./pages/Student/AddStudent";
 import RejectedStudents from "./pages/Student/RejectedStudents";
@@ -258,6 +259,14 @@ function App() {
 						element={
 							<>
 								<StudentRegistrationsCountDistrictWise />
+							</>
+						}
+					/>
+					<Route
+						path="/stats/student-registrations/centre-wise"
+						element={
+							<>
+								<StudentRegistrationsCountCentreWise />
 							</>
 						}
 					/>

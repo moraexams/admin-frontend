@@ -144,6 +144,12 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				url: "/stats/student-registrations/district-wise",
 				icon: MapIcon,
 			},
+			{
+				type: "link",
+				title: "Centre Wise Registrations",
+				url: "/stats/student-registrations/centre-wise",
+				icon: MapIcon,
+			},
 		],
 	},
 	{
