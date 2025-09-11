@@ -118,19 +118,20 @@ const Dashboard: React.FC = () => {
 					{counts === null ? (
 						<span>Loading...</span>
 					) : (
-						<div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-5 2xl:gap-5">
+						<div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-4 xl:grid-cols-6 2xl:gap-5">
 							<CardDataStats
-								title="Unverified Students"
-								total={counts.temporary_students}
+								title="Student Registrations"
+								total={counts.total_student_registrations}
 								link="/students/unverified"
 							/>
-							<CardDataStats title="Verified Students" total={counts.student} />
+							<CardDataStats title="Verified Students" total={counts.checked_students} />
+							<CardDataStats title="Rejected Students" total={counts.rejected_students} />
+							<CardDataStats title="Unchecked Students" total={counts.unprocessed_students} />
 							<CardDataStats title="Total Centers" total={counts.exam_center} />
 							<CardDataStats
 								title="Total Coordinators"
 								total={counts.coordinator}
 							/>
-							<CardDataStats title="Total Users" total={counts.user} />
 						</div>
 					)}
 					<div className="mt-8 mb-5">
