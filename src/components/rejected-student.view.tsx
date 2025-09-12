@@ -9,9 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-	recheckTempStudent,
-} from "@/services/tempStudent.service";
+import { recheckTempStudent } from "@/services/tempStudent.service";
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import { ExternalLink } from "lucide-react";
 import { useState } from "react";
@@ -164,7 +162,7 @@ export default function ViewRejectedTempStudent({
 						selectedTempStudent.checked_by === null &&
 						selectedTempStudent.rechecked_by === null ? (
 							<div className="col-span-2 mt-5">
-								<Label className="mb-1">Rechecked </Label>
+								<Label className="mb-1">Solution for Rejection</Label>
 								<Textarea
 									onChange={(v) => {
 										setRecheckReason(v.target.value.trim());
@@ -175,7 +173,8 @@ export default function ViewRejectedTempStudent({
 					</div>
 					<div className="flex">
 						<p className="text-sm text-muted-foreground">
-							You can verify this student after contacting and manually verifying them.
+							You can verify this student after contacting and manually
+							verifying them.
 						</p>
 						{/* <p
 							className="max-w-[48ch] text-muted-foreground"
