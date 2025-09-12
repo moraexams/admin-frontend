@@ -33,36 +33,52 @@ export default function ViewTempStudent({
 	onClose,
 }: Props) {
 	const [rejectionReason, setRejectionReason] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	function onReject() {
-		if (!selectedTempStudent?.nic) return;
+		if (isLoading || !selectedTempStudent?.nic || rejectionReason.trim() === "")
+			return;
+		setIsLoading(true);
+		toast.loading("Rejecting student...");
 		rejectTempStudent(selectedTempStudent.nic, rejectionReason)
 			.then(() => {
+				toast.dismiss();
 				onFinished?.();
 				onClose();
 				setRejectionReason("");
 			})
 			.catch((error) => {
+				toast.dismiss();
 				console.error("Error verifying student:", error);
 				toast.error(
 					typeof error === "string" ? error : "Failed to verify student.",
 				);
+			})
+			.finally(() => {
+				setIsLoading(false);
 			});
 	}
 
 	function onVerify() {
-		if (!selectedTempStudent?.nic) return;
+		if (isLoading || !selectedTempStudent?.nic) return;
+		setIsLoading(true);
+		toast.loading("Verifying student...");
 		verifyTempStudent(selectedTempStudent.nic)
 			.then(() => {
+				toast.dismiss();
 				onFinished?.();
 				onClose();
 				setRejectionReason("");
 			})
 			.catch((error) => {
+				toast.dismiss();
 				console.error("Error verifying student:", error);
 				toast.error(
 					typeof error === "string" ? error : "Failed to verify student.",
 				);
+			})
+			.finally(() => {
+				setIsLoading(false);
 			});
 	}
 
@@ -172,7 +188,19 @@ export default function ViewTempStudent({
 						<Button
 							className="ml-auto"
 							variant="destructive"
+							title={
+								isLoading
+									? `Loading...`
+									: selectedTempStudent.checked_by !== null
+										? `This student has already been verified.`
+										: selectedTempStudent.rejected_by !== null
+											? `This student has already been rejected.`
+											: rejectionReason.trim() !== ""
+												? `You cannot reject without a reason.`
+												: `Verify this student's details and payment.`
+							}
 							disabled={
+								isLoading ||
 								selectedTempStudent.checked_by !== null ||
 								selectedTempStudent.rejected_by !== null ||
 								rejectionReason.trim() === ""
@@ -184,7 +212,19 @@ export default function ViewTempStudent({
 						<Button
 							className="ml-2"
 							onClick={onVerify}
+							title={
+								isLoading
+									? `Loading...`
+									: selectedTempStudent.checked_by !== null
+										? `This student has already been verified.`
+										: selectedTempStudent.rejected_by !== null
+											? `This student has already been rejected.`
+											: rejectionReason.trim() !== ""
+												? `You have included a reason for rejection.`
+												: `Verify this student's details and payment.`
+							}
 							disabled={
+								isLoading ||
 								selectedTempStudent.checked_by !== null ||
 								selectedTempStudent.rejected_by !== null ||
 								rejectionReason.trim() !== ""
