@@ -2,6 +2,7 @@ import PageTitle from "@/components/PageTitle";
 import ViewRejectedTempStudent from "@/components/rejected-student.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
 import { cn, dateTimeFormatter } from "@/lib/utils";
 import { getRejectedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
@@ -196,7 +197,7 @@ export default function RejectedStudents() {
 		pageSize: 10,
 	});
 	const [pageCount, setPageCount] = useState<number>(-1); // total pages
-
+	const [search, setSearch] = useState("");
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
 		data: rejectedTempStudents,
@@ -211,17 +212,22 @@ export default function RejectedStudents() {
 			pagination,
 		},
 		manualPagination: true,
+		manualFiltering: true,
 		onPaginationChange: setPagination,
 	});
+
+	const [searchInput, setSearchInput] = useState<string>("");
 
 	const fetchRejectedStudents = useCallback(async () => {
 		const tableState = table.getState();
 		const page = tableState.pagination.pageIndex + 1;
 		const itemsPerPage = tableState.pagination.pageSize;
 		toast.loading("Loading...");
+		
+		const searchParam = search ? `&search=nic:${search}` : "";
 
 		return Promise.allSettled([
-			getRejectedStudents(page, itemsPerPage),
+			getRejectedStudents(page, itemsPerPage, searchParam),
 			createTimer(500),
 		])
 			.then((hu) => {
@@ -242,11 +248,19 @@ export default function RejectedStudents() {
 			.finally(() => {
 				toast.dismiss();
 			});
-	}, [table]);
+	}, [table, search]);
 
 	useEffect(() => {
 		fetchRejectedStudents();
-	}, [fetchRejectedStudents, pagination]);
+	}, [fetchRejectedStudents, pagination, sorting, search]);
+
+	useEffect(() => {
+		const handler = setTimeout(() => {
+			setSearch(searchInput);
+			setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+		}, 500);
+		return () => clearTimeout(handler);
+	}, [searchInput]);
 
 	return (
 		<>

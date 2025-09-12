@@ -264,12 +264,13 @@ export const getVerifiedStudents = async (
 export const getRejectedStudents = async (
 	page: number,
 	itemsPerPage: number,
+	searchParam = ""
 ) => {
 	try {
 		const response = await axiosInstance.get<{
 			count: number;
 			students: Array<TemporaryStudent>;
-		}>(`/temp-student/rejected?page=${page}&pageSize=${itemsPerPage}`);
+		}>(`/temp-student/rejected?page=${page}&pageSize=${itemsPerPage}${searchParam}`);
 		return response.data;
 	} catch (error) {
 		console.log("Error fetching students: ", error);
