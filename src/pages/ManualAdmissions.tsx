@@ -4,7 +4,6 @@ import DeleteStudent from "@/components/ManualAdmission/DeleteStudent";
 import EditStudent from "@/components/ManualAdmission/EditStudent";
 import PayNow from "@/components/ManualAdmission/PayNow";
 import PageTitle from "@/components/PageTitle";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -157,13 +156,6 @@ export default function ManualAdmissions() {
 				</>
 			)}
 			<Toaster position="top-right" />
-			<Alert variant="destructive">
-				<AlertTitle>Pay Now is temporarily down!</AlertTitle>
-				<AlertDescription>
-					There has been an issue with the payment processing system. We are
-					working on a fix and will update you as soon as possible.
-				</AlertDescription>
-			</Alert>
 
 			<PageTitle title="Admissions | Mora Exams" />
 			<div className="mt-6 grid grid-cols-1 md:grid-cols-[auto_1fr_auto] grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto]">

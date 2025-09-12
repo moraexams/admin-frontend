@@ -70,7 +70,7 @@ export default function PayNow(props: Props) {
 				className="col-start-3 row-start-1 row-span-full my-auto"
 				asChild
 			>
-				<Button className="text-base" disabled={true || props.amount === 0}>
+				<Button className="text-base" disabled={props.amount === 0}>
 					Pay Now
 				</Button>
 			</DialogTrigger>
