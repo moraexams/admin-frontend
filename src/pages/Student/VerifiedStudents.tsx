@@ -1,7 +1,7 @@
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
+import { dateTimeFormatter } from "@/lib/utils";
 import { getVerifiedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
 import type { Student } from "@/types/types";
@@ -16,7 +16,6 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import { dateTimeFormatter } from "@/lib/utils";
 
 export default function VerifiedStudents() {
 	const [verifiedStudents, setVerifiedStudents] = useState<Array<Student>>([]);

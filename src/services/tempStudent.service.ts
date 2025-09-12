@@ -72,10 +72,7 @@ export const rejectTempStudent = async (nic: string, reason: string) => {
 	}
 };
 
-export const recheckTempStudent = async (
-	nic: string,
-	reason: string,
-) => {
+export const recheckTempStudent = async (nic: string, reason: string) => {
 	try {
 		const response = await axiosInstance.post(`/temp-student/${nic}/recheck`, {
 			reason,
