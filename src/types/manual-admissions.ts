@@ -70,4 +70,8 @@ export interface TemporaryStudent {
 	checked_by: string | null;
 	rejected_by: string | null;
 	rejection_reason: string | null;
+	rejected_at: string | null;
+	rechecked_at: string | null;
+	rechecked_by: string | null;
+	rechecked_reason: string | null;
 }

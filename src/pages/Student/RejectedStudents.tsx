@@ -1,6 +1,8 @@
 import PageTitle from "@/components/PageTitle";
+import ViewRejectedTempStudent from "@/components/rejected-student.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { cn, dateTimeFormatter } from "@/lib/utils";
 import { getRejectedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
 import type { TemporaryStudent } from "@/types/manual-admissions";
@@ -12,6 +14,7 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
+import { Eye } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -25,6 +28,19 @@ export default function RejectedStudents() {
 	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
 
 	const columns: Array<ColumnDef<TemporaryStudent>> = [
+		{
+			id: "-",
+			cell: ({ row }) => (
+				<>
+					<div
+						className={cn(
+							"w-3 h-8",
+							row.original.rechecked_by ? "bg-green-500" : "hidden",
+						)}
+					/>
+				</>
+			),
+		},
 		{
 			accessorKey: "nic",
 			header: ({ column }) => (
@@ -102,87 +118,78 @@ export default function RejectedStudents() {
 				</Button>
 			),
 		},
-		// {
-		// 	accessorKey: "rank_district",
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			className="px-0"
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 		>
-		// 			Rank District
-		// 		</Button>
-		// 	),
-		// },
-		// {
-		// 	accessorKey: "exam_district",
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			className="px-0"
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 		>
-		// 			Exam District
-		// 		</Button>
-		// 	),
-		// },
-		// {
-		// 	accessorKey: "exam_centre",
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			className="px-0"
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 		>
-		// 			Exam Centre
-		// 		</Button>
-		// 	),
-		// },
-		// {
-		// 	id: "created_at",
-		// 	accessorFn: (row) => {
-		// 		return dateTimeFormatter.format(new Date(row.created_at));
-		// 	},
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 			className=" px-0"
-		// 		>
-		// 			Created At
-		// 		</Button>
-		// 	),
-		// },
-		// {
-		// 	header: "Actions",
-		// 	cell: ({ row }) => {
-		// 		return (
-		// 			<div className="flex gap-2">
-		// 				<Button
-		// 					size="icon_sm"
-		// 					onClick={() => {
-		// 						setSelectedVerifiedStudent(row.original);
-		// 						setAction("view");
-		// 					}}
-		// 				>
-		// 					<Eye />
-		// 				</Button>
-		// 				{role === ROLE_TECH_COORDINATOR ? (
-		// 					<Button
-		// 						size="icon_sm"
-		// 						variant="destructive"
-		// 						onClick={() => {
-		// 							setSelectedVerifiedStudent(row.original);
-		// 							setAction("delete");
-		// 						}}
-		// 					>
-		// 						<Trash className="size-4" />
-		// 					</Button>
-		// 				) : null}
-		// 			</div>
-		// 		);
-		// 	},
-		// },
+		{
+			accessorKey: "rank_district",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Rank District
+				</Button>
+			),
+		},
+		{
+			accessorKey: "exam_district",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Exam District
+				</Button>
+			),
+		},
+		{
+			accessorKey: "exam_centre",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Exam Centre
+				</Button>
+			),
+		},
+		{
+			id: "rejected_at",
+			accessorFn: (row) => {
+				if (!row.rejected_at) {
+					return "";
+				}
+				return dateTimeFormatter.format(new Date(row.rejected_at));
+			},
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className=" px-0"
+				>
+					Rejected At
+				</Button>
+			),
+		},
+		{
+			header: "Actions",
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Button
+							size="icon_sm"
+							onClick={() => {
+								setSelectedRejectedStudent(row.original);
+								setAction("view");
+							}}
+						>
+							<Eye />
+						</Button>
+					</div>
+				);
+			},
+		},
 	];
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -246,14 +253,16 @@ export default function RejectedStudents() {
 			<Breadcrumb pageName="Rejected Students" />
 			<PageTitle title="Rejected Students | Mora Exams" />
 			<DataTable table={table} />
-			{/* <ViewTempStudent
-				isOpen={action === "view" && selectedVerifiedStudent !== null}
-				selectedTempStudent={selectedVerifiedStudent}
-				onFinished={fetchVerifiedStudents}
+			<ViewRejectedTempStudent
+				isOpen={action === "view" && selectedRejectedStudent !== null}
+				selectedTempStudent={selectedRejectedStudent}
+				onFinished={fetchRejectedStudents}
 				onClose={() => {
 					setAction(null);
-					setSelectedVerifiedStudent(null);
+					setSelectedRejectedStudent(null);
 				}}
+			/>
+			{/* <ViewTempStudent
 			/>
 			<DeleteTempStudent
 				isOpen={action === "delete" && selectedVerifiedStudent !== null}

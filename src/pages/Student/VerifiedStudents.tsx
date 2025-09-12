@@ -16,6 +16,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import { dateTimeFormatter } from "@/lib/utils";
 
 export default function VerifiedStudents() {
 	const [verifiedStudents, setVerifiedStudents] = useState<Array<Student>>([]);
@@ -23,7 +24,6 @@ export default function VerifiedStudents() {
 		useState<Student | null>(null);
 	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
 
-	const role = localStorage.getItem(LOCAL_STORAGE__ROLE);
 	const columns: Array<ColumnDef<Student>> = [
 		{
 			accessorKey: "index_no",
@@ -121,21 +121,21 @@ export default function VerifiedStudents() {
 		// 		</Button>
 		// 	),
 		// },
-		// {
-		// 	id: "created_at",
-		// 	accessorFn: (row) => {
-		// 		return dateTimeFormatter.format(new Date(row.created_at));
-		// 	},
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 			className=" px-0"
-		// 		>
-		// 			Created At
-		// 		</Button>
-		// 	),
-		// },
+		{
+			id: "created_at",
+			accessorFn: (row) => {
+				return dateTimeFormatter.format(new Date(row.checked_at));
+			},
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className=" px-0"
+				>
+					Verified At
+				</Button>
+			),
+		},
 		// {
 		// 	header: "Actions",
 		// 	cell: ({ row }) => {

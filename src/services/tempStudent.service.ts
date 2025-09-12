@@ -71,3 +71,23 @@ export const rejectTempStudent = async (nic: string, reason: string) => {
 		throw error;
 	}
 };
+
+export const recheckTempStudent = async (
+	nic: string,
+	reason: string,
+) => {
+	try {
+		const response = await axiosInstance.post(`/temp-student/${nic}/recheck`, {
+			reason,
+		});
+		return response.data;
+	} catch (error) {
+		console.error("Error rechecking temp student:", error);
+		if (error instanceof AxiosError) {
+			if (error.response) {
+				throw error.response.data.message;
+			}
+		}
+		throw error;
+	}
+};
