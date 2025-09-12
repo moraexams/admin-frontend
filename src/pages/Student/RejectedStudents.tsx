@@ -223,7 +223,7 @@ export default function RejectedStudents() {
 		const page = tableState.pagination.pageIndex + 1;
 		const itemsPerPage = tableState.pagination.pageSize;
 		toast.loading("Loading...");
-		
+
 		const searchParam = search ? `&search=nic:${search}` : "";
 
 		return Promise.allSettled([
@@ -265,6 +265,26 @@ export default function RejectedStudents() {
 	return (
 		<>
 			<Breadcrumb pageName="Rejected Students" />
+			<div className="grid grid-cols-2 grid-rows-2 gap-x-4">
+				<p className="mb-4 max-w-prose">
+					In the below table, you can recheck the students who were rejected in
+					the 1st round of checking.
+				</p>
+				<p className="mb-4 max-w-prose">
+					Students who have been rechecked and verified are indicated with a{" "}
+					<span className="text-green-500 font-bold">green</span> box.
+				</p>
+				<div className="col-start-2 row-start-1 row-span-full">
+					<h2 className="text-xl font-medium mb-2">Search by NIC</h2>
+					<Input
+						type="text"
+						placeholder="Search..."
+						className="max-w-[320px] border p-2 rounded"
+						value={searchInput}
+						onChange={(e) => setSearchInput(e.target.value)}
+					/>
+				</div>
+			</div>
 			<PageTitle title="Rejected Students | Mora Exams" />
 			<DataTable table={table} />
 			<ViewRejectedTempStudent
