@@ -122,7 +122,7 @@ const Dashboard: React.FC = () => {
 							<CardDataStats
 								title="Student Registrations"
 								total={counts.total_student_registrations}
-								link="/students/unverified"
+								link="/students/registrations"
 							/>
 							<CardDataStats
 								title="Verified Students"
