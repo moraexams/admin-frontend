@@ -4,6 +4,7 @@ import axiosInstance from "../axiosConfig";
 export interface StatCounts {
 	student: number;
 	total_student_registrations: number;
+	pending_student_registrations: number;
 	unprocessed_students: number;
 	rejected_students: number;
 	checked_students: number;

@@ -124,6 +124,11 @@ const Dashboard: React.FC = () => {
 								total={counts.total_student_registrations}
 								link="/students/registrations"
 							/>
+							<CardDataStats
+								title="Pending Registrations"
+								description="Students whose payment is not received yet"
+								total={counts.pending_student_registrations || 0}
+							/>
 							{/* <CardDataStats
 								title="Verified Students"
 								total={counts.checked_students}

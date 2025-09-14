@@ -1,21 +1,22 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
-import type React from "react";
 import { NavLink } from "react-router-dom";
 
 interface CardDataStatsProps {
 	title: string;
 	total: number;
+	description?: string;
 	link?: string;
 }
 
-const CardDataStats: React.FC<CardDataStatsProps> = ({
+export default function CardDataStats({
 	title,
 	total,
 	link,
-}) => {
+	description 
+}: CardDataStatsProps) {
 	const content = (
-		<Card className="gap-0 py-4">
+		<Card className="gap-0 py-4 h-full min-w-[200px]">
 			<CardHeader className="px-4">
 				<CardTitle className="text-sm flex justify-between items-center">
 					<span>{title}</span>
@@ -31,6 +32,11 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
 					{total}
 				</div>
 			</CardContent>
+			<CardFooter className="px-4">
+				<CardDescription>
+					{description}
+				</CardDescription>
+			</CardFooter>
 		</Card>
 	);
 
@@ -43,5 +49,3 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
 	}
 	return content;
 };
-
-export default CardDataStats;
