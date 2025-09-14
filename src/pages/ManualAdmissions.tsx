@@ -134,25 +134,73 @@ export default function ManualAdmissions() {
 						</Button>
 					</div>
 
-					{studentRegistrationDetails === null ? null : (
-						<Card className="gap-0 w-fit py-3">
+					<div className="flex flex-wrap gap-4 mb-6">
+						{studentRegistrationDetails === null ? null : (
+							<Card className="gap-0 w-fit py-3">
+								<CardHeader className="px-3">
+									<CardTitle className="text-muted-foreground text-sm">
+										Total Admissions
+									</CardTitle>
+								</CardHeader>
+								<CardContent className="px-3">
+									<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
+										{numberOfStudents == 0
+											? "0"
+											: numberOfStudents.toString().padStart(2, "0")}
+									</div>
+								</CardContent>
+								<CardFooter className="w-fit px-3 text-pretty">
+									Number of students you registered.
+								</CardFooter>
+							</Card>
+						)}
+					</div>
+
+					<div className="flex flex-col md:flex-row gap-2">
+						<Card className="gap-0 w-full md:w-fit py-3">
 							<CardHeader className="px-3">
-								<CardTitle className="text-muted-foreground text-sm">
-									Total Admissions
+								<CardTitle className="text-base">Payment Details</CardTitle>
+							</CardHeader>
+							<CardContent className="px-3">
+								<table className="w-full text-base">
+									<tbody>
+										<tr>
+											<td className="font-medium pr-4">Bank</td>
+											<td className="text-right">People's Bank</td>
+										</tr>
+										<tr>
+											<td className="font-medium pr-4">Branch</td>
+											<td className="text-right">Jaffna Stanley Road Branch</td>
+										</tr>
+										<tr>
+											<td className="font-medium pr-4">Account Number</td>
+											<td className="text-right">030200370038814</td>
+										</tr>
+										<tr>
+											<td className="font-medium pr-4">Account Holder</td>
+											<td className="text-right">K MATHUMILAN</td>
+										</tr>
+									</tbody>
+								</table>
+							</CardContent>
+						</Card>
+						<Card className="gap-0 w-full md:w-fit py-3">
+							<CardHeader className="px-3">
+								<CardTitle className="text-base">
+									For Technical Issues
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="px-3">
-								<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
-									{numberOfStudents == 0
-										? "0"
-										: numberOfStudents.toString().padStart(2, "0")}
+								<div className="text-xl tabular-nums @[250px]/card:text-4xl mb-2">
+									+94 77 573 2943
 								</div>
 							</CardContent>
-							<CardFooter className="w-fit px-3 text-pretty">
-								Number of students you registered.
+							<CardFooter className="w-fit px-3 text-sm text-pretty max-w-prose md:max-w-[38ch]">
+								Please WhatsApp or call this number to resolve the technical
+								issues you encounter here.
 							</CardFooter>
 						</Card>
-					)}
+					</div>
 				</>
 			)}
 			<Toaster position="top-right" />
