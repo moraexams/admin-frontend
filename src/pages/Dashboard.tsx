@@ -129,11 +129,12 @@ const Dashboard: React.FC = () => {
 								description="Students whose payment is not received yet"
 								total={counts.pending_student_registrations || 0}
 							/>
-							{/* <CardDataStats
-								title="Verified Students"
-								total={counts.checked_students}
-							/>
 							<CardDataStats
+								title="Verified Students"
+								description="Students whose payment is verified"
+								total={counts.verified_students || 0}
+							/>
+							{/* <CardDataStats
 								title="Rejected Students"
 								total={counts.rejected_students}
 							/>
