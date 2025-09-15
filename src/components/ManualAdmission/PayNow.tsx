@@ -36,6 +36,8 @@ const payNowSchema = z.object({
 		.refine((file) => file.size > 0, { message: "Payment slip is required" })
 		.refine((file) => ACCEPTED_TYPES.includes(file.type), {
 			message: "Only images and PDFs are allowed",
+		}).refine(file => file.size <= 5 * 1024 * 1024, {
+			message: "File size should be less than 5MB",
 		}),
 });
 
@@ -112,7 +114,8 @@ export default function PayNow(props: Props) {
 									</FormControl>
 									<FormDescription>
 										You can upload a scanned copy or a clear photo of the
-										payment slip.
+										payment slip. Maximum file size is <b>5MB</b>. Accepted formats are
+										JPEG, PNG, and PDF.
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
