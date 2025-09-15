@@ -24,9 +24,23 @@ export const getStatsByCentre = async (centreId: number) => {
 	return response.data;
 };
 
+interface StreamWiseCount {
+	stream_id: number;
+	stream_name: string;
+	tamil_count: number;
+	english_count: number;
+	total_count: number;
+}
+
+export interface StreamWiseStats {
+	counts: StreamWiseCount[];
+	total_english: number;
+	total_tamil: number;
+}
+
 export const getStatsStreamWise = async () => {
 	try {
-		const response = await axiosInstance.get("/stats/stream");
+		const response = await axiosInstance.get<StreamWiseStats>("/stats/stream");
 		return response.data;
 	} catch (error) {
 		console.error("Error getting stream wise stats:", error);
