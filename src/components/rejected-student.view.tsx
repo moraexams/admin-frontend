@@ -170,12 +170,30 @@ export default function ViewRejectedTempStudent({
 								/>
 							</div>
 						) : null}
+
+						{selectedTempStudent.rejected_by !== null &&
+						selectedTempStudent.checked_by === null &&
+						selectedTempStudent.rechecked_by !== null ? (
+							<div className="col-span-2 mt-5">
+								<Label className="mb-1">Solution for Rejection</Label>
+								<Textarea readOnly>
+									{selectedTempStudent.rechecked_reason}
+								</Textarea>
+							</div>
+						) : null}
 					</div>
 					<div className="flex">
-						<p className="text-sm text-muted-foreground">
-							You can verify this student after contacting and manually
-							verifying them.
-						</p>
+						{selectedTempStudent.rechecked_by !== null ? (
+							<p className="text-sm text-green-600 font-semibold">
+								This student has been rechecked by{" "}
+								{selectedTempStudent.rechecked_by}.
+							</p>
+						) : (
+							<p className="text-sm text-muted-foreground">
+								You can verify this student after contacting and manually
+								verifying them.
+							</p>
+						)}
 						{/* <p
 							className="max-w-[48ch] text-muted-foreground"
 							dangerouslySetInnerHTML={{
