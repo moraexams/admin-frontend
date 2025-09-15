@@ -19,8 +19,23 @@ export const getStatCounts = async () => {
 	return response.data;
 };
 
+interface CentreWiseStreamCount {
+	stream_id: number;
+	stream_name: string;
+	male_count: number;
+	female_count: number;
+	total_count: number;
+}
+
+export interface CentreWiseStats {
+	counts: Array<CentreWiseStreamCount>;
+	total_female: number;
+	total_male: number;
+}
 export const getStatsByCentre = async (centreId: number) => {
-	const response = await axiosInstance.get(`/stats/centre/${centreId}`);
+	const response = await axiosInstance.get<CentreWiseStats>(
+		`/stats/centre/${centreId}`,
+	);
 	return response.data;
 };
 
