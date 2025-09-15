@@ -30,7 +30,11 @@ export const ManualStudentRegistrationFormSchema = z.object({
 		.trim()
 		.min(1, "Phone is required")
 		.length(10, "Phone must be 10 digits"),
-	email: z.string().trim().min(1, "Email is required").email("Invalid email address"),
+	email: z
+		.string()
+		.trim()
+		.min(1, "Email is required")
+		.email("Invalid email address"),
 	stream: z.enum(
 		STREAM_OPTIONS.map((opt) => opt.value) as [string, ...string[]],
 		{

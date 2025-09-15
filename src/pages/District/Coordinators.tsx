@@ -93,7 +93,9 @@ export default function Coordinators() {
 							<TableCell>{coord.id}</TableCell>
 							<TableCell>{coord.name}</TableCell>
 							<TableCell>{coord.contact}</TableCell>
-							<TableCell>{coord.pending_student_registrations || "-"}</TableCell>
+							<TableCell>
+								{coord.pending_student_registrations || "-"}
+							</TableCell>
 							<TableCell>
 								{districtOrganizers.find(
 									(u) => u.id === coord.associated_user_id,

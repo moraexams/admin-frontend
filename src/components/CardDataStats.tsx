@@ -1,4 +1,11 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -13,7 +20,7 @@ export default function CardDataStats({
 	title,
 	total,
 	link,
-	description 
+	description,
 }: CardDataStatsProps) {
 	const content = (
 		<Card className="gap-0 py-4 h-full min-w-[200px]">
@@ -33,9 +40,7 @@ export default function CardDataStats({
 				</div>
 			</CardContent>
 			<CardFooter className="px-4">
-				<CardDescription>
-					{description}
-				</CardDescription>
+				<CardDescription>{description}</CardDescription>
 			</CardFooter>
 		</Card>
 	);
@@ -48,4 +53,4 @@ export default function CardDataStats({
 		);
 	}
 	return content;
-};
+}

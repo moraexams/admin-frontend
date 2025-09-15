@@ -36,7 +36,8 @@ const payNowSchema = z.object({
 		.refine((file) => file.size > 0, { message: "Payment slip is required" })
 		.refine((file) => ACCEPTED_TYPES.includes(file.type), {
 			message: "Only images and PDFs are allowed",
-		}).refine(file => file.size <= 5 * 1024 * 1024, {
+		})
+		.refine((file) => file.size <= 5 * 1024 * 1024, {
 			message: "File size should be less than 5MB",
 		}),
 });
@@ -67,12 +68,15 @@ export default function PayNow(props: Props) {
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={v => {
-			if (!v) {
-				form.reset();
-			}
-			setOpen(v);
-		}}>
+		<Dialog
+			open={open}
+			onOpenChange={(v) => {
+				if (!v) {
+					form.reset();
+				}
+				setOpen(v);
+			}}
+		>
 			<DialogTrigger
 				className="col-start-3 row-start-1 row-span-full my-auto"
 				asChild
@@ -114,8 +118,8 @@ export default function PayNow(props: Props) {
 									</FormControl>
 									<FormDescription>
 										You can upload a scanned copy or a clear photo of the
-										payment slip. Maximum file size is <b>5MB</b>. Accepted formats are
-										JPEG, PNG, and PDF.
+										payment slip. Maximum file size is <b>5MB</b>. Accepted
+										formats are JPEG, PNG, and PDF.
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
@@ -126,8 +130,8 @@ export default function PayNow(props: Props) {
 							<Button
 								variant="destructive"
 								onClick={() => {
-									setOpen(false)
-									form.reset()
+									setOpen(false);
+									form.reset();
 								}}
 								className="ml-auto"
 								type="button"
