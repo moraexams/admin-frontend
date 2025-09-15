@@ -163,4 +163,7 @@ export interface CoordinatorPayment {
 	added_at: string;
 	payment_link: string;
 	added_by: string;
+	contact_no: string;
+	districts: string;
+	student_count: number;
 }

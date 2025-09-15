@@ -84,7 +84,6 @@ export default function CoordinatorPayments() {
 					<Button
 						size="icon"
 						variant="outline"
-						disabled
 						onClick={() => {
 							setSelectedPayment(row.original);
 							setAction("view");

@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import type { CoordinatorPayment } from "@/types/types";
 import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import PreviewPaymentLink from "./preview-payment-link";
+import { CurrencyFormatter } from "@/services/utils";
 
 interface Props {
 	isOpen: boolean;
@@ -82,6 +82,31 @@ export default function ViewCoordinatorPayment({
 					</DialogHeader>
 
 					<div className="gap-y-3 gap-x-3 grid grid-cols-[1fr_1fr_2fr] grid-rows-[repeat(6,auto)]">
+						<div className="col-span-2">
+							<Label className="mb-1">Added By</Label>
+							<Input readOnly value={selectedCoordinatorPayment.added_by} />
+						</div>
+
+						<div className="col-span-2">
+							<Label className="mb-1">Coordinator's Districts</Label>
+							<Input readOnly value={selectedCoordinatorPayment.districts} />
+						</div>
+
+						<div className="col-span-2">
+							<Label className="mb-1">Coordinator's Contact No</Label>
+							<Input readOnly value={selectedCoordinatorPayment.contact_no} />
+						</div>
+
+						<div className="col-span-2">
+							<Label className="mb-1">Amount</Label>
+							<Input readOnly value={CurrencyFormatter.format(selectedCoordinatorPayment.amount)} />
+						</div>
+
+						<div className="col-span-2">
+							<Label className="mb-1">Student Count</Label>
+							<Input readOnly value={selectedCoordinatorPayment.student_count} />
+						</div>
+
 						<div className="col-start-3 row-start-1 row-span-full flex flex-col">
 							<PreviewPaymentLink
 								link={selectedCoordinatorPayment.payment_link}
