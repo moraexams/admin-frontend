@@ -22,21 +22,22 @@ export const STREAM_OPTIONS: Array<{
 	},
 ] as const;
 export const ManualStudentRegistrationFormSchema = z.object({
-	name: z.string().min(1, "Name is required"),
-	nic: z.string().length(12, "NIC must be 12 digits"),
-	school: z.string(),
+	name: z.string().trim().min(1, "Name is required"),
+	nic: z.string().trim().length(12, "NIC must be 12 digits"),
+	school: z.string().trim(),
 	phone: z
 		.string()
+		.trim()
 		.min(1, "Phone is required")
 		.length(10, "Phone must be 10 digits"),
-	email: z.string().min(1, "Email is required").email("Invalid email address"),
+	email: z.string().trim().min(1, "Email is required").email("Invalid email address"),
 	stream: z.enum(
 		STREAM_OPTIONS.map((opt) => opt.value) as [string, ...string[]],
 		{
 			message: "Stream is required",
 		},
 	),
-	address: z.string().min(1, "Address is required"),
+	address: z.string().trim().min(1, "Address is required"),
 	gender: z.enum(["Male", "Female"], {
 		message: "Gender is required",
 	}),
