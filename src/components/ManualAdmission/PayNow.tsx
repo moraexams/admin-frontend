@@ -65,7 +65,12 @@ export default function PayNow(props: Props) {
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog open={open} onOpenChange={v => {
+			if (!v) {
+				form.reset();
+			}
+			setOpen(v);
+		}}>
 			<DialogTrigger
 				className="col-start-3 row-start-1 row-span-full my-auto"
 				asChild
@@ -117,7 +122,10 @@ export default function PayNow(props: Props) {
 						<div className="flex gap-x-2">
 							<Button
 								variant="destructive"
-								onClick={() => setOpen(false)}
+								onClick={() => {
+									setOpen(false)
+									form.reset()
+								}}
 								className="ml-auto"
 								type="button"
 							>
