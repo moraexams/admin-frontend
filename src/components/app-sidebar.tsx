@@ -34,6 +34,7 @@ import {
 import type { LocalStorage_User } from "@/types/types";
 import {
 	AlertTriangle,
+	Banknote,
 	BarChart2,
 	BookOpen,
 	ChevronRight,
@@ -123,6 +124,12 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				title: "Bill Gallery",
 				url: "/finance/billgallery",
 				icon: FileText,
+			},
+			{
+				type: "link",
+				title: "Coordinator Payments",
+				url: "/finance/coordinator-payments",
+				icon: Banknote,
 			},
 		],
 	},

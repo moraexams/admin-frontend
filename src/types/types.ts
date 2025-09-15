@@ -157,3 +157,10 @@ export interface LocalStorage_User {
 	username: string;
 	approved: boolean;
 }
+export interface CoordinatorPayment {
+	payment_id: number;
+	amount: number;
+	added_at: string;
+	payment_link: string;
+	added_by: string;
+}

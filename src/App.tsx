@@ -21,6 +21,7 @@ import AddBill from "./pages/Finance/AddBill";
 import AddFinanceRecord from "./pages/Finance/AddFinanceRecord";
 import AllTransactions from "./pages/Finance/AllTransactions";
 import BillGallery from "./pages/Finance/BillGallery";
+import CoordinatorPayments from "./pages/Finance/CoordinatorPayments";
 import FinanceDashboard from "./pages/Finance/Dashboard";
 import DistrictsSummary from "./pages/Finance/DistrictsSummary";
 import TransactionCategories from "./pages/Finance/TransactionCategories";
@@ -330,6 +331,15 @@ function App() {
 							<>
 								<PageTitle title="Transaction Categories | Mora Exams" />
 								<TransactionCategories />
+							</>
+						}
+					/>
+					<Route
+						path="/finance/coordinator-payments"
+						element={
+							<>
+								<PageTitle title="Coordinator Payments | Mora Exams" />
+								<CoordinatorPayments />
 							</>
 						}
 					/>
