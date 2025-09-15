@@ -1,3 +1,4 @@
+import ViewCoordinatorPayment from "@/components/coordinator-payment.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { dateTimeFormatter } from "@/lib/utils";
@@ -12,6 +13,7 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
+import { Eye } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -20,6 +22,9 @@ export default function CoordinatorPayments() {
 	const [coordinatorPayments, setCoordinatorPayments] = useState<
 		CoordinatorPayment[]
 	>([]);
+	const [selectedPayment, setSelectedPayment] =
+		useState<CoordinatorPayment | null>(null);
+	const [action, setAction] = useState<"view" | null>(null);
 
 	const columns: Array<ColumnDef<CoordinatorPayment>> = [
 		{
@@ -72,33 +77,24 @@ export default function CoordinatorPayments() {
 				</Button>
 			),
 		},
-		// {
-		// 	header: "Actions",
-		// 	cell: ({ row }) => (
-		// 		<div className="flex gap-2">
-		// 			<Button
-		// 				size="icon"
-		// 				variant="outline"
-		// 				onClick={() => {
-		// 					setSelectedUser(row.original);
-		// 					setAction("edit");
-		// 				} }
-		// 			>
-		// 				<Pen />
-		// 			</Button>
-		// 			<Button
-		// 				size="icon"
-		// 				variant="destructive"
-		// 				onClick={() => {
-		// 					setSelectedUser(row.original);
-		// 					setAction("delete");
-		// 				} }
-		// 			>
-		// 				<Trash />
-		// 			</Button>
-		// 		</div>
-		// 	),
-		// },
+		{
+			header: "Actions",
+			cell: ({ row }) => (
+				<div className="flex gap-2">
+					<Button
+						size="icon"
+						variant="outline"
+						disabled
+						onClick={() => {
+							setSelectedPayment(row.original);
+							setAction("view");
+						}}
+					>
+						<Eye />
+					</Button>
+				</div>
+			),
+		},
 	];
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -150,6 +146,18 @@ export default function CoordinatorPayments() {
 		<>
 			<Breadcrumb pageName="Coordinator Payments" />
 			<DataTable table={table} />
+			<ViewCoordinatorPayment
+				isOpen={action === "view" && selectedPayment !== null}
+				selectedCoordinatorPayment={selectedPayment}
+				onClose={() => {
+					setAction(null);
+					setSelectedPayment(null);
+				}}
+				onFinished={() => {
+					setAction(null);
+					fetchCoordinatorPayments();
+				}}
+			/>
 		</>
 	);
 }
