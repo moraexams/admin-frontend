@@ -7,12 +7,14 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { verifyCoordinatorPayment } from "@/services/payment.service";
+import { CurrencyFormatter } from "@/services/utils";
 import type { CoordinatorPayment } from "@/types/types";
 import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import PreviewPaymentLink from "./preview-payment-link";
-import { CurrencyFormatter } from "@/services/utils";
 
 interface Props {
 	isOpen: boolean;
@@ -30,26 +32,33 @@ export default function ViewCoordinatorPayment({
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	function onVerify() {
-		if (isLoading) return;
+		if (
+			isLoading ||
+			selectedCoordinatorPayment?.verified_by != null ||
+			selectedCoordinatorPayment?.payment_id == null
+		)
+			return;
 		setIsLoading(true);
 		toast.loading("Verifying Coordinator Payment...");
-		// verifyTempStudent(selectedTempStudent.nic)
-		// 	.then(() => {
-		// 		toast.dismiss();
-		// 		onFinished?.();
-		// 		onClose();
-		// 		setRejectionReason("");
-		// 	})
-		// 	.catch((error) => {
-		// 		toast.dismiss();
-		// 		console.error("Error verifying student:", error);
-		// 		toast.error(
-		// 			typeof error === "string" ? error : "Failed to verify student.",
-		// 		);
-		// 	})
-		// 	.finally(() => {
-		// 		setIsLoading(false);
-		// 	});
+
+		verifyCoordinatorPayment(selectedCoordinatorPayment.payment_id)
+			.then(() => {
+				toast.dismiss();
+				onFinished?.();
+				onClose();
+			})
+			.catch((error) => {
+				toast.dismiss();
+				console.error("Error verifying coordinator payment:", error);
+				toast.error(
+					typeof error === "string"
+						? error
+						: "Failed to verify coordinator payment.",
+				);
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
 	}
 
 	return (
@@ -81,27 +90,39 @@ export default function ViewCoordinatorPayment({
 					<div className="gap-y-5 gap-x-3 grid grid-cols-[1fr_1fr_2fr] grid-rows-[repeat(6,auto)]">
 						<div className="col-span-2">
 							<Label className="mb-1">Added By</Label>
-							<span className="text-lg font-medium">{selectedCoordinatorPayment.added_by}</span>
+							<span className="text-lg font-medium">
+								{selectedCoordinatorPayment.added_by}
+							</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Coordinator's Districts</Label>
-							<span className="text-lg font-medium">{selectedCoordinatorPayment.districts || "N/A"}</span>
+							<span className="text-lg font-medium">
+								{selectedCoordinatorPayment.districts || "N/A"}
+							</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Coordinator's Contact No</Label>
-							<span className="text-lg font-medium">{selectedCoordinatorPayment.contact_no || "N/A"}</span>
-						</div>
-
-						<div className="col-span-2">
-							<Label className="mb-1">Amount</Label>
-							<span className="text-2xl font-medium">{CurrencyFormatter.format(selectedCoordinatorPayment.amount)}</span>
+							<span className="text-lg font-medium">
+								{selectedCoordinatorPayment.contact_no || "N/A"}
+							</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Student Count</Label>
-							<span className="text-xl font-medium">{selectedCoordinatorPayment.student_count || 0}</span>
+							<span className="text-xl font-medium">
+								{(selectedCoordinatorPayment.student_count || 0)
+									.toString()
+									.padStart(2, "0")}
+							</span>
+						</div>
+
+						<div className="col-span-2">
+							<Label className="mb-1">Amount</Label>
+							<span className="text-2xl font-medium">
+								{CurrencyFormatter.format(selectedCoordinatorPayment.amount)}
+							</span>
 						</div>
 
 						<div className="col-start-3 row-start-1 row-span-full flex flex-col">
@@ -121,33 +142,34 @@ export default function ViewCoordinatorPayment({
 									<ExternalLink />
 								</Button>
 							</a>
-							{/* <Skeleton className="h-full w-full rounded-lg" /> */}
 						</div>
 					</div>
-					<div className="flex">
-						<p className="max-w-[4ch]">
+					<div className="flex items-center">
+						<p
+							className={cn(
+								"max-w-[48ch]",
+								selectedCoordinatorPayment.verified_at
+									? "text-green-500"
+									: "text-muted-foreground",
+							)}
+						>
+							{selectedCoordinatorPayment.verified_at
+								? `Verified at ${new Date(selectedCoordinatorPayment.verified_at).toLocaleString()} by ${selectedCoordinatorPayment.verified_by}.`
+								: `Once you click "Verify", you will be the sole responsibility for this payment.`}
 						</p>
-						{/* <p
-							className="max-w-[48ch] text-muted-foreground"
-							dangerouslySetInnerHTML={{
-								__html: `${
-									selectedCoordinatorPayment.checked_by !== null
-										? `Already verified by ${selectedCoordinatorPayment.checked_by}.`
-										: selectedCoordinatorPayment.rejected_by !== null
-											? `Already rejected by ${selectedCoordinatorPayment.rejected_by} because:<br/><b><i>${selectedCoordinatorPayment.rejection_reason}</i></b>`
-											: `Once you click "Verify", you will be the sole responsibility for the details and payment of this student.`
-								}`,
-							}}
-						/> */}
 						<Button
 							className="ml-auto"
 							onClick={onVerify}
 							title={
 								isLoading
 									? `Loading...`
-									: `Verify this payment made by a coordinator.`
+									: selectedCoordinatorPayment?.verified_by != null
+										? `This payment has already been verified by ${selectedCoordinatorPayment.verified_by}`
+										: `Verify this payment made by a coordinator.`
 							}
-							disabled={true}
+							disabled={
+								isLoading || selectedCoordinatorPayment.verified_by != null
+							}
 						>
 							Verify
 						</Button>

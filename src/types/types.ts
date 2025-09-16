@@ -166,4 +166,6 @@ export interface CoordinatorPayment {
 	contact_no: string;
 	districts: string;
 	student_count: number;
+	verified_by?: string | null;
+	verified_at?: string | null;
 }

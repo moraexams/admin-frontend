@@ -1,7 +1,7 @@
 import ViewCoordinatorPayment from "@/components/coordinator-payment.view";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { dateTimeFormatter } from "@/lib/utils";
+import { cn, dateTimeFormatter } from "@/lib/utils";
 import { getCoordinatorPayments } from "@/services/payment.service";
 import { CurrencyFormatter } from "@/services/utils";
 import type { CoordinatorPayment } from "@/types/types";
@@ -27,6 +27,17 @@ export default function CoordinatorPayments() {
 	const [action, setAction] = useState<"view" | null>(null);
 
 	const columns: Array<ColumnDef<CoordinatorPayment>> = [
+		{
+			id: "-",
+			cell: ({ row }) => (
+				<div
+					className={cn(
+						"w-3 h-8",
+						row.original.verified_by ? "bg-green-500" : "hidden",
+					)}
+				/>
+			),
+		},
 		{
 			accessorKey: "payment_id",
 			header: ({ column }) => (

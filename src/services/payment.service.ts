@@ -24,3 +24,20 @@ export const getCoordinatorPayments = async (
 		throw error;
 	}
 };
+
+export const verifyCoordinatorPayment = async (paymentId: number) => {
+	try {
+		const response = await axiosInstance.post(
+			`/coordinator/payment/${paymentId}/verify`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error verifying payment", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "You don't have access to verify the coordinators' payments.";
+			}
+		}
+		throw error;
+	}
+};
