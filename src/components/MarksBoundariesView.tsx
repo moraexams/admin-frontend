@@ -39,7 +39,6 @@ export const MarksBoundariesView = () => {
 	) => {
 		if (!marksBoundaries) return;
 		const value = event.target.valueAsNumber;
-		console.log(value);
 		const updatedBoundaries = marksBoundaries.map((boundary) =>
 			boundary.subjectId === subjectId
 				? { ...boundary, [field]: value }
@@ -122,8 +121,8 @@ export const MarksBoundariesView = () => {
 									</td>
 
 									{Object.entries(boundary).map(([key, value]) =>
-										!key.startsWith("for") ? null : (
-											<td key={boundary.subjectId.concat(key)}>
+										!key.startsWith("for") || boundary.subjectId === null ? null : (
+											<td key={boundary.subjectId.toString().concat(key)}>
 												<Input
 													type="number"
 													className="w-fit min-w-25 max-w-30"
