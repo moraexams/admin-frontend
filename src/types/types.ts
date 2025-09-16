@@ -47,7 +47,7 @@ export interface Coordinator {
 }
 
 export interface Student {
-	index_no: number;
+	index_no: string;
 	name: string;
 	stream_id: number;
 	stream?: Stream;
