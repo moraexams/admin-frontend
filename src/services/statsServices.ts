@@ -99,7 +99,13 @@ export const getDistrictWiseTempStudentCounts = async () => {
 export interface CentreWiseTempStudentCount {
 	id: number;
 	name: string;
-	student_count: number;
+	count_total: number;
+	count_male: number;
+	count_female: number;
+	count_tamil: number;
+	count_english: number;
+	count_online: number;
+	count_through_coordinators: number;
 	district_name: string;
 }
 

@@ -48,10 +48,10 @@ export default function StudentRegistrationsCountDistrictWise() {
 			),
 		},
 		{
-			accessorKey: "student_count",
+			accessorKey: "count_total",
 			cell: ({ row }) => (
 				<div className="text-bold tabular-nums">
-					{row.original.student_count}
+					{row.original.count_total}
 				</div>
 			),
 			header: ({ column }) => (
@@ -61,6 +61,108 @@ export default function StudentRegistrationsCountDistrictWise() {
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 				>
 					Count
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_male",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">
+					{row.original.count_male}
+				</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Male
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_female",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">
+					{row.original.count_female}
+				</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Female
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_tamil",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">
+					{row.original.count_tamil}
+				</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Tamil
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_english",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">
+					{row.original.count_english}
+				</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					English
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_online",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">
+					{row.original.count_online}
+				</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Online
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_through_coordinators",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">
+					{row.original.count_through_coordinators}
+				</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Through Coordinators
 				</Button>
 			),
 		},
