@@ -6,7 +6,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { CoordinatorPayment } from "@/types/types";
 import { ExternalLink } from "lucide-react";
@@ -28,7 +27,6 @@ export default function ViewCoordinatorPayment({
 	onFinished,
 	onClose,
 }: Props) {
-	const [rejectionReason, setRejectionReason] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	function onVerify() {
@@ -61,7 +59,6 @@ export default function ViewCoordinatorPayment({
 				if (v) {
 					return null;
 				}
-				setRejectionReason("");
 				onClose();
 			}}
 		>
@@ -81,30 +78,30 @@ export default function ViewCoordinatorPayment({
 						</DialogDescription>
 					</DialogHeader>
 
-					<div className="gap-y-3 gap-x-3 grid grid-cols-[1fr_1fr_2fr] grid-rows-[repeat(6,auto)]">
+					<div className="gap-y-5 gap-x-3 grid grid-cols-[1fr_1fr_2fr] grid-rows-[repeat(6,auto)]">
 						<div className="col-span-2">
 							<Label className="mb-1">Added By</Label>
-							<Input readOnly value={selectedCoordinatorPayment.added_by} />
+							<span className="text-lg font-medium">{selectedCoordinatorPayment.added_by}</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Coordinator's Districts</Label>
-							<Input readOnly value={selectedCoordinatorPayment.districts} />
+							<span className="text-lg font-medium">{selectedCoordinatorPayment.districts || "N/A"}</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Coordinator's Contact No</Label>
-							<Input readOnly value={selectedCoordinatorPayment.contact_no} />
+							<span className="text-lg font-medium">{selectedCoordinatorPayment.contact_no || "N/A"}</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Amount</Label>
-							<Input readOnly value={CurrencyFormatter.format(selectedCoordinatorPayment.amount)} />
+							<span className="text-2xl font-medium">{CurrencyFormatter.format(selectedCoordinatorPayment.amount)}</span>
 						</div>
 
 						<div className="col-span-2">
 							<Label className="mb-1">Student Count</Label>
-							<Input readOnly value={selectedCoordinatorPayment.student_count} />
+							<span className="text-xl font-medium">{selectedCoordinatorPayment.student_count || 0}</span>
 						</div>
 
 						<div className="col-start-3 row-start-1 row-span-full flex flex-col">
@@ -128,6 +125,8 @@ export default function ViewCoordinatorPayment({
 						</div>
 					</div>
 					<div className="flex">
+						<p className="max-w-[4ch]">
+						</p>
 						{/* <p
 							className="max-w-[48ch] text-muted-foreground"
 							dangerouslySetInnerHTML={{
@@ -141,14 +140,14 @@ export default function ViewCoordinatorPayment({
 							}}
 						/> */}
 						<Button
-							className="ml-2"
+							className="ml-auto"
 							onClick={onVerify}
 							title={
 								isLoading
 									? `Loading...`
 									: `Verify this payment made by a coordinator.`
 							}
-							disabled={isLoading}
+							disabled={true}
 						>
 							Verify
 						</Button>
