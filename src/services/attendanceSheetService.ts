@@ -16,16 +16,16 @@ export const generateAttendanceSheetPDFs = async () => {
 	}
 };
 
-export const downloadAttendanceSheets = async () => {
+export const downloadAttendanceSheets = async (subjectId: string) => {
   try {
-    const response = await axiosInstance.get("/attendance-sheet/download", {
+    const response = await axiosInstance.get(`/attendance-sheet/${subjectId}/download`, {
       responseType: "blob",
     });
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "attendance_sheet_pdfs.zip");
+    link.setAttribute("download", `Mora Exams 2025 - Attendance Sheets - ${subjectId}.zip`);
     document.body.appendChild(link);
     link.click();
     link.remove();

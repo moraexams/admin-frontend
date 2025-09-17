@@ -1,4 +1,11 @@
 import { Button } from "@/components/ui/button";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
@@ -25,6 +32,7 @@ interface DangerZoneConstants {
 const DangerZone = () => {
 	const [feedback, setFeedback] = useState<Feedback | null>(null);
 	const [constants, setConstants] = useState<DangerZoneConstants | null>(null);
+	const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
 
 	useEffect(() => {
 		dangerZonePageData()
@@ -189,26 +197,9 @@ const DangerZone = () => {
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
-					Generate the Attendance sheets
-				</h2>
-				<p className="text-lg mb-3 max-w-prose col-start-1">
-					Can be re-generate and download. After the verification process is
-					completed, generate the attendance sheets for the exam centres.{" "}
-					{feedback == null || feedback.state === "loading" ? null : (
-						<span
-							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
-						>
-							{feedback.message}
-						</span>
-					)}
-				</p>
-			</section>
-
-			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
-				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
 					Download the generated PDFs
 				</h2>
-				<p className="text-lg mb-3 max-w-prose col-start-1">
+				<p className="text-lg max-w-prose col-start-1">
 					After the generation of PDF process is completed, download the zip
 					file of attendance sheets for the exam centres.{" "}
 					{feedback == null || feedback.state === "loading" ? null : (
@@ -219,15 +210,42 @@ const DangerZone = () => {
 						</span>
 					)}
 				</p>
+				<Select
+					onValueChange={(value) => setSelectedSubject(value)}
+					value={
+						selectedSubject === null ? undefined : selectedSubject.toString()
+					}
+				>
+					<SelectTrigger className="w-[180px] mt-2 mb-6 cursor-pointer">
+						<SelectValue placeholder="Select Subject" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="4">Combined Mathematics</SelectItem>
+						<SelectItem value="3">Biology</SelectItem>
+						<SelectItem value="1">Physics</SelectItem>
+						<SelectItem value="2">Chemistry</SelectItem>
+						<SelectItem value="5">ICT</SelectItem>
+					</SelectContent>
+				</Select>
 
 				<Button
 					className="xl:col-start-2 xl:row-span-2 xl:row-start-1 font-medium"
 					size="lg"
-					disabled={constants == null || feedback?.state === "loading"}
+					disabled={
+						selectedSubject === null ||
+						constants == null ||
+						feedback?.state === "loading"
+					}
 					onClick={async () => {
+						if (selectedSubject === null) {
+							toast.error("Please select a subject");
+							return;
+						}
 						try {
-							await downloadAttendanceSheets();
-							toast.success("Downloading process started!");
+							toast.loading("Downloading process started!");
+							await downloadAttendanceSheets(selectedSubject).then(() => {
+								toast.dismiss();
+							});
 							setFeedback(null);
 						} catch (error) {
 							toast.error(
