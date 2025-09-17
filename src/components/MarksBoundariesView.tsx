@@ -121,7 +121,8 @@ export const MarksBoundariesView = () => {
 									</td>
 
 									{Object.entries(boundary).map(([key, value]) =>
-										!key.startsWith("for") || boundary.subjectId === null ? null : (
+										!key.startsWith("for") ||
+										boundary.subjectId === null ? null : (
 											<td key={boundary.subjectId.toString().concat(key)}>
 												<Input
 													type="number"

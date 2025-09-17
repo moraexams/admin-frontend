@@ -50,9 +50,7 @@ export default function StudentRegistrationsCountDistrictWise() {
 		{
 			accessorKey: "count_total",
 			cell: ({ row }) => (
-				<div className="text-bold tabular-nums">
-					{row.original.count_total}
-				</div>
+				<div className="text-bold tabular-nums">{row.original.count_total}</div>
 			),
 			header: ({ column }) => (
 				<Button
@@ -67,9 +65,7 @@ export default function StudentRegistrationsCountDistrictWise() {
 		{
 			accessorKey: "count_male",
 			cell: ({ row }) => (
-				<div className="text-bold tabular-nums">
-					{row.original.count_male}
-				</div>
+				<div className="text-bold tabular-nums">{row.original.count_male}</div>
 			),
 			header: ({ column }) => (
 				<Button
@@ -101,9 +97,7 @@ export default function StudentRegistrationsCountDistrictWise() {
 		{
 			accessorKey: "count_tamil",
 			cell: ({ row }) => (
-				<div className="text-bold tabular-nums">
-					{row.original.count_tamil}
-				</div>
+				<div className="text-bold tabular-nums">{row.original.count_tamil}</div>
 			),
 			header: ({ column }) => (
 				<Button
