@@ -22,9 +22,12 @@ export interface StudentRegistrationDetails {
 
 export const getStudentRegistrationDetails = async () => {
 	try {
-		const response = await axiosInstance.get<StudentRegistrationDetails>(
-			"/student-registration/details",
-		);
+		const response = await axiosInstance.get<
+			| StudentRegistrationDetails
+			| {
+					reason: "FORM_CLOSED";
+			  }
+		>("/student-registration/details");
 		return response.data;
 	} catch (error) {
 		console.error(error);

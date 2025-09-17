@@ -65,6 +65,14 @@ export default function ManualAdmissions() {
 	const fetchStudentRegistrationDetails = () => {
 		getStudentRegistrationDetails()
 			.then((data) => {
+				if ("reason" in data) {
+					if (data.reason === "FORM_CLOSED") {
+						toast.error("Student registration is currently closed.");
+					} else {
+						toast.error("Failed to fetch student registration details.");
+					}
+					return;
+				}
 				setStudentRegistrationDetails(data);
 			})
 			.catch((error) => {
