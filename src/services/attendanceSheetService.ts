@@ -17,16 +17,27 @@ export const generateAttendanceSheetPDFs = async () => {
 };
 
 export const downloadAttendanceSheets = async () => {
-	try {
-		const response = await axiosInstance.get("/attendance-sheet/download");
-		return response.data;
-	} catch (error) {
-		console.log(error);
-		if (error instanceof AxiosError) {
-			if (error.response?.data) {
-				throw new Error(error.response?.data.message);
-			}
-		}
-		throw "An error occurred while downloading attendance sheet zip file";
-	}
+  try {
+    const response = await axiosInstance.get("/attendance-sheet/download", {
+      responseType: "blob",
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "attendance_sheet_pdfs.zip");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    return true;
+  } catch (error) {
+    console.log(error);
+    if (error instanceof AxiosError) {
+      if (error.response?.data) {
+        throw new Error(error.response?.data.message);
+      }
+    }
+    throw "An error occurred while downloading attendance sheet zip file";
+  }
 };
