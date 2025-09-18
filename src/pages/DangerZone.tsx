@@ -1,3 +1,4 @@
+import DownloadCentreWiseNameList from "@/components/danger-zone.centre-wise-name-list";
 import { Button } from "@/components/ui/button";
 import {
 	Select,
@@ -244,6 +245,8 @@ const DangerZone = () => {
 					Download
 				</Button>
 			</section>
+
+			<DownloadCentreWiseNameList />
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
