@@ -66,6 +66,11 @@ export default function ManualAdmissions() {
 		getStudentRegistrationDetails()
 			.then((data) => {
 				if ("reason" in data) {
+					setStudentRegistrationDetails({
+						districts: [],
+						sitting_districts: [],
+						number_of_students: data.number_of_students,
+					});
 					if (data.reason === "FORM_CLOSED") {
 						toast.error("Student registration is currently closed.");
 					} else {

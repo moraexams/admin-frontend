@@ -26,6 +26,7 @@ export const getStudentRegistrationDetails = async () => {
 			| StudentRegistrationDetails
 			| {
 					reason: "FORM_CLOSED";
+					number_of_students: number;
 			  }
 		>("/student-registration/details");
 		return response.data;

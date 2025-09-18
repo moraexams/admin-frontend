@@ -130,7 +130,10 @@ export default function AddStudent(props: Props) {
 	return (
 		<Dialog onOpenChange={props.setOpen} open={props.open}>
 			<DialogTrigger
-				disabled={props.additionalDetails === null}
+				disabled={
+					props.additionalDetails === null ||
+					props.additionalDetails.districts.length === 0
+				}
 				onClick={() => props.setOpen(true)}
 				className="col-start-1 md:col-start-3 row-start-3 md:row-start-1 mt-2 md:row-span-full flex items-center gap-2 rounded bg-blue-600 px-3 py-2 h-fit text-white font-semibold hover:bg-blue-700 my-auto text-sm disabled:opacity-50 disabled:pointer-events-none"
 			>
