@@ -82,6 +82,7 @@ export default function Coordinators() {
 						<TableHead>ID</TableHead>
 						<TableHead>Name</TableHead>
 						<TableHead>Contact</TableHead>
+						<TableHead>Paid Student Registrations</TableHead>
 						<TableHead>Pending Student Registrations</TableHead>
 						<TableHead>Associated User</TableHead>
 						<TableHead className="text-right">Actions</TableHead>
@@ -93,6 +94,9 @@ export default function Coordinators() {
 							<TableCell>{coord.id}</TableCell>
 							<TableCell>{coord.name}</TableCell>
 							<TableCell>{coord.contact}</TableCell>
+							<TableCell>
+								{coord.paid_student_registrations || "-"}
+							</TableCell>
 							<TableCell>
 								{coord.pending_student_registrations || "-"}
 							</TableCell>

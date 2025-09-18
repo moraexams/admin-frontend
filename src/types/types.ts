@@ -43,6 +43,7 @@ export interface Coordinator {
 	associated_user_id?: number;
 	associated_user?: unknown | null;
 	contact: string;
+	paid_student_registrations: number;
 	pending_student_registrations: number;
 }
 
