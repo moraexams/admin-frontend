@@ -68,10 +68,27 @@ export const addStudent = async (
 	}
 };
 
-export const getStudentsByCoordinator = async () => {
+export const getUnpaidStudentsByCoordinator = async () => {
 	try {
 		const response = await axiosInstance.get<Array<TemporaryStudent>>(
 			"/coordinator/students",
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		if (error instanceof AxiosError) {
+			if (error.response?.data) {
+				throw new Error(error.response?.data.message);
+			}
+		}
+		throw "Error fetching students";
+	}
+};
+
+export const getRegisteredStudentsByCoordinator = async () => {
+	try {
+		const response = await axiosInstance.get<Array<TemporaryStudent>>(
+			"/coordinator/students/added",
 		);
 		return response.data;
 	} catch (error) {

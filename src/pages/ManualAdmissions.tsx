@@ -24,16 +24,16 @@ import {
 } from "@/services/authServices";
 import {
 	type StudentRegistrationDetails,
+	getRegisteredStudentsByCoordinator,
 	getStudentRegistrationDetails,
-	getStudentsByCoordinator,
 } from "@/services/manualAdmissionService";
 import { CurrencyFormatter } from "@/services/utils";
 import type { TemporaryStudent } from "@/types/manual-admissions";
 import type { LocalStorage_User } from "@/types/types";
-import { LogOut, Pen, Trash, User } from "lucide-react";
+import { ArrowRight, LogOut, Pen, Trash, User } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const STREAM_FEES = [
 	{ label: "Physical Science", fee: 600 },
@@ -108,7 +108,7 @@ export default function ManualAdmissions() {
 	}, []);
 
 	const fetchStudents = () => {
-		getStudentsByCoordinator()
+		getRegisteredStudentsByCoordinator()
 			.then((data) => {
 				setStudents(data);
 			})
@@ -147,27 +147,32 @@ export default function ManualAdmissions() {
 						</Button>
 					</div>
 
-					<div className="flex flex-wrap gap-4 mb-6">
-						{studentRegistrationDetails === null ? null : (
-							<Card className="gap-0 w-fit py-3">
-								<CardHeader className="px-3">
-									<CardTitle className="text-muted-foreground text-sm">
-										Total Admissions
-									</CardTitle>
-								</CardHeader>
-								<CardContent className="px-3">
-									<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
-										{numberOfStudents == 0
-											? "0"
-											: numberOfStudents.toString().padStart(2, "0")}
-									</div>
-								</CardContent>
-								<CardFooter className="w-fit px-3 text-pretty">
-									Number of students you registered.
-								</CardFooter>
-							</Card>
-						)}
-					</div>
+					{studentRegistrationDetails === null ? null : (
+						<div className="flex flex-wrap gap-4 mb-6">
+							<NavLink to="/coordinator/registered-students">
+								<Card className="gap-0 w-fit py-3">
+									<CardHeader className="flex justify-between px-3">
+										<CardTitle className="text-sm flex justify-between w-full items-center">
+											<span className="text-muted-foreground">
+												Total Admissions
+											</span>
+											<ArrowRight className="-translate-x-2 group-hover:translate-x-0 transition-transform ease-in-out" />
+										</CardTitle>
+									</CardHeader>
+									<CardContent className="px-3">
+										<div className="text-3xl font-semibold tabular-nums @[250px]/card:text-4xl">
+											{numberOfStudents == 0
+												? "0"
+												: numberOfStudents.toString().padStart(2, "0")}
+										</div>
+									</CardContent>
+									<CardFooter className="w-fit px-3 text-pretty">
+										Number of students you registered.
+									</CardFooter>
+								</Card>
+							</NavLink>
+						</div>
+					)}
 
 					<div className="flex flex-col md:flex-row gap-2">
 						<Card className="gap-0 w-full md:w-fit py-3">

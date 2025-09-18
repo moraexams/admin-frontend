@@ -38,6 +38,7 @@ import UnverifiedStudents from "./pages/Student/Registrations";
 import RejectedStudents from "./pages/Student/RejectedStudents";
 import StudentsCentreWise from "./pages/Student/StudentsCentreWise";
 import VerifiedStudents from "./pages/Student/VerifiedStudents";
+import StudentsAddedByCoordinator from "./pages/StudentsAddedByCoordinator";
 import Users from "./pages/Users";
 
 function App() {
@@ -359,6 +360,15 @@ function App() {
 						<>
 							<PageTitle title="Admissions | Mora Exams" />
 							<ManualAdmissions />
+						</>
+					}
+				/>
+				<Route
+					path="/coordinator/registered-students"
+					element={
+						<>
+							<PageTitle title="Registered Students | Mora Exams" />
+							<StudentsAddedByCoordinator />
 						</>
 					}
 				/>
