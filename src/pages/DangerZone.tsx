@@ -163,13 +163,6 @@ const DangerZone = () => {
 				<p className="text-lg mb-3 max-w-prose col-start-1">
 					Can be re-generate and download. After the verification process is
 					completed, generate the attendance sheets for the exam centres.{" "}
-					{feedback == null || feedback.state === "loading" ? null : (
-						<span
-							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
-						>
-							{feedback.message}
-						</span>
-					)}
 				</p>
 
 				<Button
@@ -202,13 +195,6 @@ const DangerZone = () => {
 				<p className="text-lg max-w-prose col-start-1">
 					After the generation of PDF process is completed, download the zip
 					file of attendance sheets for the exam centres.{" "}
-					{feedback == null || feedback.state === "loading" ? null : (
-						<span
-							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
-						>
-							{feedback.message}
-						</span>
-					)}
 				</p>
 				<Select
 					onValueChange={(value) => setSelectedSubject(value)}
@@ -267,13 +253,6 @@ const DangerZone = () => {
 					<b className="text-red-600 font-medium">IRREVERSIBLE</b>. After
 					setting the marks boundaries for each subject, finalize the results.
 					Then only the students can view their results.{" "}
-					{feedback == null || feedback.state === "loading" ? null : (
-						<span
-							className={`block ${feedback.state === "success" ? "text-green-500" : "text-red-500"}`}
-						>
-							{feedback.message}
-						</span>
-					)}
 				</p>
 
 				<Button
