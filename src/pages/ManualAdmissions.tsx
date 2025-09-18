@@ -24,8 +24,8 @@ import {
 } from "@/services/authServices";
 import {
 	type StudentRegistrationDetails,
-	getRegisteredStudentsByCoordinator,
 	getStudentRegistrationDetails,
+	getUnpaidStudentsByCoordinator,
 } from "@/services/manualAdmissionService";
 import { CurrencyFormatter } from "@/services/utils";
 import type { TemporaryStudent } from "@/types/manual-admissions";
@@ -108,7 +108,7 @@ export default function ManualAdmissions() {
 	}, []);
 
 	const fetchStudents = () => {
-		getRegisteredStudentsByCoordinator()
+		getUnpaidStudentsByCoordinator()
 			.then((data) => {
 				setStudents(data);
 			})
