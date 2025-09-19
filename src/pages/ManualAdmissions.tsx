@@ -210,7 +210,7 @@ export default function ManualAdmissions() {
 							</CardHeader>
 							<CardContent className="px-3">
 								<div className="text-xl tabular-nums @[250px]/card:text-4xl mb-2">
-									+94 77 573 2943
+									+94 70 431 5623
 								</div>
 							</CardContent>
 							<CardFooter className="w-fit px-3 text-sm text-pretty max-w-prose md:max-w-[38ch]">
