@@ -2,6 +2,7 @@ import {
 	ROLE_DISTRICTS_COORDINATOR,
 	ROLE_FINANCE_TEAM_MEMBER,
 	ROLE_TECH_COORDINATOR,
+	ROLE_TECH_TEAM_MEMBER,
 	ROLE_TREASURER,
 } from "@/common/roles";
 import { snakeCaseToNormalCase } from "@/common/utils";
@@ -46,6 +47,7 @@ import {
 	Map as MapIcon,
 	PanelLeftIcon,
 	User,
+	UserPlus,
 	UserX,
 	Users,
 	Wallet,
@@ -220,6 +222,15 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		icon: Users,
 		activePrefix: "/students",
 		links: [
+			{
+				type: "link",
+				title: "Add Students",
+				url: "/students/add",
+				icon: UserPlus,
+				hideIf: (role) =>
+				typeof role !== "string" || 
+				![ROLE_TECH_COORDINATOR, ROLE_TECH_TEAM_MEMBER].includes(role),
+			},
 			{
 				type: "link",
 				title: "Registrations",
