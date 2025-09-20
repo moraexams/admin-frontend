@@ -1,13 +1,12 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { Button } from "@/components/ui/button";
+import { getDistrictsWithCentres } from "@/services/districtService";
+import { getCenters } from "@/services/examCentreService";
+import { getStreams } from "@/services/streamServices";
+import { addStudent } from "@/services/studentService";
+import type { District, ExamCentre, Stream } from "@/types/types";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-// import Snackbar from "../../components/Snackbar";
-import { getDistrictsWithCentres } from "../../services/districtService";
-import { getCenters } from "../../services/examCentreService";
-import { getStreams } from "../../services/streamServices";
-import { addStudent } from "../../services/studentService";
-// import type { SnackBarConfig } from "../../types/snackbar";
-import type { District, ExamCentre, Stream } from "../../types/types";
 
 const AddStudent = () => {
 	const [name, setName] = useState<string>("");
@@ -113,18 +112,6 @@ const AddStudent = () => {
 		setCenters();
 	}, [examDistrictId]);
 
-	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-	// 	message: "",
-	// 	type: false,
-	// 	show: false,
-	// });
-
-	// const showSnackBar = (type: boolean, message: string) => {
-	// 	setSnackBarConfig({ message: message, type: type, show: true });
-	// 	setTimeout(() => {
-	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
-	// 	}, 1000);
-	// };
 	return (
 		<>
 			<Breadcrumb pageName="Add Student" />
@@ -331,8 +318,6 @@ const AddStudent = () => {
 					</Button>
 				</div>
 			</div>
-
-			{/* <Snackbar config={snackBarConfig} /> */}
 		</>
 	);
 };
