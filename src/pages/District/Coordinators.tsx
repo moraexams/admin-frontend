@@ -94,9 +94,7 @@ export default function Coordinators() {
 							<TableCell>{coord.id}</TableCell>
 							<TableCell>{coord.name}</TableCell>
 							<TableCell>{coord.contact}</TableCell>
-							<TableCell>
-								{coord.paid_student_registrations || "-"}
-							</TableCell>
+							<TableCell>{coord.paid_student_registrations || "-"}</TableCell>
 							<TableCell>
 								{coord.pending_student_registrations || "-"}
 							</TableCell>

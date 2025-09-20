@@ -326,11 +326,7 @@ const AddStudent = () => {
 					</div>
 				</div>
 				<div className="w-full px-3 pt-4">
-					<Button
-						variant={"outline"}
-						onClick={handleSubmit}
-						className="centre"
-					>
+					<Button variant={"outline"} onClick={handleSubmit} className="centre">
 						Add Student
 					</Button>
 				</div>
