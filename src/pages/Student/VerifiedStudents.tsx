@@ -1,10 +1,12 @@
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import {Input} from "@/components/ui/input";
 import { dateTimeFormatter } from "@/lib/utils";
 import { getVerifiedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
 import type { Student } from "@/types/types";
+
 import {
 	type ColumnDef,
 	type SortingState,
@@ -173,6 +175,7 @@ export default function VerifiedStudents() {
 	const [pageCount, setPageCount] = useState<number>(-1); // total pages
 
 	const [sorting, setSorting] = useState<SortingState>([]);
+	const [search, setSearch] = useState("");
 	const table = useReactTable({
 		data: verifiedStudents,
 		columns,
@@ -186,17 +189,21 @@ export default function VerifiedStudents() {
 			pagination,
 		},
 		manualPagination: true,
+		manualFiltering: true,
 		onPaginationChange: setPagination,
 	});
+
+	const [searchInput,setSearchInput] = useState<string>("");
 
 	const fetchVerifiedStudents = useCallback(async () => {
 		const tableState = table.getState();
 		const page = tableState.pagination.pageIndex + 1;
 		const itemsPerPage = tableState.pagination.pageSize;
 		toast.loading("Loading...");
+		const searchParam = search ? `&search=nic:${search}` : "";
 
 		return Promise.allSettled([
-			getVerifiedStudents(page, itemsPerPage),
+			getVerifiedStudents(page, itemsPerPage, searchParam),
 			createTimer(500),
 		])
 			.then((hu) => {
@@ -217,15 +224,40 @@ export default function VerifiedStudents() {
 			.finally(() => {
 				toast.dismiss();
 			});
-	}, [table]);
+	}, [table,search]);
 
 	useEffect(() => {
 		fetchVerifiedStudents();
-	}, [fetchVerifiedStudents, pagination]);
+	}, [fetchVerifiedStudents, pagination, sorting, search]);
+
+	useEffect(() => {
+		const handler = setTimeout(() => {
+			setSearch(searchInput);
+			setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+		}, 500);
+		return () => clearTimeout(handler);
+	}, [searchInput]);
 
 	return (
 		<>
 			<Breadcrumb pageName="Verified Students" />
+			<div className="grid grid-cols-2 grid-rows-2 gap-x-4">
+				<p className="mb-4 max-w-prose">
+					In the below table, you can view and manage student registration
+					records. You can search students by NIC.
+				</p>
+			
+				<div className="col-start-2 row-start-1 row-span-full">
+					<h2 className="text-xl font-medium mb-2">Search by NIC</h2>
+					<Input
+						type="text"
+						placeholder="Search..."
+						className="max-w-[320px] border p-2 rounded"
+						value={searchInput}
+						onChange={(e) => setSearchInput(e.target.value)}
+					/>
+				</div>
+			</div>
 			<PageTitle title="Verified Students | Mora Exams" />
 			<DataTable table={table} />
 			{/* <ViewTempStudent

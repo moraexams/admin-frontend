@@ -248,12 +248,13 @@ export const getStudentMarksByCentre = async (
 export const getVerifiedStudents = async (
 	page: number,
 	itemsPerPage: number,
+	searchParam= ""
 ) => {
 	try {
 		const response = await axiosInstance.get<{
 			count: number;
 			students: Array<Student>;
-		}>(`/student?page=${page}&pageSize=${itemsPerPage}`);
+		}>(`/student?page=${page}&pageSize=${itemsPerPage}${searchParam}`);
 		return response.data;
 	} catch (error) {
 		console.log("Error fetching students: ");
