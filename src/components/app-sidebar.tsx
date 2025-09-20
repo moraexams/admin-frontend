@@ -222,15 +222,15 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		icon: Users,
 		activePrefix: "/students",
 		links: [
-			// {
-			// 	type: "link",
-			// 	title: "Add Students",
-			// 	url: "/students/add",
-			// 	icon: UserPlus,
-			// 	hideIf: (role) =>
-			// 	typeof role !== "string" || 
-			// 	![ROLE_TECH_COORDINATOR, ROLE_TECH_TEAM_MEMBER].includes(role),
-			// },
+			{
+				type: "link",
+				title: "Add Students",
+				url: "/students/add",
+				icon: UserPlus,
+				hideIf: (role) =>
+					typeof role !== "string" ||
+					![ROLE_TECH_COORDINATOR, ROLE_TECH_TEAM_MEMBER].includes(role),
+			},
 			{
 				type: "link",
 				title: "Registrations",
