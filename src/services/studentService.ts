@@ -248,7 +248,7 @@ export const getStudentMarksByCentre = async (
 export const getVerifiedStudents = async (
 	page: number,
 	itemsPerPage: number,
-	searchParam= ""
+	searchParam = "",
 ) => {
 	try {
 		const response = await axiosInstance.get<{

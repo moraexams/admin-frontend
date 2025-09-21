@@ -1,7 +1,7 @@
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { dateTimeFormatter } from "@/lib/utils";
 import { getVerifiedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
@@ -21,9 +21,9 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 
 export default function VerifiedStudents() {
 	const [verifiedStudents, setVerifiedStudents] = useState<Array<Student>>([]);
-	const [selectedVerifiedStudent, setSelectedVerifiedStudent] =
-		useState<Student | null>(null);
-	const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
+	// const [selectedVerifiedStudent, setSelectedVerifiedStudent] =
+	// 	useState<Student | null>(null);
+	// const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
 
 	const columns: Array<ColumnDef<Student>> = [
 		{
@@ -193,14 +193,16 @@ export default function VerifiedStudents() {
 		onPaginationChange: setPagination,
 	});
 
-	const [searchInput,setSearchInput] = useState<string>("");
+	const [searchInput, setSearchInput] = useState<string>("");
 
 	const fetchVerifiedStudents = useCallback(async () => {
 		const tableState = table.getState();
 		const page = tableState.pagination.pageIndex + 1;
 		const itemsPerPage = tableState.pagination.pageSize;
 		toast.loading("Loading...");
-		const searchParam = search ? `&search=nic:${search}` : "";
+		const searchParam = search
+			? `&search=nic:${search}&search=index_no:${search}`
+			: "";
 
 		return Promise.allSettled([
 			getVerifiedStudents(page, itemsPerPage, searchParam),
@@ -224,7 +226,7 @@ export default function VerifiedStudents() {
 			.finally(() => {
 				toast.dismiss();
 			});
-	}, [table,search]);
+	}, [table, search]);
 
 	useEffect(() => {
 		fetchVerifiedStudents();
@@ -246,9 +248,11 @@ export default function VerifiedStudents() {
 					In the below table, you can view and manage student registration
 					records. You can search students by NIC.
 				</p>
-			
+
 				<div className="col-start-2 row-start-1 row-span-full">
-					<h2 className="text-xl font-medium mb-2">Search by NIC</h2>
+					<h2 className="text-xl font-medium mb-2">
+						Search by NIC or Index No.
+					</h2>
 					<Input
 						type="text"
 						placeholder="Search..."
