@@ -85,6 +85,36 @@ export default function CentreWiseVerifiedStudents() {
 			),
 		},
 		{
+			accessorKey: "count_tm",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">{row.original.count_tm}</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					TM
+				</Button>
+			),
+		},
+		{
+			accessorKey: "count_em",
+			cell: ({ row }) => (
+				<div className="text-bold tabular-nums">{row.original.count_em}</div>
+			),
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					EM
+				</Button>
+			),
+		},
+		{
 			accessorKey: "count_tm_male",
 			cell: ({ row }) => (
 				<div className="text-bold tabular-nums">

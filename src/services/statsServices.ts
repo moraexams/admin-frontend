@@ -128,6 +128,8 @@ export interface CentreWiseVerifiedStudentsCount {
 	id: number;
 	name: string;
 	count_total: number;
+	count_tm: number;
+	count_em: number;
 	count_tm_male: number;
 	count_tm_female: number;
 	count_em_male: number;
