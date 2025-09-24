@@ -268,9 +268,9 @@ function App() {
 						path="/stats/student-registrations/centre-wise"
 						element={
 							<>
-								<StudentRegistrationsCountCentreWise />
-							</>
-						}
+					<Route
+						path="/stats/students/centre-wise"
+						element={<CentreWiseVerifiedStudents />}
 					/>
 					<Route
 						path="/finance/dashboard"

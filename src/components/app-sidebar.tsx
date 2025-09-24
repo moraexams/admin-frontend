@@ -143,6 +143,12 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		links: [
 			{
 				type: "link",
+				title: "Centre Wise Students",
+				url: "/stats/students/centre-wise",
+				icon: MapIcon,
+			},
+			{
+				type: "link",
 				title: "Entered Marks",
 				url: "/stats/enteredmarks",
 				icon: BookOpen,

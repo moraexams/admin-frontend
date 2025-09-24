@@ -123,3 +123,29 @@ export const getCentreWiseTempStudentCounts = async () => {
 		throw error;
 	}
 };
+
+export interface CentreWiseVerifiedStudentsCount {
+	id: number;
+	name: string;
+	count_total: number;
+	count_tm_male: number;
+	count_tm_female: number;
+	count_em_male: number;
+	count_em_female: number;
+	district_name: string;
+}
+
+export const getCentreWiseStudentsPerSubject = async (subjectId: number) => {
+	try {
+		const response = await axiosInstance.get<{
+			centres: Array<CentreWiseVerifiedStudentsCount>;
+		}>(`/stats/students/centre-wise/${subjectId}`);
+		return response.data;
+	} catch (error) {
+		console.error("Error getting centre wise student counts:", error);
+		if (error instanceof AxiosError && error.response) {
+			throw error.response.data.message;
+		}
+		throw error;
+	}
+};
