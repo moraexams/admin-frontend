@@ -1,10 +1,19 @@
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Label } from "@/components/ui/label";
 import {
-	getCentreWiseStudentsPerSubject,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
 	type CentreWiseVerifiedStudentsCount,
+	getCentreWiseStudentsPerSubject,
 } from "@/services/statsServices";
+import { createTimer } from "@/services/utils";
 import {
 	type ColumnDef,
 	type SortingState,
@@ -16,15 +25,6 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { createTimer } from "@/services/utils";
 
 export default function CentreWiseVerifiedStudents() {
 	const [centreWiseStats, setCentreWiseStats] = useState<

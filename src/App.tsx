@@ -30,6 +30,7 @@ import EnterMarks from "./pages/Marks/EnterMarks";
 import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
 import VerifyMarks from "./pages/Marks/VerifyMarks";
+import CentreWiseVerifiedStudents from "./pages/Stats/CentreWiseStudentsCount";
 import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
 import StudentRegistrationsCountCentreWise from "./pages/Stats/StudentRegistrationsCentreWise";
 import StudentRegistrationsCountDistrictWise from "./pages/Stats/StudentRegistrationsDistrictWise";
@@ -189,28 +190,10 @@ function App() {
 					/>
 					<Route
 						path="/students/registrations"
-						element={
-							<>
-								<UnverifiedStudents />
-							</>
-						}
+						element={<UnverifiedStudents />}
 					/>
-					<Route
-						path="/students/verified"
-						element={
-							<>
-								<VerifiedStudents />
-							</>
-						}
-					/>
-					<Route
-						path="/students/rejected"
-						element={
-							<>
-								<RejectedStudents />
-							</>
-						}
-					/>
+					<Route path="/students/verified" element={<VerifiedStudents />} />
+					<Route path="/students/rejected" element={<RejectedStudents />} />
 					<Route
 						path="/marks"
 						element={
@@ -258,16 +241,12 @@ function App() {
 					/>
 					<Route
 						path="/stats/student-registrations/district-wise"
-						element={
-							<>
-								<StudentRegistrationsCountDistrictWise />
-							</>
-						}
+						element={<StudentRegistrationsCountDistrictWise />}
 					/>
 					<Route
 						path="/stats/student-registrations/centre-wise"
-						element={
-							<>
+						element={<StudentRegistrationsCountCentreWise />}
+					/>
 					<Route
 						path="/stats/students/centre-wise"
 						element={<CentreWiseVerifiedStudents />}

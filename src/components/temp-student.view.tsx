@@ -175,6 +175,7 @@ export default function ViewTempStudent({
 					<div className="flex">
 						<p
 							className="max-w-[48ch] text-muted-foreground"
+							// biome-ignore lint/security/noDangerouslySetInnerHtml: whatev
 							dangerouslySetInnerHTML={{
 								__html: `${
 									selectedTempStudent.checked_by !== null
@@ -190,13 +191,13 @@ export default function ViewTempStudent({
 							variant="destructive"
 							title={
 								isLoading
-									? `Loading...`
+									? "Loading..."
 									: selectedTempStudent.checked_by !== null
-										? `This student has already been verified.`
+										? "This student has already been verified."
 										: selectedTempStudent.rejected_by !== null
-											? `This student has already been rejected.`
+											? "This student has already been rejected."
 											: rejectionReason.trim() !== ""
-												? `You cannot reject without a reason.`
+												? "You cannot reject without a reason."
 												: `Verify this student's details and payment.`
 							}
 							disabled={
@@ -214,13 +215,13 @@ export default function ViewTempStudent({
 							onClick={onVerify}
 							title={
 								isLoading
-									? `Loading...`
+									? "Loading..."
 									: selectedTempStudent.checked_by !== null
-										? `This student has already been verified.`
+										? "This student has already been verified."
 										: selectedTempStudent.rejected_by !== null
-											? `This student has already been rejected.`
+											? "This student has already been rejected."
 											: rejectionReason.trim() !== ""
-												? `You have included a reason for rejection.`
+												? "You have included a reason for rejection."
 												: `Verify this student's details and payment.`
 							}
 							disabled={
