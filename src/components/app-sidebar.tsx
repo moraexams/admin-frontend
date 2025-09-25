@@ -379,6 +379,7 @@ export function AppSidebar() {
 										<CollapsibleContent>
 											<SidebarMenuSub>
 												{item.links.map((link) => (
+													link?.hideIf?.(role) ? null : (	
 													<SidebarMenuSubItem key={link.title}>
 														<SidebarMenuSubButton
 															asChild
@@ -390,7 +391,7 @@ export function AppSidebar() {
 															</NavLink>
 														</SidebarMenuSubButton>
 													</SidebarMenuSubItem>
-												))}
+												)))}
 											</SidebarMenuSub>
 										</CollapsibleContent>
 									</SidebarMenuItem>
