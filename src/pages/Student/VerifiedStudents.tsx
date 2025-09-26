@@ -2,10 +2,9 @@ import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
-import { dateTimeFormatter } from "@/lib/utils";
 import { getVerifiedStudents } from "@/services/studentService";
 import { createTimer } from "@/services/utils";
-import type { Student } from "@/types/types";
+import type { VerifiedStudent } from "@/types/types";
 
 import {
 	type ColumnDef,
@@ -20,12 +19,14 @@ import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 
 export default function VerifiedStudents() {
-	const [verifiedStudents, setVerifiedStudents] = useState<Array<Student>>([]);
+	const [verifiedStudents, setVerifiedStudents] = useState<
+		Array<VerifiedStudent>
+	>([]);
 	// const [selectedVerifiedStudent, setSelectedVerifiedStudent] =
 	// 	useState<Student | null>(null);
 	// const [action, setAction] = useState<"edit" | "delete" | "view" | null>(null);
 
-	const columns: Array<ColumnDef<Student>> = [
+	const columns: Array<ColumnDef<VerifiedStudent>> = [
 		{
 			accessorKey: "index_no",
 			header: ({ column }) => (
@@ -63,6 +64,18 @@ export default function VerifiedStudents() {
 			),
 		},
 		{
+			accessorKey: "stream",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className=" px-0"
+				>
+					Stream
+				</Button>
+			),
+		},
+		{
 			accessorKey: "gender",
 			header: ({ column }) => (
 				<Button
@@ -86,54 +99,39 @@ export default function VerifiedStudents() {
 				</Button>
 			),
 		},
-		// {
-		// 	accessorKey: "rank_district",
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			className="px-0"
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 		>
-		// 			Rank District
-		// 		</Button>
-		// 	),
-		// },
-		// {
-		// 	accessorKey: "exam_district",
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			className="px-0"
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 		>
-		// 			Exam District
-		// 		</Button>
-		// 	),
-		// },
-		// {
-		// 	accessorKey: "exam_centre",
-		// 	header: ({ column }) => (
-		// 		<Button
-		// 			className="px-0"
-		// 			variant="ghost"
-		// 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-		// 		>
-		// 			Exam Centre
-		// 		</Button>
-		// 	),
-		// },
 		{
-			id: "created_at",
-			accessorFn: (row) => {
-				return dateTimeFormatter.format(new Date(row.checked_at));
-			},
+			accessorKey: "rank_district",
 			header: ({ column }) => (
 				<Button
+					className="px-0"
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className=" px-0"
 				>
-					Verified At
+					Rank District
+				</Button>
+			),
+		},
+		{
+			accessorKey: "exam_district",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Exam District
+				</Button>
+			),
+		},
+		{
+			accessorKey: "exam_centre",
+			header: ({ column }) => (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Exam Centre
 				</Button>
 			),
 		},
@@ -228,6 +226,7 @@ export default function VerifiedStudents() {
 			});
 	}, [table, search]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: it's ok
 	useEffect(() => {
 		fetchVerifiedStudents();
 	}, [fetchVerifiedStudents, pagination, sorting, search]);

@@ -1,5 +1,5 @@
 import type { TemporaryStudent } from "@/types/manual-admissions";
-import type { Student } from "@/types/types";
+import type { VerifiedStudent } from "@/types/types";
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
@@ -253,7 +253,7 @@ export const getVerifiedStudents = async (
 	try {
 		const response = await axiosInstance.get<{
 			count: number;
-			students: Array<Student>;
+			students: Array<VerifiedStudent>;
 		}>(`/student?page=${page}&pageSize=${itemsPerPage}${searchParam}`);
 		return response.data;
 	} catch (error) {

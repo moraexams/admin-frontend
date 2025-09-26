@@ -47,6 +47,17 @@ export interface Coordinator {
 	pending_student_registrations: number;
 }
 
+export interface VerifiedStudent {
+	index_no: string;
+	name: string;
+	stream: string;
+	medium: string;
+	rank_district: string;
+	exam_district: string;
+	exam_centre: string;
+	nic: string;
+}
+
 export interface Student {
 	index_no: string;
 	name: string;
