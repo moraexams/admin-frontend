@@ -378,20 +378,21 @@ export function AppSidebar() {
 										</CollapsibleTrigger>
 										<CollapsibleContent>
 											<SidebarMenuSub>
-												{item.links.map((link) => (
-													link?.hideIf?.(role) ? null : (	
-													<SidebarMenuSubItem key={link.title}>
-														<SidebarMenuSubButton
-															asChild
-															isActive={link.url === window.location.pathname}
-														>
-															<NavLink to={link.url}>
-																<link.icon size={25} className="size-40" />
-																<span>{link.title}</span>
-															</NavLink>
-														</SidebarMenuSubButton>
-													</SidebarMenuSubItem>
-												)))}
+												{item.links.map((link) =>
+													link?.hideIf?.(role) ? null : (
+														<SidebarMenuSubItem key={link.title}>
+															<SidebarMenuSubButton
+																asChild
+																isActive={link.url === window.location.pathname}
+															>
+																<NavLink to={link.url}>
+																	<link.icon size={25} className="size-40" />
+																	<span>{link.title}</span>
+																</NavLink>
+															</SidebarMenuSubButton>
+														</SidebarMenuSubItem>
+													),
+												)}
 											</SidebarMenuSub>
 										</CollapsibleContent>
 									</SidebarMenuItem>

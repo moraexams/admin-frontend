@@ -14,16 +14,14 @@ export const getMarkbyIndexNo = async (index_no: number) => {
 	}
 };
 
-export const getStudentMarksData = async (index_no: number) => {
-	if (index_no >= 110000) {
-		try {
-			const response = await axiosInstance.get(`/mark/check/${index_no}`);
-			return response.data;
-		} catch (error) {
-			console.log(`Error fetching mark: ${error}`);
-			return null;
-		}
-	}
+export const getStudentMarksData = async (
+	index_no: string,
+	subjectCode: string,
+) => {
+	const response = await axiosInstance.get(
+		`/mark/check/${subjectCode}/${index_no}`,
+	);
+	return response.data;
 };
 
 export const getStudentVerificationMarksData = async (
@@ -64,17 +62,18 @@ export const verifyMark = async (
 };
 
 export const enterMark = async (
-	index_no: number,
+	index_no: string,
 	subject: string,
 	part: string,
 	marks: number,
 ) => {
 	try {
-		const response = await axiosInstance.put(`/mark/enter/${index_no}`, {
-			subject,
-			part,
-			marks,
-		});
+		const response = await axiosInstance.put(
+			`/mark/enter/${subject}/${part}/${index_no}`,
+			{
+				marks,
+			},
+		);
 		console.log("Response:", response);
 	} catch (error) {
 		if (error instanceof AxiosError) {

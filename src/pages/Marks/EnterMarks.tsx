@@ -1,339 +1,274 @@
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { createTimer } from "@/services/utils";
+import { AxiosError } from "axios";
+import { ChevronLeft, ChevronRight, Info } from "lucide-react";
 import { useEffect, useState } from "react";
-// import type { SnackBarConfig } from "../../types/snackbar";
 import toast from "react-hot-toast";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-// import Snackbar from "../../components/Snackbar";
 import { enterMark, getStudentMarksData } from "../../services/markservices";
 
+const SUBJECTS = {
+	"1": "Physics",
+	"2": "Chemistry",
+	"3": "Bio",
+	"4": "Combined Maths",
+	"5": "ICT",
+};
+
+function isValidSubjectId(
+	subjectId: string | null,
+): subjectId is keyof typeof SUBJECTS {
+	return subjectId !== null && Object.keys(SUBJECTS).includes(subjectId);
+}
+
 const EnterMarks = () => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
+	const navigate = useNavigate();
 
-	// Default values
-	const defaultSubject = "s1";
-	const defaultPart = "p1";
+	const subject = searchParams.get("subject");
+	const part = searchParams.get("part");
+	const indexNoParam = searchParams.get("index_no");
 
-	// Set state for subject and part
-	const [selectDisabled, setSelectDisabled] = useState(true);
-	const subjects = ["s1", "s2", "s3"];
-	const parts = ["p1", "p2"];
-
-	const [subject, setSubject] = useState(
-		searchParams.get("subject") || defaultSubject,
+	const [indexNo, setIndexNo] = useState<string>(
+		indexNoParam !== null ? indexNoParam : "",
 	);
-	const [part, setPart] = useState(searchParams.get("part") || defaultPart);
+	const [studentDetails, setStudentDetails] = useState<
+		| {
+				name: string;
+				nic: string;
+				medium: string;
+		  }
+		| undefined
+	>(undefined);
+	const [mark, setMark] = useState<number | undefined>(undefined);
 
-	const [indexNo, setIndexNo] = useState<number>(
-		Number(searchParams.get("index_no")) || 0,
+	const [submitDisabled, setSubmitDisabled] = useState(
+		subject === null || part === null || indexNo.length != 7,
 	);
-	const [name, setName] = useState<string>("");
-	const [stream, setStream] = useState<string>("");
-	const [centre, setCentre] = useState<string>("");
-	const [mark, setMark] = useState<number | null>(null);
-
-	const [submitDisabled, setSubmitDisabled] = useState(true);
-
-	// Update URL query params when component mounts or when subject/part state changes
-	useEffect(() => {
-		if (!searchParams.get("subject") || !searchParams.get("part")) {
-			// Update URL if the query parameters are not present
-			setSearchParams({ subject, part });
-		}
-		if (!subjects.includes(subject) || !parts.includes(part)) {
-			// Update URL if the query parameters are invalid
-			setSearchParams({ subject: defaultSubject, part: defaultPart });
-			setSubject(defaultSubject);
-			setPart(defaultPart);
-		}
-	}, [subject, part, searchParams, setSearchParams]);
-
-	// Handle changes in the subject select
-	const handleSubjectChange = (event: { target: { value: any } }) => {
-		const newSubject = event.target.value;
-		setSubject(newSubject);
-		setSearchParams({ subject: newSubject, part });
-	};
-
-	// Handle changes in the part select
-	const handlePartChange = (event: { target: { value: any } }) => {
-		const newPart = event.target.value;
-		setPart(newPart);
-		setSearchParams({ subject, part: newPart });
-	};
 
 	const handleSubmit = async () => {
-		// if (indexNo > 200000000000) {
-		// 	toast.error("Invalid Index No");
-		// 	// showSnackBar(false, "Invalid Index No");
-		// 	return;
-		// }
+		if (subject === null || part === null) {
+			toast.error("Please select subject and part");
+			return;
+		}
 		if (mark) {
 			if (mark < 0 || mark > 100) {
 				toast.error("Invalid Mark");
-				// showSnackBar(false, "Invalid Mark");
 				return;
 			}
 		} else {
 			if (mark !== 0) {
 				toast.error("Invalid Mark");
-
-				// showSnackBar(false, "Invalid Mark");
 				return;
 			}
 		}
 
-		// Call the API to add the mark
 		await enterMark(indexNo, subject, part, mark)
 			.then(() => {
 				toast.success("Mark Added Successfully");
-				// showSnackBar(true, "Mark Added Successfully");
+				setMark(undefined);
 			})
 			.catch((error) => {
 				toast.error(error);
-				// showSnackBar(false, error);
 			});
 	};
 
-	const setContent = (message: string) => {
-		setName(message);
-		setCentre(message);
-		setStream(message);
-		setMark(null);
-		setSubmitDisabled(true);
-	};
-
 	useEffect(() => {
-		setContent("Loading...");
-		setSearchParams({ subject, part, index_no: String(indexNo) });
-		const fetchData = async () => {
-			// if (indexNo < 110000 || indexNo > 360000) {
-			// 	setContent("Invalid Index No");
-			// 	return;
-			// }
-			const studentMarks = await getStudentMarksData(indexNo);
-			if (studentMarks) {
-				setName(studentMarks.name);
-				setStream(studentMarks.stream);
-				setCentre(studentMarks.centre);
-				setSubmitDisabled(false);
-				if (
-					studentMarks[`${subject}_${part}`] ||
-					studentMarks[`${subject}_${part}`] === 0
-				) {
-					setMark(studentMarks[`${subject}_${part}`]);
-					console.log(studentMarks[`${subject}_${part}`]);
-				}
-			} else {
-				setContent("Student Not Found");
-			}
-		};
+		setStudentDetails(undefined);
+		if (indexNo.length !== 7 || !isValidSubjectId(subject) || part === null) {
+			setSubmitDisabled(true);
+			return;
+		}
 
-		fetchData();
+		toast.loading("Loading...");
+
+		Promise.allSettled([
+			getStudentMarksData(indexNo, subject),
+			createTimer(500),
+		])
+			.then((d) => {
+				toast.dismiss();
+				if (d[0].status === "fulfilled") {
+					const studentMarks = d[0].value;
+					setStudentDetails(studentMarks);
+					setSubmitDisabled(false);
+					if (
+						studentMarks[`${subject}_${part}`] ||
+						studentMarks[`${subject}_${part}`] === 0
+					) {
+						setMark(studentMarks[`${subject}_${part}`]);
+					}
+				} else if (
+					d[0].status === "rejected" &&
+					d[0].reason instanceof AxiosError &&
+					d[0].reason.response
+				) {
+					toast.error(
+						d[0].reason.response.data.message ||
+							"Error fetching student details",
+					);
+				}
+			})
+			.catch((e) => {
+				console.log(e);
+				toast.dismiss();
+				toast.error("Error fetching student details");
+			});
 	}, [indexNo, subject, part]);
 
-	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-	// 	message: "",
-	// 	type: false,
-	// 	show: false,
-	// });
+	useEffect(() => {
+		if (!isValidSubjectId(subject)) {
+			navigate("/marks");
+			return;
+		}
+		if (part === null || !["p1", "p2"].includes(part)) {
+			navigate("/marks");
+			return;
+		}
+	}, [subject, part]);
 
-	// const showSnackBar = (type: boolean, message: string) => {
-	// 	setSnackBarConfig({ message: message, type: type, show: true });
-	// 	setTimeout(() => {
-	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
-	// 	}, 1000);
-	// };
+	if (
+		!isValidSubjectId(subject) ||
+		part === null ||
+		!["p1", "p2"].includes(part)
+	) {
+		return (
+			<>
+				<Breadcrumb pageName="Enter Marks" />
+				<Alert variant="destructive" className="text-base">
+					<Info />
+					<AlertTitle>Invalid Subject or Part. Please select again.</AlertTitle>
+				</Alert>
+			</>
+		);
+	}
 
 	return (
 		<>
 			<Breadcrumb pageName="Enter Marks" />
-			<div className="w-full rounded-lg bg-white px-8 py-6 mt-6 dark:bg-boxdark md:px-17.5 md:py-8">
-				<div>
-					<div className="flex flex-wrap gap-x-4">
-						<div className="mb-5.5">
-							<select
-								className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-								name="subject"
-								value={subject}
-								onChange={handleSubjectChange}
-								disabled={selectDisabled}
-							>
-								<option value="s1">Math/Bio</option>
-								<option value="s2">Physics</option>
-								<option value="s3">Che/ICT</option>
-							</select>
-						</div>
-						<div className="mb-5.5">
-							<select
-								className="rounded border border-stroke bg-white py-3 px-4.5 text-black focus:border-primary focus-visible:outline-hidden dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-								name="part"
-								value={part}
-								onChange={handlePartChange}
-								disabled={selectDisabled}
-							>
-								<option value="p1">I</option>
-								<option value="p2">II</option>
-							</select>
-						</div>
 
-						<div className="mb-6">
-							<button
-								onClick={() => setSelectDisabled(!selectDisabled)}
-								className="block rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
-							>
-								{selectDisabled ? (
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										strokeWidth={1.5}
-										stroke="currentColor"
-										className="size-6"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-										/>
-									</svg>
-								) : (
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										strokeWidth={1.5}
-										stroke="currentColor"
-										className="size-6"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-										/>
-									</svg>
-								)}
-							</button>
-						</div>
-					</div>
-					<div className="mb-4.5">
-						<input
-							disabled
-							type="text"
-							value={name}
-							placeholder="Student Name"
-							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:disabled:bg-slate-400 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-						/>
-						<input
-							disabled
-							type="text"
-							value={stream}
-							placeholder="Student Stream"
-							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:disabled:bg-slate-400 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-						/>
-						<input
-							disabled
-							type="text"
-							value={centre}
-							placeholder="Student Centre"
-							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:disabled:bg-slate-400 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-						/>
-					</div>
-					<div className="mb-4.5">
-						<label className="mb-2.5 block text-black dark:text-white">
-							Index No <span className="text-meta-1">*</span>
-						</label>
-						<input
+			<Alert variant="default" className="text-base">
+				<Info className="1lh" />
+				<AlertTitle className="overflow-visible h-auto block">
+					You are entering marks for{" "}
+					<b className="font-bold text-xl block">
+						{SUBJECTS[subject]} {part === "p1" ? "Part 1" : "Part 2"}
+					</b>
+				</AlertTitle>
+			</Alert>
+
+			<section className="flex flex-col gap-2 mt-5 mx-auto">
+				<div>
+					<Label className="mb-2">Index No</Label>
+					<div className="flex gap-2 h-12">
+						<Input
 							type="text"
 							value={indexNo}
-							onChange={(e) => setIndexNo(Number(e.target.value))}
-							placeholder="Enter Index No"
-							inputMode="numeric"
-							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							className="!h-12 !text-2xl"
+							onChange={(e) => setIndexNo(e.target.value)}
+							tabIndex={1}
+						/>
+
+						<Button
+							variant="outline"
+							className="h-full w-12"
+							tabIndex={3}
+							disabled={indexNo.length !== 7}
+							onClick={() => {
+								setIndexNo((Number.parseInt(indexNo) - 1).toString());
+							}}
+						>
+							<ChevronLeft className="size-5" />
+						</Button>
+						<Button
+							variant="outline"
+							className="h-full w-12 tabular-nums"
+							tabIndex={4}
+							disabled={indexNo.length !== 7}
+							onClick={() => {
+								setIndexNo((Number.parseInt(indexNo) + 1).toString());
+							}}
+						>
+							<ChevronRight className="size-5" />
+						</Button>
+					</div>
+				</div>
+
+				<p className="text-muted-foreground max-w-prose">
+					After entering the index no, the student details will be fetched
+					automatically and shown below.
+				</p>
+
+				<div className="mt-5">
+					<Label className="mb-1">Name</Label>
+					<Input
+						tabIndex={-1}
+						type="text"
+						readOnly
+						className="cursor-not-allowed pointer-events-none !h-fit !text-lg"
+						value={studentDetails === undefined ? "" : studentDetails.name}
+					/>
+				</div>
+
+				<div className="grid grid-cols-2 gap-3 mt-2">
+					<div>
+						<Label className="mb-1">NIC</Label>
+						<Input
+							tabIndex={-1}
+							type="text"
+							readOnly
+							className="cursor-not-allowed pointer-events-none !h-fit tabular-nums !text-lg"
+							value={studentDetails === undefined ? "" : studentDetails.nic}
 						/>
 					</div>
-					<div className="mb-4.5">
-						<label className="mb-2.5 block text-black dark:text-white">
-							Marks <span className="text-meta-1">*</span>
-						</label>
-						<input
+					<div>
+						<Label className="mb-1">Medium</Label>
+						<Input
+							tabIndex={-1}
+							type="text"
+							readOnly
+							className="cursor-not-allowed pointer-events-none !h-fit !text-lg"
+							value={studentDetails === undefined ? "" : studentDetails.medium}
+						/>
+					</div>
+				</div>
+
+				<p className="text-muted-foreground max-w-prose">
+					Once you have verified the student details, enter the marks below.
+				</p>
+
+				<div className="flex gap-2 justify-between items-center">
+					<div className="mt-5">
+						<Label className="mb-2">Marks</Label>
+						<Input
+							tabIndex={2}
 							type="number"
-							value={mark ? mark : mark == 0 ? 0 : ""}
-							onChange={(e) => setMark(Number(e.target.value))}
-							placeholder="Enter Marks"
-							inputMode="numeric"
-							className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-hidden transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+							value={mark}
+							step={0.01}
+							onChange={(e) => {
+								if (e.target.value === "") {
+									setMark(undefined);
+								} else {
+									setMark(Number.parseFloat(e.target.value));
+								}
+							}}
+							className="w-48 !h-20 !text-5xl"
 						/>
 					</div>
-				</div>
 
-				<div className="-mx-3 flex flex-wrap gap-y-4">
-					<div className="px-3 2xsm:w-1/4">
-						<button
-							onClick={() => setIndexNo(indexNo - 1)}
-							className="block w-full rounded-sm border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
-						>
-							<svg
-								className="w-6 h-6 text-gray-800 dark:text-white"
-								aria-hidden="true"
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								fill="none"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke="currentColor"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									d="m15 19-7-7 7-7"
-								/>
-							</svg>
-						</button>
-					</div>
-					<div className="px-3 2xsm:w-1/4">
-						<button
-							onClick={() => setIndexNo(indexNo + 1)}
-							className="block w-full rounded-sm border border-stroke bg-stroke p-3 text-center font-medium text-black transition hover:bg-secondary hover:border-secondary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-9 dark:hover:bg-meta-9 flex items-center justify-center"
-						>
-							<svg
-								className="w-6 h-6 text-gray-800 dark:text-white"
-								aria-hidden="true"
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								fill="none"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke="currentColor"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									d="m9 5 7 7-7 7"
-								/>
-							</svg>
-						</button>
-					</div>
-					<div className="w-full px-3 2xsm:w-1/2">
-						<button
-							// disabled={submitDisabled}
-							onClick={handleSubmit}
-							className={
-								"block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition " +
-								(submitDisabled
-									? "bg-opacity-70 hover:bg-opacity-70"
-									: "hover:bg-opacity-90")
-							}
-						>
-							Enter Marks
-						</button>
-					</div>
+					<Button
+						onClick={handleSubmit}
+						disabled={submitDisabled}
+						className="mt-5 ml-auto"
+					>
+						Submit
+					</Button>
 				</div>
-				<div className="w-full px-3 pt-4"></div>
-			</div>
-
-			{/* <Snackbar config={snackBarConfig} /> */}
+			</section>
 		</>
 	);
 };
