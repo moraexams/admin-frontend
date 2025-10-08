@@ -26,4 +26,9 @@ export function isValidSubjectId(
 	return subjectId !== null && Object.keys(SUBJECTS).includes(subjectId);
 }
 
-export const PARTS = ["p1", "p2"];
+export const PARTS = ["p1", "p2"] as const;
+export const isValidPart = (
+	part: string | null,
+): part is (typeof PARTS)[number] => {
+	return part !== null && PARTS.includes(part as (typeof PARTS)[number]);
+};

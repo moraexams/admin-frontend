@@ -17,9 +17,10 @@ export const getMarkbyIndexNo = async (index_no: number) => {
 export const getStudentMarksData = async (
 	index_no: string,
 	subjectCode: string,
+	part: typeof import("../lib/utils").PARTS[number],
 ) => {
 	const response = await axiosInstance.get(
-		`/mark/check/${subjectCode}/${index_no}`,
+		`/mark/check/${subjectCode}/${part}/${index_no}`,
 	);
 	return response.data;
 };

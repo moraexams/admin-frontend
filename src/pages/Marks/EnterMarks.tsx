@@ -2,7 +2,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PARTS, SUBJECTS, isValidSubjectId } from "@/lib/utils";
+import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -28,6 +28,7 @@ const EnterMarks = () => {
 				name: string;
 				nic: string;
 				medium: string;
+				marks: number | null;
 		  }
 		| undefined
 	>(undefined);
@@ -66,7 +67,12 @@ const EnterMarks = () => {
 
 	useEffect(() => {
 		setStudentDetails(undefined);
-		if (indexNo.length !== 7 || !isValidSubjectId(subject) || part === null) {
+		if (
+			indexNo.length !== 7 ||
+			!isValidSubjectId(subject) ||
+			part === null ||
+			!isValidPart(part)
+		) {
 			setSubmitDisabled(true);
 			return;
 		}
@@ -74,20 +80,17 @@ const EnterMarks = () => {
 		toast.loading("Loading...");
 
 		Promise.allSettled([
-			getStudentMarksData(indexNo, subject),
+			getStudentMarksData(indexNo, subject, part),
 			createTimer(500),
 		])
 			.then((d) => {
 				toast.dismiss();
 				if (d[0].status === "fulfilled") {
-					const studentMarks = d[0].value;
-					setStudentDetails(studentMarks);
+					const response = d[0].value;
+					setStudentDetails(response);
 					setSubmitDisabled(false);
-					if (
-						studentMarks[`${subject}_${part}`] ||
-						studentMarks[`${subject}_${part}`] === 0
-					) {
-						setMark(studentMarks[`${subject}_${part}`]);
+					if (studentDetails?.marks != undefined) {
+						setMark(studentDetails?.marks);
 					}
 				} else if (
 					d[0].status === "rejected" &&
@@ -112,7 +115,7 @@ const EnterMarks = () => {
 			navigate("/marks");
 			return;
 		}
-		if (part === null || !PARTS.includes(part)) {
+		if (part === null || !isValidPart(part)) {
 			navigate("/marks");
 			return;
 		}

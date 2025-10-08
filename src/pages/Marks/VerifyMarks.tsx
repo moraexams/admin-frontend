@@ -42,10 +42,8 @@ const VerifyMarks = () => {
 			toast.error("Please select subject and part");
 			return;
 		}
-		
-		Promise.allSettled([
-			verifyMark(indexNo, subject, part)
-		])
+
+		Promise.allSettled([verifyMark(indexNo, subject, part)])
 			.then((results) => {
 				toast.dismiss();
 				if (results[0].status === "fulfilled") {
@@ -224,7 +222,9 @@ const VerifyMarks = () => {
 						className="ml-auto mt-5"
 					>
 						<Button
-							disabled={indexNo.length !== 7 || studentMarks.verified_by !== undefined}
+							disabled={
+								indexNo.length !== 7 || studentMarks.verified_by !== undefined
+							}
 							variant="outline"
 						>
 							Edit
