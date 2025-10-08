@@ -2,6 +2,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PARTS, SUBJECTS, isValidSubjectId } from "@/lib/utils";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -10,20 +11,6 @@ import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import { enterMark, getStudentMarksData } from "../../services/markservices";
-
-const SUBJECTS = {
-	"1": "Physics",
-	"2": "Chemistry",
-	"3": "Bio",
-	"4": "Combined Maths",
-	"5": "ICT",
-};
-
-function isValidSubjectId(
-	subjectId: string | null,
-): subjectId is keyof typeof SUBJECTS {
-	return subjectId !== null && Object.keys(SUBJECTS).includes(subjectId);
-}
 
 const EnterMarks = () => {
 	const [searchParams] = useSearchParams();
@@ -125,7 +112,7 @@ const EnterMarks = () => {
 			navigate("/marks");
 			return;
 		}
-		if (part === null || !["p1", "p2"].includes(part)) {
+		if (part === null || !PARTS.includes(part)) {
 			navigate("/marks");
 			return;
 		}
