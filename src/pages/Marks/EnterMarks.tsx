@@ -34,30 +34,25 @@ const EnterMarks = () => {
 	>(undefined);
 	const [mark, setMark] = useState<number | undefined>(undefined);
 
-	const [submitDisabled, setSubmitDisabled] = useState(
-		subject === null || part === null || indexNo.length != 7,
-	);
-
 	const handleSubmit = async () => {
 		if (subject === null || part === null) {
 			toast.error("Please select subject and part");
 			return;
 		}
-		if (mark) {
-			if (mark < 0 || mark > 100) {
-				toast.error("Invalid Mark");
-				return;
-			}
-		} else {
-			if (mark !== 0) {
-				toast.error("Invalid Mark");
-				return;
-			}
+
+		if (mark === undefined) {
+			toast.error("Please enter a marks");
+			return;
+		}
+
+		if (mark < 0 || mark > 100) {
+			toast.error("Marks must be between 0 and 100");
+			return;
 		}
 
 		await enterMark(indexNo, subject, part, mark)
 			.then(() => {
-				toast.success("Mark Added Successfully");
+				toast.success("Marks entered successfully");
 				setMark(undefined);
 			})
 			.catch((error) => {
@@ -67,13 +62,13 @@ const EnterMarks = () => {
 
 	useEffect(() => {
 		setStudentDetails(undefined);
+		setMark(undefined);
 		if (
 			indexNo.length !== 7 ||
 			!isValidSubjectId(subject) ||
 			part === null ||
 			!isValidPart(part)
 		) {
-			setSubmitDisabled(true);
 			return;
 		}
 
@@ -88,9 +83,8 @@ const EnterMarks = () => {
 				if (d[0].status === "fulfilled") {
 					const response = d[0].value;
 					setStudentDetails(response);
-					setSubmitDisabled(false);
-					if (studentDetails?.marks != undefined) {
-						setMark(studentDetails?.marks);
+					if (response.marks != undefined) {
+						setMark(response.marks);
 					}
 				} else if (
 					d[0].status === "rejected" &&
@@ -237,7 +231,13 @@ const EnterMarks = () => {
 						<Input
 							tabIndex={2}
 							type="number"
-							value={mark}
+							value={mark === undefined ? "" : mark}
+							disabled={
+								subject === null ||
+								part === null ||
+								studentDetails === undefined ||
+								indexNo.length !== 7
+							}
 							step={0.01}
 							onChange={(e) => {
 								if (e.target.value === "") {
@@ -252,7 +252,13 @@ const EnterMarks = () => {
 
 					<Button
 						onClick={handleSubmit}
-						disabled={submitDisabled}
+						disabled={
+							subject === null ||
+							part === null ||
+							indexNo.length !== 7 ||
+							studentDetails === undefined ||
+							mark === undefined
+						}
 						className="mt-5 ml-auto"
 					>
 						Submit
