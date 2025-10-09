@@ -66,7 +66,7 @@ const VerifyMarks = () => {
 		toast.loading("Loading...");
 
 		Promise.allSettled([
-			getStudentVerificationMarksData(indexNo, subject, part),
+			getStudentMarksData(indexNo, subject, part),
 			createTimer(500),
 		])
 			.then((results) => {

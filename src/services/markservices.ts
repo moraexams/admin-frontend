@@ -25,22 +25,6 @@ export const getStudentMarksData = async (
 	return response.data;
 };
 
-export const getStudentVerificationMarksData = async (
-	index_no: string,
-	subject: string,
-	part: string,
-) => {
-	try {
-		const response = await axiosInstance.get(
-			`/mark/verify/${index_no}?subject=${subject}_${part}`,
-		);
-		return response.data;
-	} catch (error) {
-		console.log(`Error fetching mark: ${error}`);
-		return null;
-	}
-};
-
 export const verifyMark = async (
 	index_no: string,
 	subject: string,
