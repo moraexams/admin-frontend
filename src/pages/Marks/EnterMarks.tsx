@@ -29,6 +29,8 @@ const EnterMarks = () => {
 				nic: string;
 				medium: string;
 				marks: number | null;
+				entered_by: string | null;
+				verified_by: string | null;
 		  }
 		| undefined
 	>(undefined);
@@ -145,8 +147,8 @@ const EnterMarks = () => {
 				</AlertTitle>
 			</Alert>
 
-			<section className="flex flex-col gap-2 mt-5 mx-auto">
-				<div>
+			<section className="grid grid-cols-3 gap-y-3 gap-x-5 mt-5 mx-auto">
+				<div className="col-span-full">
 					<Label className="mb-2">Index No</Label>
 					<div className="flex gap-2 h-12">
 						<Input
@@ -182,12 +184,12 @@ const EnterMarks = () => {
 					</div>
 				</div>
 
-				<p className="text-muted-foreground max-w-prose">
+				<p className="text-muted-foreground max-w-prose col-span-full">
 					After entering the index no, the student details will be fetched
 					automatically and shown below.
 				</p>
 
-				<div className="mt-5">
+				<div className="col-span-2">
 					<Label className="mb-1">Name</Label>
 					<Input
 						tabIndex={-1}
@@ -198,72 +200,72 @@ const EnterMarks = () => {
 					/>
 				</div>
 
-				<div className="grid grid-cols-2 gap-3 mt-2">
-					<div>
-						<Label className="mb-1">NIC</Label>
-						<Input
-							tabIndex={-1}
-							type="text"
-							readOnly
-							className="cursor-not-allowed pointer-events-none !h-fit tabular-nums !text-lg"
-							value={studentDetails === undefined ? "" : studentDetails.nic}
-						/>
-					</div>
-					<div>
-						<Label className="mb-1">Medium</Label>
-						<Input
-							tabIndex={-1}
-							type="text"
-							readOnly
-							className="cursor-not-allowed pointer-events-none !h-fit !text-lg"
-							value={studentDetails === undefined ? "" : studentDetails.medium}
-						/>
-					</div>
+				<div>
+					<Label className="mb-1">NIC</Label>
+					<Input
+						tabIndex={-1}
+						type="text"
+						readOnly
+						className="cursor-not-allowed pointer-events-none !h-fit tabular-nums !text-lg"
+						value={studentDetails === undefined ? "" : studentDetails.nic}
+					/>
+				</div>
+				<div>
+					<Label className="mb-1">Medium</Label>
+					<Input
+						tabIndex={-1}
+						type="text"
+						readOnly
+						className="cursor-not-allowed pointer-events-none !h-fit !text-lg"
+						value={studentDetails === undefined ? "" : studentDetails.medium}
+					/>
 				</div>
 
-				<p className="text-muted-foreground max-w-prose">
-					Once you have verified the student details, enter the marks below.
+				<p className="text-muted-foreground max-w-prose col-span-2 text-pretty">
+					{studentDetails?.marks !== undefined
+						? studentDetails.verified_by !== null
+							? `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.`
+							: `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by}.`
+						: "Make sure all the details above are correct."}
 				</p>
 
-				<div className="flex gap-2 justify-between items-center">
-					<div className="mt-5">
-						<Label className="mb-2">Marks</Label>
-						<Input
-							tabIndex={2}
-							type="number"
-							value={mark === undefined ? "" : mark}
-							disabled={
-								subject === null ||
-								part === null ||
-								studentDetails === undefined ||
-								indexNo.length !== 7
-							}
-							step={0.01}
-							onChange={(e) => {
-								if (e.target.value === "") {
-									setMark(undefined);
-								} else {
-									setMark(Number.parseFloat(e.target.value));
-								}
-							}}
-							className="w-48 !h-20 !text-5xl"
-						/>
-					</div>
-
-					<Button
-						onClick={handleSubmit}
+				<div className="col-start-3 row-start-3 row-span-2 flex flex-col">
+					<Label className="mb-2">Marks</Label>
+					<Input
+						tabIndex={2}
+						type="number"
+						value={mark === undefined ? "" : mark}
 						disabled={
 							subject === null ||
 							part === null ||
-							indexNo.length !== 7 ||
 							studentDetails === undefined ||
-							mark === undefined
+							indexNo.length !== 7
 						}
-						className="mt-5 ml-auto"
-					>
-						Submit
-					</Button>
+						step={0.01}
+						onChange={(e) => {
+							if (e.target.value === "") {
+								setMark(undefined);
+							} else {
+								setMark(Number.parseFloat(e.target.value));
+							}
+						}}
+						className="w-48 !h-auto flex-1 !text-5xl"
+					/>
 				</div>
+				<Button
+					onClick={handleSubmit}
+					disabled={
+						subject === null ||
+						part === null ||
+						indexNo.length !== 7 ||
+						studentDetails === undefined ||
+						mark === undefined ||
+						studentDetails.marks === mark
+					}
+					className="col-start-3 row-start-5 ml-auto"
+				>
+					Submit
+				</Button>
 			</section>
 		</>
 	);
