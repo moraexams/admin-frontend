@@ -3,11 +3,8 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SUBJECTS, isValidSubjectId } from "@/lib/utils";
-import {
-	getStudentVerificationMarksData,
-	verifyMark,
-} from "@/services/markservices";
+import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
+import { getStudentMarksData, verifyMark } from "@/services/markservices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -25,7 +22,9 @@ const VerifyMarks = () => {
 				name: string;
 				nic: string;
 				medium: string;
-				marks: number;
+				marks: number | null;
+				entered_by: string | null;
+				verified_by: string | null;
 		  }
 		| undefined
 	>(undefined);
@@ -33,9 +32,6 @@ const VerifyMarks = () => {
 	const [indexNo, setIndexNo] = useState<string>(
 		searchParams.get("index_no") || "",
 	);
-	const [studentMarks, setStudentMarks] = useState<any>({});
-
-	const [submitDisabled, setSubmitDisabled] = useState(true);
 
 	const handleSubmit = async () => {
 		if (subject === null || part === null) {
@@ -43,13 +39,13 @@ const VerifyMarks = () => {
 			return;
 		}
 
-		Promise.allSettled([verifyMark(indexNo, subject, part)])
+		Promise.allSettled([verifyMark(indexNo, subject, part), createTimer(500)])
 			.then((results) => {
 				toast.dismiss();
 				if (results[0].status === "fulfilled") {
-					toast.success("Mark Added Successfully");
+					toast.success("Marks verified successfully");
 				} else {
-					toast.error("Error verifying mark");
+					toast.error("Error verifying marks");
 				}
 			})
 			.catch((error) => {
@@ -58,9 +54,13 @@ const VerifyMarks = () => {
 	};
 
 	useEffect(() => {
-		setSubmitDisabled(true);
-		if (subject === null || part === null) {
-			setStudentMarks({});
+		if (
+			subject === null ||
+			part === null ||
+			indexNo.length !== 7 ||
+			!isValidSubjectId(subject) ||
+			!isValidPart(part)
+		) {
 			return;
 		}
 		toast.loading("Loading...");
@@ -75,12 +75,7 @@ const VerifyMarks = () => {
 				if (results[0].status === "fulfilled") {
 					const studentMarks = results[0].value;
 					if (studentMarks) {
-						setStudentMarks(studentMarks);
-						if (studentMarks.entered_by && !studentMarks.verified_by) {
-							setSubmitDisabled(false);
-						}
-					} else {
-						setStudentMarks({});
+						setStudentDetails(studentMarks);
 					}
 				}
 			})
@@ -89,12 +84,10 @@ const VerifyMarks = () => {
 				if (error instanceof AxiosError) {
 					if (error.response?.status === 404) {
 						toast.error("No marks found for this student");
-						setStudentMarks({});
 						setStudentDetails(undefined);
 					}
 				} else {
 					toast.error("Error fetching data");
-					setStudentMarks({});
 					setStudentDetails(undefined);
 				}
 			});
@@ -211,28 +204,38 @@ const VerifyMarks = () => {
 						readOnly
 						tabIndex={-1}
 						type="number"
-						value={studentDetails === undefined ? "" : studentDetails.marks}
+						value={studentDetails?.marks ? studentDetails.marks : ""}
 						step={0.01}
-						className="w-48 !h-auto flex-1 !text-4xl"
+						className="w-48 !h-auto flex-1 !text-4xl pointer-events-none"
 					/>
 				</div>
-				<div className="col-start-3 flex gap-2 justify-between items-center">
+				<div className="col-start-1 col-span-full flex gap-2 justify-between items-center">
+					<p className="text-muted-foreground">
+						{studentDetails?.marks === null ||
+						studentDetails?.entered_by === undefined
+							? "Marks not entered yet."
+							: studentDetails?.verified_by
+								? `Marks already verified by ${studentDetails.verified_by}.`
+								: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`}
+					</p>
 					<Link
 						to={`/marks/enter?subject=${subject}&part=${part}&index_no=${indexNo}`}
 						className="ml-auto mt-5"
+						target="_blank"
 					>
-						<Button
-							disabled={
-								indexNo.length !== 7 || studentMarks.verified_by !== undefined
-							}
-							variant="outline"
-						>
+						<Button disabled={indexNo.length !== 7} variant="outline">
 							Edit
 						</Button>
 					</Link>
 					<Button
 						onClick={handleSubmit}
-						disabled={submitDisabled}
+						disabled={
+							part === null ||
+							subject === null ||
+							studentDetails === undefined ||
+							studentDetails.marks === null ||
+							studentDetails.verified_by !== null
+						}
 						className="mt-5"
 					>
 						Verify

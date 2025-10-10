@@ -10,7 +10,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import { enterMark, getStudentMarksData } from "../../services/markservices";
+import {
+	type MarksEntryData,
+	enterMark,
+	getStudentMarksData,
+} from "../../services/markservices";
 
 const EnterMarks = () => {
 	const [searchParams] = useSearchParams();
@@ -24,15 +28,7 @@ const EnterMarks = () => {
 		indexNoParam !== null ? indexNoParam : "",
 	);
 	const [studentDetails, setStudentDetails] = useState<
-		| {
-				name: string;
-				nic: string;
-				medium: string;
-				marks: number | null;
-				entered_by: string | null;
-				verified_by: string | null;
-		  }
-		| undefined
+		MarksEntryData | undefined
 	>(undefined);
 	const [mark, setMark] = useState<number | undefined>(undefined);
 
@@ -53,9 +49,10 @@ const EnterMarks = () => {
 		}
 
 		await enterMark(indexNo, subject, part, mark)
-			.then(() => {
+			.then((data) => {
 				toast.success("Marks entered successfully");
 				setMark(undefined);
+				setStudentDetails(data);
 			})
 			.catch((error) => {
 				toast.error(error);

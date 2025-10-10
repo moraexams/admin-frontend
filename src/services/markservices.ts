@@ -1,6 +1,14 @@
-import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 import type { MarksBoundaries } from "../types/types";
+
+export interface MarksEntryData {
+	name: string;
+	nic: string;
+	medium: string;
+	marks: number | null;
+	entered_by: string | null;
+	verified_by: string | null;
+}
 
 export const getMarkbyIndexNo = async (index_no: number) => {
 	if (index_no >= 10000) {
@@ -19,7 +27,7 @@ export const getStudentMarksData = async (
 	subjectCode: string,
 	part: typeof import("../lib/utils").PARTS[number],
 ) => {
-	const response = await axiosInstance.get(
+	const response = await axiosInstance.get<MarksEntryData>(
 		`/mark/check/${subjectCode}/${part}/${index_no}`,
 	);
 	return response.data;
@@ -30,16 +38,10 @@ export const verifyMark = async (
 	subject: string,
 	part: string,
 ) => {
-	try {
-		const response = await axiosInstance.put(
-			`/mark/verify/${index_no}?subject=${subject}_${part}`,
-			{},
-		);
-		return response.data;
-	} catch (error) {
-		console.log(`Error verifying mark: ${error}`);
-		return null;
-	}
+	const response = await axiosInstance.put(
+		`/mark/verify/${subject}/${part}/${index_no}`,
+	);
+	return response.data;
 };
 
 export const enterMark = async (
@@ -48,22 +50,13 @@ export const enterMark = async (
 	part: string,
 	marks: number,
 ) => {
-	try {
-		const response = await axiosInstance.put(
-			`/mark/enter/${subject}/${part}/${index_no}`,
-			{
-				marks,
-			},
-		);
-		console.log("Response:", response);
-	} catch (error) {
-		if (error instanceof AxiosError) {
-			if (error.response) {
-				throw error.response.data.error;
-			}
-		}
-		throw "Unknown error occurred";
-	}
+	const response = await axiosInstance.put<MarksEntryData>(
+		`/mark/enter/${subject}/${part}/${index_no}`,
+		{
+			marks,
+		},
+	);
+	return response.data;
 };
 
 export const getAllMarksBoundaries = async () => {
