@@ -5,7 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
 import { LOCAL_STORAGE__USERNAME } from "@/services/authServices";
-import { getStudentMarksData, verifyMark } from "@/services/markservices";
+import {
+	getStudentMarksData,
+	nextStudentForMarksEntry,
+	previousStudentForMarksEntry,
+	verifyMark,
+} from "@/services/markservices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -145,7 +150,21 @@ const VerifyMarks = () => {
 							tabIndex={3}
 							disabled={indexNo.length !== 7}
 							onClick={() => {
-								setIndexNo((Number.parseInt(indexNo) - 1).toString());
+								previousStudentForMarksEntry(indexNo, subject, part)
+									.then((data) => {
+										setIndexNo(data.index_no);
+										setStudentDetails(data);
+									})
+									.catch((error) => {
+										if (error instanceof AxiosError && error.response) {
+											toast.error(
+												error.response.data.message ||
+													"Error fetching previous student",
+											);
+										} else {
+											toast.error("Error fetching previous student");
+										}
+									});
 							}}
 						>
 							<ChevronLeft className="size-5" />
@@ -156,7 +175,21 @@ const VerifyMarks = () => {
 							tabIndex={4}
 							disabled={indexNo.length !== 7}
 							onClick={() => {
-								setIndexNo((Number.parseInt(indexNo) + 1).toString());
+								nextStudentForMarksEntry(indexNo, subject, part)
+									.then((data) => {
+										setIndexNo(data.index_no);
+										setStudentDetails(data);
+									})
+									.catch((error) => {
+										if (error instanceof AxiosError && error.response) {
+											toast.error(
+												error.response.data.message ||
+													"Error fetching previous student",
+											);
+										} else {
+											toast.error("Error fetching previous student");
+										}
+									});
 							}}
 						>
 							<ChevronRight className="size-5" />

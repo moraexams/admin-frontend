@@ -14,6 +14,8 @@ import {
 	type MarksEntryData,
 	enterMark,
 	getStudentMarksData,
+	nextStudentForMarksEntry,
+	previousStudentForMarksEntry,
 } from "../../services/markservices";
 
 const EnterMarks = () => {
@@ -163,7 +165,22 @@ const EnterMarks = () => {
 							tabIndex={3}
 							disabled={indexNo.length !== 7}
 							onClick={() => {
-								setIndexNo((Number.parseInt(indexNo) - 1).toString());
+								previousStudentForMarksEntry(indexNo, subject, part)
+									.then((data) => {
+										setIndexNo(data.index_no);
+										setStudentDetails(data);
+										setMark(data.marks === null ? undefined : data.marks);
+									})
+									.catch((error) => {
+										if (error instanceof AxiosError && error.response) {
+											toast.error(
+												error.response.data.message ||
+													"Error fetching previous student",
+											);
+										} else {
+											toast.error("Error fetching previous student");
+										}
+									});
 							}}
 						>
 							<ChevronLeft className="size-5" />
@@ -174,7 +191,22 @@ const EnterMarks = () => {
 							tabIndex={4}
 							disabled={indexNo.length !== 7}
 							onClick={() => {
-								setIndexNo((Number.parseInt(indexNo) + 1).toString());
+								nextStudentForMarksEntry(indexNo, subject, part)
+									.then((data) => {
+										setIndexNo(data.index_no);
+										setStudentDetails(data);
+										setMark(data.marks === null ? undefined : data.marks);
+									})
+									.catch((error) => {
+										if (error instanceof AxiosError && error.response) {
+											toast.error(
+												error.response.data.message ||
+													"Error fetching previous student",
+											);
+										} else {
+											toast.error("Error fetching previous student");
+										}
+									});
 							}}
 						>
 							<ChevronRight className="size-5" />

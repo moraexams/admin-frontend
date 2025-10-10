@@ -2,6 +2,7 @@ import axiosInstance from "../axiosConfig";
 import type { MarksBoundaries } from "../types/types";
 
 export interface MarksEntryData {
+	index_no: string;
 	name: string;
 	nic: string;
 	medium: string;
@@ -80,4 +81,26 @@ export const updateBoundaryValues = async (values: Array<MarksBoundaries>) => {
 		console.log(`Error updating mark boundaries: ${error}`);
 		return null;
 	}
+};
+
+export const nextStudentForMarksEntry = async (
+	index_no: string,
+	subject: string,
+	part: string,
+) => {
+	const response = await axiosInstance.get<MarksEntryData>(
+		`/mark/next/${subject}/${part}/${index_no}/next`,
+	);
+	return response.data;
+};
+
+export const previousStudentForMarksEntry = async (
+	index_no: string,
+	subject: string,
+	part: string,
+) => {
+	const response = await axiosInstance.get<MarksEntryData>(
+		`/mark/next/${subject}/${part}/${index_no}/previous`,
+	);
+	return response.data;
 };
