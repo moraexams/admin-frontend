@@ -33,5 +33,4 @@ export const isValidPart = (
 	return part !== null && PARTS.includes(part as (typeof PARTS)[number]);
 };
 
-
 export const PATTERN__INDEX_NO = /^\d{7}$/;

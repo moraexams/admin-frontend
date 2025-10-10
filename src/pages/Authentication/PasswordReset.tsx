@@ -1,3 +1,4 @@
+import AuthenticationBanner from "@/components/authentication-banner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +25,6 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import z from "zod";
-import Logo from "../../images/logo/logo.png";
 
 const schema = z
 	.object({
@@ -106,15 +106,7 @@ const PasswordReset: React.FC = () => {
 	return (
 		<main className="mx-auto h-screen grid grid-cols-1 grid-rows-[auto_1fr] lg:grid-cols-2 lg:grid-rows-1 lg:items-center max-w-[min(80vw,1400px)] gap-y-8">
 			<Toaster position="top-right" />
-			<div className="py-15 lg:py-0 text-center">
-				<div className="mb-5.5 inline-block">
-					<img className="h-28 lg:h-36" src={Logo} alt="Logo" />
-				</div>
-
-				<p className="max-w-[28ch] text-center mx-auto">
-					Dashboard for managing students, marks and exam for Mora Exams.
-				</p>
-			</div>
+			<AuthenticationBanner />
 
 			<div className="w-full mx-auto max-w-[500px]">
 				<h2 className="mb-2 text-2xl font-bold text-center xl:text-left sm:text-title-xl2">

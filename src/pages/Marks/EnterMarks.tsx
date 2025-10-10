@@ -2,7 +2,12 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PATTERN__INDEX_NO, SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
+import {
+	PATTERN__INDEX_NO,
+	SUBJECTS,
+	isValidPart,
+	isValidSubjectId,
+} from "@/lib/utils";
 import { type MarksStats, getMarksStats } from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
