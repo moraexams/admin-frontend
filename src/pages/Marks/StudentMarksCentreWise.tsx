@@ -1,3 +1,4 @@
+import PageTitle from "@/components/PageTitle";
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import StudentMarksTable from "../../components/Tables/StudentMarksTable";
@@ -61,6 +62,7 @@ const StudentMarksCentreWise = () => {
 	}
 	return (
 		<>
+			<PageTitle title="All Marks | Mora Exams" />
 			<Breadcrumb pageName="Student Marks" />
 			<div className="flex flex-wrap gap-x-4">
 				<div className="mb-5.5">

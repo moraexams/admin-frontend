@@ -10,9 +10,7 @@ import {
 import { CopyCheck, Pen } from "lucide-react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import { MarksBoundariesView } from "../../components/MarksBoundariesView";
 
-const PERMISSION__MARKS_BOUNDARY_VIEW = ["PRESIDENT", "TECH_COORDINATOR"];
 const SUBJECTS = [
 	{
 		id: 4,
@@ -37,12 +35,11 @@ const SUBJECTS = [
 ];
 const PARTS = new Array(2).fill("0");
 
-const Marks = () => {
-	const role = localStorage.getItem("role");
-
+export default function MarksDashboard() {
 	return (
 		<>
 			<Breadcrumb pageName="Marks" />
+			<h2 className="text-xl font-bold mb-5">Enter/Verify Marks</h2>
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -86,13 +83,6 @@ const Marks = () => {
 					})}
 				</TableBody>
 			</Table>
-
-			{typeof role === "string" &&
-			PERMISSION__MARKS_BOUNDARY_VIEW.includes(role) ? (
-				<MarksBoundariesView />
-			) : null}
 		</>
 	);
-};
-
-export default Marks;
+}

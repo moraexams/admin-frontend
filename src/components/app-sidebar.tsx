@@ -1,6 +1,7 @@
 import {
 	ROLE_DISTRICTS_COORDINATOR,
 	ROLE_FINANCE_TEAM_MEMBER,
+	ROLE_PRESIDENT,
 	ROLE_TECH_COORDINATOR,
 	ROLE_TECH_TEAM_MEMBER,
 	ROLE_TREASURER,
@@ -42,9 +43,11 @@ import {
 	ClipboardList,
 	FileText,
 	Home,
+	ListOrdered,
 	LogOut,
 	type LucideIcon,
 	Map as MapIcon,
+	NotepadText,
 	PanelLeftIcon,
 	User,
 	UserPlus,
@@ -77,6 +80,35 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 		title: "Dashboard",
 		url: "/",
 		icon: Home,
+	},
+	{
+		type: "group",
+		title: "Marks",
+		icon: Wallet,
+		activePrefix: "/marks",
+		links: [
+			{
+				type: "link",
+				title: "Dashboard",
+				url: "/marks",
+				icon: Home,
+			},
+			{
+				type: "link",
+				title: "Boundaries",
+				url: "/marks/boundaries",
+				icon: ListOrdered,
+				hideIf: (role) =>
+					typeof role !== "string" ||
+					![ROLE_TECH_COORDINATOR, ROLE_PRESIDENT].includes(role),
+			},
+			{
+				type: "link",
+				title: "All Marks",
+				url: "/marks/all",
+				icon: NotepadText,
+			},
+		],
 	},
 	{
 		type: "group",
@@ -255,25 +287,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				url: "/students/rejected",
 				icon: Users,
 			},
-			// {
-			// 	type: "link",
-			// 	title: "Centre Wise",
-			// 	url: "/students/centre",
-			// 	icon: MapIcon,
-			// },
 		],
-	},
-	{
-		type: "link",
-		title: "Marks",
-		url: "/marks",
-		icon: BookOpen,
-	},
-	{
-		type: "link",
-		title: "Student Marks",
-		url: "/studentmarks",
-		icon: BookOpen,
 	},
 	{
 		type: "link",

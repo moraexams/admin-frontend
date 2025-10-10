@@ -4,7 +4,6 @@ import ReactPaginate from "react-paginate";
 import { getMarkbyIndexNo } from "../../services/markservices";
 import { convertUTCToIST, filterIt } from "../../services/utils";
 import type { Mark, StudentMark } from "../../types/types";
-
 const StudentMarksTable = ({
 	studentData,
 	itemsPerPage,
@@ -39,7 +38,6 @@ const StudentMarksTable = ({
 	const [viewSection, setViewSection] = useState(1);
 	const [modalOpen, setModalOpen] = useState(false);
 
-
 	const [studentMark, setStudentMark] = useState<Mark | null>(null);
 	const handleViewModalOpen = async (index_no: number) => {
 		const student = await getMarkbyIndexNo(index_no);
@@ -58,33 +56,15 @@ const StudentMarksTable = ({
 				<table className="w-full table-auto">
 					<thead>
 						<tr className="bg-gray-2 text-left dark:bg-meta-4">
-							<th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-								Index No
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								Name
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								Stream
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								S1 P1
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								S1 P2
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								S2 P1
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								S2 P2
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								S3 P1
-							</th>
-							<th className="py-4 px-4 font-medium text-black dark:text-white">
-								S3 P2
-							</th>
+							<th className="py-4 px-4 font-medium xl:pl-11">Index No</th>
+							<th className="py-4 px-4 font-medium">Name</th>
+							<th className="py-4 px-4 font-medium">Stream</th>
+							<th className="py-4 px-4 font-medium">S1 P1</th>
+							<th className="py-4 px-4 font-medium">S1 P2</th>
+							<th className="py-4 px-4 font-medium">S2 P1</th>
+							<th className="py-4 px-4 font-medium">S2 P2</th>
+							<th className="py-4 px-4 font-medium">S3 P1</th>
+							<th className="py-4 px-4 font-medium">S3 P2</th>
 							<th className="py-4 px-4 font-medium text-black text-center dark:text-white">
 								Actions
 							</th>
@@ -92,16 +72,13 @@ const StudentMarksTable = ({
 					</thead>
 					<tbody>
 						{currentItems?.map((student) => {
-							// const rowSpan = studentData ? studentData.length : 1;
 							return (
 								<tr key={student.index_no}>
 									<td
 										rowSpan={1}
-										className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11"
+										className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 tabular-nums"
 									>
-										<h5 className="font-medium text-black dark:text-white">
-											<pre>{student.index_no}</pre>
-										</h5>
+										{student.index_no}
 									</td>
 									<td
 										rowSpan={1}
@@ -206,19 +183,19 @@ const StudentMarksTable = ({
 							"isolate inline-flex -space-x-px rounded-md shadow-xs"
 						}
 						pageLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						breakLinkClassName={
-							"relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
 						}
 						activeLinkClassName={
 							"z-10 bg-secondary text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
 						}
 						previousLinkClassName={
-							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+							"relative inline-flex items-center rounded-l-md px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary  focus:z-20 focus:outline-offset-0"
 						}
 						nextLinkClassName={
-							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-secondary hover:bg-gray-400"
+							"relative inline-flex items-center rounded-r-md px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-secondary hover:bg-gray-400"
 						}
 						disabledLinkClassName={"text-black-100"}
 					/>
@@ -229,7 +206,7 @@ const StudentMarksTable = ({
 				className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-y-auto ${!modalOpen && "hidden"}`}
 			>
 				<div className="w-full max-w-142.5 xl:max-w-[40vw] rounded-lg bg-white px-8 py-12 dark:bg-boxdark md:px-17.5 md:py-15 max-h-screen overflow-y-auto">
-					<h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
+					<h3 className="pb-2 text-xl font-bold sm:text-2xl">
 						View Student Marks
 					</h3>
 					<span className="mx-auto mb-6 inline-block h-1 w-25 rounded-sm bg-primary" />
@@ -324,24 +301,18 @@ const StudentMarksTable = ({
 												<table className="table-auto">
 													<tbody>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
-																Part 1
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">Part 1</td>
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>{studentMark.s1_p1}</strong>
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 1 Entered By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s1_p1_ent_at
 																		? `${studentMark.s1_p1_ent_by?.username} at ${convertUTCToIST(studentMark.s1_p1_ent_at)}`
@@ -350,13 +321,11 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 1 Verified By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s1_p1_vfd_at
 																		? `${studentMark.s1_p1_vfd_by?.username} at ${convertUTCToIST(studentMark.s1_p1_vfd_at)}`
@@ -365,24 +334,18 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
-																Part 2
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">Part 2</td>
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>{studentMark.s1_p2}</strong>
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 2 Entered By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s1_p2_ent_at
 																		? `${studentMark.s1_p2_ent_by?.username} at ${convertUTCToIST(studentMark.s1_p2_ent_at)}`
@@ -391,13 +354,11 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 2 Verified By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s1_p2_vfd_at
 																		? `${studentMark.s1_p2_vfd_by?.username} at ${convertUTCToIST(studentMark.s1_p2_vfd_at)}`
@@ -412,24 +373,18 @@ const StudentMarksTable = ({
 												<table className="table-auto">
 													<tbody>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
-																Part 1
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">Part 1</td>
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>{studentMark.s2_p1}</strong>
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 1 Entered By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s2_p1_ent_at
 																		? `${studentMark.s2_p1_ent_by?.username} at ${convertUTCToIST(studentMark.s2_p1_ent_at)}`
@@ -438,13 +393,11 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 1 Verified By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s2_p1_vfd_at
 																		? `${studentMark.s2_p1_vfd_by?.username} at ${convertUTCToIST(studentMark.s2_p1_vfd_at)}`
@@ -453,24 +406,18 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
-																Part 2
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">Part 2</td>
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>{studentMark.s2_p2}</strong>
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 2 Entered By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s2_p2_ent_at
 																		? `${studentMark.s2_p2_ent_by?.username} at ${convertUTCToIST(studentMark.s2_p2_ent_at)}`
@@ -479,13 +426,11 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 2 Verified By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s2_p2_vfd_at
 																		? `${studentMark.s2_p2_vfd_by?.username} at ${convertUTCToIST(studentMark.s2_p2_vfd_at)}`
@@ -500,24 +445,18 @@ const StudentMarksTable = ({
 												<table className="table-auto">
 													<tbody>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
-																Part 1
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">Part 1</td>
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>{studentMark.s3_p1}</strong>
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 1 Entered By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s3_p1_ent_at
 																		? `${studentMark.s3_p1_ent_by?.username} at ${convertUTCToIST(studentMark.s3_p1_ent_at)}`
@@ -526,13 +465,11 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 1 Verified By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s3_p1_vfd_at
 																		? `${studentMark.s3_p1_vfd_by?.username} at ${convertUTCToIST(studentMark.s3_p1_vfd_at)}`
@@ -541,24 +478,18 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
-																Part 2
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">Part 2</td>
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>{studentMark.s3_p2}</strong>
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 2 Entered By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s3_p2_ent_at
 																		? `${studentMark.s3_p2_ent_by?.username} at ${convertUTCToIST(studentMark.s3_p2_ent_at)}`
@@ -567,13 +498,11 @@ const StudentMarksTable = ({
 															</td>
 														</tr>
 														<tr>
-															<td className="py-2 px-4 font-medium text-black dark:text-white">
+															<td className="py-2 px-4 font-medium">
 																Part 2 Verified By
 															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
-																:
-															</td>
-															<td className="py-2 px-4 text-black dark:text-white">
+															<td className="py-2 px-4">:</td>
+															<td className="py-2 px-4">
 																<strong>
 																	{studentMark.s3_p2_vfd_at
 																		? `${studentMark.s3_p2_vfd_by?.username} at ${convertUTCToIST(studentMark.s3_p2_vfd_at)}`

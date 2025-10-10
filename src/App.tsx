@@ -26,8 +26,9 @@ import FinanceDashboard from "./pages/Finance/Dashboard";
 import DistrictsSummary from "./pages/Finance/DistrictsSummary";
 import TransactionCategories from "./pages/Finance/TransactionCategories";
 import ManualAdmissions from "./pages/ManualAdmissions";
+import MarksBoundaries from "./pages/Marks/Boundaries";
+import MarksDashboard from "./pages/Marks/Dashboard";
 import EnterMarks from "./pages/Marks/EnterMarks";
-import Marks from "./pages/Marks/Marks";
 import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
 import VerifyMarks from "./pages/Marks/VerifyMarks";
 import CentreWiseVerifiedStudents from "./pages/Stats/CentreWiseStudentsCount";
@@ -199,7 +200,7 @@ function App() {
 						element={
 							<>
 								<PageTitle title="Marks | Mora Exams" />
-								<Marks />
+								<MarksDashboard />
 							</>
 						}
 					/>
@@ -221,15 +222,8 @@ function App() {
 							</>
 						}
 					/>
-					<Route
-						path="/studentmarks"
-						element={
-							<>
-								<PageTitle title="Student Marks | Mora Exams" />
-								<StudentMarksCentreWise />
-							</>
-						}
-					/>
+					<Route path="/marks/all" element={<StudentMarksCentreWise />} />
+					<Route path="/marks/boundaries" element={<MarksBoundaries />} />
 					<Route
 						path="/stats/enteredmarks"
 						element={
