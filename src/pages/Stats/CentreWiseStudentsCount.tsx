@@ -202,7 +202,7 @@ export default function CentreWiseVerifiedStudents() {
 		setCentreWiseStats([]);
 		Promise.allSettled([
 			getCentreWiseStudentsPerSubject(selectedSubject),
-			createTimer(600),
+			createTimer(),
 		]).then(([data]) => {
 			toast.dismiss();
 			if (data.status === "fulfilled") {

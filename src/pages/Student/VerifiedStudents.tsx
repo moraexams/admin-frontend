@@ -204,7 +204,7 @@ export default function VerifiedStudents() {
 
 		return Promise.allSettled([
 			getVerifiedStudents(page, itemsPerPage, searchParam),
-			createTimer(500),
+			createTimer(),
 		])
 			.then((hu) => {
 				if (hu[0].status === "rejected") {

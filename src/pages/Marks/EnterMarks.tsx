@@ -78,7 +78,7 @@ const EnterMarks = () => {
 
 		Promise.allSettled([
 			getStudentMarksData(indexNo, subject, part),
-			createTimer(500),
+			createTimer(),
 		])
 			.then((d) => {
 				toast.dismiss();

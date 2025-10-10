@@ -78,10 +78,7 @@ const PasswordReset: React.FC = () => {
 		}
 		toast.loading("Resetting password...");
 
-		Promise.allSettled([
-			resetPassword(resetId, data.password),
-			createTimer(1000),
-		])
+		Promise.allSettled([resetPassword(resetId, data.password), createTimer()])
 			.then((data) => {
 				toast.dismiss();
 				if (data[0].status === "rejected") {
@@ -89,7 +86,7 @@ const PasswordReset: React.FC = () => {
 				}
 				toast.success("Password reset successfully. You can now log in.");
 				form.reset();
-				createTimer(500).then(() => {
+				createTimer().then(() => {
 					requestAnimationFrame(() => {
 						navigate("/sign-in");
 					});

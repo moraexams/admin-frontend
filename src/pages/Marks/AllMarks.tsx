@@ -71,7 +71,7 @@ export default function AllMarks() {
 
 		Promise.allSettled([
 			getStudentMarks(page, itemsPerPage, searchParam),
-			createTimer(500),
+			createTimer(),
 		]).then((data) => {
 			toast.dismiss();
 			if (data[0].status === "fulfilled") {

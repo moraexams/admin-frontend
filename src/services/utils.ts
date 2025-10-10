@@ -45,7 +45,7 @@ export const CurrencyFormatter = new Intl.NumberFormat("en-LK", {
 	maximumFractionDigits: 2,
 });
 
-export function createTimer(ms: number): Promise<void> {
+export function createTimer(ms = 300): Promise<void> {
 	return new Promise<void>((resolve) => {
 		setTimeout(() => {
 			resolve();

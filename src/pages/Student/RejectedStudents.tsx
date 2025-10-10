@@ -228,7 +228,7 @@ export default function RejectedStudents() {
 
 		return Promise.allSettled([
 			getRejectedStudents(page, itemsPerPage, searchParam),
-			createTimer(500),
+			createTimer(),
 		])
 			.then((hu) => {
 				if (hu[0].status === "rejected") {

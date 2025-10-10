@@ -122,7 +122,7 @@ const Users = () => {
 								);
 								Promise.allSettled([
 									requestPasswordReset(row.original.id),
-									createTimer(1000),
+									createTimer(),
 								]).then((data) => {
 									if (data[0].status === "rejected") {
 										if (typeof data[0].reason === "string") {

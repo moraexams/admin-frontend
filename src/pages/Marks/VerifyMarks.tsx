@@ -48,7 +48,7 @@ const VerifyMarks = () => {
 
 		Promise.allSettled([
 			verifyMark(indexNo, subject, part),
-			createTimer(500),
+			createTimer(),
 		]).then((results) => {
 			toast.dismiss();
 			if (results[0].status === "fulfilled") {
@@ -76,7 +76,7 @@ const VerifyMarks = () => {
 
 		Promise.allSettled([
 			getStudentMarksData(indexNo, subject, part),
-			createTimer(500),
+			createTimer(),
 		])
 			.then((results) => {
 				toast.dismiss();

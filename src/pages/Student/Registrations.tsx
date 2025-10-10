@@ -248,7 +248,7 @@ export default function StudentRegistrations() {
 
 		return Promise.allSettled([
 			getUnverifiedStudents(page, itemsPerPage, sortParam, searchParam),
-			createTimer(500),
+			createTimer(),
 		])
 			.then((hu) => {
 				if (hu[0].status === "rejected") {
