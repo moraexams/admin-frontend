@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
+import { type MarksStats, getMarksStats } from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -33,6 +34,7 @@ const EnterMarks = () => {
 		MarksEntryData | undefined
 	>(undefined);
 	const [mark, setMark] = useState<number | undefined>(undefined);
+	const [stats, setStats] = useState<MarksStats | null>(null);
 
 	const handleSubmit = async () => {
 		if (subject === null || part === null) {
@@ -50,16 +52,27 @@ const EnterMarks = () => {
 			return;
 		}
 
-		await enterMark(indexNo, subject, part, mark)
-			.then((data) => {
+		toast.loading("Submitting...");
+		Promise.allSettled([
+			enterMark(indexNo, subject, part, mark),
+			createTimer(),
+		]).then((data) => {
+			toast.dismiss();
+			if (data[0].status === "fulfilled") {
 				toast.success("Marks entered successfully");
 				setMark(undefined);
-				setStudentDetails(data);
-				setMark(data.marks === null ? undefined : data.marks);
-			})
-			.catch((error) => {
-				toast.error(error);
-			});
+				setStudentDetails(data[0].value);
+				setStats({
+					total_entered: data[0].value.total_entered,
+					total_verified: data[0].value.total_verified,
+				});
+				setMark(data[0].value.marks === null ? undefined : data[0].value.marks);
+			} else {
+				toast.error(
+					data[0].reason.response?.data?.message || "Error submitting marks",
+				);
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -68,7 +81,6 @@ const EnterMarks = () => {
 		if (
 			indexNo.length !== 7 ||
 			!isValidSubjectId(subject) ||
-			part === null ||
 			!isValidPart(part)
 		) {
 			return;
@@ -84,6 +96,10 @@ const EnterMarks = () => {
 				toast.dismiss();
 				if (d[0].status === "fulfilled") {
 					const response = d[0].value;
+					setStats({
+						total_entered: response.total_entered,
+						total_verified: response.total_verified,
+					});
 					setStudentDetails(response);
 					if (response.marks != undefined) {
 						setMark(response.marks);
@@ -107,21 +123,28 @@ const EnterMarks = () => {
 	}, [indexNo, subject, part]);
 
 	useEffect(() => {
-		if (!isValidSubjectId(subject)) {
-			navigate("/marks");
-			return;
-		}
-		if (part === null || !isValidPart(part)) {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) {
 			navigate("/marks");
 			return;
 		}
 	}, [subject, part]);
 
-	if (
-		!isValidSubjectId(subject) ||
-		part === null ||
-		!["p1", "p2"].includes(part)
-	) {
+	useEffect(() => {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) {
+			return;
+		}
+		const subjectAsInt = Number.parseInt(subject);
+
+		getMarksStats(subjectAsInt, part)
+			.then((data) => {
+				setStats(data);
+			})
+			.catch((error) => {
+				console.error("Error fetching marks stats:", error);
+			});
+	}, []);
+
+	if (!isValidSubjectId(subject) || !isValidPart(part)) {
 		return (
 			<>
 				<Breadcrumb pageName="Enter Marks" />
@@ -147,8 +170,16 @@ const EnterMarks = () => {
 				</AlertTitle>
 			</Alert>
 
-			<section className="grid grid-cols-3 gap-y-3 gap-x-5 mt-5 mx-auto">
-				<div className="col-span-full">
+			<section className="grid grid-cols-[auto_1fr_1fr_1fr] grid-rows-[repeat(5,auto)] gap-y-3 gap-x-5 mt-5 mx-auto">
+				<div className="col-start-1 row-start-1 bg-muted/40 h-full px-4 py-5 row-span-full min-w-[220px] rounded-md flex flex-col items-center justify-center">
+					<div className="text-6xl tabular-nums mb-2">
+						{stats?.total_entered == 0
+							? "0"
+							: stats?.total_entered.toString().padStart(2, "0")}
+					</div>
+					<span className="text-muted-foreground">Total Marks Entered</span>
+				</div>
+				<div className="col-start-2 col-span-full">
 					<Label className="mb-2">Index No</Label>
 					<div className="flex gap-2 h-12">
 						<Input
@@ -214,12 +245,12 @@ const EnterMarks = () => {
 					</div>
 				</div>
 
-				<p className="text-muted-foreground max-w-prose col-span-full">
+				<p className="text-muted-foreground max-w-prose col-start-2 col-span-full">
 					After entering the index no, the student details will be fetched
 					automatically and shown below.
 				</p>
 
-				<div className="col-span-2">
+				<div className="col-start-2 col-span-2">
 					<Label className="mb-1">Name</Label>
 					<Input
 						tabIndex={-1}
@@ -230,7 +261,7 @@ const EnterMarks = () => {
 					/>
 				</div>
 
-				<div>
+				<div className="col-start-2">
 					<Label className="mb-1">NIC</Label>
 					<Input
 						tabIndex={-1}
@@ -251,15 +282,17 @@ const EnterMarks = () => {
 					/>
 				</div>
 
-				<p className="text-muted-foreground max-w-prose col-span-2 text-pretty">
-					{studentDetails?.marks !== undefined
-						? studentDetails.verified_by !== null
-							? `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.`
-							: `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by}.`
-						: "Make sure all the details above are correct."}
+				<p className="text-muted-foreground max-w-prose col-start-2 col-span-2 text-pretty h-fit">
+					{studentDetails === undefined
+						? null
+						: studentDetails.marks !== null
+							? studentDetails.verified_by !== null
+								? `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.`
+								: `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by}.`
+							: "Make sure all the details above are correct and enter the marks."}
 				</p>
 
-				<div className="col-start-3 row-start-3 row-span-2 flex flex-col">
+				<div className="col-start-4 row-start-3 row-span-2 flex flex-col">
 					<Label className="mb-2">Marks</Label>
 					<Input
 						tabIndex={2}
@@ -292,7 +325,7 @@ const EnterMarks = () => {
 						mark === undefined ||
 						studentDetails.marks === mark
 					}
-					className="col-start-3 row-start-5 ml-auto"
+					className="col-start-4 row-start-5 ml-auto"
 				>
 					Submit
 				</Button>

@@ -1,3 +1,4 @@
+import type { PARTS } from "@/lib/utils";
 import { AxiosError } from "axios";
 import axiosInstance from "../axiosConfig";
 
@@ -150,4 +151,19 @@ export const getCentreWiseStudentsPerSubject = async (subjectId: number) => {
 		}
 		throw error;
 	}
+};
+
+export interface MarksStats {
+	total_entered: number;
+	total_verified: number;
+}
+
+export const getMarksStats = async (
+	subjectId: number,
+	part: (typeof PARTS)[number],
+) => {
+	const response = await axiosInstance.get<MarksStats>(
+		`/stats/marks/${subjectId}/${part}`,
+	);
+	return response.data;
 };

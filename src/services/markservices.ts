@@ -9,6 +9,8 @@ export interface MarksEntryData {
 	marks: number | null;
 	entered_by: string | null;
 	verified_by: string | null;
+	total_entered: number;
+	total_verified: number;
 }
 
 export const getMarkbyIndexNo = async (index_no: number) => {

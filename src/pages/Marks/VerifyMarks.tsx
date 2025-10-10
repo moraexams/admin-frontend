@@ -11,6 +11,7 @@ import {
 	previousStudentForMarksEntry,
 	verifyMark,
 } from "@/services/markservices";
+import { type MarksStats, getMarksStats } from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -36,16 +37,17 @@ const VerifyMarks = () => {
 		| undefined
 	>(undefined);
 
+	const [stats, setStats] = useState<MarksStats | null>(null);
 	const [indexNo, setIndexNo] = useState<string>(
 		searchParams.get("index_no") || "",
 	);
 
 	const handleSubmit = async () => {
-		if (subject === null || part === null) {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) {
 			toast.error("Please select subject and part");
 			return;
 		}
-
+		toast.loading("Verifying...");
 		Promise.allSettled([
 			verifyMark(indexNo, subject, part),
 			createTimer(),
@@ -54,6 +56,10 @@ const VerifyMarks = () => {
 			if (results[0].status === "fulfilled") {
 				toast.success("Marks verified successfully");
 				setStudentDetails(results[0].value);
+				setStats({
+					total_entered: results[0].value.total_entered,
+					total_verified: results[0].value.total_verified,
+				});
 			} else {
 				toast.error(
 					results[0].reason.response.data.message || "Error verifying marks",
@@ -64,8 +70,6 @@ const VerifyMarks = () => {
 
 	useEffect(() => {
 		if (
-			subject === null ||
-			part === null ||
 			indexNo.length !== 7 ||
 			!isValidSubjectId(subject) ||
 			!isValidPart(part)
@@ -73,7 +77,6 @@ const VerifyMarks = () => {
 			return;
 		}
 		toast.loading("Loading...");
-
 		Promise.allSettled([
 			getStudentMarksData(indexNo, subject, part),
 			createTimer(),
@@ -83,9 +86,11 @@ const VerifyMarks = () => {
 
 				if (results[0].status === "fulfilled") {
 					const studentMarks = results[0].value;
-					if (studentMarks) {
-						setStudentDetails(studentMarks);
-					}
+					setStudentDetails(studentMarks);
+					setStats({
+						total_entered: studentMarks.total_entered,
+						total_verified: studentMarks.total_verified,
+					});
 				}
 			})
 			.catch((error) => {
@@ -102,11 +107,22 @@ const VerifyMarks = () => {
 			});
 	}, [indexNo, subject, part]);
 
-	if (
-		!isValidSubjectId(subject) ||
-		part === null ||
-		!["p1", "p2"].includes(part)
-	) {
+	useEffect(() => {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) {
+			return;
+		}
+		const subjectAsInt = Number.parseInt(subject || "");
+
+		getMarksStats(subjectAsInt, part)
+			.then((data) => {
+				setStats(data);
+			})
+			.catch((error) => {
+				console.error("Error fetching marks stats:", error);
+			});
+	}, []);
+
+	if (!isValidSubjectId(subject) || !isValidPart(part)) {
 		return (
 			<>
 				<Breadcrumb pageName="Enter Marks" />
@@ -132,7 +148,27 @@ const VerifyMarks = () => {
 				</AlertTitle>
 			</Alert>
 
-			<section className="grid grid-cols-3 gap-x-5 gap-y-2 mt-5 mx-auto">
+			<section className="grid grid-cols-[auto_1fr_1fr_1fr] grid-rows-[repeat(5,auto)] gap-y-3 gap-x-5 mt-5 mx-auto">
+				<div className="col-start-1 row-start-1 row-span-full flex flex-col gap-2 min-w-[220px]">
+					<div className="bg-muted/40 h-full px-4 py-5 rounded-md flex flex-col items-center justify-center">
+						<div className="text-6xl tabular-nums mb-2">
+							{stats === null || stats.total_verified == 0
+								? "0"
+								: stats.total_verified.toString().padStart(2, "0")}
+						</div>
+						<span className="text-muted-foreground">Total Marks Verified</span>
+					</div>
+					<div className="bg-muted/40 h-full px-4 py-5 rounded-md flex flex-col items-center justify-center">
+						<div className="text-6xl tabular-nums mt-5 mb-2">
+							{stats === null || stats.total_entered - stats.total_verified == 0
+								? "0"
+								: (stats.total_entered - stats.total_verified)
+										.toString()
+										.padStart(2, "0")}
+						</div>
+						<span className="text-muted-foreground">Remaining to Verify</span>
+					</div>
+				</div>
 				<div className="col-span-3">
 					<Label className="mb-2">Index No</Label>
 					<div className="flex gap-2 h-12">
@@ -197,13 +233,13 @@ const VerifyMarks = () => {
 					</div>
 				</div>
 
-				<p className="text-muted-foreground max-w-prose col-span-full">
+				<p className="text-muted-foreground max-w-prose col-start-2 col-span-full">
 					After entering the index no, the student details and marks will be
 					fetched automatically and shown below. Once you have verified the
 					student details and their marks, press 'verify'.
 				</p>
 
-				<div className="col-span-2">
+				<div className="col-start-2 col-span-2">
 					<Label className="mb-1">Name</Label>
 					<Input
 						tabIndex={-1}
@@ -214,7 +250,7 @@ const VerifyMarks = () => {
 					/>
 				</div>
 
-				<div className="col-start-1">
+				<div className="col-start-2">
 					<Label className="mb-1">NIC</Label>
 					<Input
 						tabIndex={-1}
@@ -235,7 +271,7 @@ const VerifyMarks = () => {
 					/>
 				</div>
 
-				<div className="col-start-3 row-start-3 row-span-2 h-full flex flex-col">
+				<div className="col-start-4 row-start-3 row-span-2 h-full flex flex-col">
 					<Label className="mb-2">Marks</Label>
 					<Input
 						readOnly
@@ -246,21 +282,21 @@ const VerifyMarks = () => {
 						className="w-48 !h-auto flex-1 !text-4xl pointer-events-none"
 					/>
 				</div>
-				<div className="col-start-1 col-span-full flex gap-2 justify-between items-center">
-					<p
-						className="text-muted-foreground"
-						dangerouslySetInnerHTML={{
-							__html:
-								studentDetails?.marks === null ||
-								studentDetails?.entered_by === undefined
-									? "Marks not entered yet."
-									: studentDetails.entered_by === username
-										? "You <b>cannot</b> verify your own entered marks."
-										: studentDetails?.verified_by
-											? `Marks already verified by ${studentDetails.verified_by}.`
-											: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`,
-						}}
-					/>
+				<p
+					className="text-muted-foreground col-start-2"
+					dangerouslySetInnerHTML={{
+						__html:
+							studentDetails?.marks === null ||
+							studentDetails?.entered_by === undefined
+								? "Marks not entered yet."
+								: studentDetails.entered_by === username
+									? "You <b>cannot</b> verify your own entered marks."
+									: studentDetails?.verified_by
+										? `Marks already verified by ${studentDetails.verified_by}.`
+										: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`,
+					}}
+				/>
+				<div className="col-start-4 flex gap-2 justify-between items-center">
 					<Link
 						to={`/marks/enter?subject=${subject}&part=${part}&index_no=${indexNo}`}
 						className="ml-auto mt-5"
