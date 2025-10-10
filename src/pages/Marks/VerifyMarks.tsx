@@ -3,7 +3,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
+import { PATTERN__INDEX_NO, SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
 import { LOCAL_STORAGE__USERNAME } from "@/services/authServices";
 import {
 	getStudentMarksData,
@@ -70,7 +70,7 @@ const VerifyMarks = () => {
 
 	useEffect(() => {
 		if (
-			indexNo.length !== 7 ||
+			PATTERN__INDEX_NO.test(indexNo) === false ||
 			!isValidSubjectId(subject) ||
 			!isValidPart(part)
 		) {

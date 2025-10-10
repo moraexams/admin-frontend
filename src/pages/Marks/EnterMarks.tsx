@@ -2,7 +2,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
+import { PATTERN__INDEX_NO, SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
 import { type MarksStats, getMarksStats } from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
@@ -37,7 +37,7 @@ const EnterMarks = () => {
 	const [stats, setStats] = useState<MarksStats | null>(null);
 
 	const handleSubmit = async () => {
-		if (subject === null || part === null) {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) {
 			toast.error("Please select subject and part");
 			return;
 		}
@@ -79,7 +79,7 @@ const EnterMarks = () => {
 		setStudentDetails(undefined);
 		setMark(undefined);
 		if (
-			indexNo.length !== 7 ||
+			PATTERN__INDEX_NO.test(indexNo) === false ||
 			!isValidSubjectId(subject) ||
 			!isValidPart(part)
 		) {
