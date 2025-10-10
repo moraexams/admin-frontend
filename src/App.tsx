@@ -26,10 +26,10 @@ import FinanceDashboard from "./pages/Finance/Dashboard";
 import DistrictsSummary from "./pages/Finance/DistrictsSummary";
 import TransactionCategories from "./pages/Finance/TransactionCategories";
 import ManualAdmissions from "./pages/ManualAdmissions";
+import AllMarks from "./pages/Marks/AllMarks";
 import MarksBoundaries from "./pages/Marks/Boundaries";
 import MarksDashboard from "./pages/Marks/Dashboard";
 import EnterMarks from "./pages/Marks/EnterMarks";
-import StudentMarksCentreWise from "./pages/Marks/StudentMarksCentreWise";
 import VerifyMarks from "./pages/Marks/VerifyMarks";
 import CentreWiseVerifiedStudents from "./pages/Stats/CentreWiseStudentsCount";
 import EnteredStudentMarks from "./pages/Stats/EnteredStudentMarks";
@@ -222,7 +222,7 @@ function App() {
 							</>
 						}
 					/>
-					<Route path="/marks/all" element={<StudentMarksCentreWise />} />
+					<Route path="/marks/all" element={<AllMarks />} />
 					<Route path="/marks/boundaries" element={<MarksBoundaries />} />
 					<Route
 						path="/stats/enteredmarks"

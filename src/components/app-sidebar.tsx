@@ -107,6 +107,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				title: "All Marks",
 				url: "/marks/all",
 				icon: NotepadText,
+				hideIf: (role) => role !== ROLE_TECH_COORDINATOR,
 			},
 		],
 	},

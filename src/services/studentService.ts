@@ -245,6 +245,22 @@ export const getStudentMarksByCentre = async (
 	}
 };
 
+export const getStudentMarks = async (
+	page: number,
+	itemsPerPage: number,
+	searchParam: string,
+) => {
+	try {
+		const response = await axiosInstance.get(
+			`/student/marks?page=${page}&pageSize=${itemsPerPage}${searchParam}`,
+		);
+		return response.data;
+	} catch (error) {
+		console.log("Error fetching students: ");
+		return error;
+	}
+};
+
 export const getVerifiedStudents = async (
 	page: number,
 	itemsPerPage: number,
