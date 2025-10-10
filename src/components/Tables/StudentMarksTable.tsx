@@ -1,12 +1,9 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
-import { useNavigate } from "react-router-dom";
 import { getMarkbyIndexNo } from "../../services/markservices";
 import { convertUTCToIST, filterIt } from "../../services/utils";
-// import type { SnackBarConfig } from "../../types/snackbar";
 import type { Mark, StudentMark } from "../../types/types";
-// import Snackbar from "../Snackbar";
 
 const StudentMarksTable = ({
 	studentData,
@@ -17,7 +14,6 @@ const StudentMarksTable = ({
 	nameSearchKey: string /* streamSearchKey: string, */;
 	itemsPerPage: number;
 }) => {
-	const navigate = useNavigate();
 	const items: StudentMark[] = Array.isArray(studentData)
 		? nameSearchKey !== ""
 			? filterIt(studentData, nameSearchKey)
@@ -42,18 +38,7 @@ const StudentMarksTable = ({
 
 	const [viewSection, setViewSection] = useState(1);
 	const [modalOpen, setModalOpen] = useState(false);
-	// const [snackBarConfig, setSnackBarConfig] = useState<SnackBarConfig>({
-	// 	message: "",
-	// 	type: false,
-	// 	show: false,
-	// });
 
-	// const showSnackBar = (type: boolean, message: string) => {
-	// 	setSnackBarConfig({ message: message, type: type, show: true });
-	// 	setTimeout(() => {
-	// 		setSnackBarConfig((prev) => ({ ...prev, show: false }));
-	// 	}, 1000);
-	// };
 
 	const [studentMark, setStudentMark] = useState<Mark | null>(null);
 	const handleViewModalOpen = async (index_no: number) => {
@@ -64,12 +49,7 @@ const StudentMarksTable = ({
 			setModalOpen(true);
 		} else {
 			toast.error("Student Marks not entered yet");
-			// showSnackBar(false, "Student Marks not entered yet");
 		}
-	};
-
-	const handleEdit = async (index_no: number) => {
-		navigate(`/marks/enter?index_no=${index_no}`);
 	};
 
 	return (
@@ -195,26 +175,6 @@ const StudentMarksTable = ({
 														strokeLinecap="round"
 														strokeLinejoin="round"
 														d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-													/>
-												</svg>
-											</button>
-											<button
-												type="button"
-												onClick={() => handleEdit(student.index_no)}
-												className="hover:text-primary"
-											>
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 24 24"
-													strokeWidth={1.5}
-													stroke="currentColor"
-													className="size-6"
-												>
-													<path
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
 													/>
 												</svg>
 											</button>
@@ -638,15 +598,6 @@ const StudentMarksTable = ({
 								className="block w-full rounded-sm border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
 							>
 								Close
-							</button>
-						</div>
-						<div className="w-full px-3 2xsm:w-1/2">
-							<button
-								onClick={() => studentMark && handleEdit(studentMark?.index_no)}
-								className="block w-full rounded-sm border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
-								type="button"
-							>
-								Edit
 							</button>
 						</div>
 					</div>
