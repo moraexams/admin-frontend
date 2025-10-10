@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SUBJECTS, isValidPart, isValidSubjectId } from "@/lib/utils";
+import { LOCAL_STORAGE__USERNAME } from "@/services/authServices";
 import { getStudentMarksData, verifyMark } from "@/services/markservices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
@@ -16,6 +17,7 @@ const VerifyMarks = () => {
 	const [searchParams] = useSearchParams();
 	const subject = searchParams.get("subject");
 	const part = searchParams.get("part");
+	const username = localStorage.getItem(LOCAL_STORAGE__USERNAME);
 
 	const [studentDetails, setStudentDetails] = useState<
 		| {
@@ -39,19 +41,20 @@ const VerifyMarks = () => {
 			return;
 		}
 
-		Promise.allSettled([verifyMark(indexNo, subject, part), createTimer(500)])
-			.then((results) => {
-				toast.dismiss();
-				if (results[0].status === "fulfilled") {
-					toast.success("Marks verified successfully");
-					setStudentDetails(results[0].value);
-				} else {
-					toast.error("Error verifying marks");
-				}
-			})
-			.catch((error) => {
-				toast.error(error);
-			});
+		Promise.allSettled([
+			verifyMark(indexNo, subject, part),
+			createTimer(500),
+		]).then((results) => {
+			toast.dismiss();
+			if (results[0].status === "fulfilled") {
+				toast.success("Marks verified successfully");
+				setStudentDetails(results[0].value);
+			} else {
+				toast.error(
+					results[0].reason.response.data.message || "Error verifying marks",
+				);
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -211,14 +214,20 @@ const VerifyMarks = () => {
 					/>
 				</div>
 				<div className="col-start-1 col-span-full flex gap-2 justify-between items-center">
-					<p className="text-muted-foreground">
-						{studentDetails?.marks === null ||
-						studentDetails?.entered_by === undefined
-							? "Marks not entered yet."
-							: studentDetails?.verified_by
-								? `Marks already verified by ${studentDetails.verified_by}.`
-								: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`}
-					</p>
+					<p
+						className="text-muted-foreground"
+						dangerouslySetInnerHTML={{
+							__html:
+								studentDetails?.marks === null ||
+								studentDetails?.entered_by === undefined
+									? "Marks not entered yet."
+									: studentDetails.entered_by === username
+										? "You <b>cannot</b> verify your own entered marks."
+										: studentDetails?.verified_by
+											? `Marks already verified by ${studentDetails.verified_by}.`
+											: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`,
+						}}
+					/>
 					<Link
 						to={`/marks/enter?subject=${subject}&part=${part}&index_no=${indexNo}`}
 						className="ml-auto mt-5"
@@ -235,7 +244,8 @@ const VerifyMarks = () => {
 							subject === null ||
 							studentDetails === undefined ||
 							studentDetails.marks === null ||
-							studentDetails.verified_by !== null
+							studentDetails.verified_by !== null ||
+							username === studentDetails.entered_by
 						}
 						className="mt-5"
 					>
