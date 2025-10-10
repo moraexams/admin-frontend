@@ -53,6 +53,7 @@ const EnterMarks = () => {
 				toast.success("Marks entered successfully");
 				setMark(undefined);
 				setStudentDetails(data);
+				setMark(data.marks === null ? undefined : data.marks);
 			})
 			.catch((error) => {
 				toast.error(error);

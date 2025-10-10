@@ -44,6 +44,7 @@ const VerifyMarks = () => {
 				toast.dismiss();
 				if (results[0].status === "fulfilled") {
 					toast.success("Marks verified successfully");
+					setStudentDetails(results[0].value);
 				} else {
 					toast.error("Error verifying marks");
 				}
