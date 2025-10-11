@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import {
 	PATTERN__INDEX_NO,
 	SUBJECTS,
+	cn,
 	isValidPart,
 	isValidSubjectId,
 } from "@/lib/utils";
@@ -74,6 +75,7 @@ const VerifyMarks = () => {
 	};
 
 	useEffect(() => {
+		setStudentDetails(undefined);
 		if (
 			PATTERN__INDEX_NO.test(indexNo) === false ||
 			!isValidSubjectId(subject) ||
@@ -281,8 +283,13 @@ const VerifyMarks = () => {
 					<Input
 						readOnly
 						tabIndex={-1}
-						type="number"
-						value={studentDetails?.marks ? studentDetails.marks : ""}
+						value={
+							studentDetails === undefined || studentDetails.marks === null
+								? ""
+								: studentDetails.marks === -1
+									? "AB"
+									: studentDetails.marks
+						}
 						step={0.01}
 						className="w-48 !h-auto flex-1 !text-4xl pointer-events-none"
 					/>
@@ -291,31 +298,46 @@ const VerifyMarks = () => {
 					className="text-muted-foreground col-start-2"
 					dangerouslySetInnerHTML={{
 						__html:
-							studentDetails?.marks === null ||
-							studentDetails?.entered_by === undefined
-								? "Marks not entered yet."
-								: studentDetails.entered_by === username
-									? "You <b>cannot</b> verify your own entered marks."
-									: studentDetails?.verified_by
-										? `Marks already verified by ${studentDetails.verified_by}.`
-										: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`,
+							studentDetails === undefined
+								? ""
+								: studentDetails?.marks === null ||
+										studentDetails?.entered_by === undefined
+									? "Marks not entered yet."
+									: studentDetails.entered_by === username
+										? "You <b>cannot</b> verify your own entered marks."
+										: studentDetails?.verified_by
+											? `Marks already verified by ${studentDetails.verified_by}.`
+											: `Marks entered by ${studentDetails?.entered_by}${studentDetails?.verified_by ? ` and verified by ${studentDetails.verified_by}` : ""}.`,
 					}}
 				/>
 				<div className="col-start-4 flex gap-2 justify-between items-center">
 					<Link
-						to={`/marks/enter?subject=${subject}&part=${part}&index_no=${indexNo}`}
-						className="ml-auto mt-5"
+						to={
+							indexNo.length !== 7 || studentDetails === undefined
+								? "#"
+								: `/marks/enter?subject=${subject}&part=${part}&index_no=${indexNo}`
+						}
+						className={cn(
+							"ml-auto mt-5",
+							indexNo.length !== 7 || studentDetails === undefined
+								? "pointer-events-none"
+								: "",
+						)}
 						target="_blank"
 					>
-						<Button disabled={indexNo.length !== 7} variant="outline">
+						<Button
+							disabled={indexNo.length !== 7 || studentDetails === undefined}
+							variant="outline"
+						>
 							Edit
 						</Button>
 					</Link>
 					<Button
 						onClick={handleSubmit}
 						disabled={
-							part === null ||
-							subject === null ||
+							!isValidSubjectId(subject) ||
+							!isValidPart(part) ||
+							indexNo.length !== 7 ||
 							studentDetails === undefined ||
 							studentDetails.marks === null ||
 							studentDetails.verified_by !== null ||

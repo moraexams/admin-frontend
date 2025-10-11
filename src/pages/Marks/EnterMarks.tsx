@@ -1,5 +1,6 @@
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -52,7 +53,7 @@ const EnterMarks = () => {
 			return;
 		}
 
-		if (mark < 0 || mark > 100) {
+		if (mark !== -1 && (mark < 0 || mark > 100)) {
 			toast.error("Marks must be between 0 and 100");
 			return;
 		}
@@ -292,33 +293,74 @@ const EnterMarks = () => {
 						? null
 						: studentDetails.marks !== null
 							? studentDetails.verified_by !== null
-								? `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.`
-								: `Marks has already been entered (${studentDetails.marks}) by ${studentDetails.entered_by}.`
+								? `Marks has already been entered (${studentDetails.marks === -1 ? "AB" : studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.`
+								: `Marks has already been entered (${studentDetails.marks === -1 ? "AB" : studentDetails.marks}) by ${studentDetails.entered_by}.`
 							: "Make sure all the details above are correct and enter the marks."}
 				</p>
 
-				<div className="col-start-4 row-start-3 row-span-2 flex flex-col">
-					<Label className="mb-2">Marks</Label>
-					<Input
-						tabIndex={2}
-						type="number"
-						value={mark === undefined ? "" : mark}
-						disabled={
-							subject === null ||
-							part === null ||
-							studentDetails === undefined ||
-							indexNo.length !== 7
-						}
-						step={0.01}
-						onChange={(e) => {
-							if (e.target.value === "") {
-								setMark(undefined);
-							} else {
-								setMark(Number.parseFloat(e.target.value));
+				<div className="col-start-4 row-start-3 row-span-2 flex items-center gap-5">
+					<div className="flex flex-col h-full">
+						<Label className="mb-2">Marks</Label>
+						<Input
+							tabIndex={2}
+							type={mark === -1 ? "text" : "number"}
+							value={mark === undefined ? "" : mark == -1 ? "AB" : mark}
+							disabled={
+								!isValidSubjectId(subject) ||
+								!isValidPart(part) ||
+								studentDetails === undefined ||
+								indexNo.length !== 7 ||
+								mark === -1
 							}
-						}}
-						className="w-48 !h-auto flex-1 !text-5xl"
-					/>
+							step={0.01}
+							onInput={(e) => {
+								if (!(e.target instanceof HTMLInputElement)) {
+									return;
+								}
+								if (Number.isNaN(e.target.valueAsNumber)) {
+									e.target.value = "";
+									setMark(undefined);
+								}
+
+								switch (e.target.value) {
+									case "":
+										setMark(undefined);
+										break;
+									default:
+										setMark(Number.parseFloat(e.target.value));
+								}
+							}}
+							className="w-48 !h-auto flex-1 !text-5xl"
+						/>
+					</div>
+					<span>OR</span>
+					<div className="inline-flex items-center gap-2 h-full">
+						<Checkbox
+							id="is-absent"
+							className="!h-6 aspect-square w-auto disabled:pointer-events-none cursor-pointer"
+							disabled={
+								!isValidSubjectId(subject) ||
+								!isValidPart(part) ||
+								studentDetails === undefined ||
+								indexNo.length !== 7 ||
+								(mark !== undefined && mark !== -1)
+							}
+							checked={mark === -1}
+							onCheckedChange={(v) => {
+								if (v) {
+									setMark(-1);
+								} else {
+									setMark(undefined);
+								}
+							}}
+						/>
+						<Label
+							className="inline-block text-lg cursor-pointer"
+							htmlFor="is-absent"
+						>
+							Absent
+						</Label>
+					</div>
 				</div>
 				<Button
 					onClick={handleSubmit}
