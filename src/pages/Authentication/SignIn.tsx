@@ -1,5 +1,6 @@
 import { ROLE_COORDINATOR } from "@/common/roles";
 import AuthenticationBanner from "@/components/authentication-banner";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,13 +94,14 @@ const SignIn: React.FC = () => {
 						/>
 					</div>
 
-					{error && (
-						<div className="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-4 py-4 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-4">
-							<div className="w-full">
-								<h5 className="font-semibold text-[#B45454]">{error}</h5>
-							</div>
-						</div>
-					)}
+					{error ? (
+						<Alert
+							variant="destructive"
+							className="mb-4 bg-red-200 dark:bg-red-300 dark:text-red-700"
+						>
+							<AlertTitle>{error}</AlertTitle>
+						</Alert>
+					) : null}
 
 					<div className="my-5">
 						<Button
