@@ -1,3 +1,5 @@
+import { ROLE_TECH_COORDINATOR } from "@/common/roles";
+import { OverallMarksStatsCard } from "@/components/overall-marks-stats";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -7,7 +9,12 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import {
+	type OverallMarksStats,
+	getOverallMarksStats,
+} from "@/services/statsServices";
 import { CopyCheck, Pen } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 
@@ -35,7 +42,27 @@ const SUBJECTS = [
 ];
 const PARTS = new Array(2).fill("0");
 
+const PERMISSION_FOR_STATS = [ROLE_TECH_COORDINATOR];
+
 export default function MarksDashboard() {
+	const role = localStorage.getItem("role");
+	const [overallStats, setOverallStats] = useState<null | OverallMarksStats>(
+		null,
+	);
+
+	useEffect(() => {
+		if (typeof role !== "string" || !PERMISSION_FOR_STATS.includes(role)) {
+			return;
+		}
+
+		getOverallMarksStats()
+			.then((stats) => {
+				setOverallStats(stats);
+			})
+			.then()
+			.catch(console.error);
+	}, []);
+
 	return (
 		<>
 			<Breadcrumb pageName="Marks" />
@@ -83,6 +110,14 @@ export default function MarksDashboard() {
 					})}
 				</TableBody>
 			</Table>
+
+			{PERMISSION_FOR_STATS.includes(localStorage.getItem("role") as string) ? (
+				overallStats === null ? (
+					"Loading..."
+				) : (
+					<OverallMarksStatsCard stats={overallStats} />
+				)
+			) : null}
 		</>
 	);
 }

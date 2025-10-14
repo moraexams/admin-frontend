@@ -153,17 +153,34 @@ export const getCentreWiseStudentsPerSubject = async (subjectId: number) => {
 	}
 };
 
-export interface MarksStats {
+export interface SubjectPartMarksStats {
 	total_entered: number;
 	total_verified: number;
 }
 
-export const getMarksStats = async (
+export const getSubjectPartMarksStats = async (
 	subjectId: number,
 	part: (typeof PARTS)[number],
 ) => {
-	const response = await axiosInstance.get<MarksStats>(
+	const response = await axiosInstance.get<SubjectPartMarksStats>(
 		`/stats/marks/${subjectId}/${part}`,
+	);
+	return response.data;
+};
+
+export interface OverallMarksStats {
+	subjects: Array<{
+		subject_id: number;
+		subject: string;
+		total_count: number;
+		part1: SubjectPartMarksStats;
+		part2: SubjectPartMarksStats;
+	}>;
+}
+
+export const getOverallMarksStats = async () => {
+	const response = await axiosInstance.get<OverallMarksStats>(
+		"/stats/marks/overall",
 	);
 	return response.data;
 };

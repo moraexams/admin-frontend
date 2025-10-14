@@ -17,7 +17,10 @@ import {
 	previousStudentForMarksEntry,
 	verifyMark,
 } from "@/services/markservices";
-import { type MarksStats, getMarksStats } from "@/services/statsServices";
+import {
+	type SubjectPartMarksStats,
+	getSubjectPartMarksStats,
+} from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -43,7 +46,7 @@ const VerifyMarks = () => {
 		| undefined
 	>(undefined);
 
-	const [stats, setStats] = useState<MarksStats | null>(null);
+	const [stats, setStats] = useState<SubjectPartMarksStats | null>(null);
 	const [indexNo, setIndexNo] = useState<string>(
 		searchParams.get("index_no") || "",
 	);
@@ -120,7 +123,7 @@ const VerifyMarks = () => {
 		}
 		const subjectAsInt = Number.parseInt(subject || "");
 
-		getMarksStats(subjectAsInt, part)
+		getSubjectPartMarksStats(subjectAsInt, part)
 			.then((data) => {
 				setStats(data);
 			})

@@ -9,7 +9,10 @@ import {
 	isValidPart,
 	isValidSubjectId,
 } from "@/lib/utils";
-import { type MarksStats, getMarksStats } from "@/services/statsServices";
+import {
+	type SubjectPartMarksStats,
+	getSubjectPartMarksStats,
+} from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
@@ -40,7 +43,7 @@ const EnterMarks = () => {
 		MarksEntryData | undefined
 	>(undefined);
 	const [mark, setMark] = useState<number | undefined>(undefined);
-	const [stats, setStats] = useState<MarksStats | null>(null);
+	const [stats, setStats] = useState<SubjectPartMarksStats | null>(null);
 
 	const handleSubmit = async () => {
 		if (!isValidSubjectId(subject) || !isValidPart(part)) {
@@ -141,7 +144,7 @@ const EnterMarks = () => {
 		}
 		const subjectAsInt = Number.parseInt(subject);
 
-		getMarksStats(subjectAsInt, part)
+		getSubjectPartMarksStats(subjectAsInt, part)
 			.then((data) => {
 				setStats(data);
 			})
