@@ -55,7 +55,7 @@ export function OverallMarksStatsCard({ stats }: Props) {
 	};
 
 	return (
-		<div className="mt-5">
+		<>
 			<h2 className="text-xl font-bold mb-5">Subject Statistics</h2>
 
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -177,6 +177,6 @@ export function OverallMarksStatsCard({ stats }: Props) {
 					</Card>
 				))}
 			</div>
-		</div>
+		</>
 	);
 }

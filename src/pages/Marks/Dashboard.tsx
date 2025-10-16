@@ -1,4 +1,5 @@
 import { ROLE_TECH_COORDINATOR } from "@/common/roles";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { OverallMarksStatsCard } from "@/components/overall-marks-stats";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +17,6 @@ import {
 import { CopyCheck, Pen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 
 const SUBJECTS = [
 	{
@@ -111,13 +111,17 @@ export default function MarksDashboard() {
 				</TableBody>
 			</Table>
 
-			{PERMISSION_FOR_STATS.includes(localStorage.getItem("role") as string) ? (
-				overallStats === null ? (
-					"Loading..."
-				) : (
-					<OverallMarksStatsCard stats={overallStats} />
-				)
-			) : null}
+			<div className="my-4">
+				{PERMISSION_FOR_STATS.includes(
+					localStorage.getItem("role") as string,
+				) ? (
+					overallStats === null ? (
+						"Loading..."
+					) : (
+						<OverallMarksStatsCard stats={overallStats} />
+					)
+				) : null}
+			</div>
 		</>
 	);
 }
