@@ -189,8 +189,10 @@ export interface MarksStatsForCentre {
 	id: string;
 	name: string;
 	total_students: number;
-	total_entered: number;
-	total_verified: number;
+	p1_total_entered: number;
+	p1_total_verified: number;
+	p2_total_entered: number;
+	p2_total_verified: number;
 }
 
 export interface CentreWiseMarksStats {

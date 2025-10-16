@@ -69,26 +69,50 @@ export default function CentreWiseMarksStats() {
 			),
 		},
 		{
-			accessorKey: "total_entered",
+			accessorKey: "p1_total_entered",
 			header: ({ column }) => (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 					className="px-0"
 				>
-					Entered
+					P1 Entered
 				</Button>
 			),
 		},
 		{
-			accessorKey: "total_verified",
+			accessorKey: "p1_total_verified",
 			header: ({ column }) => (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 					className="px-0"
 				>
-					Verified
+					P1 Verified
+				</Button>
+			),
+		},
+		{
+			accessorKey: "p2_total_entered",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className="px-0"
+				>
+					P2 Entered
+				</Button>
+			),
+		},
+		{
+			accessorKey: "p2_total_verified",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className="px-0"
+				>
+					P2 Verified
 				</Button>
 			),
 		},
