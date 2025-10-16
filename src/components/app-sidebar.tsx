@@ -104,6 +104,12 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 			},
 			{
 				type: "link",
+				title: "Centre-Wise Marks",
+				url: "/marks/centre-wise",
+				icon: NotepadText,
+			},
+			{
+				type: "link",
 				title: "All Marks",
 				url: "/marks/all",
 				icon: NotepadText,

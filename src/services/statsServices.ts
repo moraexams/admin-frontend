@@ -184,3 +184,22 @@ export const getOverallMarksStats = async () => {
 	);
 	return response.data;
 };
+
+export interface MarksStatsForCentre {
+	id: string;
+	name: string;
+	total_students: number;
+	total_entered: number;
+	total_verified: number;
+}
+
+export interface CentreWiseMarksStats {
+	exam_centres: Array<MarksStatsForCentre>;
+}
+
+export const getCentreWiseMarksStats = async (subjectId: number) => {
+	const response = await axiosInstance.get<CentreWiseMarksStats>(
+		`/stats/marks/centre-wise/${subjectId}`,
+	);
+	return response.data;
+};
