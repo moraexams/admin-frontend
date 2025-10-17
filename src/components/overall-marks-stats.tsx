@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	type ChartConfig,
 	ChartContainer,
+	ChartLegend,
+	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -48,9 +50,9 @@ export function OverallMarksStatsCard({ stats }: Props) {
 			0,
 		);
 		return [
-			{ name: "Entered", value: part.total_entered, fill: "var(--chart-1)" },
-			{ name: "Verified", value: part.total_verified, fill: "var(--chart-2)" },
-			{ name: "Remaining", value: remaining, fill: "var(--chart-3)" },
+			{ name: "entered", value: part.total_entered, fill: "var(--chart-1)" },
+			{ name: "verified", value: part.total_verified, fill: "var(--chart-2)" },
+			{ name: "remaining", value: remaining, fill: "var(--chart-3)" },
 		];
 	};
 
@@ -118,6 +120,10 @@ export function OverallMarksStatsCard({ stats }: Props) {
 											}}
 										/>
 									</Pie>
+									<ChartLegend
+										content={<ChartLegendContent nameKey="" />}
+										className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
+									/>
 								</PieChart>
 							</ChartContainer>
 
@@ -171,6 +177,10 @@ export function OverallMarksStatsCard({ stats }: Props) {
 											}}
 										/>
 									</Pie>
+									<ChartLegend
+										content={<ChartLegendContent nameKey="" />}
+										className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
+									/>
 								</PieChart>
 							</ChartContainer>
 						</CardContent>
