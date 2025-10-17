@@ -110,7 +110,8 @@ export function OverallMarksStatsCard({ stats }: Props) {
 																		s.part1.total_verified) *
 																		50) /
 																	s.total_count
-																).toFixed(2)}%
+																).toFixed(2)}
+																%
 															</tspan>
 														</text>
 													);
@@ -165,7 +166,8 @@ export function OverallMarksStatsCard({ stats }: Props) {
 																		s.part2.total_verified) /
 																		s.total_count) *
 																	50
-																).toFixed(2)}%
+																).toFixed(2)}
+																%
 															</tspan>
 														</text>
 													);
