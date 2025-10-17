@@ -105,14 +105,12 @@ export function OverallMarksStatsCard({ stats }: Props) {
 																y={viewBox.cy}
 																className="fill-foreground text-2xl font-bold"
 															>
-																{s.part1.total_entered + s.part1.total_verified}
-															</tspan>
-															<tspan
-																x={viewBox.cx}
-																y={(viewBox.cy || 0) + 20}
-																className="fill-muted-foreground text-sm"
-															>
-																/{s.total_count}
+																{(
+																	((s.part1.total_entered +
+																		s.part1.total_verified) *
+																		50) /
+																	s.total_count
+																).toFixed(2)}%
 															</tspan>
 														</text>
 													);
@@ -162,14 +160,12 @@ export function OverallMarksStatsCard({ stats }: Props) {
 																y={viewBox.cy}
 																className="fill-foreground text-2xl font-bold"
 															>
-																{s.part2.total_entered + s.part2.total_verified}
-															</tspan>
-															<tspan
-																x={viewBox.cx}
-																y={(viewBox.cy || 0) + 20}
-																className="fill-muted-foreground text-sm"
-															>
-																/{s.total_count}
+																{(
+																	((s.part2.total_entered +
+																		s.part2.total_verified) /
+																		s.total_count) *
+																	50
+																).toFixed(2)}%
 															</tspan>
 														</text>
 													);
