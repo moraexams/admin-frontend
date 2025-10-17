@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,8 +23,8 @@ import {
 } from "@/services/statsServices";
 import { createTimer } from "@/services/utils";
 import { AxiosError } from "axios";
-import { ChevronLeft, ChevronRight, Info } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, Info, Keyboard } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -76,6 +76,34 @@ const VerifyMarks = () => {
 			}
 		});
 	};
+
+	const loadNextStudent = () => {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) return;
+
+		nextStudentForMarksEntry(indexNo, subject, part)
+			.then((data) => {
+				setIndexNo(data.index_no);
+				setStudentDetails(data);
+			})
+			.catch((error) => {
+				if (error instanceof AxiosError && error.response) {
+					toast.error(
+						error.response.data.message || "Error fetching previous student",
+					);
+				} else {
+					toast.error("Error fetching previous student");
+				}
+			});
+	};
+
+	const isSubmitButtonDisabled =
+		!isValidSubjectId(subject) ||
+		!isValidPart(part) ||
+		indexNo.length !== 7 ||
+		studentDetails === undefined ||
+		studentDetails.marks === null ||
+		studentDetails.verified_by !== null ||
+		username === studentDetails.entered_by;
 
 	useEffect(() => {
 		setStudentDetails(undefined);
@@ -132,6 +160,32 @@ const VerifyMarks = () => {
 			});
 	}, []);
 
+	const onEnterPressed = useCallback(
+		(event: globalThis.KeyboardEvent) => {
+			if (event.key !== "Enter" || studentDetails === undefined) return;
+			if (studentDetails.marks === null) {
+				toast.error("Marks not entered yet");
+				return;
+			}
+
+			if (isSubmitButtonDisabled) {
+				loadNextStudent();
+				return;
+			}
+
+			handleSubmit();
+		},
+		[indexNo, studentDetails, isSubmitButtonDisabled],
+	);
+
+	useEffect(() => {
+		window.addEventListener("keypress", onEnterPressed);
+
+		return () => {
+			window.removeEventListener("keypress", onEnterPressed);
+		};
+	}, [onEnterPressed]);
+
 	if (!isValidSubjectId(subject) || !isValidPart(part)) {
 		return (
 			<>
@@ -156,6 +210,15 @@ const VerifyMarks = () => {
 						{SUBJECTS[subject]} {part === "p1" ? "Part 1" : "Part 2"}
 					</b>
 				</AlertTitle>
+			</Alert>
+
+			<Alert variant="info" className="mt-2">
+				<Keyboard className="h-[1lh]" />
+				<AlertTitle className="text-base">Note</AlertTitle>
+				<AlertDescription className="text-foreground max-w-prose">
+					When you press Enter, the marks will be verified. If you press Enter
+					again, the next student will be loaded automatically.
+				</AlertDescription>
 			</Alert>
 
 			<section className="grid grid-cols-[auto_1fr_1fr_1fr] grid-rows-[repeat(5,auto)] gap-y-3 gap-x-5 mt-5 mx-auto">
@@ -220,23 +283,7 @@ const VerifyMarks = () => {
 							className="h-full w-12 tabular-nums"
 							tabIndex={4}
 							disabled={indexNo.length !== 7}
-							onClick={() => {
-								nextStudentForMarksEntry(indexNo, subject, part)
-									.then((data) => {
-										setIndexNo(data.index_no);
-										setStudentDetails(data);
-									})
-									.catch((error) => {
-										if (error instanceof AxiosError && error.response) {
-											toast.error(
-												error.response.data.message ||
-													"Error fetching previous student",
-											);
-										} else {
-											toast.error("Error fetching previous student");
-										}
-									});
-							}}
+							onClick={loadNextStudent}
 						>
 							<ChevronRight className="size-5" />
 						</Button>
@@ -337,15 +384,7 @@ const VerifyMarks = () => {
 					</Link>
 					<Button
 						onClick={handleSubmit}
-						disabled={
-							!isValidSubjectId(subject) ||
-							!isValidPart(part) ||
-							indexNo.length !== 7 ||
-							studentDetails === undefined ||
-							studentDetails.marks === null ||
-							studentDetails.verified_by !== null ||
-							username === studentDetails.entered_by
-						}
+						disabled={isSubmitButtonDisabled}
 						className="mt-5"
 					>
 						Verify

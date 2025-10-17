@@ -1,4 +1,5 @@
-import { Alert, AlertTitle } from "@/components/ui/alert";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -10,23 +11,22 @@ import {
 	isValidSubjectId,
 } from "@/lib/utils";
 import {
-	type SubjectPartMarksStats,
-	getSubjectPartMarksStats,
-} from "@/services/statsServices";
-import { createTimer } from "@/services/utils";
-import { AxiosError } from "axios";
-import { ChevronLeft, ChevronRight, Info } from "lucide-react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import {
 	type MarksEntryData,
 	enterMark,
 	getStudentMarksData,
 	nextStudentForMarksEntry,
 	previousStudentForMarksEntry,
-} from "../../services/markservices";
+} from "@/services/markservices";
+import {
+	type SubjectPartMarksStats,
+	getSubjectPartMarksStats,
+} from "@/services/statsServices";
+import { createTimer } from "@/services/utils";
+import { AxiosError } from "axios";
+import { ChevronLeft, ChevronRight, Info, Keyboard } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const EnterMarks = () => {
 	const [searchParams] = useSearchParams();
@@ -153,6 +153,63 @@ const EnterMarks = () => {
 			});
 	}, []);
 
+	const loadNextStudent = () => {
+		if (!isValidSubjectId(subject) || !isValidPart(part)) {
+			return;
+		}
+
+		nextStudentForMarksEntry(indexNo, subject, part)
+			.then((data) => {
+				setIndexNo(data.index_no);
+				setStudentDetails(data);
+				setMark(data.marks === null ? undefined : data.marks);
+			})
+			.catch((error) => {
+				if (error instanceof AxiosError && error.response) {
+					toast.error(
+						error.response.data.message || "Error fetching previous student",
+					);
+				} else {
+					toast.error("Error fetching previous student");
+				}
+			});
+	};
+
+	const isSubmitButtonDisabled =
+		subject === null ||
+		part === null ||
+		indexNo.length !== 7 ||
+		studentDetails === undefined ||
+		mark === undefined ||
+		studentDetails.marks === mark;
+
+	const onEnterPressed = useCallback(
+		(event: globalThis.KeyboardEvent) => {
+			if (event.key !== "Enter" || studentDetails === undefined) return;
+
+			if (isSubmitButtonDisabled) {
+				if (mark === undefined) {
+					toast.error("You haven't entered the marks yet");
+					return;
+				}
+
+				loadNextStudent();
+				return;
+			}
+
+			handleSubmit();
+		},
+		[indexNo, studentDetails, isSubmitButtonDisabled],
+	);
+
+	useEffect(() => {
+		window.addEventListener("keypress", onEnterPressed);
+
+		return () => {
+			window.removeEventListener("keypress", onEnterPressed);
+		};
+	}, [onEnterPressed]);
+
 	if (!isValidSubjectId(subject) || !isValidPart(part)) {
 		return (
 			<>
@@ -170,13 +227,22 @@ const EnterMarks = () => {
 			<Breadcrumb pageName="Enter Marks" />
 
 			<Alert variant="default" className="text-base">
-				<Info className="1lh" />
+				<Info className="h-[1lh]" />
 				<AlertTitle className="overflow-visible h-auto block">
 					You are entering marks for{" "}
 					<b className="font-bold text-xl block">
 						{SUBJECTS[subject]} {part === "p1" ? "Part 1" : "Part 2"}
 					</b>
 				</AlertTitle>
+			</Alert>
+
+			<Alert variant="info" className="mt-2">
+				<Keyboard className="h-[1lh]" />
+				<AlertTitle className="text-base">Note</AlertTitle>
+				<AlertDescription className="text-foreground max-w-prose">
+					When you press Enter, the marks will be entered. If you press Enter
+					again, the next student will be loaded automatically.
+				</AlertDescription>
 			</Alert>
 
 			<section className="grid grid-cols-[auto_1fr_1fr_1fr] grid-rows-[repeat(5,auto)] gap-y-3 gap-x-5 mt-5 mx-auto">
@@ -230,24 +296,7 @@ const EnterMarks = () => {
 							className="h-full w-12 tabular-nums"
 							tabIndex={4}
 							disabled={indexNo.length !== 7}
-							onClick={() => {
-								nextStudentForMarksEntry(indexNo, subject, part)
-									.then((data) => {
-										setIndexNo(data.index_no);
-										setStudentDetails(data);
-										setMark(data.marks === null ? undefined : data.marks);
-									})
-									.catch((error) => {
-										if (error instanceof AxiosError && error.response) {
-											toast.error(
-												error.response.data.message ||
-													"Error fetching previous student",
-											);
-										} else {
-											toast.error("Error fetching previous student");
-										}
-									});
-							}}
+							onClick={loadNextStudent}
 						>
 							<ChevronRight className="size-5" />
 						</Button>
@@ -367,14 +416,7 @@ const EnterMarks = () => {
 				</div>
 				<Button
 					onClick={handleSubmit}
-					disabled={
-						subject === null ||
-						part === null ||
-						indexNo.length !== 7 ||
-						studentDetails === undefined ||
-						mark === undefined ||
-						studentDetails.marks === mark
-					}
+					disabled={isSubmitButtonDisabled}
 					className="col-start-4 row-start-5 ml-auto"
 				>
 					Submit
