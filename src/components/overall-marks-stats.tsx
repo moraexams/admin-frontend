@@ -45,12 +45,13 @@ interface Props {
 
 export function OverallMarksStatsCard({ stats }: Props) {
 	const getChartData = (part: PartData, total: number) => {
-		const remaining = Math.max(
-			total - part.total_entered,
-			0,
-		);
+		const remaining = Math.max(total - part.total_entered, 0);
 		return [
-			{ name: "entered", value: part.total_entered - part.total_verified, fill: "var(--chart-1)" },
+			{
+				name: "entered",
+				value: part.total_entered - part.total_verified,
+				fill: "var(--chart-1)",
+			},
 			{ name: "verified", value: part.total_verified, fill: "var(--chart-2)" },
 			{ name: "remaining", value: remaining, fill: "var(--chart-3)" },
 		];

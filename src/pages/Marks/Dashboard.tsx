@@ -198,6 +198,7 @@ export default function MarksDashboard() {
 									toast.success("Downloaded!");
 								});
 							} catch (error) {
+								toast.dismiss();
 								toast.error(
 									typeof error === "string"
 										? error
