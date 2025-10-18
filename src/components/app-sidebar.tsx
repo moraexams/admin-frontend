@@ -1,7 +1,7 @@
 import {
 	ROLE_DISTRICTS_COORDINATOR,
+	ROLE_EXAM_COORDINATOR,
 	ROLE_FINANCE_TEAM_MEMBER,
-	ROLE_PRESIDENT,
 	ROLE_TECH_COORDINATOR,
 	ROLE_TECH_TEAM_MEMBER,
 	ROLE_TREASURER,
@@ -100,7 +100,7 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 				icon: ListOrdered,
 				hideIf: (role) =>
 					typeof role !== "string" ||
-					![ROLE_TECH_COORDINATOR, ROLE_PRESIDENT].includes(role),
+					![ROLE_TECH_COORDINATOR, ROLE_EXAM_COORDINATOR].includes(role),
 			},
 			{
 				type: "link",
