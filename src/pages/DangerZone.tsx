@@ -18,6 +18,8 @@ import {
 	dangerZonePageData,
 	startSendingIndexNoEmails,
 } from "../services/dangerzoneServices";
+import { Link } from "react-router-dom";
+import { finalizeResults } from "@/services/result.service";
 
 interface Feedback {
 	state: "success" | "error" | "loading";
@@ -253,14 +255,25 @@ const DangerZone = () => {
 					Finalise Results
 				</h2>
 				<p className="text-lg mb-3 max-w-prose col-start-1">
-					<b className="text-red-600 font-medium">IRREVERSIBLE</b>. After
-					setting the marks boundaries for each subject, finalize the results.
+					After setting the marks boundaries for each subject, finalize the results.
 					Then only the students can view their results.{" "}
 				</p>
 
 				<Button
 					size="lg"
 					className="col-start-1 xl:col-start-2 xl:row-start-1 xl:row-span-2"
+					onClick={() => {
+						toast.loading("Finalizing results...");
+						finalizeResults().then(() => {
+							toast.dismiss();
+							toast.success("Results finalized successfully!");
+						}).catch(() => {
+							toast.dismiss();
+							toast.error("Failed to finalize results");
+
+						});
+
+					}}
 				>
 					Finalize
 				</Button>
