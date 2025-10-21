@@ -242,3 +242,38 @@ export const downloadMarksStatsInPercentagesForSubject = async (
 		throw "An error occurred while downloading marks stats";
 	}
 };
+
+export const downloadResultsSheetForStream = async (streamId: string) => {
+	try {
+		const response = await axiosInstance.get(
+			`/result/stream-wise/${streamId}`,
+			{
+				responseType: "blob",
+			},
+		);
+
+		const contentDisposition = response.headers["content-disposition"];
+		const url = window.URL.createObjectURL(new Blob([response.data]));
+		const link = document.createElement("a");
+		link.href = url;
+		link.setAttribute(
+			"download",
+			contentDisposition
+				? contentDisposition.split("filename=")[1]
+				: `Mora Exams 2025 - Results Sheet - ${streamId}.csv`,
+		);
+		document.body.appendChild(link);
+		link.click();
+		link.remove();
+
+		return true;
+	} catch (error) {
+		console.log(error);
+		if (error instanceof AxiosError) {
+			if (error.response?.data) {
+				throw new Error(error.response?.data.message);
+			}
+		}
+		throw "An error occurred while downloading marks stats";
+	}
+};

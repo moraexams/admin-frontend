@@ -7,6 +7,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { finalizeResults } from "@/services/result.service";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
@@ -18,8 +19,6 @@ import {
 	dangerZonePageData,
 	startSendingIndexNoEmails,
 } from "../services/dangerzoneServices";
-import { Link } from "react-router-dom";
-import { finalizeResults } from "@/services/result.service";
 
 interface Feedback {
 	state: "success" | "error" | "loading";
@@ -255,8 +254,8 @@ const DangerZone = () => {
 					Finalise Results
 				</h2>
 				<p className="text-lg mb-3 max-w-prose col-start-1">
-					After setting the marks boundaries for each subject, finalize the results.
-					Then only the students can view their results.{" "}
+					After setting the marks boundaries for each subject, finalize the
+					results. Then only the students can view their results.{" "}
 				</p>
 
 				<Button
@@ -264,15 +263,15 @@ const DangerZone = () => {
 					className="col-start-1 xl:col-start-2 xl:row-start-1 xl:row-span-2"
 					onClick={() => {
 						toast.loading("Finalizing results...");
-						finalizeResults().then(() => {
-							toast.dismiss();
-							toast.success("Results finalized successfully!");
-						}).catch(() => {
-							toast.dismiss();
-							toast.error("Failed to finalize results");
-
-						});
-
+						finalizeResults()
+							.then(() => {
+								toast.dismiss();
+								toast.success("Results finalized successfully!");
+							})
+							.catch(() => {
+								toast.dismiss();
+								toast.error("Failed to finalize results");
+							});
 					}}
 				>
 					Finalize
