@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ReactPaginate from "react-paginate";
 import { getDistrictsWithCentres } from "../../services/districtService";
-import { getCenters } from "../../services/examCentreService";
+import { getAllExamCenters } from "../../services/examCentreService";
 import { getStreams } from "../../services/streamServices";
 import {
 	addStudent,
@@ -57,7 +57,7 @@ const StudentTable = ({
 		const fetchData = async () => {
 			try {
 				const Distcenters = await getDistrictsWithCentres();
-				const centers = await getCenters();
+				const centers = await getAllExamCenters();
 				const usersResponse = await getUsers(1, 10); // Provide default values for page and itemsPerPage
 				const streams = await getStreams();
 				setCentersDistricts(Distcenters);

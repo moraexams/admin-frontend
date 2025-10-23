@@ -13,6 +13,7 @@ import {
 	ROLE_VICE_SECRETARY,
 } from "@/common/roles";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DownloadResultSheet from "@/components/download-result-sheet";
 import { OverallMarksStatsCard } from "@/components/overall-marks-stats";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,10 +34,8 @@ import {
 import {
 	type OverallMarksStats,
 	downloadMarksStatsInPercentagesForSubject,
-	downloadResultsSheetForStream,
 	getOverallMarksStats,
 } from "@/services/statsServices";
-import { createTimer } from "@/services/utils";
 import { CopyCheck, Pen } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -92,7 +91,6 @@ export default function MarksDashboard() {
 		null,
 	);
 	const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
-	const [selectedStream, setSelectedStream] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (typeof role !== "string" || !PERMISSION_FOR_STATS.includes(role)) {
@@ -217,60 +215,7 @@ export default function MarksDashboard() {
 						</Button>
 					</div>
 
-					<div className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-4">
-						<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
-							Download Results Sheet
-						</h2>
-						<p className="text-lg max-w-prose col-start-1">
-							You can download a CSV file of student's results sheet per stream.
-						</p>
-						<Select
-							onValueChange={(value) => setSelectedStream(value)}
-							value={
-								selectedStream === null ? undefined : selectedStream.toString()
-							}
-						>
-							<SelectTrigger className="w-[180px] mt-2 mb-6 cursor-pointer">
-								<SelectValue placeholder="Select Stream" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="2">Physical Science</SelectItem>
-								<SelectItem value="4">Biological Science</SelectItem>
-								<SelectItem value="3">Physical Science (ICT)</SelectItem>
-							</SelectContent>
-						</Select>
-
-						<Button
-							className="xl:col-start-2 xl:row-span-2 xl:row-start-1 font-medium"
-							size="lg"
-							disabled={selectedStream === null}
-							onClick={async () => {
-								if (selectedStream === null) {
-									toast.error("Please select a stream");
-									return;
-								}
-								try {
-									toast.loading("Downloading...");
-									await Promise.all([
-										downloadResultsSheetForStream(selectedStream),
-										createTimer(),
-									]).then(() => {
-										toast.dismiss();
-										toast.success("Downloaded!");
-									});
-								} catch (error) {
-									toast.dismiss();
-									toast.error(
-										typeof error === "string"
-											? error
-											: "Failed to download the file",
-									);
-								}
-							}}
-						>
-							Download
-						</Button>
-					</div>
+					<DownloadResultSheet />
 				</>
 			) : null}
 			{role !== null && PERMISSION_FOR_STATS.includes(role) ? (

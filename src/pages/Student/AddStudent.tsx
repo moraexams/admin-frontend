@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { getDistrictsWithCentres } from "@/services/districtService";
-import { getCenters } from "@/services/examCentreService";
+import { getAllExamCenters } from "@/services/examCentreService";
 import { getStreams } from "@/services/streamServices";
 import { addStudent } from "@/services/studentService";
 import type { District, ExamCentre, Stream } from "@/types/types";
@@ -78,7 +78,7 @@ const AddStudent = () => {
 		const fetchData = async () => {
 			try {
 				const Distcenters = await getDistrictsWithCentres();
-				const centers = await getCenters();
+				const centers = await getAllExamCenters();
 				const streams = await getStreams();
 				setCentersDistricts(Distcenters);
 				setCenters(centers);

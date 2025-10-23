@@ -243,10 +243,13 @@ export const downloadMarksStatsInPercentagesForSubject = async (
 	}
 };
 
-export const downloadResultsSheetForStream = async (streamId: string) => {
+export const downloadResultsSheetForStreamAndExamCentre = async (
+	streamId: string,
+	centreId?: string | undefined,
+) => {
 	try {
 		const response = await axiosInstance.get(
-			`/result/stream-wise/${streamId}`,
+			`/result/stream-wise/${streamId}${centreId ? `?centreId=${centreId}` : ""}`,
 			{
 				responseType: "blob",
 			},

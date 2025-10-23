@@ -75,7 +75,7 @@ export const deleteExamCentre = async (id: number) => {
 	}
 };
 
-export const getCenters = async () => {
+export const getAllExamCenters = async () => {
 	try {
 		const token = localStorage.getItem("token");
 		const response = await axiosInstance.get("/centre", {
