@@ -50,6 +50,7 @@ export default function DownloadResultSheet() {
 					<SelectItem value="2">Physical Science</SelectItem>
 					<SelectItem value="4">Biological Science</SelectItem>
 					<SelectItem value="3">Physical Science (ICT)</SelectItem>
+					<SelectItem value="1">ICT Only</SelectItem>
 				</SelectContent>
 			</Select>
 
