@@ -29,3 +29,25 @@ export const dangerZonePageData = async () => {
 		throw "An error occurred while fetching danger zone data";
 	}
 };
+
+export const updateRegistrationClosingDate = async (
+	registrationClosingAt: string,
+) => {
+	try {
+		const response = await axiosInstance.put(
+			"/constants/student-registration-closing-date",
+			{
+				registration_closing_at: registrationClosingAt,
+			},
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		if (error instanceof AxiosError) {
+			if (error.response?.data) {
+				throw new Error(error.response?.data.message);
+			}
+		}
+		throw "An error occurred while updating registration closing datetime";
+	}
+};
