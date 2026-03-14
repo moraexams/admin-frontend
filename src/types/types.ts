@@ -51,6 +51,7 @@ export interface VerifiedStudent {
 	index_no: string;
 	name: string;
 	stream: string;
+	gender: string;
 	medium: string;
 	rank_district: string;
 	exam_district: string;

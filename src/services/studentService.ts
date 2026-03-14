@@ -24,6 +24,18 @@ export const addStudent = async (
 ) => {
 	try {
 		const token = localStorage.getItem("token");
+		const normalizedMedium = (() => {
+			const m = medium.trim().toLowerCase();
+			if (m === "tamil") return "Tamil";
+			if (m === "english") return "English";
+			return medium;
+		})();
+		const normalizedGender = (() => {
+			const g = gender.trim().toLowerCase();
+			if (g === "male") return "Male";
+			if (g === "female") return "Female";
+			return gender;
+		})();
 		name = name.trim().toUpperCase();
 		school = school.trim().toUpperCase();
 		address = address.trim().toUpperCase();
@@ -32,12 +44,12 @@ export const addStudent = async (
 			{
 				name,
 				stream_id,
-				medium,
+				medium: normalizedMedium,
 				rank_district_id,
 				exam_district_id,
 				exam_centre_id,
 				nic,
-				gender,
+				gender: normalizedGender,
 				email,
 				telephone_no,
 				school,

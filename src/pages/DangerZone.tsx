@@ -1,6 +1,5 @@
 import DownloadCentreWiseNameList from "@/components/danger-zone.centre-wise-name-list";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
 	Select,
 	SelectContent,
@@ -19,7 +18,6 @@ import {
 import {
 	dangerZonePageData,
 	startSendingIndexNoEmails,
-	updateRegistrationClosingDate,
 } from "../services/dangerzoneServices";
 
 interface Feedback {
@@ -31,30 +29,17 @@ interface DangerZoneConstants {
 	students_index_no_sending_process_started: string;
 	latest_git_commit: string;
 	build_time: string;
-	student_registration_closing_at: string;
 }
-
-const toDatetimeLocalValue = (value: string) => {
-	const match = value.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
-	return match ? match[1] : "";
-};
 
 const DangerZone = () => {
 	const [feedback, setFeedback] = useState<Feedback | null>(null);
 	const [constants, setConstants] = useState<DangerZoneConstants | null>(null);
 	const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
-	const [registrationClosingAtInput, setRegistrationClosingAtInput] =
-		useState("");
-	const [savingRegistrationClosingAt, setSavingRegistrationClosingAt] =
-		useState(false);
 
 	useEffect(() => {
 		dangerZonePageData()
 			.then((data) => {
 				setConstants(data.constants);
-				setRegistrationClosingAtInput(
-					toDatetimeLocalValue(data.constants.student_registration_closing_at),
-				);
 			})
 			.catch(console.error);
 	}, []);
@@ -118,83 +103,6 @@ const DangerZone = () => {
 				) : null}
 				.
 			</p>
-
-			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
-				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
-					Student Registration Closing Date
-				</h2>
-				<div className="text-lg mb-3 max-w-prose col-start-1">
-					This controls when student registration closes on the website and
-					coordinator admissions portal.
-					{constants?.student_registration_closing_at ? (
-						<span className="block text-sm mt-2 text-muted-foreground">
-							Current:{" "}
-							{new Date(constants.student_registration_closing_at).toLocaleString(
-								"en-LK",
-								{
-									year: "numeric",
-									month: "2-digit",
-									day: "2-digit",
-									hour: "2-digit",
-									minute: "2-digit",
-									timeZone: "Asia/Colombo",
-								},
-							)}{" "}
-							(Asia/Colombo)
-						</span>
-					) : null}
-				</div>
-
-				<div className="xl:col-start-2 xl:row-start-1 xl:row-span-2 flex flex-col gap-2">
-					<Input
-						type="datetime-local"
-						value={registrationClosingAtInput}
-						onChange={(e) => setRegistrationClosingAtInput(e.target.value)}
-						className="min-w-[240px]"
-					/>
-					<Button
-						size="lg"
-						disabled={
-							savingRegistrationClosingAt ||
-							registrationClosingAtInput.trim() === "" ||
-							constants == null
-						}
-						onClick={async () => {
-							setSavingRegistrationClosingAt(true);
-							try {
-								const response = await updateRegistrationClosingDate(
-									registrationClosingAtInput,
-								);
-								const updatedValue = response?.registration_closing_at;
-								if (typeof updatedValue === "string") {
-									setConstants((prev) =>
-										prev === null
-											? prev
-											: {
-													...prev,
-													student_registration_closing_at: updatedValue,
-												},
-									);
-									setRegistrationClosingAtInput(
-										toDatetimeLocalValue(updatedValue),
-									);
-								}
-								toast.success("Registration closing datetime updated.");
-							} catch (error) {
-								toast.error(
-									error instanceof Error
-										? error.message
-										: "Failed to update registration closing datetime",
-								);
-							} finally {
-								setSavingRegistrationClosingAt(false);
-							}
-						}}
-					>
-						{savingRegistrationClosingAt ? "Saving..." : "Save Date"}
-					</Button>
-				</div>
-			</section>
 
 			<section className="grid grid-cols-1 grid-rows-[auto_auto_auto] xl:grid-cols-[1fr_auto] xl:grid-rows-[auto_auto] my-3">
 				<h2 className="text-xl font-semibold mb-1 text-black dark:text-white">
