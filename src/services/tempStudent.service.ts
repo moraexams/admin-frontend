@@ -88,3 +88,15 @@ export const recheckTempStudent = async (nic: string, reason: string) => {
 		throw error;
 	}
 };
+
+export const getPendingStudents = async (page: number, itemsPerPage: number) => {
+    try {
+        const response = await axiosInstance.get(
+            `/temp-student/pending?page=${page}&pageSize=${itemsPerPage}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching pending students:", error);
+        throw error;
+    }
+};

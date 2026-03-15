@@ -65,8 +65,11 @@ const AddStudent = () => {
 					setNic("");
 				})
 				.catch((error) => {
-					// showSnackBar(false, error);
-					toast.error(`Failed to add student: ${error.message}`);
+					const message =
+						typeof error === "string"
+							? error
+							: error?.message || "Failed to add student";
+					toast.error(message);
 				});
 		} else {
 			// showSnackBar(false, "Fill all fields");
@@ -161,10 +164,10 @@ const AddStudent = () => {
 								<option value="" disabled>
 									Select Medium
 								</option>
-								<option key="tamil" value="tamil">
+								<option key="tamil" value="Tamil">
 									Tamil
 								</option>
-								<option key="english" value="english">
+								<option key="english" value="English">
 									English
 								</option>
 							</select>
