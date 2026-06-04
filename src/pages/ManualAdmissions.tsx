@@ -110,7 +110,7 @@ export default function ManualAdmissions() {
 	const fetchStudents = () => {
 		getUnpaidStudentsByCoordinator()
 			.then((data) => {
-				setStudents(data);
+				setStudents(data ?? []);
 			})
 			.catch(console.error);
 	};
