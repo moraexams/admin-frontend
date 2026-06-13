@@ -63,9 +63,10 @@ export default function Coordinators() {
 	};
 
 	useEffect(() => {
-		getDistricts().then((data: any) => {
-			if (Array.isArray(data)) setDistricts(data);
-		});
+	    getDistricts().then((data: any) => {
+	        const list = Array.isArray(data) ? data : data?.districts ?? [];
+	        setDistricts(list);
+	    });
 	}, []);
 
 	useEffect(() => {
