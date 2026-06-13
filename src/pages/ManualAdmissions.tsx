@@ -184,19 +184,19 @@ export default function ManualAdmissions() {
 									<tbody>
 										<tr>
 											<td className="font-medium pr-4">Bank</td>
-											<td className="text-right">People's Bank</td>
+											<td className="text-right">BOC Bank</td>
 										</tr>
 										<tr>
 											<td className="font-medium pr-4">Branch</td>
-											<td className="text-right">Jaffna Stanley Road Branch</td>
+											<td className="text-right">Atchuvely Branch(778)</td>
 										</tr>
 										<tr>
 											<td className="font-medium pr-4">Account Number</td>
-											<td className="text-right">030200370038814</td>
+											<td className="text-right">0096320890</td>
 										</tr>
 										<tr>
 											<td className="font-medium pr-4">Account Holder</td>
-											<td className="text-right">K MATHUMILAN</td>
+											<td className="text-right">SANSUTHAN Y / ABISHAN K</td>
 										</tr>
 									</tbody>
 								</table>
@@ -210,7 +210,7 @@ export default function ManualAdmissions() {
 							</CardHeader>
 							<CardContent className="px-3">
 								<div className="text-xl tabular-nums @[250px]/card:text-4xl mb-2">
-									+94 70 431 5623
+									+94 77 843 5612
 								</div>
 							</CardContent>
 							<CardFooter className="w-fit px-3 text-sm text-pretty max-w-prose md:max-w-[38ch]">
