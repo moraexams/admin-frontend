@@ -1,5 +1,9 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Button } from "@/components/ui/button";
+import { addCoordinator } from "@/services/coordinatorsService";
+import { getDistricts } from "@/services/districtService";
+import { Input } from "@/components/ui/input";
+
 import {
 	Dialog,
 	DialogContent,
@@ -39,6 +43,8 @@ import toast from "react-hot-toast";
 
 export default function Coordinators() {
 	const [editing, setEditing] = useState<Coordinator | null>(null);
+	const [adding, setAdding] = useState(false);
+	const [districts, setDistricts] = useState<Array<{id: number; name: string}>>([]);
 	const [coordinators, setCoordinators] = useState<Array<Coordinator>>([]);
 	const [districtOrganizers, setDistrictOrganizers] = useState<
 		Array<DistrictOrganizer>
@@ -55,6 +61,13 @@ export default function Coordinators() {
 			// setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		getDistricts().then((data: any) => {
+			if (Array.isArray(data)) setDistricts(data);
+		});
+	}, []);
+
 	useEffect(() => {
 		getDistrictOrganizers()
 			.then((data) => {
@@ -76,6 +89,9 @@ export default function Coordinators() {
 	return (
 		<>
 			<Breadcrumb pageName="Coordinators" />
+			<div className="flex justify-end mb-4">
+				<Button onClick={() => setAdding(true)}>Add Coordinator</Button>
+			</div>
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -116,6 +132,15 @@ export default function Coordinators() {
 					))}
 				</TableBody>
 			</Table>
+
+			{adding && (
+				<AddDialog
+					onSave={fetchCoordinators}
+					users={districtOrganizers}
+					districts={districts}
+					onClose={() => setAdding(false)}
+				/>
+			)}
 
 			{editing && (
 				<EditDialog
@@ -210,4 +235,62 @@ function EditDialog({
 			</DialogContent>
 		</Dialog>
 	);
+}
+
+function AddDialog({ users, districts, onClose, onSave }: { users: Array<DistrictOrganizer>; districts: Array<{id: number; name: string}>; onClose: () => void; onSave: () => void }) {
+    const [form, setForm] = useState({
+        name: "", telephone_no: "", district_id: 0,
+        associated_user_id: undefined as number | undefined,
+    });
+
+    const save = () => {
+        if (!form.name || !form.district_id) return;
+        addCoordinator(form.name, form.district_id, form.telephone_no, form.associated_user_id)
+            .then(() => { toast.success("Coordinator added successfully"); onClose(); onSave(); })
+            .catch((err) => { toast.error(err); });
+    };
+
+    return (
+        <Dialog open={true} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Add Coordinator</DialogTitle>
+                    <DialogDescription>Fill in the details to add a new coordinator.</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                    <div>
+                        <Label className="mb-1">Name</Label>
+                        <Input value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} />
+                    </div>
+                    <div>
+                        <Label className="mb-1">Telephone No.</Label>
+                        <Input value={form.telephone_no} onChange={(e) => setForm((p) => ({ ...p, telephone_no: e.target.value }))} />
+                    </div>
+                    <div>
+                        <Label className="mb-1">District</Label>
+                        <Select value={form.district_id ? form.district_id.toString() : ""} onValueChange={(v) => setForm((p) => ({ ...p, district_id: Number.parseInt(v) }))}>
+                            <SelectTrigger><SelectValue placeholder="Select district" /></SelectTrigger>
+                            <SelectContent>
+                                {districts.map((d) => (<SelectItem key={d.id} value={d.id.toString()}>{d.name}</SelectItem>))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div>
+                        <Label className="mb-1">Associated User</Label>
+                        <Select value={form.associated_user_id ? form.associated_user_id.toString() : "undefined"} onValueChange={(v) => setForm((p) => ({ ...p, associated_user_id: v === "undefined" ? undefined : Number.parseInt(v) }))}>
+                            <SelectTrigger><SelectValue placeholder="Select a user" /></SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="undefined">None</SelectItem>
+                                {users.map((u) => (<SelectItem key={u.id} value={u.id.toString()}>{u.id} - {u.username}</SelectItem>))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button onClick={save}>Add</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 }
