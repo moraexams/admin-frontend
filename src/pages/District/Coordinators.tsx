@@ -53,7 +53,7 @@ export default function Coordinators() {
 	const fetchCoordinators = async () => {
 		try {
 			const cc = await getAllCoordinators();
-			setCoordinators(cc);
+			setCoordinators(cc ?? []);
 		} catch (error) {
 			console.error("Error fetching coordinators:", error);
 			return [];
@@ -271,7 +271,7 @@ function AddDialog({ users, districts, onClose, onSave }: { users: Array<Distric
                         <Select value={form.district_id ? form.district_id.toString() : ""} onValueChange={(v) => setForm((p) => ({ ...p, district_id: Number.parseInt(v) }))}>
                             <SelectTrigger><SelectValue placeholder="Select district" /></SelectTrigger>
                             <SelectContent>
-                                {districts.map((d) => (<SelectItem key={d.id} value={d.id.toString()}>{d.name}</SelectItem>))}
+                                {(districts ?? []).map((d) => (<SelectItem key={d.id} value={d.id.toString()}>{d.name}</SelectItem>))}
                             </SelectContent>
                         </Select>
                     </div>
@@ -281,7 +281,7 @@ function AddDialog({ users, districts, onClose, onSave }: { users: Array<Distric
                             <SelectTrigger><SelectValue placeholder="Select a user" /></SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="undefined">None</SelectItem>
-                                {users.map((u) => (<SelectItem key={u.id} value={u.id.toString()}>{u.id} - {u.username}</SelectItem>))}
+                                {(users ?? []).map((u) => (<SelectItem key={u.id} value={u.id.toString()}>{u.id} - {u.username}</SelectItem>))}
                             </SelectContent>
                         </Select>
                     </div>
