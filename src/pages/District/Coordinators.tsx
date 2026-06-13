@@ -72,7 +72,7 @@ export default function Coordinators() {
 	useEffect(() => {
 		getDistrictOrganizers()
 			.then((data) => {
-				setDistrictOrganizers(data);
+				setDistrictOrganizers(data ?? []);
 			})
 			.catch((err) => {
 				toast.error(

@@ -56,7 +56,7 @@ export default function StudentsAddedByCoordinator() {
 	const fetchStudents = () => {
 		getRegisteredStudentsByCoordinator()
 			.then((data) => {
-				setStudents(data);
+				setStudents(data ?? []);
 			})
 			.catch(console.error);
 	};
@@ -119,7 +119,7 @@ export default function StudentsAddedByCoordinator() {
 							</CardHeader>
 							<CardContent className="px-3">
 								<div className="text-xl tabular-nums @[250px]/card:text-4xl mb-2">
-									+94 77 573 2943
+									+94 77 843 5612
 								</div>
 							</CardContent>
 							<CardFooter className="w-fit px-3 text-sm text-pretty max-w-prose md:max-w-[38ch]">
