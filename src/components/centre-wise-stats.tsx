@@ -27,10 +27,19 @@ export default function CentreWiseStats() {
 
 	useEffect(() => {
 		setIsLoading(true);
-		Promise.all([getStatsByCentre(centreId), getDistrictsWithCentres()])
-			.then(([stats, districts]) => {
-				setCentreStats(stats);
+		getDistrictsWithCentres()
+			.then((districts) => {
 				setDistricts(districts);
+				const firstDistrict = districts[0];
+				const firstCentre = firstDistrict?.exam_centres?.[0];
+				const initialDistrictId = firstDistrict?.id ?? 1;
+				const initialCentreId = firstCentre?.id ?? 1;
+				setDistrict(initialDistrictId);
+				setCentreId(initialCentreId);
+				return getStatsByCentre(initialCentreId);
+			})
+			.then((stats) => {
+				setCentreStats(stats);
 			})
 			.catch((error) => {
 				console.error("Error fetching stream wise stats:", error);
@@ -68,7 +77,7 @@ export default function CentreWiseStats() {
 			</div>
 			<div className="flex flex-wrap gap-x-4 mb-4">
 				<Select
-					defaultValue={district.toString()}
+					value={district.toString()}
 					onValueChange={(v) => {
 						handleDistrictSelect(Number.parseInt(v));
 					}}

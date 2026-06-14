@@ -26,6 +26,29 @@ export const getUsers = async (
 		throw error;
 	}
 };
+
+export const approveUser = async (userId: number) => {
+	try {
+		const response = await axiosInstance.put(`/user/approve/${userId}`);
+		return response.data;
+	} catch (error) {
+		console.error("Error approving user:", error);
+		if (error instanceof AxiosError) {
+			if (error.status === 403) {
+				throw "Only tech coordinator can approve users.";
+			}
+			if (error.response) {
+				throw error.response.data.error;
+			}
+		}
+		throw error;
+	}
+};
+
+export const setUserApproval = async (user: User, approved: boolean) => {
+	return editUser({ ...user, approved });
+};
+
 export const editUser = async (user: User) => {
 	try {
 		const response = await axiosInstance.put(`/user/${user.id}`, user);
