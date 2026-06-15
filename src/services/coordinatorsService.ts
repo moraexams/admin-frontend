@@ -59,3 +59,30 @@ export const getAllCoordinators = async () => {
 		throw error.response.data.error;
 	}
 };
+
+export const getCoordinatorCentres = async (coordinatorId: number) => {
+	try {
+		const response = await axiosInstance.get<{ centre_ids: number[] }>(
+			`/coordinator/${coordinatorId}/centres`,
+		);
+		return response.data.centre_ids ?? [];
+	} catch (error: any) {
+		console.error("Error fetching coordinator centres:", error);
+		throw error.response?.data?.error ?? "Failed to fetch centres";
+	}
+};
+
+export const assignCentresToCoordinator = async (
+	coordinatorId: number,
+	centreIds: number[],
+) => {
+	try {
+		await axiosInstance.put(`/coordinator/${coordinatorId}/centres`, {
+			centre_ids: centreIds,
+		});
+		return true;
+	} catch (error: any) {
+		console.error("Error assigning centres:", error);
+		throw error.response?.data?.error ?? "Failed to assign centres";
+	}
+};

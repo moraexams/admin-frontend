@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { addCoordinator } from "@/services/coordinatorsService";
-import { getDistricts } from "@/services/districtService";
+import { getDistrictsWithCentres } from "@/services/districtService";
 import { Input } from "@/components/ui/input";
 
 import {
@@ -28,7 +28,9 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import {
+	assignCentresToCoordinator,
 	getAllCoordinators,
+	getCoordinatorCentres,
 	updateCoordinator,
 } from "@/services/coordinatorsService";
 import {
@@ -37,13 +39,14 @@ import {
 } from "@/services/userService";
 import type { Coordinator } from "@/types/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { Pen } from "lucide-react";
+import { MapPin, Pen } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Coordinators() {
 	const [editing, setEditing] = useState<Coordinator | null>(null);
 	const [adding, setAdding] = useState(false);
+	const [assigning, setAssigning] = useState<Coordinator | null>(null);
 	const [districts, setDistricts] = useState<Array<{id: number; name: string}>>([]);
 	const [coordinators, setCoordinators] = useState<Array<Coordinator>>([]);
 	const [districtOrganizers, setDistrictOrganizers] = useState<
@@ -63,7 +66,7 @@ export default function Coordinators() {
 	};
 
 	useEffect(() => {
-	    getDistricts().then((data: any) => {
+	    getDistrictsWithCentres().then((data: any) => {
 	        const list = Array.isArray(data) ? data : data?.districts ?? [];
 	        setDistricts(list);
 	    });
@@ -120,7 +123,7 @@ export default function Coordinators() {
 									(u) => u.id === coord.associated_user_id,
 								)?.username || "-"}
 							</TableCell>
-							<TableCell className="text-right">
+							<TableCell className="text-right space-x-2">
 								<Button
 									size="sm"
 									variant="outline"
@@ -128,7 +131,14 @@ export default function Coordinators() {
 								>
 									<Pen className="size-4" />
 								</Button>
-							</TableCell>
+								<Button
+									size="sm"
+									variant="outline"
+									onClick={() => setAssigning(coord)}
+								>
+									<MapPin className="size-4" />
+								</Button>
+						</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
@@ -140,6 +150,14 @@ export default function Coordinators() {
 					users={districtOrganizers}
 					districts={districts}
 					onClose={() => setAdding(false)}
+				/>
+			)}
+
+			{assigning && (
+				<AssignCentresDialog
+					coordinator={assigning}
+					districts={districts}
+					onClose={() => setAssigning(null)}
 				/>
 			)}
 
@@ -294,4 +312,107 @@ function AddDialog({ users, districts, onClose, onSave }: { users: Array<Distric
             </DialogContent>
         </Dialog>
     );
+}
+
+function AssignCentresDialog({
+	coordinator,
+	districts,
+	onClose,
+}: {
+	coordinator: Coordinator;
+	districts: Array<{ id: number; name: string; exam_centres?: Array<{ id: number; name: string }> }>;
+	onClose: () => void;
+}) {
+	const [selected, setSelected] = useState<Set<number>>(new Set());
+	const [loading, setLoading] = useState(true);
+	const [saving, setSaving] = useState(false);
+
+	useEffect(() => {
+		if (!coordinator.id) return;
+		getCoordinatorCentres(coordinator.id)
+			.then((ids) => setSelected(new Set(ids)))
+			.catch((err) => {
+				toast.error(
+					typeof err === "string" ? err : "Failed to fetch assigned centres",
+				);
+			})
+			.finally(() => setLoading(false));
+	}, [coordinator.id]);
+
+	const toggle = (centreId: number) => {
+		setSelected((prev) => {
+			const next = new Set(prev);
+			if (next.has(centreId)) {
+				next.delete(centreId);
+			} else {
+				next.add(centreId);
+			}
+			return next;
+		});
+	};
+
+	const save = () => {
+		if (!coordinator.id) return;
+		setSaving(true);
+		assignCentresToCoordinator(coordinator.id, Array.from(selected))
+			.then(() => {
+				toast.success("Centres assigned successfully");
+				onClose();
+			})
+			.catch((err) => {
+				toast.error(
+					typeof err === "string" ? err : "Failed to assign centres",
+				);
+			})
+			.finally(() => setSaving(false));
+	};
+
+	return (
+		<Dialog open={true} onOpenChange={onClose}>
+			<DialogContent className="sm:max-w-lg max-h-[80vh] overflow-y-auto">
+				<DialogHeader>
+					<DialogTitle>Assign Exam Centres</DialogTitle>
+					<DialogDescription>
+						Select the exam centres {coordinator.name} can register students for.
+					</DialogDescription>
+				</DialogHeader>
+				{loading ? (
+					<div className="py-4 text-center text-sm text-muted-foreground">
+						Loading...
+					</div>
+				) : (
+					<div className="space-y-4">
+						{districts.map((d) => (
+							<div key={d.id}>
+								<h4 className="font-semibold mb-2">{d.name}</h4>
+								<div className="space-y-1 pl-2">
+									{(d.exam_centres ?? []).map((centre) => (
+										<label
+											key={centre.id}
+											className="flex items-center gap-2 text-sm"
+										>
+											<input
+												type="checkbox"
+												checked={selected.has(centre.id)}
+												onChange={() => toggle(centre.id)}
+											/>
+											{centre.name}
+										</label>
+									))}
+								</div>
+							</div>
+						))}
+					</div>
+				)}
+				<DialogFooter>
+					<Button variant="outline" onClick={onClose}>
+						Cancel
+					</Button>
+					<Button onClick={save} disabled={loading || saving}>
+						Save
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	);
 }
