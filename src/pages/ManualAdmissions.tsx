@@ -40,6 +40,7 @@ const STREAM_FEES = [
 	{ label: "Biological Science", fee: 600 },
 	{ label: "ICT Only", fee: 200 },
 	{ label: "Physical Science (ICT)", fee: 600 },
+	{ label: "Other", fee: 600 },
 ] as const;
 
 const STREAM_FEES_MAP = Object.fromEntries(
@@ -59,7 +60,7 @@ export default function ManualAdmissions() {
 	const totalAmount = useMemo(() => {
 		return !Array.isArray(students)
 			? 0
-			: students.reduce((sum, s) => sum + STREAM_FEES_MAP[s.stream], 0);
+			: students.reduce((sum, s) => sum + (STREAM_FEES_MAP[s.stream] ?? 600), 0);
 	}, [students]);
 
 	const fetchStudentRegistrationDetails = () => {
