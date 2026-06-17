@@ -225,7 +225,7 @@ export const downloadMarksStatsInPercentagesForSubject = async (
 			"download",
 			contentDisposition
 				? contentDisposition.split("filename=")[1]
-				: `Mora Exams 2025 - Mark Stats - ${subjectId}.csv`,
+				: `Mora Exams 2026 - Mark Stats - ${subjectId}.csv`,
 		);
 		document.body.appendChild(link);
 		link.click();
@@ -263,7 +263,7 @@ export const downloadResultsSheetForStreamAndExamCentre = async (
 			"download",
 			contentDisposition
 				? contentDisposition.split("filename=")[1]
-				: `Mora Exams 2025 - Results Sheet - ${streamId}.csv`,
+				: `Mora Exams 2026 - Results Sheet - ${streamId}.csv`,
 		);
 		document.body.appendChild(link);
 		link.click();

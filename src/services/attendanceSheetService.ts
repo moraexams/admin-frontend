@@ -30,7 +30,7 @@ export const downloadAttendanceSheets = async (subjectId: string) => {
 		link.href = url;
 		link.setAttribute(
 			"download",
-			`Mora Exams 2025 - Attendance Sheets - ${subjectId}.zip`,
+			`Mora Exams 2026 - Attendance Sheets - ${subjectId}.zip`,
 		);
 		document.body.appendChild(link);
 		link.click();
