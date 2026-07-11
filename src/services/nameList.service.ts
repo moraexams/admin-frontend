@@ -12,7 +12,7 @@ export const downloadCentreWiseNameList = async () => {
 		link.href = url;
 		link.setAttribute(
 			"download",
-			`Mora Exams 2025 - Centre-Wise Name List.zip`,
+			`Mora Exams 2026 - Centre-Wise Name List.zip`,
 		);
 		document.body.appendChild(link);
 		link.click();

@@ -199,7 +199,7 @@ const EnterMarks = () => {
 
 			handleSubmit();
 		},
-		[indexNo, studentDetails, isSubmitButtonDisabled],
+		[indexNo, studentDetails, isSubmitButtonDisabled,mark],
 	);
 
 	useEffect(() => {
