@@ -44,6 +44,7 @@ const EnterMarks = () => {
 	>(undefined);
 	const [mark, setMark] = useState<number | undefined>(undefined);
 	const [stats, setStats] = useState<SubjectPartMarksStats | null>(null);
+	const [justSubmitted, setJustSubmitted] = useState<boolean>(false);
 
 	const handleSubmit = async () => {
 		if (!isValidSubjectId(subject) || !isValidPart(part)) {
@@ -76,6 +77,7 @@ const EnterMarks = () => {
 					total_verified: data[0].value.total_verified,
 				});
 				setMark(data[0].value.marks === null ? undefined : data[0].value.marks);
+				setJustSubmitted(true);
 			} else {
 				toast.error(
 					data[0].reason.response?.data?.message || "Error submitting marks",
@@ -87,6 +89,7 @@ const EnterMarks = () => {
 	useEffect(() => {
 		setStudentDetails(undefined);
 		setMark(undefined);
+		setJustSubmitted(false);
 		if (
 			PATTERN__INDEX_NO.test(indexNo) === false ||
 			!isValidSubjectId(subject) ||
@@ -163,6 +166,7 @@ const EnterMarks = () => {
 				setIndexNo(data.index_no);
 				setStudentDetails(data);
 				setMark(data.marks === null ? undefined : data.marks);
+				setJustSubmitted(false);
 			})
 			.catch((error) => {
 				if (error instanceof AxiosError && error.response) {
@@ -183,30 +187,32 @@ const EnterMarks = () => {
 		mark === undefined ||
 		studentDetails.marks === mark;
 
-	const onEnterPressed = useCallback(
-		(event: globalThis.KeyboardEvent) => {
+	const onEnterPressed = useCallback((event: globalThis.KeyboardEvent) => {
 			if (event.key !== "Enter" || studentDetails === undefined) return;
+
+			if (justSubmitted) {
+				loadNextStudent();
+				setJustSubmitted(false);
+				return;
+			}
 
 			if (isSubmitButtonDisabled) {
 				if (mark === undefined) {
 					toast.error("You haven't entered the marks yet");
-					return;
 				}
-
-				loadNextStudent();
 				return;
 			}
 
 			handleSubmit();
 		},
-		[indexNo, studentDetails, isSubmitButtonDisabled,mark],
+		[indexNo, studentDetails, isSubmitButtonDisabled, mark, justSubmitted],
 	);
 
 	useEffect(() => {
-		window.addEventListener("keypress", onEnterPressed);
+		window.addEventListener("keydown", onEnterPressed);
 
 		return () => {
-			window.removeEventListener("keypress", onEnterPressed);
+			window.removeEventListener("keydown", onEnterPressed);
 		};
 	}, [onEnterPressed]);
 
