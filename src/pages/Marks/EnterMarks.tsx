@@ -5,6 +5,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+	ROLE_TECH_COORDINATOR,
+	ROLE_TECH_TEAM_MEMBER,
+} from "@/common/roles";
+import {
 	PATTERN__INDEX_NO,
 	SUBJECTS,
 	isValidPart,
@@ -17,6 +21,7 @@ import {
 	nextStudentForMarksEntry,
 	previousStudentForMarksEntry,
 } from "@/services/markservices";
+import { LOCAL_STORAGE__ROLE } from "@/services/authServices";
 import {
 	type SubjectPartMarksStats,
 	getSubjectPartMarksStats,
@@ -179,13 +184,21 @@ const EnterMarks = () => {
 			});
 	};
 
+	const currentUserRole = localStorage.getItem(LOCAL_STORAGE__ROLE);
+	const canEditVerifiedMarks =
+		currentUserRole === ROLE_TECH_COORDINATOR ||
+		currentUserRole === ROLE_TECH_TEAM_MEMBER;
+	const isLockedByVerification =
+		studentDetails?.verified_by != null && !canEditVerifiedMarks;
+
 	const isSubmitButtonDisabled =
 		subject === null ||
 		part === null ||
 		indexNo.length !== 7 ||
 		studentDetails === undefined ||
 		mark === undefined ||
-		studentDetails.marks === mark;
+		studentDetails.marks === mark ||
+		isLockedByVerification;
 
 	const onEnterPressed = useCallback((event: globalThis.KeyboardEvent) => {
 			if (event.key !== "Enter" || studentDetails === undefined) return;
@@ -351,7 +364,7 @@ const EnterMarks = () => {
 						? null
 						: studentDetails.marks !== null
 							? studentDetails.verified_by !== null
-								? `Marks has already been entered (${studentDetails.marks === -1 ? "AB" : studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.`
+								? `Marks has already been entered (${studentDetails.marks === -1 ? "AB" : studentDetails.marks}) by ${studentDetails.entered_by} and verified by ${studentDetails.verified_by}.${isLockedByVerification ? " Only tech team members and the tech coordinator can edit verified marks." : ""}`
 								: `Marks has already been entered (${studentDetails.marks === -1 ? "AB" : studentDetails.marks}) by ${studentDetails.entered_by}.`
 							: "Make sure all the details above are correct and enter the marks."}
 				</p>
@@ -368,7 +381,8 @@ const EnterMarks = () => {
 								!isValidPart(part) ||
 								studentDetails === undefined ||
 								indexNo.length !== 7 ||
-								mark === -1
+								mark === -1 ||
+								isLockedByVerification
 							}
 							step={0.01}
 							onInput={(e) => {
@@ -401,7 +415,8 @@ const EnterMarks = () => {
 								!isValidPart(part) ||
 								studentDetails === undefined ||
 								indexNo.length !== 7 ||
-								(mark !== undefined && mark !== -1)
+								(mark !== undefined && mark !== -1) ||
+								isLockedByVerification
 							}
 							checked={mark === -1}
 							onCheckedChange={(v) => {
