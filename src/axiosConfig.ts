@@ -1,3 +1,4 @@
+import { rateLimitBus } from "@/lib/rateLimitBus";
 import { LOCAL_STORAGE__TOKEN } from "@/services/authServices";
 import axios from "axios";
 
@@ -16,5 +17,16 @@ axiosInstance.interceptors.request.use((config) => {
 
 	return config;
 });
+
+axiosInstance.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error?.response?.status === 429) {
+			rateLimitBus.emit();
+		}
+
+		return Promise.reject(error);
+	},
+);
 
 export default axiosInstance;
