@@ -1,6 +1,6 @@
 Mora Exams Exclusive Use License (Version 1.0)
 
-Copyright © 2025 Mora Exams
+Copyright © 2026 Mora Exams
 
 This software and all associated files (collectively referred to as "the Software") are proprietary and confidential.
 
