@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 
 import Loader from "./components/Loader";
 import PageTitle from "./components/PageTitle";
+import RateLimitDialog from "./components/RateLimitDialog";
 
 import DefaultLayout from "./layout/DefaultLayout";
 import AuditLogs from "./pages/AuditLogs";
@@ -70,6 +71,7 @@ function App() {
 		<Loader />
 	) : (
 		<>
+			<RateLimitDialog />
 			<Routes>
 				<Route
 					path="/reset-password"
