@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import {
 	ROLE_TECH_COORDINATOR,
 	ROLE_TECH_TEAM_MEMBER,
+	ROLE_USER,
 } from "@/common/roles";
 import {
 	PATTERN__INDEX_NO,
@@ -187,7 +188,8 @@ const EnterMarks = () => {
 	const currentUserRole = localStorage.getItem(LOCAL_STORAGE__ROLE);
 	const canEditVerifiedMarks =
 		currentUserRole === ROLE_TECH_COORDINATOR ||
-		currentUserRole === ROLE_TECH_TEAM_MEMBER;
+		currentUserRole === ROLE_TECH_TEAM_MEMBER ||
+		currentUserRole === ROLE_USER;
 	const isLockedByVerification =
 		studentDetails?.verified_by != null && !canEditVerifiedMarks;
 
