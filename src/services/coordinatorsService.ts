@@ -8,13 +8,13 @@ export const addCoordinator = async (
 	associated_user_id?: number,
 ) => {
 	try {
-		await axiosInstance.post("/coordinator/add", {
+		const response = await axiosInstance.post("/coordinator/add", {
 			name,
 			district_id,
 			telephone_no,
 			associated_user_id,
 		});
-		return true;
+		return response.data;
 	} catch (error: any) {
 		console.error("Error Adding Coordinator:", error);
 		throw error.response.data.error;
@@ -22,20 +22,22 @@ export const addCoordinator = async (
 };
 
 export const updateCoordinator = async (
-	id: number,
-	name: string,
-	associated_user_id: number | null,
+  id: number,
+  name: string,
+  associated_user_id: number | null,
+  contact?: string,
 ) => {
-	try {
-		await axiosInstance.put(`/coordinator/${id}`, {
-			name,
-			associated_user_id,
-		});
-		return true;
-	} catch (error: any) {
-		console.error("Error Updating Coordinator:", error);
-		throw error.response.data.error;
-	}
+  try {
+    await axiosInstance.put(`/coordinator/${id}`, {
+      name,
+      associated_user_id,
+      contact,
+    });
+    return true;
+  } catch (error: any) {
+    console.error("Error Updating Coordinator:", error);
+    throw error.response.data.error;
+  }
 };
 
 export const deleteCoordinator = async (id: number) => {

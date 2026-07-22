@@ -34,6 +34,7 @@ import {
 	LOCAL_STORAGE__USER_ID,
 } from "@/services/authServices";
 import type { LocalStorage_User } from "@/types/types";
+import { useEffect, useRef, useState } from "react";
 import {
 	AlertTriangle,
 	Banknote,
@@ -323,13 +324,58 @@ const items: Array<SidebarItemLink | SidebarItemGroup> = [
 ];
 
 export function AppSidebar() {
-	const { toggleSidebar } = useSidebar();
+	const { toggleSidebar, isMobile, state, setOpen, setOpenMobile } =
+		useSidebar();
 	const navigate = useNavigate();
+	const [openGroup, setOpenGroup] = useState<string | null>(null);
+	const openGroupRef = useRef<HTMLDivElement | null>(null);
 	const userStringified = localStorage.getItem(LOCAL_STORAGE__USER);
 	const user: LocalStorage_User | null = userStringified
 		? JSON.parse(userStringified)
 		: null;
 	const role = localStorage.getItem(LOCAL_STORAGE__ROLE) || "";
+
+	const closeSidebar = () => {
+		setOpenGroup(null);
+		if (isMobile) {
+			setOpenMobile(false);
+			return;
+		}
+
+		setOpen(false);
+	};
+
+	const getVisibleGroupLinks = (
+		item: Extract<(typeof items)[number], { type: "group" }>,
+	) => item.links.filter((link) => !link.hideIf?.(role));
+
+	useEffect(() => {
+		if (state !== "collapsed") {
+			setOpenGroup(null);
+		}
+	}, [state]);
+
+	useEffect(() => {
+		const handlePointerDown = (event: PointerEvent) => {
+			if (!openGroupRef.current) return;
+			if (!(event.target instanceof Node)) return;
+			if (openGroupRef.current.contains(event.target)) return;
+			setOpenGroup(null);
+		};
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				setOpenGroup(null);
+			}
+		};
+
+		document.addEventListener("pointerdown", handlePointerDown);
+		document.addEventListener("keydown", handleKeyDown);
+		return () => {
+			document.removeEventListener("pointerdown", handlePointerDown);
+			document.removeEventListener("keydown", handleKeyDown);
+		};
+	}, []);
 
 	const logout = () => {
 		localStorage.removeItem(LOCAL_STORAGE__TOKEN);
@@ -367,8 +413,9 @@ export function AppSidebar() {
 									<SidebarMenuButton
 										asChild
 										isActive={item.url === window.location.pathname}
+										tooltip={item.title}
 									>
-										<NavLink to={item.url}>
+										<NavLink to={item.url} onClick={closeSidebar}>
 											<item.icon size={25} className="size-40" />
 											<span>{item.title}</span>
 										</NavLink>
@@ -390,13 +437,62 @@ export function AppSidebar() {
 									)}
 								>
 									<SidebarMenuItem>
-										<CollapsibleTrigger asChild>
-											<SidebarMenuButton>
-												<item.icon size={25} className="size-40" />
-												{item.title}
-												<ChevronRight className="ml-auto duration-200 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-											</SidebarMenuButton>
-										</CollapsibleTrigger>
+										{state === "collapsed" ? (
+											<div
+												ref={
+													openGroup === item.title ? openGroupRef : undefined
+												}
+												className="relative"
+											>
+														<SidebarMenuButton
+													tooltip={item.title}
+													isActive={window.location.pathname.startsWith(
+														item.activePrefix,
+													)}
+													onClick={() =>
+														setOpenGroup(
+															openGroup === item.title ? null : item.title,
+														)
+													}
+												>
+													<item.icon size={25} className="size-40" />
+													<span>{item.title}</span>
+												</SidebarMenuButton>
+												{openGroup === item.title ? (
+													<div className="absolute left-full top-0 z-50 ml-2 w-64 rounded-xl border border-white/10 bg-black p-2 shadow-2xl">
+														<div className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-white/60">
+															{item.title}
+														</div>
+														<div className="flex flex-col gap-1">
+															{getVisibleGroupLinks(item).map((link) => (
+																<NavLink
+																	key={link.title}
+																	to={link.url}
+																	onClick={closeSidebar}
+																	aria-label={link.title}
+																	className={({ isActive }) =>
+																		`group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800 ${
+																			isActive ? "bg-gray-800" : ""
+																		}`
+																	}
+																>
+																	<link.icon size={18} className="shrink-0" />
+																	<span>{link.title}</span>
+																</NavLink>
+															))}
+														</div>
+													</div>
+												) : null}
+											</div>
+										) : (
+											<CollapsibleTrigger asChild>
+												<SidebarMenuButton>
+													<item.icon size={25} className="size-40" />
+													{item.title}
+													<ChevronRight className="ml-auto duration-200 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+												</SidebarMenuButton>
+											</CollapsibleTrigger>
+										)}
 										<CollapsibleContent>
 											<SidebarMenuSub>
 												{item.links.map((link) =>
@@ -406,7 +502,7 @@ export function AppSidebar() {
 																asChild
 																isActive={link.url === window.location.pathname}
 															>
-																<NavLink to={link.url}>
+																<NavLink to={link.url} onClick={closeSidebar}>
 																	<link.icon size={25} className="size-40" />
 																	<span>{link.title}</span>
 																</NavLink>
@@ -428,6 +524,7 @@ export function AppSidebar() {
 					<SidebarMenuItem>
 						<SidebarMenuButton
 							className="text-destructive hover:text-destructive"
+							tooltip="Log Out"
 							onClick={logout}
 						>
 							<LogOut />
@@ -437,6 +534,7 @@ export function AppSidebar() {
 					<SidebarMenuItem>
 						<SidebarMenuButton
 							className="cursor-pointer"
+							tooltip="Hide"
 							onClick={toggleSidebar}
 						>
 							<PanelLeftIcon />
